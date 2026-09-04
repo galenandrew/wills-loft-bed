@@ -1,9 +1,9 @@
 # dimensions.yaml — the single source of truth for the loft bed.
 #
-# Rev U (2026-09-04). Supersedes the Rev T encoding; loft-bed-drawings.html is
-# still the Rev T set and lags this file until drawings.py regenerates it.
+# Rev U (2026-09-04). Supersedes the Rev T encoding (archive/dimensions-T.yaml).
 # `python3 verify.py` recomputes every derived quantity and checks every
-# declared connection for real three-axis overlap. Fix the data, re-run.
+# declared connection for real three-axis overlap; `python3 build.py` renders
+# site/ from this file. Both run automatically from the edit hook. Fix the data, re-run.
 #
 # COORDINATES (inches, decimal — verify.py prints nearest 1/16 alongside)
 #   x  from the WINDOW wall finished face, toward the right wall (0 … 131)

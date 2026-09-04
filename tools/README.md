@@ -1,9 +1,8 @@
 # tools/
 
-Figure generators that render inline SVG straight from the yaml — the seed of `drawings.py`.
+- `svgview.py` — orthographic `View` helper (plan / elevation / section, dimension strings, hatching) used by every sheet module in `drawings/`.
+- `hook.sh` — the PostToolUse hook wired in `.claude/settings.json`: verify on model edits, build on model/drawing/content edits, change report injected as context.
+- `literals.py` — lists hand-typed numbers in drawing labels and `content/` prose with file:line; the auditor's worklist. `python3 tools/literals.py d4 d8`.
+- `sketch_U.py <yaml> <out.json>` / `sketch_T.py <out.json> [yaml]` — the landing figures used for the Rev U decision (Rev T's from `archive/dimensions-T.yaml`). Historical; `build.py` supersedes them for the drawing set.
 
-- `svgview.py` — orthographic `View` helper (plan / elevation / section, dimension strings, hatching).
-- `sketch_U.py <yaml> <out.json>` — Rev U landing figures (plan, side section, y=20 section). Run from the repo root: `python3 tools/sketch_U.py dimensions.yaml /tmp/figs.json`.
-- `sketch_T.py <out.json> [yaml]` — the Rev T as-drawn figures, from `archive/dimensions-T.yaml`.
-
-Both import `verify.py` for the member expansion and stair geometry, so a figure can never disagree with the checker.
+Everything imports `verify.py` for member expansion and stair geometry, so no figure can disagree with the checker.
