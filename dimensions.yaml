@@ -13,9 +13,24 @@
 # never a finished dimension. Finished faces are separate members (wrap,
 # sheathing, ply).
 #
+# Rev W decisions:
+#   · tread/riser joinery corrected. The exposed face of each plumb notch is its
+#     DOWNHILL side, so the riser board goes IN FRONT of the cut (y1 → y1+3/4), its
+#     bottom edge on the stringer's horizontal cut for the tread below. The tread
+#     below starts where that riser ends and butts its face — simple butt joint,
+#     riser behind the tread, nothing notched. Rev V's note said the opposite and
+#     the drawing drew a third thing (riser recessed INTO the stringer); a CAD
+#     kernel check found it (audits/V-kernel-spike.md).
+#   · consequence: every board is full 24" width, tread boards stay 9 1/8, and the
+#     nosing-to-nosing going is exactly 9.000 at all five steps. Framing lines are
+#     unchanged; the FINISHED nosings land 7/8 downhill of them, so the stair's
+#     finished projection is 72 7/8 (framing 72) and the landing 27 7/8 (framing 27).
+#   · lnd_ply runs to y 27.875 — 3/4 past the framing line for the riser board, then
+#     the same 1/8 nose the treads get. Rev V drew that nose as a literal in d4.
+#   · the stringers are notched 1 1/2 x 3 1/2 over the kicker at their floor seat.
+#
 # Rev V decisions:
 #   · treads 3/4" plywood, no nosing — 1/8" overhang, tape-sealed edge, painted; stringers dropped 3/4"
-#   · risers redrawn to butt on top of the tread below instead of recessing under the tread above
 #   · landing plywood colored as the finished surface (matches the tread/riser finish)
 #
 # Rev U decisions (see audits/U-decisions.md):
@@ -25,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: V
+rev: W
 units: inches
 room:
   x: 131
@@ -558,11 +573,14 @@ members:
   - 131
   y:
   - 0
-  - 27
+  - 27.875
   z:
   - 48.96
   - 49.71
   role: sheet
+  note: 'Rev W: 27 7/8 deep, not 27. The framing line is 27; the riser-6 board is applied to the stringers'' end
+    faces at 27→27.75, and the deck noses 1/8 past it exactly as the treads do. Rev V had the member at 27 and
+    typed the nose into Drawing 4 as a literal. CUT-LIST: 24 x 27 7/8.'
 - id: stringer_a
   stock: 2x12
   kind: stringer
@@ -614,7 +632,9 @@ members:
   - 0
   - 1.5
   role: structural
-  note: ASSUMED position — 'seat cut on a kicker anchored to the floor', no dimensions given.
+  note: 'Rev W: position FIXED at y 68.5→72, downhill face flush with the stringers'' bottom plumb cut. The
+    stringers are notched 1 1/2 x 3 1/2 to hook over it (they are 7.54 deep there, so 6.04 remains — well over the 3 1/2 throat minimum);
+    riser 1 sits in front of it at y 72→72.75 and clears it. Anchorage to the floor still to specify.'
 - id: slat
   stock: 2x2
   x:

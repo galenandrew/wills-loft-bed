@@ -45,8 +45,8 @@ def schedule():
          y_row("Blocking between stringers", "lnd_blocking[0]", "flush with riser 6"), y_row("Right-wall ledger", "lnd_ledger_rightwall", "stringer C bears on its end"),
          ("Landing", "0", fr(ST.landing), ""), y_row("Beam structure", "beam", "over the end stud pack"), y_row("Beam wrap", "beam_wrap_face"),
          ("<b>Platform, finished</b>", "0", fr(m("beam_wrap_face").y[1]), f"8 + {fr(m('beam').y[0]-8)} + 3 + ¾"), y_row("Desk (existing)", "desk", f"projects {fr(m('desk').y[1]-m('beam_wrap_face').y[1])} past the beam"),
-         ("Fan blade edge", "—", fr(m("fan").y[0]), f"blades at {fr(m('fan').z[0])}"), ("Stair, to bottom riser", fr(ST.y_riser_top), fr(ST.y_bottom), f"{ST.n_treads} treads @ {fr(ST.run)}"),
-         y_row("Dresser (48 × 16)", "dresser", f"{fr(m('dresser').y[0]-ST.y_bottom)} gap to the stair"), ("Entry door (32)", fr(float(room["door"]["y"][0])), fr(float(room["door"]["y"][1])), f"{fr(float(room['door']['to_corner']))} to the corner")]
+         ("Fan blade edge", "—", fr(m("fan").y[0]), f"blades at {fr(m('fan').z[0])}"), ("Stair, to the bottom nosing", fr(ST.y_riser_top), fr(Y_FIN), f"{ST.n_treads} treads @ {fr(ST.run)} · framing line {fr(ST.y_bottom)}"),
+         y_row("Dresser (48 × 16)", "dresser", f"{fr(m('dresser').y[0]-Y_FIN)} gap to the stair"), ("Entry door (32)", fr(float(room["door"]["y"][0])), fr(float(room["door"]["y"][1])), f"{fr(float(room['door']['to_corner']))} to the corner")]
     Ed = [("Clear span below the deck", fr(DER["clear_below_deck_x"]), "107 deck − 5 half-wall"), ("Clear height under joists", fr(DER["clear_under_joists"]), "58 − ¾ ply − 3½ joist"),
           ("Clear height under the beam", fr(DER["clear_under_beam"]), "less the ¾ wrap — not uniform with the joists"), ("Deck joist span", fr(DER["deck_joist_span"]), "ledger face → beam face"),
           ("Deck plywood", " × ".join(fr(a) for a in DER["deck_ply"]), "1½→106¼ by 1½→47"), ("Sitting headroom", fr(DER["sitting_headroom"]), f"{fr(CEILING)} − mattress top"),
@@ -56,7 +56,7 @@ def schedule():
           ("Nook flat ceiling depth", fr(Y_MEET - JAMB_Y[0]), f"jamb face to y {fr(Y_MEET)}"), ("Nook far end height", fr(DER["nook_far_end_height"]), "stringer underside at 47 − ¾ panel"),
           ("Light chase over the flat", fr(DER["nook_light_chase"]), "joist bottom − header bottom — wafer LED only"), ("Rim ↔ header engagement", fr(DER["rim_header_overlap"]), "full 2×8"),
           ("Rim ↔ stringer bearing", fr(DER["rim_stringer_bearing"]), "≈ full 2×8"), ("Slat clear opening", fr(DER["slat_clear"]), f"(107 − {SCR['slat_count']} × 1½) ÷ {SCR['slat_count']-1} · 3½ max"),
-          ("Stair projection", fr(DER["stair_projection"]), f"{fr(ST.landing)} landing + {fr(ST.y_bottom-ST.y_riser_top)} run"), ("Fan clearance", fr(DER["fan_clearance"]), f"{fr(m('fan').y[0])} − {fr(m('beam_wrap_face').y[1])}"),
+          ("Stair projection", f"{fr(DER['stair_projection'])} framing · {fr(Y_FIN)} finished", f"{fr(ST.landing)} landing + {fr(ST.y_bottom-ST.y_riser_top)} run + {fr(RISER_T)} riser + {fr(NOSE)} nose"), ("Fan clearance", fr(DER["fan_clearance"]), f"{fr(m('fan').y[0])} − {fr(m('beam_wrap_face').y[1])}"),
           ("Room depth chain", fr(DER["room_depth_chain"]), f"{fr(RY - DER['room_depth_chain'])} unplaced in {fr(RY)} — field")]
     return (f'<h2 style="margin-top:4px">A · Vertical datums</h2>{tbl(A, ["Member", "Bottom", "Top", "Note"])}'
             f'<h2 style="margin-top:18px">B · Stair heights</h2>{B}'

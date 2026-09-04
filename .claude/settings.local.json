@@ -11,8 +11,7 @@
       "Bash(python3 -m pip list)",
       "Bash(python3 -m pip install --quiet build123d)",
       "Bash(echo \"EXIT:$?\")",
-      "Bash(python3 -c \"import build123d, OCP; print\\('build123d', build123d.__version__\\)\")",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c \"import build123d, OCP; print\\('build123d', build123d.__version__\\)\")"
     ]
   }
 }

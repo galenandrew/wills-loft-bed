@@ -13,9 +13,9 @@ def d1():
     R(v, m("beam"), "x", "y", "beamplan"); R(v, m("beam_wrap_face"), "x", "y", "fin")
     v.rect(m("hw_sheath_loft_a").x[0], m("hw_sheath_stair_a").x[1], 0, m("hw_end_cap").y[1], "hid")
     # landing + stair
-    v.rect(107, RX, 0, ST.landing, "landing")
+    v.rect(107, RX, 0, m("lnd_ply").y[1], "landing")          # finished deck, incl. its 1/8 nose
     for i in range(1, ST.n_treads + 1):
-        y0, y1 = ST.tread_y(i); v.rect(107, RX, y0, y1, "tread")
+        v.rect(107, RX, *tread_y_board(i), "tread")           # the boards, not the stringer runs
     # existing
     dk = m("desk"); v.rect(*dk.x, *dk.y, "dashfill")
     dr = m("dresser"); v.rect(*dr.x, *dr.y, "exist")
@@ -32,7 +32,7 @@ def d1():
     v.text(92, 27, "landing area", "lab", "middle", dy=4); v.text(92, 31.5, f"30 × {fr(m('beam').y[0]-8)}", "labs", "middle", dy=4)
     v.text(50, 54.5, "doubled 2×10 upstand beam + ¾ poplar wrap — 107, no posts", "labs", "middle", dy=4)
     v.text(104.6, 30, "half-wall below", "labs", "middle", rot=-90)
-    v.text(119, 12, "LANDING", "lab", "middle", dy=4); v.text(119, 17, f"24 × {fr(ST.landing)} @ {fr(LAND)}", "labs", "middle", dy=4)
+    v.text(119, 12, "LANDING", "lab", "middle", dy=4); v.text(119, 17, f"24 × {fr(m('lnd_ply').y[1])} finished @ {fr(LAND)}", "labs", "middle", dy=4)
     v.text(119, 50, f"{ST.n_treads} treads @ {fr(ST.run)}", "labs", "middle", dy=4)
     v.text(12, 60.5, "desk 24 × 55", "labs", "middle", dy=4)
     v.text(123, 126, "dresser 16 × 48", "labs", "middle", rot=-90)
@@ -43,7 +43,7 @@ def d1():
     # dims
     v.dim_h(0, RX, -5.6, fr(RX)); v.dim_h(0, 107, -2.4, "107 deck"); v.dim_h(107, RX, -2.4, "24")
     v.dim_v(-4.5, 0, m("beam_wrap_face").y[1], fr(m("beam_wrap_face").y[1]))
-    yb = ST.y_bottom; dg = m("dresser").y
+    yb = Y_FIN; dg = m("dresser").y                           # finished extent — this is a clearance
     v.dim_v(RX + 2.6, 0, yb, f"{fr(yb)} stair", left=False); v.dim_v(RX + 2.6, yb, dg[0], f"{fr(dg[0]-yb)} gap", left=False)
     v.dim_v(RX + 2.6, dg[0], dg[1], f"{fr(dg[1]-dg[0])} dresser", left=False); v.dim_v(RX + 2.6, float(door["y"][0]), hy, f"{fr(w)} door", left=False)
     v.dim_v(RX + 2.6, hy, RY, fr(RY - hy), left=False); v.dim_v(-6.2, 0, RY, fr(RY))
