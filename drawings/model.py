@@ -72,8 +72,10 @@ def draw_treads(v):
     for i in range(1, ST.n_treads + 1):
         y0, y1 = ST.tread_y(i)
         v.rect(y0, y0 + float(d["stair"]["tread_board_width"]), ST.riser_z[i] - T, ST.riser_z[i], "fin")
-        v.rect(y1 - 0.75, y1, ST.riser_z[i - 1] if i > 1 else 0, ST.riser_z[i] - T, "fin")
-    v.rect(ST.y_riser_top, ST.y_riser_top + 0.75, ST.riser_z[ST.n_treads], LAND, "fin")   # riser 6 on the rim face
+        # riser drops all the way to the stringer's own notch corner, so its face butts flush against the tread below
+        v.rect(y1 - 0.75, y1, (ST.riser_z[i - 1] - T) if i > 1 else 0, ST.riser_z[i] - T, "fin")
+    # riser 6, under the landing: same convention, recessed under the landing's own 1/8 nose
+    v.rect(ST.y_riser_top - 0.75, ST.y_riser_top, ST.riser_z[ST.n_treads] - T, LAND - T, "fin")
 
 def half_wall_yz(v, cut=True):
     """half-wall framing in a y–z view (bed wall left)."""

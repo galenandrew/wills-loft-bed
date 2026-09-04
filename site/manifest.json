@@ -1,5 +1,5 @@
 {
- "rev": "U",
+ "rev": "V",
  "yaml": "dimensions.yaml",
  "generated": "2026-09-04",
  "figures": {
@@ -24,19 +24,19 @@
   "d4": {
    "sheet": "4",
    "page": "stairs",
-   "sha": "cda08d797027",
-   "elements": 105
+   "sha": "0a19febc40ac",
+   "elements": 94
   },
   "d5a": {
    "sheet": "5",
    "page": "stairs",
-   "sha": "0e21a7cd415c",
+   "sha": "179b462b6f4c",
    "elements": 75
   },
   "d5b": {
    "sheet": "5",
    "page": "stairs",
-   "sha": "f8ced6a7c4d0",
+   "sha": "bf6d6294a485",
    "elements": 50
   },
   "d6": {
@@ -54,7 +54,7 @@
   "d7b": {
    "sheet": "7",
    "page": "loft",
-   "sha": "15ec42dba87f",
+   "sha": "82d563aa168d",
    "elements": 69
   },
   "d8a": {
@@ -66,20 +66,20 @@
   "d8b": {
    "sheet": "8",
    "page": "stairs",
-   "sha": "f3a0ff65073c",
+   "sha": "d961258e4941",
    "elements": 52
   },
   "d9": {
    "sheet": "9",
    "page": "stairs",
-   "sha": "b7f5fb81f7e5",
+   "sha": "b484ae06139c",
    "elements": 71
   }
  },
  "pages": {
-  "index": "c19c0e480015",
-  "stairs": "8254dc842df0",
+  "index": "2993b7875d7b",
+  "stairs": "7f7d80a4c594",
   "loft": "5eda11ec4fb9",
-  "appendix": "be5efb91e9a3"
+  "appendix": "e52bd9608d49"
  }
 }

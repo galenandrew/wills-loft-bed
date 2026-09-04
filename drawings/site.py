@@ -50,7 +50,7 @@ ul{margin:0;padding-left:19px}li{margin-bottom:7px}code{font-size:12.5px;backgro
 .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:1.5px 7px;border-radius:4px;vertical-align:1px}.t-open{background:#fdf1e3;color:var(--amber)}.t-lock{background:#e8f0e9;color:var(--green)}.t-chk{background:#fbe9e7;color:var(--red)}
 h2.section{font-size:15px;text-transform:none;letter-spacing:0;color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:6px;margin:30px 0 16px}"""
 CSS_SVG = """svg text{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11.5px;fill:var(--ink)}
-.lab{font-weight:650;font-size:12px}.labs{font-size:10.5px;fill:var(--ink2)}.labk{font-weight:650;font-size:11.5px;fill:var(--pencil)}.labb{font-weight:650;font-size:11px;fill:var(--red)}
+.lab{font-weight:650;font-size:12px}.labs{font-size:10.5px;fill:var(--ink2)}.labk{font-weight:650;font-size:11.5px;fill:var(--pencil)}.labb{font-weight:650;font-size:11px;fill:var(--red)}.labw{font-size:10.5px;fill:var(--ghost)}
 .lum{fill:var(--lum);stroke:var(--lumline);stroke-width:1}.lum2{fill:var(--lum2);stroke:var(--lumline);stroke-width:.8}.blk{fill:#e6d9bd;stroke:var(--red);stroke-width:1}
 .sheet{fill:var(--sheet);stroke:var(--lumline);stroke-width:.6}.fin{fill:var(--fin);stroke:var(--lumline);stroke-width:.8}.wall{fill:var(--wall);stroke:none}.ghost{fill:var(--ghost);stroke:none}
 .room{fill:#fff;stroke:var(--ink);stroke-width:4}.deck{fill:var(--blue2);stroke:var(--blue);stroke-width:1.4}.ledge{fill:#eef3f9;stroke:var(--blue);stroke-width:1}.matt{fill:#c8daed;stroke:var(--blue);stroke-width:1}
@@ -121,7 +121,7 @@ def page_parts(name, svgs):
     """[(anchor id, contents label, html)] for one page, in order."""
     dr = lambda n: (f"d{n}", f"{n} {sheet(n).TITLE}", card_drawing(sheet(n), svgs))
     if name == "index":
-        return [("conventions", "Conventions", card_conventions()), ("locked", "Locked dimensions", card_locked()), dr("1"), dr("2"), ("open", "Open items", card_open())]
+        return [("conventions", "Conventions", card_conventions()), ("locked", "Locked dimensions", card_locked()), dr("2"), dr("1")]
     if name == "appendix":
         return [("schedule", "Dimension schedule", card_schedule()), ("structure", "Structure & load path", card_structure()), ("revisions", "Revisions", card_revisions())]
     return [dr(n) for n in PAGE_SHEETS[name]]
@@ -141,7 +141,7 @@ def html_page(title, body, here, today, inline_css=False):
     css = f"<style>{CSS}</style>" if inline_css else '<link rel="stylesheet" href="style.css">'
     return (f'<!DOCTYPE html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">\n'
             f'<title>{E(title)}</title>\n{css}</head><body><div class="wrap">\n'
-            f'<header><h1>Lofted Bed — Working Drawings</h1>\n{meta_line(today)}</header>\n{nav(here) if here else ""}'
+            f'<header><h1>Lofted Bed — Working Drawings</h1>\n{meta_line(today)}</header>\n{card_open()}\n{nav(here) if here else ""}'
             f'{body}\n</div>{KEYS_JS if here else ""}</body></html>\n')
 
 def contents_row(parts):

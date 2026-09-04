@@ -72,7 +72,6 @@ Assumed in the model until measured; anything depending on them is provisional:
 - Ceiling joist nearest 50¾" from the bed wall (joists run parallel to it) — sets the screen top-plate fixing.
 - Actual mattress thickness (`mattress.thickness`, assumed 6").
 - Stud locations in the bed wall, window wall, and right wall — every ledger and the beam's left-end support depend on them.
-- Tread stock thickness (`stair.tread_thickness`, assumed 1") — sets the stringer drop.
 
 ## Files
 

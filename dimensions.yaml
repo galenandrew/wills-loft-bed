@@ -13,15 +13,19 @@
 # never a finished dimension. Finished faces are separate members (wrap,
 # sheathing, ply).
 #
+# Rev V decisions:
+#   · treads 3/4" plywood, no nosing — 1/8" overhang, tape-sealed edge, painted; stringers dropped 3/4"
+#   · risers redrawn to butt on top of the tread below instead of recessing under the tread above
+#   · landing plywood colored as the finished surface (matches the tread/riser finish)
+#
 # Rev U decisions (see audits/U-decisions.md):
-#   · treads 5/4 (1"); stringers dropped 1"
 #   · stringers extend 9" under the landing; plumb cut 41.71→48.96 = a 2x8
 #   · landing box all 2x8 on that line; rim on HUC28s; joists run with the stringers
 #   · nook opening jambed in 3/4 poplar; finished ceiling 40.75, flush through the opening
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: U
+rev: V
 units: inches
 room:
   x: 131
@@ -78,9 +82,6 @@ lumber:
   poplar-3/4:
   - 0.75
   - null
-  5/4-board:
-  - 1.0
-  - null
 stair:
   total_rise: 58
   risers: 7
@@ -91,8 +92,8 @@ stair:
   stringer_stock: 2x12
   stringer_count: 3
   stringer_pitch: 11.25
-  tread_thickness: 1.0
-  tread_board_width: 10.5
+  tread_thickness: 0.75
+  tread_board_width: 9.125
   throat_min: 3.5
   top_run: 9
   landing_deck_thickness: 0.75
@@ -101,7 +102,7 @@ nook:
   - 3
   - 47
   header_bottom: 41.5
-  flat_ceiling_to_y: 18.23
+  flat_ceiling_to_y: 18.5
   soffit_panel_thickness: 0.75
   light: 6-inch recessed — fixture depth not stated; chase is ~4 inches
   head_jamb: 0.75
@@ -882,8 +883,8 @@ expected:
   riser: 8.286
   stair_angle_deg: 42.63
   stringer_throat: 5.15
-  stringer_underside_at_27: 33.42
-  stringer_underside_at_47: 15.01
+  stringer_underside_at_27: 33.67
+  stringer_underside_at_47: 15.26
   landing_top: 49.71
   landing_headroom: 46.25
   deck_headroom: 38
@@ -891,9 +892,9 @@ expected:
   - 44
   - 41.5
   nook_light_chase: 3.96
-  nook_far_end_height: 14.26
+  nook_far_end_height: 14.51
   rim_header_overlap: 7.25
-  rim_stringer_bearing: 7.25
+  rim_stringer_bearing: 7.0
   slat_clear: 3.3
   stair_projection: 72
   fan_clearance: 15.25

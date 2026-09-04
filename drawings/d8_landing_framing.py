@@ -43,7 +43,7 @@ def d8b():
     v.text(109.5, 47.6, "rim 2×8 beyond", "lab", "start", dy=4)
     v.text(104.5, 46, "header", "lab", "middle", rot=-90); v.text(104.5, 36.5, "trimmer beyond", "labs", "middle", rot=-90)
     v.text(119, 34.4, f"stringers cut at y = {y_cut}", "labs", "middle")
-    v.dim_v(101.0, HB, rm.z[1], f"{fr(rm.z[1]-HB)} header ↔ rim"); v.dim_v(125.5, rm.z[0], rm.z[1], "7¼ rim = plumb cut", left=True)
+    v.dim_v(101.0, HB, rm.z[1], f"{fr(rm.z[1]-HB)} header ↔ rim"); v.dim_v(125.5, rm.z[0], rm.z[1], f"{fr(DER['rim_stringer_bearing'])} rim = plumb cut", left=True)
     v.dim_h(107, 131, 50.6, "24 between wall faces", above=True)
     return v.svg("Section at y 20 through the stringers' top runs, looking toward the bed wall")
 
