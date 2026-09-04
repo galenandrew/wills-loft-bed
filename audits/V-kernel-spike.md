@@ -362,3 +362,57 @@ than shifting the whole landing box for ⅞".
 
 The spike's own worth is now measurable: it caught a joint that was drawn three
 different ways in three places, and a stringer cut that had not been made yet.
+
+---
+
+## Port (same day) — Drawing 4
+
+Ported, with a measurement that corrects this report twice over.
+
+**Fidelity.** `d4()`'s six hand-enumerated cut calls (`R()` × 4, `v.poly(stringer_pts())`,
+`draw_treads()`) collapse to one line — `kernel_cut(v, "x", CUT_X, skip=("soffit_panel",))`
+— and the plane decides what is cut. Compared shape by shape against the committed
+hand-drawn sheet, in inches:
+
+| | |
+|---|---|
+| shapes before / after | **29 / 29** |
+| worst deviation, all matched shapes | **0.0000"** |
+| missing or added | **none** |
+
+The SVG differs structurally (13 rects + 16 polygons where there were 28 + 1, since
+cut faces come back as loops) but not geometrically. The 15 labels, 6 dimensions and
+the caption are untouched — the whole point of porting rather than starting fresh.
+
+**Cost — my baseline was wrong.** This report said "a build that currently finishes
+in under a second". Measured, `python3 build.py` is **0.06 s**. So the kernel's ~3 s
+import is a 35× hit on a hook that fires on every Write/Edit, not the 3.5 s I
+projected. That is bad enough to have killed the port on its own.
+
+**Fixed by caching**, which was the mitigation this report proposed:
+
+| | |
+|---|---|
+| cold (cache miss, kernel runs) | **3.20 s** |
+| warm (cache hit, build123d never imported) | **0.06 s** |
+| cached output vs a live kernel run | **byte-identical** (verified) |
+
+The key is a SHA-256 over every input that can change a cut — `dimensions.yaml`,
+`verify.py` (`Stair`), `drawings/model.py` (`stringer_pts` and the tread/riser
+layout) and all of `cad/*.py` — plus the call's own axis, position and skip list.
+Nudging the kicker ½" missed the cache, rebuilt in 2.04 s and moved the notch;
+restoring it returned the identical file. `LOFT_KERNEL_NOCACHE=1` forces a real run
+and `cad.spike` never reads the cache, so nothing is ever *verified* against a
+cached value.
+
+**Scope held deliberately.** Only the cut layer is kernel-generated. Drawing 4's
+"beyond" and "ghosted" members are axis-aligned boxes whose projection is already
+exact, so `R()` keeps drawing them; swapping them for HLR linework would be a style
+change, not a fidelity one. Every other sheet is untouched.
+
+**Revised recommendation.** Adopt for checks (unchanged), and port the remaining
+section sheets — d5, d8b, d3, d7 — as they are next touched. With the cache the
+objection this report ended on is gone: the hook stays at 0.06 s, and the 3 s is
+paid only when the geometry actually moved, which is exactly when you wanted to look
+at the figure anyway. The plans (d1, d6, d8a, d9) should stay on box projection —
+the kernel would add cost and nothing else.
