@@ -6,7 +6,13 @@
       "Bash(python3 -c 'import json;d=json.load\\(open\\('\\\\''/Users/galenandrew-personal/.claude/settings.json'\\\\''\\)\\);print\\(json.dumps\\(d.get\\('\\\\''hooks'\\\\'',{}\\),indent=1\\)\\)')",
       "Bash(python3 -m pip install --quiet pyyaml)",
       "Bash(python3 -c \"import yaml; print\\('pyyaml ok', yaml.__version__\\)\")",
-      "Bash(python3 verify.py)"
+      "Bash(python3 verify.py)",
+      "Bash(python3 -c \"import build123d; print\\(build123d.__version__\\)\")",
+      "Bash(python3 -m pip list)",
+      "Bash(python3 -m pip install --quiet build123d)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(python3 -c \"import build123d, OCP; print\\('build123d', build123d.__version__\\)\")",
+      "Bash(python3 -c ' *)"
     ]
   }
 }
