@@ -8,7 +8,7 @@ derived dict), the room/nook/screen constants, fr(), m(), ids(), R(), View.
 The yaml path comes from the LOFT_YAML environment variable (build.py sets it);
 default dimensions.yaml in the repo root, whatever the cwd.
 """
-import os, sys, html, json, math, datetime
+import os, sys, html, json, math, datetime, glob, hashlib
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 for p in (ROOT, os.path.join(ROOT, "tools")):
     if p not in sys.path: sys.path.insert(0, p)
@@ -52,6 +52,92 @@ E = html.escape
 
 # finished-opening jambs (derived, not members)
 JAMB_Y = [NOOK_Y[0] + JAMB, NOOK_Y[1] - JAMB]
+
+# --------------------------------------------------------------------------- kernel sections
+# A sheet that wants a TRUE section asks the plane what it cuts, instead of listing
+# members and projecting their boxes by hand. Geometry still comes from the yaml —
+# cad/ builds solids from it (and imports Stair/stringer_pts, never re-derives them).
+#
+# Importing build123d costs ~2.7 s against a build that is otherwise 0.06 s, and the
+# edit hook runs the build on every Write/Edit. So cut results are cached on disk,
+# keyed by a hash of EVERY input that can change them — the yaml, verify.py (Stair),
+# this module (stringer_pts and the tread/riser layout) and all of cad/. Touch any of
+# them and the cache misses and the kernel runs; touch a label or a caption and it
+# hits, build123d is never imported, and the build stays at 0.06 s.
+#
+# LOFT_KERNEL_NOCACHE=1 forces a real run. `python3 -m cad.spike` never uses the cache.
+CACHE_DIR = os.path.join(ROOT, ".kernel-cache")
+KERNEL_INPUTS = ([YAML, os.path.join(ROOT, "verify.py"), os.path.abspath(__file__)]
+                 + sorted(glob.glob(os.path.join(ROOT, "cad", "*.py"))))
+CACHE_HITS = []
+
+def _kernel_key(*args):
+    h = hashlib.sha256()
+    for f in KERNEL_INPUTS:
+        h.update(open(f, "rb").read())
+    h.update(repr(args).encode())
+    return h.hexdigest()[:16]
+
+_PIECES = None
+
+def kernel_pieces():
+    global _PIECES
+    if _PIECES is None:
+        from cad.model import build
+        _PIECES = build()
+    return _PIECES
+
+def _cached_cut(axis, at):
+    """The kernel's cut loops for this plane, from disk if nothing upstream moved."""
+    key = _kernel_key("cut", axis, at)
+    path = os.path.join(CACHE_DIR, f"cut-{key}.json")
+    if not os.environ.get("LOFT_KERNEL_NOCACHE") and os.path.exists(path):
+        CACHE_HITS.append(f"{axis}={fr(at)}")
+        return [(pid, [tuple(p) for p in pts]) for pid, pts in json.load(open(path))]
+    from cad.section import cut as _cut
+    loops = _cut(kernel_pieces(), axis, at)
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    json.dump([[pid, [list(p) for p in pts]] for pid, pts in loops], open(path, "w"))
+    return loops
+
+
+def _piece_stock():
+    """id → stock, cached alongside the cut so styling never forces a kernel build."""
+    key = _kernel_key("stock")
+    path = os.path.join(CACHE_DIR, f"stock-{key}.json")
+    if not os.environ.get("LOFT_KERNEL_NOCACHE") and os.path.exists(path):
+        return json.load(open(path))
+    d_ = {p.id: p.stock for p in kernel_pieces()}
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    json.dump(d_, open(path, "w"))
+    return d_
+
+
+def cut_class(pid):
+    """Default cut styling: framing lumber hatched, sheet goods and finish plain.
+    A sheet can override any of it via kernel_cut(cls=...)."""
+    stock = _piece_stock().get(pid)
+    return ("fin", "") if stock in ("ply-3/4", "ply-1/2", "poplar-3/4") else ("lum", HATCH)
+
+def kernel_cut(v, axis, at, skip=(), cls=None, extra=None, order=("lum", "fin")):
+    """Draw the model's true section on `axis = at` into View v.
+
+    `skip` names members this sheet deliberately leaves out (Drawing 4 omits the
+    nook soffit — that is Drawing 5's story). `cls`/`extra` override the default
+    class or SVG attributes per member id. Returns the ids drawn, so a sheet can
+    assert it got what it expected."""
+    drawn = []
+    for pid, pts in _cached_cut(axis, at):
+        base = pid.split("#")[0]
+        if base in skip or base.split("[")[0] in skip:
+            continue
+        c, ex = cut_class(pid)
+        c = (cls or {}).get(base, (cls or {}).get(base.split("[")[0], c))
+        ex = (extra or {}).get(base, ex)
+        drawn.append((order.index(c) if c in order else len(order), pid, pts, c, ex))
+    for _k, pid, pts, c, ex in sorted(drawn, key=lambda r: r[0]):
+        v.poly(pts, c, ex)
+    return [pid for _k, pid, _p, _c, _e in sorted(drawn, key=lambda r: r[0])]
 
 # --------------------------------------------------------------------------- stair profile
 KICK = M["kicker"]
