@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r \".tool_input.file_path // empty\" | { read -r f; case \"$f\" in *dimensions.yaml) cd \"$(dirname \"$f\")\" && out=$(python3 verify.py --quiet 2>&1); rc=$?; if [ $rc -ne 0 ]; then printf \"verify.py FAILED after editing dimensions.yaml:\\n%s\\n\" \"$(echo \"$out\" | grep -E \"FAIL|WARN\")\" >&2; exit 2; else echo \"verify.py: $(echo \"$out\" | tail -1)\"; fi ;; esac; }",
+            "timeout": 60,
+            "statusMessage": "verify.py \u2014 checking dimensions.yaml"
+          }
+        ]
+      }
+    ]
+  }
+}

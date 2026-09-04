@@ -1,0 +1,903 @@
+# dimensions.yaml — the single source of truth for the loft bed.
+#
+# Rev U (2026-09-04). Supersedes the Rev T encoding; loft-bed-drawings.html is
+# still the Rev T set and lags this file until drawings.py regenerates it.
+# `python3 verify.py` recomputes every derived quantity and checks every
+# declared connection for real three-axis overlap. Fix the data, re-run.
+#
+# COORDINATES (inches, decimal — verify.py prints nearest 1/16 alongside)
+#   x  from the WINDOW wall finished face, toward the right wall (0 … 131)
+#   y  from the BED wall finished face, toward the closet wall    (0 … 186)
+#   z  above finished floor                                        (0 … 96)
+# Every extent is the FRAMING extent of that member (actual lumber size),
+# never a finished dimension. Finished faces are separate members (wrap,
+# sheathing, ply).
+#
+# Rev U decisions (see audits/U-decisions.md):
+#   · treads 5/4 (1"); stringers dropped 1"
+#   · stringers extend 9" under the landing; plumb cut 41.71→48.96 = a 2x8
+#   · landing box all 2x8 on that line; rim on HUC28s; joists run with the stringers
+#   · nook opening jambed in 3/4 poplar; finished ceiling 40.75, flush through the opening
+#   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
+# Anything marked ASSUMED is not in the drawings and must be confirmed.
+
+rev: U
+units: inches
+room:
+  x: 131
+  y: 186
+  ceiling: 96
+  window:
+    wall: window
+    y:
+    - 95
+    - 150
+  door:
+    wall: right
+    y:
+    - 150
+    - 182
+    width: 32
+    to_corner: 3.5
+mattress:
+  size:
+  - 38
+  - 75
+  thickness: 6
+lumber:
+  2x2:
+  - 1.5
+  - 1.5
+  2x4:
+  - 1.5
+  - 3.5
+  2x6:
+  - 1.5
+  - 5.5
+  2x8:
+  - 1.5
+  - 7.25
+  2x10:
+  - 1.5
+  - 9.25
+  2x12:
+  - 1.5
+  - 11.25
+  2x10x2:
+  - 3.0
+  - 9.25
+  header-2x10-sandwich:
+  - 3.5
+  - 9.25
+  ply-3/4:
+  - 0.75
+  - null
+  ply-1/2:
+  - 0.5
+  - null
+  poplar-3/4:
+  - 0.75
+  - null
+  5/4-board:
+  - 1.0
+  - null
+stair:
+  total_rise: 58
+  risers: 7
+  run: 9
+  treads: 5
+  landing_depth: 27
+  width: 24
+  stringer_stock: 2x12
+  stringer_count: 3
+  stringer_pitch: 11.25
+  tread_thickness: 1.0
+  tread_board_width: 10.5
+  throat_min: 3.5
+  top_run: 9
+  landing_deck_thickness: 0.75
+nook:
+  opening_y:
+  - 3
+  - 47
+  header_bottom: 41.5
+  flat_ceiling_to_y: 18.23
+  soffit_panel_thickness: 0.75
+  light: 6-inch recessed — fixture depth not stated; chase is ~4 inches
+  head_jamb: 0.75
+screen:
+  slat_count: 23
+  slat_size: 1.5
+  extent_x:
+  - 0
+  - 107
+  slat_bottom: 63
+  slat_top: 94.5
+  max_clear: 3.5
+members:
+- id: rear_ledger
+  stock: 2x6
+  x:
+  - 1.5
+  - 106.25
+  y:
+  - 0
+  - 1.5
+  z:
+  - 53.75
+  - 59.25
+  role: structural
+  note: 'Rev T says 107 long and draws it 0→107, but the side ledger occupies x 0→1.5 and the stair-side sheathing
+    (floor to 58) occupies 106.25→107. Cut length is therefore 104.75. CUT-LIST CORRECTION.
+
+    '
+- id: side_ledger
+  stock: 2x10
+  x:
+  - 0
+  - 1.5
+  y:
+  - 0
+  - 48
+  z:
+  - 53.75
+  - 63
+  role: structural
+  note: '''48 inches out — carries the beam''s left end'' (Drawing 6, structure table).'
+- id: deck_joist
+  stock: 2x4
+  x:
+  - 1.5
+  - 3
+  y:
+  - 1.5
+  - 47
+  z:
+  - 53.75
+  - 57.25
+  role: structural
+  repeat:
+    count: 9
+    axis: x
+    pitch: 12
+- id: ledger_blocking
+  stock: 2x4
+  x:
+  - 3
+  - 13.5
+  y:
+  - 1.5
+  - 3
+  z:
+  - 53.75
+  - 57.25
+  role: structural
+  repeat:
+    count: 8
+    axis: x
+    pitch: 12
+  note: 'Drawing 6 draws the blocking 3.5 inches wide in plan and Drawing 3 draws it 3.5 inches tall — a 2x4 can''t
+    be both. Encoded on edge (1.5 in y, 3.5 in z) so its top is flush with the joists and carries the ply edge.
+
+    '
+- id: ledger_blocking_last
+  stock: 2x4
+  x:
+  - 99
+  - 104.75
+  y:
+  - 1.5
+  - 3
+  z:
+  - 53.75
+  - 57.25
+  role: structural
+- id: deck_rim
+  stock: 2x4
+  x:
+  - 104.75
+  - 106.25
+  y:
+  - 1.5
+  - 47
+  z:
+  - 53.75
+  - 57.25
+  role: structural
+- id: deck_ply
+  stock: ply-3/4
+  x:
+  - 1.5
+  - 106.25
+  y:
+  - 1.5
+  - 47
+  z:
+  - 57.25
+  - 58
+  role: sheet
+- id: beam
+  stock: 2x10x2
+  x:
+  - 1.5
+  - 106.25
+  y:
+  - 47
+  - 50
+  z:
+  - 53.75
+  - 63
+  role: structural
+  note: 'Drawing 6 draws the beam x 0→107, which would occupy the side ledger''s space at the window end and the
+    stair-side sheathing at the half-wall end. Encoded 1.5→106.25 (between those two members). Rev T never states
+    the beam''s cut length.
+
+    '
+- id: beam_wrap_face
+  stock: poplar-3/4
+  x:
+  - 0
+  - 107
+  y:
+  - 50
+  - 50.75
+  z:
+  - 53
+  - 63
+  role: finish
+- id: beam_wrap_underside
+  stock: poplar-3/4
+  x:
+  - 0
+  - 102
+  note: 'Underside wrap stops at the half-wall''s loft face (102) — the beam bears on the top plate beyond that.
+    CUT-LIST CORRECTION: 102 long, not 107.'
+  y:
+  - 47
+  - 50
+  z:
+  - 53
+  - 53.75
+  role: finish
+- id: ledge_front_rail
+  stock: poplar-3/4
+  x:
+  - 1.5
+  - 106.25
+  y:
+  - 7.25
+  - 8
+  z:
+  - 58
+  - 65.25
+  role: finish
+  note: Starts at x 1.5 — the side ledger occupies x 0→1.5 up to 63. Rips to 7¼ (Rev J).
+- id: ledge_lid
+  stock: poplar-3/4
+  x:
+  - 1.5
+  - 106.25
+  y:
+  - 0
+  - 8
+  z:
+  - 65.25
+  - 66
+  role: finish
+  note: Hinged lids optional (Rev F); modelled as one continuous cap.
+- id: ledge_end_cap
+  stock: poplar-3/4
+  x:
+  - 106.25
+  - 107
+  y:
+  - 0
+  - 8
+  z:
+  - 58
+  - 66
+  role: finish
+- id: hw_bottom_plate
+  stock: 2x4
+  x:
+  - 102.75
+  - 106.25
+  y:
+  - 0
+  - 50
+  z:
+  - 0
+  - 1.5
+  role: structural
+- id: hw_king_a
+  stock: 2x4
+  x:
+  - 102.75
+  - 106.25
+  y:
+  - 0
+  - 1.5
+  z:
+  - 1.5
+  - 50.75
+  role: structural
+- id: hw_trimmer_a
+  stock: 2x4
+  x:
+  - 102.75
+  - 106.25
+  y:
+  - 1.5
+  - 3
+  z:
+  - 1.5
+  - 41.5
+  role: structural
+- id: hw_trimmer_b
+  stock: 2x4
+  x:
+  - 102.75
+  - 106.25
+  y:
+  - 47
+  - 48.5
+  z:
+  - 1.5
+  - 41.5
+  role: structural
+- id: hw_king_b
+  stock: 2x4
+  x:
+  - 102.75
+  - 106.25
+  y:
+  - 48.5
+  - 50
+  z:
+  - 1.5
+  - 50.75
+  role: structural
+- id: hw_header
+  stock: header-2x10-sandwich
+  x:
+  - 102.75
+  - 106.25
+  y:
+  - 1.5
+  - 48.5
+  z:
+  - 41.5
+  - 50.75
+  role: structural
+- id: hw_top_plate_1
+  stock: 2x4
+  x:
+  - 102.75
+  - 106.25
+  y:
+  - 0
+  - 50
+  z:
+  - 50.75
+  - 52.25
+  role: structural
+- id: hw_top_plate_2
+  stock: 2x4
+  x:
+  - 102.75
+  - 106.25
+  y:
+  - 0
+  - 50
+  z:
+  - 52.25
+  - 53.75
+  role: structural
+- id: hw_end_cap
+  stock: poplar-3/4
+  x:
+  - 102
+  - 107
+  y:
+  - 50
+  - 50.75
+  z:
+  - 0
+  - 53
+  role: finish
+  note: ASSUMED — Rev T never says what closes the wall's end at y 50→50.75 below the wrap.
+- id: hw_sheath_loft_a
+  stock: ply-3/4
+  x:
+  - 102
+  - 102.75
+  y:
+  - 0
+  - 3
+  z:
+  - 0
+  - 53.75
+  role: sheet
+- id: hw_sheath_loft_head
+  stock: ply-3/4
+  x:
+  - 102
+  - 102.75
+  y:
+  - 3
+  - 47
+  z:
+  - 41.5
+  - 53.75
+  role: sheet
+- id: hw_sheath_loft_b
+  stock: ply-3/4
+  x:
+  - 102
+  - 102.75
+  y:
+  - 47
+  - 50
+  z:
+  - 0
+  - 53.75
+  role: sheet
+- id: hw_sheath_stair_a
+  stock: ply-3/4
+  x:
+  - 106.25
+  - 107
+  y:
+  - 0
+  - 3
+  z:
+  - 0
+  - 58
+  role: sheet
+- id: hw_sheath_stair_head
+  stock: ply-3/4
+  x:
+  - 106.25
+  - 107
+  y:
+  - 3
+  - 47
+  z:
+  - 41.5
+  - 58
+  role: sheet
+  note: This is Rev S's '3/4 ply facing on the header's stair face'. Every landing fastener into the header passes
+    through it.
+- id: hw_sheath_stair_b
+  stock: ply-3/4
+  x:
+  - 106.25
+  - 107
+  y:
+  - 47
+  - 50
+  z:
+  - 0
+  - 58
+  role: sheet
+- id: lnd_ledger_bedwall
+  stock: 2x8
+  x:
+  - 107
+  - 129.5
+  y:
+  - 0
+  - 1.5
+  z:
+  - 41.71
+  - 48.96
+  role: structural
+  note: 'Rev U: 2x8 like the rest of the box'
+- id: lnd_ledger_rightwall
+  stock: 2x8
+  x:
+  - 129.5
+  - 131
+  y:
+  - 0
+  - 18
+  z:
+  - 41.71
+  - 48.96
+  role: structural
+  note: 'Rev U: 2x8; runs to y 18 so stringer C''s plumb cut bears on its end and the rim''s right end hangs on
+    its face'
+- id: lnd_side_member
+  stock: 2x8
+  x:
+  - 107
+  - 108.5
+  y:
+  - 1.5
+  - 16.5
+  z:
+  - 41.71
+  - 48.96
+  role: structural
+  note: 'Rev U: stops at the rim (16.5)'
+- id: lnd_joist
+  stock: 2x4
+  x:
+  - 114.75
+  - 116.25
+  y:
+  - 1.5
+  - 16.5
+  z:
+  - 45.46
+  - 48.96
+  role: structural
+  repeat:
+    count: 2
+    axis: x
+    pitch: 7
+  note: 'Rev U: two 2x4 joists running with the stringers, hung on the bed-wall ledger and the rim'
+- id: lnd_rim
+  stock: 2x8
+  x:
+  - 107
+  - 129.5
+  y:
+  - 16.5
+  - 18
+  z:
+  - 41.71
+  - 48.96
+  role: structural
+  note: 'Rev U: 2x8 rim moved to y 16.5–18; stringers extend 9 in under the landing and bear on it full depth (41.71–48.96)'
+- id: lnd_ply
+  stock: ply-3/4
+  x:
+  - 107
+  - 131
+  y:
+  - 0
+  - 27
+  z:
+  - 48.96
+  - 49.71
+  role: sheet
+- id: stringer_a
+  stock: 2x12
+  kind: stringer
+  x:
+  - 107
+  - 108.5
+  y:
+  - 18
+  - 72
+  z:
+  - 0
+  - 48.96
+  role: structural
+- id: stringer_b
+  stock: 2x12
+  kind: stringer
+  x:
+  - 118.25
+  - 119.75
+  y:
+  - 18
+  - 72
+  z:
+  - 0
+  - 48.96
+  role: structural
+- id: stringer_c
+  stock: 2x12
+  kind: stringer
+  x:
+  - 129.5
+  - 131
+  y:
+  - 18
+  - 72
+  z:
+  - 0
+  - 48.96
+  role: structural
+- id: kicker
+  stock: 2x4
+  x:
+  - 107
+  - 131
+  y:
+  - 68.5
+  - 72
+  z:
+  - 0
+  - 1.5
+  role: structural
+  note: ASSUMED position — 'seat cut on a kicker anchored to the floor', no dimensions given.
+- id: slat
+  stock: 2x2
+  x:
+  - 0
+  - 1.5
+  y:
+  - 49.25
+  - 50.75
+  z:
+  - 63
+  - 94.5
+  role: structural
+  repeat:
+    count: 23
+    axis: x
+    pitch: 4.7955
+  note: 'y position ASSUMED: ''faces flush with wrap'' → outer face at 50.75.'
+- id: screen_top_plate
+  stock: 2x4
+  x:
+  - 0
+  - 107
+  y:
+  - 47.25
+  - 50.75
+  z:
+  - 94.5
+  - 96
+  role: structural
+  note: 'DECISION NEEDED. Text (structure note, Open Items) puts the plate at 47¼→50¾. Drawing 3 draws it 46½→50
+    with a ¾ poplar band at 50→50.75 so the finish face matches the wrap. The ceiling-joist measurement targets
+    the FRAMING band, so this must be settled before that measurement is useful.
+
+    '
+- id: desk
+  x:
+  - 0
+  - 24
+  y:
+  - 0
+  - 55
+  z:
+  - 0
+  - 29
+  role: existing
+- id: dresser
+  x:
+  - 115
+  - 131
+  y:
+  - 102
+  - 150
+  z:
+  - 0
+  - 36
+  role: existing
+- id: fan
+  x:
+  - 38.5
+  - 92.5
+  y:
+  - 66
+  - 120
+  z:
+  - 85
+  - 86
+  role: existing
+  note: blade disc, centre (65.5, 93), r 27 — from Drawing 1
+- id: lnd_blocking
+  stock: 2x4
+  x:
+  - 108.5
+  - 118.25
+  y:
+  - 25.5
+  - 27
+  z:
+  - 45.46
+  - 48.96
+  role: structural
+  repeat:
+    count: 2
+    axis: x
+    pitch: 11.25
+  note: 'Rev U: 2x4 blocking between the stringers'' top runs, front face flush with riser 6 — backs the deck edge
+    and the riser board'
+connections:
+- a: deck_joist[*]
+  b: rear_ledger
+  type: hanger
+  face: y
+  fastener: face-mount hanger, model UNSPECIFIED
+- a: deck_joist[*]
+  b: beam
+  type: hanger
+  face: y
+  fastener: UNSPECIFIED — text says joists 'land on' the beam, but beam and joists share a bottom at 53.75
+- a: beam
+  b: side_ledger
+  type: hanger
+  face: x
+  fastener: UNSPECIFIED — 'side ledger carries the beam's left end'
+- a: beam
+  b: hw_top_plate_2
+  type: bearing
+- a: deck_rim
+  b: hw_top_plate_2
+  type: bearing
+- a: rear_ledger
+  b: wall:bed
+  type: wall
+  fastener: lags into every stud
+- a: side_ledger
+  b: wall:window
+  type: wall
+  fastener: UNSPECIFIED
+- a: ledger_blocking[*]
+  b: rear_ledger
+  type: face-screw
+  face: y
+  fastener: UNSPECIFIED
+- a: ledger_blocking_last
+  b: rear_ledger
+  type: face-screw
+  face: y
+  fastener: UNSPECIFIED
+- a: hw_header
+  b: hw_trimmer_a
+  type: bearing
+- a: hw_header
+  b: hw_trimmer_b
+  type: bearing
+- a: hw_top_plate_1
+  b: hw_header
+  type: bearing
+- a: hw_top_plate_1
+  b: hw_king_a
+  type: bearing
+- a: hw_top_plate_1
+  b: hw_king_b
+  type: bearing
+- a: hw_bottom_plate
+  b: floor
+  type: floor
+  fastener: UNSPECIFIED
+- a: lnd_side_member
+  b: hw_header
+  type: face-screw
+  face: x
+  through:
+  - hw_sheath_stair_head
+  fastener: 6 × 1/4 × 5 structural screws
+- a: lnd_ledger_bedwall
+  b: wall:bed
+  type: wall
+  fastener: UNSPECIFIED
+- a: lnd_ledger_rightwall
+  b: wall:right
+  type: wall
+  fastener: UNSPECIFIED
+- a: stringer_c
+  b: wall:right
+  type: wall
+  fastener: '''fastens to the right wall'''
+- a: stringer_a
+  b: kicker
+  type: bearing
+- a: stringer_b
+  b: kicker
+  type: bearing
+- a: stringer_c
+  b: kicker
+  type: bearing
+- a: slat[*]
+  b: beam
+  type: bearing
+  fastener: UNSPECIFIED
+- a: screen_top_plate
+  b: slat[*]
+  type: bearing
+  fastener: UNSPECIFIED
+- a: screen_top_plate
+  b: ceiling
+  type: ceiling
+  fastener: into ceiling framing / blocking — joist location not yet measured
+- a: lnd_ledger_bedwall
+  b: wall:bed
+  type: wall
+  fastener: 3/8 x 4 lags, 2 per stud
+- a: stringer_b
+  b: lnd_rim
+  type: face-screw
+  face: y
+  fastener: 3 x 1/4 x 3-1/2 SDS from inside the box through the rim, before the deck goes on
+- a: stringer_c
+  b: lnd_ledger_rightwall
+  type: face-screw
+  face: y
+  fastener: plumb cut on the ledger end + 4 x 1/4 x 4-1/2 SDS into right-wall studs
+- a: stringer_a
+  b: hw_header
+  type: face-screw
+  face: x
+  through:
+  - hw_sheath_stair_head
+  fastener: 4 x 1/4 x 4-1/2 SDS through the facing, over y 18-27
+- a: stringer_a
+  b: hw_king_b
+  type: face-screw
+  face: x
+  through:
+  - hw_sheath_stair_b
+  fastener: 2 x 1/4 x 4-1/2 SDS
+- a: lnd_rim
+  b: hw_header
+  type: hanger
+  face: x
+  through:
+  - hw_sheath_stair_head
+  fastener: HUC28 concealed-flange hanger, SD10212 screws through the 3/4 facing (flanges would foul the side member
+    on an LUS)
+- a: lnd_rim
+  b: lnd_ledger_rightwall
+  type: hanger
+  face: x
+  fastener: HUC28 concealed-flange hanger (an LUS flange would hang past the ledger end)
+- a: lnd_joist[*]
+  b: lnd_ledger_bedwall
+  type: hanger
+  face: y
+  fastener: LUS24
+- a: lnd_joist[*]
+  b: lnd_rim
+  type: hanger
+  face: y
+  fastener: LUS24 on the rim's back face
+- a: lnd_side_member
+  b: lnd_rim
+  type: face-screw
+  face: y
+  fastener: 2 x A35 at the inside corner, installed before the joists
+- a: stringer_a
+  b: lnd_rim
+  type: face-screw
+  face: y
+  fastener: 2 x 1/4 x 3-1/2 SDS toe-screwed from the stringer's outer face; the side member blocks access from inside
+    the box
+- a: lnd_blocking[*]
+  b: stringer_b
+  type: face-screw
+  face: x
+  fastener: 2 x 3 in screws each end, toe-driven
+expected:
+  deck_top: 58
+  platform_finished:
+  - 107
+  - 50.75
+  clear_below_deck_x: 102
+  clear_under_joists: 53.75
+  clear_under_beam: 53
+  deck_joist_span: 45.5
+  deck_ply:
+  - 104.75
+  - 45.5
+  sitting_headroom: 32
+  riser: 8.286
+  stair_angle_deg: 42.63
+  stringer_throat: 5.15
+  stringer_underside_at_27: 33.42
+  stringer_underside_at_47: 15.01
+  landing_top: 49.71
+  landing_headroom: 46.25
+  deck_headroom: 38
+  nook_opening:
+  - 44
+  - 41.5
+  nook_light_chase: 3.96
+  nook_far_end_height: 14.26
+  rim_header_overlap: 7.25
+  rim_stringer_bearing: 7.25
+  slat_clear: 3.3
+  stair_projection: 72
+  fan_clearance: 15.25
+  room_depth_chain: 185.5
+  screen_top_plate_band:
+  - 47.25
+  - 50.75

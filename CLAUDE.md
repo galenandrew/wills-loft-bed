@@ -2,71 +2,69 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## What this repository is
+## What this is
 
-Not a software project. This is the build documentation for a lofted bed for the user's son (design finalized), built for a room 131" × 186", 8' ceiling, second floor. The user is an experienced builder with full tool access and a flexible budget. The deliverables are drawings, a dimension model, a verification script, and materials/cut lists — read `KICKOFF.md` for the full project brief and `AGENTS.md` for when to use the subagents in `.claude/agents/`.
+Build documentation for a lofted twin bed in a child's room (131" × 186", 8' ceiling, second floor). Not a software project. The user is an experienced builder with full tool access and a flexible budget. The design is essentially finalized; the remaining work is closing the open findings, then the materials list and cut list.
 
-## Current state / setup still to do
+Read `KICKOFF.md` for the brief, `AGENTS.md` for when to use subagents, and `audits/` for past review findings.
 
-`KICKOFF.md` defines a project setup that has not yet been built out. In order:
+## Source of truth and workflow
 
-1. Extract the dimension schedule from `loft-bed-drawings.html` into `dimensions.yaml` — every controlling dimension as data, including each member's full x/y/z extents (needed for connection checking).
-2. Write `verify.py` to recompute derived quantities from `dimensions.yaml` and assert they match: clear spans, member overlaps, stringer geometry, the room depth chain. Re-run after any change to the dimensions.
-3. Generate a materials list from the dimension data, then run the `materials-pricer` agent on it.
-4. Generate a cut list from the dimension data, then run `connection-checker` and `drawing-auditor` before anything is cut.
+**`dimensions.yaml` is the model.** Every member's framing extents in x (from the window wall), y (from the bed wall), z (above floor), plus every claimed structural connection. `loft-bed-drawings.html` is a *rendering* of it and is subordinate to it. Where they disagree, the yaml wins — unless the yaml mis-encoded the drawing, in which case fix the yaml and say so.
 
-If `dimensions.yaml` and `verify.py` exist when you read this, they are the source of truth going forward — treat this section as historical and update it to describe the current pipeline instead.
+**`python3 verify.py`** recomputes every derived quantity (schedule table E), checks every connection for real three-axis overlap, hanger engagement, and fastener path, and finds volume clashes. It exits non-zero on any FAIL. A PostToolUse hook runs it automatically on every edit to `dimensions.yaml` and feeds failures back to you.
 
-## The controlling reference
+The loop for any change:
 
-`loft-bed-drawings.html` (currently Rev T) is the complete drawing set: 9 scale SVG drawings plus a dimension schedule (`Dimension schedule — the controlling reference`, around line 91). The schedule is the single source every height and plan extent is derived from once. **Where any drawing, caption, or note disagrees with the schedule, the schedule wins.** Once `dimensions.yaml` exists, it supersedes the HTML schedule as the actual source of truth — the HTML should be regenerated from it, not hand-edited to match.
+1. Change `dimensions.yaml` (member extents, connections, `expected:` values).
+2. Read the verify output the hook returns. Fix until clean, or explain to the user why a FAIL is accepted.
+3. Run `python3 drawings.py` to regenerate the HTML; update the cut list / materials list to match.
+4. Bump `rev:` in the yaml and add a row to `REV_NOTE`/the revisions log in `drawings.py` (Rev T's rows are carried from `archive/revisions-T.json`). One letter per design change; `.1` suffixes for drawing-only cleanups.
+5. Before cutting material: run `drawing-auditor` and `connection-checker` (see `AGENTS.md`).
 
-The schedule is organized as:
-- A · Vertical datums
-- B · Stair heights
-- C · Plan — x, from the window wall
-- D · Plan — y, out from the bed wall
-- E · Derived — do not measure these independently
+Never hand-edit a number in the HTML without first changing it in the yaml. Drift between them is this project's recurring bug.
 
-Section E matters: those values are computed from A–D, not independent measurements. `verify.py` exists to make that computation auditable instead of manual.
+## Coordinate and encoding conventions
 
-Check the `Revisions` table at the bottom of the HTML before trusting any specific number — it documents exactly which past values were wrong and why, which is useful context for the kind of error this project tends to produce (see Working rules below).
+- Inches, decimal in the yaml. `verify.py` prints nearest-sixteenth alongside.
+- Extents are **framing** extents (actual lumber size). Finished faces (wrap, sheathing, ply) are their own members. Cut lists use the framing numbers; layout marks use the finished ones.
+- Repeated members use `repeat:`; ids become `id[0]…`. Wildcards in connections are quoted: `"deck_joist[*]"`.
+- Stringers are `kind: stringer`; their bbox is ignored and the true sloped profile is computed from `stair:`.
+- Anything not stated in the drawings and guessed during encoding is marked `ASSUMED` in a `note:`. Resolve these with the user, don't silently keep them.
+- `expected:` holds the values Rev T states. When a change legitimately moves one, update it deliberately — that's the audit trail.
 
-## Working rules (hard-won, do not relitigate)
+## Working rules (hard-won — do not relitigate)
 
-- **Never assert a geometric relationship from memory. Compute it.** This is the project's single most common failure mode — see the agent rationale in `AGENTS.md`.
-- **Distinguish framing from finished dimensions everywhere.** Example pairs already established: platform 50¾" finished / 50" framed; half-wall 5" finished / 3½" framed; deck 107" finished / 106¼" structural rim.
-- **Errors cluster where two assemblies meet.** Before claiming two members connect, verify their coordinate ranges overlap in all three axes — this is exactly what the `connection-checker` agent automates.
-- **Some member depths are set by connection requirements, not load.** E.g. the nook header is a 2×10 at ~140 psi against ~900 allowable — oversized so the landing rim has something to hang from. Do not "optimize" these down to a load-only size.
-- **Flag now-or-never decisions** — anything that gets much harder after a prior construction step — as soon as they're visible, not after the fact.
-- **Push back on the user.** The design has improved every time a past session did.
+- **Never assert a geometric relationship from memory. Compute it.** If it isn't in `verify.py`'s output, it isn't verified.
+- **Distinguish framing from finished everywhere.** Platform 50¾" finished / 50" framed. Half-wall 5" finished / 3½" studs. Deck 107" finished / 106¼" structural rim.
+- **Errors cluster where two assemblies meet.** Before claiming two members connect, they must be in `connections:` and pass. A connection whose fastener is UNSPECIFIED is not done.
+- **Some depths are set by connection requirements, not load.** The nook header is a 2×10 sandwich at ~140 psi because the landing rim needs 7½" to hang from. Never "optimise" a member down without re-running the connection it exists for.
+- **Fastener penetration counts what it passes through.** A 1½" hanger nail through ¾" sheathing reaches ¾". Hanger flange holes below the supporting member's bottom hit air.
+- **Flag now-or-never decisions** — things that get much harder after a prior step (nook power before sheathing; joist location before the screen top plate).
+- **Push back on the user.** The design improved every time a session did.
+- **Design and geometry changes happen inline, with the full model in context.** Subagents audit; they don't design.
 
-## Outstanding field measurements
+## Model choice
 
-These are assumed in the current schedule and owed by the user before final cut:
-- Ceiling joist location nearest 50¾" from the bed wall (joists run parallel to it) — sets the screen's top-plate fixing.
-- Actual mattress thickness (schedule currently assumes 6").
-- Stud locations in the bed wall and window wall.
+The user does not want Fable for everything. Guidance:
+- Inline design work, yaml edits, drawing updates, cut/materials lists: the session's default model is fine, because `verify.py` is the safety net.
+- `drawing-auditor` is pinned to Fable: it runs rarely (per rev, pre-cut), and a miss costs lumber.
+- `connection-checker` and `materials-pricer` run on Sonnet; the script does the arithmetic.
 
-Treat any drawing output depending on these as provisional until confirmed.
+## Field measurements still owed
 
-## Subagents (`.claude/agents/`)
+Assumed in the model until measured; anything depending on them is provisional:
+- Ceiling joist nearest 50¾" from the bed wall (joists run parallel to it) — sets the screen top-plate fixing.
+- Actual mattress thickness (`mattress.thickness`, assumed 6").
+- Stud locations in the bed wall, window wall, and right wall — every ledger and the beam's left-end support depend on them.
+- Tread stock thickness (`stair.tread_thickness`, assumed 1") — sets the stringer drop.
 
-Three subagents exist because self-review doesn't catch this project's errors — whoever produces a drawing shares the assumptions that made it wrong. Full detail in `AGENTS.md`; summary:
+## Files
 
-| Agent | When |
-|---|---|
-| `drawing-auditor` | After any change to drawings or dimension data; always before cutting. Read-only, never told what to expect. |
-| `connection-checker` | Whenever a structural connection is added or changed; before the cut list is final. Verifies real x/y/z overlap, not prose claims. |
-| `materials-pricer` | Once the materials list is settled. Independent web research, doesn't need design context. |
-
-**Do not use agents for:** design/geometry changes (need full context, a cold agent re-derives it badly), producing the cut list (generate inline from `dimensions.yaml`, then audit with a subagent), or conversation with the builder (ask directly).
-
-**Rule:** the agent that audits must never be the agent that produced the artifact. A subagent's draft gets checked by a *different* agent, or checked inline against `dimensions.yaml` — never against recollection.
-
-## Working with `loft-bed-drawings.html`
-
-It's a single self-contained HTML file with inline SVG drawings and CSS — no build step, no dependencies. Open directly in a browser to view. When editing:
-- Update the dimension schedule (or `dimensions.yaml` once it exists) first, then propagate to prose/captions/SVG — the Revisions log shows this project's recurring bug is a value updated in one place and not the others.
-- Add a new row to the `Revisions` table at the bottom describing what changed and why, following the existing terse style (see Rev T/S/S.1 entries for the level of detail expected).
-- Bump the `REV` letter shown in the header (line ~67).
+- `dimensions.yaml` — the model. Edit this.
+- `verify.py` — the checker. Don't "fix" a failure by editing the checker.
+- `drawings.py` — **generates** `loft-bed-drawings.html` from `dimensions.yaml` (`python3 drawings.py`). Every rect is a member projection; every schedule number is `verify.py`'s. Hand-written prose lives only in the NOTES block at the bottom. View conventions are stated on the sheet: plans bed-wall-up; y–z views bed-wall-left.
+- `loft-bed-drawings.html` — the generated Rev U set. **Never hand-edit it**; change the yaml or `drawings.py` and regenerate. Rev T's hand-drawn set is in `archive/`.
+- `tools/` — the SVG view helper (`svgview.py`) shared by `drawings.py`, plus the small landing sketches used during the Rev U decision.
+- `audits/` — dated reports from the subagents. Read the latest before starting design work.
+- `.claude/settings.json` — the verify hook. `/hooks` to inspect or disable.

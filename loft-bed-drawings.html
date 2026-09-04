@@ -1,1117 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lofted Bed — Working Drawings</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lofted Bed — Working Drawings · Rev U</title>
 <style>
-:root{color-scheme:light;
---ink:#23231f; --ink2:#5f5d56; --ink3:#8a877e;
---bg:#fbfaf7; --card:#ffffff; --line:#e0ddd4;
---wood:#b9a37e; --wood2:#cdbb9b; --woodline:#7d6a49;
---blue:#5b8fc7; --blue2:#dce7f3; --blueink:#2b4a6b;
---red:#c0392b; --green:#4a7c4e; --amber:#b07d1a;}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);
-font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1000px;margin:0 auto;padding:28px 22px 72px}
-header{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:22px}
-h1{font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
-.meta{color:var(--ink2);font-size:12.5px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+:root{color-scheme:light;--ink:#23231f;--ink2:#5f5d56;--ink3:#8a877e;--bg:#fbfaf7;--card:#fff;--line:#e0ddd4;
+--lum:#e8d6ae;--lum2:#f1e6cc;--lumline:#7a6238;--sheet:#cfc4ac;--fin:#b98d57;--wall:#3b352c;--ghost:#eee9dd;
+--blue:#5b8fc7;--blue2:#dce7f3;--blueink:#2b4a6b;--pencil:#1f4e9c;--red:#c0392b;--green:#4a7c4e;--green2:#cfe0cf;--amber:#b07d1a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 22px 72px}header{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:22px}
+h1{font-size:22px;margin:0 0 4px}.meta{color:var(--ink2);font-size:12.5px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
 .rev{background:var(--ink);color:#fff;padding:2px 9px;border-radius:99px;font-weight:700;font-size:11.5px;letter-spacing:.04em}
-h2{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink2);
-margin:0 0 12px;font-weight:700}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;
-padding:18px 20px;margin-bottom:20px}
-.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;
-background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.spec{background:var(--card);padding:11px 13px}
-.spec dt{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
-.spec dd{margin:0;font-size:16px;font-weight:650;font-variant-numeric:tabular-nums}
-.spec dd span{font-size:11.5px;font-weight:400;color:var(--ink2);display:block;margin-top:1px;letter-spacing:0}
-svg{display:block;width:100%;height:auto}
-.cap{color:var(--ink2);font-size:12.5px;margin:10px 2px 0}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
-th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);font-weight:700}
-td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
-tr:last-child td{border-bottom:none}
-ul{margin:0;padding-left:19px}
-li{margin-bottom:7px}
-.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;
-padding:1.5px 7px;border-radius:4px;vertical-align:1px}
-.t-open{background:#fdf1e3;color:var(--amber)}
-.t-lock{background:#e8f0e9;color:var(--green)}
-.t-chk{background:#fbe9e7;color:var(--red)}
-.note{border-left:3px solid var(--red);background:#fdf4f2;padding:11px 14px;
-border-radius:0 6px 6px 0;font-size:13px;margin-top:14px}
-.note b{color:var(--red)}
-.wall{stroke:var(--ink);stroke-width:4.5;fill:none;stroke-linecap:square}
-.thin{stroke:var(--ink);stroke-width:1.4;fill:none}
-.ghost{stroke:var(--ink3);stroke-width:1.3;fill:none;stroke-dasharray:6 4}
-.hid{stroke:var(--ink2);stroke-width:1.6;fill:none;stroke-dasharray:9 5}
-.dm{stroke:var(--red);stroke-width:1.2;fill:none}
-.dt{fill:var(--red);font-size:11.5px;font-weight:600}
-.lb{fill:var(--ink);font-size:12.5px;font-weight:650}
-.sb{fill:var(--ink2);font-size:10.5px}
-.al{fill:var(--red);font-size:10.5px;font-weight:650}
-</style>
-</head>
-<body>
-<div class="wrap">
-
-<header>
-<h1>Lofted Bed — Working Drawings</h1>
-<div class="meta">
-<span class="rev">REV T</span>
-<span>Twin loft · 131" × 186" room · 96" ceiling</span>
-<span>Deck 58" AFF · post-free 107" span · stairs locked</span>
-</div>
-</header>
-
-<div class="card">
-<h2>Locked dimensions</h2>
-<dl class="specs">
-<div class="spec"><dt>Deck height</dt><dd>58"<span>top of plywood, AFF</span></dd></div>
-<div class="spec"><dt>Platform</dt><dd>107" × 50¾"<span>finished, incl. ¾" wrap</span></dd></div>
-<div class="spec"><dt>Clear underneath</dt><dd>53¾"<span>at joists; 53" under the wrapped beam</span></dd></div>
-<div class="spec"><dt>Sitting headroom</dt><dd>32"<span>mattress top to ceiling</span></dd></div>
-<div class="spec"><dt>Boxed ledge</dt><dd>8"w × 8"h<span>well 5¾"×7¼" · ≈2.5 cu ft</span></dd></div>
-<div class="spec"><dt>Mattress bay</dt><dd>39" × 77"<span>1" slack + 2" tuck at window wall</span></dd></div>
-<div class="spec"><dt>Stair</dt><dd>7 @ 8¼"<span>9" run · 42.6° · 24" wide</span></dd></div>
-<div class="spec"><dt>Stair landing</dt><dd>24" × 27"<span>at 49¾" — one riser below deck</span></dd></div>
-<div class="spec"><dt>Half-wall</dt><dd>5" thick<span>¾ ply + 3½ studs + ¾ ply</span></dd></div>
-<div class="spec"><dt>Clear below deck</dt><dd>102"<span>107" deck less the 5" wall</span></dd></div>
-<div class="spec"><dt>Under-stair nook</dt><dd>44" × 24"<span>41½" flat ceiling → 15¼" at the far end</span></dd></div>
-</dl>
-</div>
-
-<div class="card">
-<h2>Dimension schedule — the controlling reference</h2>
-<p class="cap" style="margin:0 0 14px">Every number below is derived, not recalled. Where a drawing disagrees with this table, <b>this table is correct</b>. All heights are above finished floor. All plan positions are from the <b>window wall</b> (x) and the <b>bed wall</b> (y), measured to finished wall faces.</p>
-
-<h2 style="margin-top:4px">A · Vertical datums</h2>
-<table>
-<tr><th>Member</th><th>Bottom</th><th>Top</th><th>Note</th></tr>
-<tr><td>Half-wall bottom plate</td><td class="n">0</td><td class="n">1½</td><td></td></tr>
-<tr><td>Half-wall studs</td><td class="n">1½</td><td class="n">50¾</td><td>49¼" long</td></tr>
-<tr><td>Nook header (3½" sandwich)</td><td class="n">41½</td><td class="n">50¾</td><td>2×10 + ½" ply + 2×10</td></tr>
-<tr><td>Nook flat ceiling</td><td class="n">—</td><td class="n">41½</td><td>set by header bottom</td></tr>
-<tr><td>Landing rim, 2×12</td><td class="n">37.71</td><td class="n">48.96</td><td></td></tr>
-<tr><td>Landing side member, 2×8</td><td class="n">41.71</td><td class="n">48.96</td><td>clears the 41½" ceiling by ¼"</td></tr>
-<tr><td>Landing joists, 2×4</td><td class="n">45.46</td><td class="n">48.96</td><td></td></tr>
-<tr><td>Landing finished top</td><td class="n">—</td><td class="n">49.71</td><td>58 − one riser</td></tr>
-<tr><td>Half-wall double top plate</td><td class="n">50¾</td><td class="n">53¾</td><td>deck bears here</td></tr>
-<tr><td>Beam wrap, underside</td><td class="n">53</td><td class="n">53¾</td><td>¾" poplar</td></tr>
-<tr><td>Deck joists, 2×4</td><td class="n">53¾</td><td class="n">57¼</td><td></td></tr>
-<tr><td>Beam, doubled 2×10</td><td class="n">53¾</td><td class="n">63</td><td>5" proud of deck</td></tr>
-<tr><td>Side ledger, 2×10</td><td class="n">53¾</td><td class="n">63</td><td>top = beam top</td></tr>
-<tr><td>Rear ledger, 2×6</td><td class="n">53¾</td><td class="n">59¼</td><td>top 1¼" above deck, inside the ledge box</td></tr>
-<tr><td>Deck plywood</td><td class="n">57¼</td><td class="n">58</td><td><b>deck top = 58</b></td></tr>
-<tr><td>Mattress, 6"</td><td class="n">58</td><td class="n">64</td><td></td></tr>
-<tr><td>Boxed ledge</td><td class="n">58</td><td class="n">66</td><td>2" proud of mattress</td></tr>
-<tr><td>Screen slats</td><td class="n">63</td><td class="n">94½</td><td>31½" long</td></tr>
-<tr><td>Screen top plate, 2×4 flat</td><td class="n">94½</td><td class="n">96</td><td></td></tr>
-<tr><td>Ceiling</td><td class="n">—</td><td class="n">96</td><td></td></tr>
-</table>
-
-<h2 style="margin-top:18px">B · Stair heights</h2>
-<table>
-<tr><th>Riser</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6 (landing)</th><th>7 (deck)</th></tr>
-<tr><td>Height</td><td class="n">8.29</td><td class="n">16.57</td><td class="n">24.86</td><td class="n">33.14</td><td class="n">41.43</td><td class="n">49.71</td><td class="n">58.00</td></tr>
-</table>
-<div class="note" style="border-left-color:#b07d1a;background:#fdf7ec"><b style="color:#b07d1a">Riser is 8.286", not 8¼".</b> Step the stringer off by dividing 58 into seven, or lay it out with a framing square set to 8.286 / 9. Marking 8¼" seven times lands you at 57¾" — a ¼" short, which becomes an uneven top riser.</div>
-
-<h2 style="margin-top:18px">C · Plan — x, from the window wall</h2>
-<table>
-<tr><th>Element</th><th>From</th><th>To</th><th>Note</th></tr>
-<tr><td>Desk (existing)</td><td class="n">0</td><td class="n">24</td><td></td></tr>
-<tr><td>Mattress</td><td class="n">2</td><td class="n">77</td><td>2" tuck gap at the window wall</td></tr>
-<tr><td>Deck landing area</td><td class="n">77</td><td class="n">107</td><td>30"</td></tr>
-<tr><td>Half-wall</td><td class="n">102</td><td class="n">107</td><td>studs 102¾–106¼</td></tr>
-<tr><td>Deck structural rim</td><td class="n">104¾</td><td class="n">106¼</td><td>lets the wall panel run floor-to-58 uncut</td></tr>
-<tr><td><b>Deck, overall</b></td><td class="n">0</td><td class="n">107</td><td></td></tr>
-<tr><td>Landing side member</td><td class="n">107</td><td class="n">108½</td><td>on the header's flush face</td></tr>
-<tr><td>Stringers A / B / C</td><td class="n" colspan="2">107–108½ · 118¼–119¾ · 129½–131</td><td>11¼" centres</td></tr>
-<tr><td>Right-wall ledger</td><td class="n">129½</td><td class="n">131</td><td></td></tr>
-<tr><td><b>Stair &amp; landing</b></td><td class="n">107</td><td class="n">131</td><td>24"</td></tr>
-</table>
-
-<h2 style="margin-top:18px">D · Plan — y, out from the bed wall</h2>
-<table>
-<tr><th>Element</th><th>From</th><th>To</th><th>Note</th></tr>
-<tr><td>Rear ledger</td><td class="n">0</td><td class="n">1½</td><td></td></tr>
-<tr><td>Boxed ledge</td><td class="n">0</td><td class="n">8</td><td>well 5¾" wide</td></tr>
-<tr><td>Nook opening</td><td class="n">3</td><td class="n">47</td><td>44"</td></tr>
-<tr><td>Header (kings 0–1½, 48½–50)</td><td class="n">1½</td><td class="n">48½</td><td>47" long, 1½" bearing each end</td></tr>
-<tr><td>Nook flat ceiling</td><td class="n">3</td><td class="n">18½</td><td>rake begins at 18½</td></tr>
-<tr><td>Mattress bay</td><td class="n">8</td><td class="n">47</td><td>39" for a 38" mattress</td></tr>
-<tr><td>Landing rim</td><td class="n">25½</td><td class="n">27</td><td></td></tr>
-<tr><td>Landing</td><td class="n">0</td><td class="n">27</td><td></td></tr>
-<tr><td>Beam structure</td><td class="n">47</td><td class="n">50</td><td>directly over the end stud pack</td></tr>
-<tr><td>Beam wrap</td><td class="n">50</td><td class="n">50¾</td><td></td></tr>
-<tr><td><b>Platform, finished</b></td><td class="n">0</td><td class="n">50¾</td><td>8 + 39 + 3 + ¾</td></tr>
-<tr><td>Half-wall</td><td class="n">0</td><td class="n">50¾</td><td></td></tr>
-<tr><td>Desk (existing)</td><td class="n">0</td><td class="n">55</td><td>projects 4¼" past the beam</td></tr>
-<tr><td>Fan blade edge</td><td class="n">—</td><td class="n">66</td><td>blades at 85" AFF</td></tr>
-<tr><td>Stair, to bottom riser</td><td class="n">27</td><td class="n">72</td><td>5 treads @ 9"</td></tr>
-<tr><td>Dresser (48" × 16")</td><td class="n">102</td><td class="n">150</td><td>30" gap to the stair</td></tr>
-<tr><td>Entry door (32")</td><td class="n">150</td><td class="n">182</td><td>3½" to the corner</td></tr>
-</table>
-
-<h2 style="margin-top:18px">E · Derived — do not measure these independently</h2>
-<table>
-<tr><th>Quantity</th><th>Value</th><th>Falls out of</th></tr>
-<tr><td>Clear span below the deck</td><td class="n">102"</td><td>107 deck − 5 half-wall</td></tr>
-<tr><td>Clear height under joists</td><td class="n">53¾"</td><td>58 − ¾ ply − 3½ joist</td></tr>
-<tr><td>Clear height under the beam</td><td class="n">53"</td><td>53¾ less the ¾" wrap — <b>not uniform with the joists</b></td></tr>
-<tr><td>Deck joist span</td><td class="n">45½"</td><td>ledger face 1½ → beam face 47</td></tr>
-<tr><td>Deck plywood</td><td class="n">104¾" × 45½"</td><td>1½→106¼ by 1½→47</td></tr>
-<tr><td>Sitting headroom</td><td class="n">32"</td><td>96 − 64 mattress top</td></tr>
-<tr><td>Nook opening</td><td class="n">44" × 41½"</td><td>3→47 by header bottom</td></tr>
-<tr><td>Nook light chase</td><td class="n">4"</td><td>45.46 joist bottom − 41½ ceiling</td></tr>
-<tr><td>Nook far end height</td><td class="n">15¼"</td><td>41½ raked at 42.63° over 28½"</td></tr>
-<tr><td>Rim ↔ header overlap</td><td class="n">7½"</td><td>48.96 − 41½</td></tr>
-<tr><td>Rim ↔ stringer bearing</td><td class="n">11¼"</td><td>full rim depth</td></tr>
-<tr><td>Stringer throat</td><td class="n">5.15"</td><td>11¼ − (8.286 × 9)/12.23 · 3½" min</td></tr>
-<tr><td>Stringer underside</td><td class="n">34½" → 16"</td><td>at y = 27 → 47</td></tr>
-<tr><td>Slat clear opening</td><td class="n">3.30"</td><td>(107 − 23 × 1½) ÷ 22 · 3½" max</td></tr>
-<tr><td>Stair projection</td><td class="n">72"</td><td>27 landing + 45 run</td></tr>
-<tr><td>Fan clearance</td><td class="n">15¼"</td><td>66 − 50¾</td></tr>
-<tr><td>Room depth chain</td><td class="n">185½"</td><td>72 + 30 + 48 + 32 + 3½ · ½" slack in 186</td></tr>
-</table>
-
-<div class="note"><b>Framing vs finished.</b> Three places where the two differ and it matters: the <b>platform depth</b> is 50¾" finished but 50" of framing — the last ¾" is the beam wrap. The <b>half-wall</b> is 5" finished, 3½" of studs. The <b>deck</b> is 107" to the finished wall face but its structural rim stops at 106¼". Cut lists must use the framing numbers; layout marks use the finished ones.</div>
-</div>
-
-<div class="card">
-<h2>1 — Floor plan</h2>
-<svg viewBox="0 0 900 930" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Room floor plan">
-<defs>
-<marker id="p1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker>
-<marker id="p2" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 z" fill="#c0392b"/></marker>
-<marker id="pb" markerWidth="5.5" markerHeight="5.5" refX="4.8" refY="2.75" orient="auto"><path d="M0,0 L5.5,2.75 L0,5.5 z" fill="#5b8fc7"/></marker>
-</defs>
-
-<!-- deck -->
-<rect x="140" y="70" width="449.4" height="213.2" fill="var(--blue2)" stroke="var(--blue)" stroke-width="1.6"/>
-<rect x="140" y="70" width="449.4" height="33.6" fill="#eef3f9" stroke="var(--blue)" stroke-width="1"/>
-<text class="lb" x="365" y="91" text-anchor="middle" fill="var(--blueink)">8"w × 8"h BOXED LEDGE — full 107", capped at the deck end</text>
-<rect x="148.4" y="103.6" width="315" height="163.8" fill="#c8daed" stroke="var(--blue)" stroke-width="1.3"/>
-<text class="lb" x="305" y="180" text-anchor="middle" fill="var(--blueink)">Twin mattress 38" × 75"</text>
-<text class="sb" x="305" y="195" text-anchor="middle" fill="var(--blueink)">in a 39" bay — 1" slack</text>
-<text class="lb" x="526" y="176" text-anchor="middle" fill="var(--blueink)">Landing</text>
-<text class="sb" x="526" y="191" text-anchor="middle" fill="var(--blueink)">30" × 39"</text>
-<rect x="140" y="267.4" width="449.4" height="12.6" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.4"/>
-<rect x="140" y="280" width="449.4" height="3.2" fill="#8d7a58"/>
-<text class="lb" x="365" y="300" text-anchor="middle" fill="#3d3320"><tspan x="365" dy="0">DOUBLED 2×10 UPSTAND BEAM + ¾" POPLAR WRAP</tspan><tspan x="365" dy="13">107", no posts</tspan></text>
-
-<!-- desk -->
-<rect x="140" y="70" width="100.8" height="231" fill="none" stroke="var(--ink2)" stroke-width="1.5" stroke-dasharray="7 4"/>
-<text class="sb" x="275" y="285" text-anchor="middle" transform="rotate(-90 190 285)" fill="var(--ink2)">Desk 55" × 24"</text>
-
-<!-- half-wall below deck -->
-<rect x="568.4" y="70" width="21" height="213.2" class="hid"/>
-<text class="sb" x="600" y="250" fill="var(--ink2)">half-wall below</text>
-<text class="sb" x="600" y="264" fill="var(--ink2)">(deck runs over it)</text>
-
-<!-- stair landing -->
-<rect x="589.4" y="70" width="100.8" height="113.4" fill="#cfe0cf" stroke="var(--green)" stroke-width="1.8"/>
-<text class="lb" x="640" y="118" text-anchor="middle" fill="#2c4a2e">LANDING</text>
-<text class="sb" x="640" y="133" text-anchor="middle" fill="#2c4a2e">24" × 27" @ 49¾"</text>
-<line x1="585" y1="126" x2="545" y2="126" stroke="var(--blue)" stroke-width="2" marker-end="url(#pb)"/>
-
-<!-- treads -->
-<rect x="589.4" y="183.4" width="100.8" height="189" fill="#efeee8" stroke="var(--ink)" stroke-width="1.6"/>
-<g class="thin">
-<line x1="589.4" y1="221.2" x2="690.2" y2="221.2"/><line x1="589.4" y1="259" x2="690.2" y2="259"/>
-<line x1="589.4" y1="296.8" x2="690.2" y2="296.8"/><line x1="589.4" y1="334.6" x2="690.2" y2="334.6"/>
-</g>
-<text class="sb" x="640" y="284" text-anchor="middle">5 treads @ 9"</text>
-<line x1="640" y1="360" x2="640" y2="148" stroke="var(--blue)" stroke-width="1.5" marker-end="url(#pb)"/>
-
-<!-- open skirt stretch -->
-<line x1="589.4" y1="283.2" x2="589.4" y2="372.4" stroke="var(--green)" stroke-width="4"/>
-<text class="sb" x="583" y="330" text-anchor="middle" transform="rotate(-90 583 330)" fill="#2c4a2e">skirt only — drops &lt;30"</text>
-
-<!-- dresser -->
-<rect x="623" y="498.4" width="67.2" height="201.6" fill="#efeee8" stroke="var(--ink)" stroke-width="1.8"/>
-<text class="lb" x="657" y="590" text-anchor="middle" transform="rotate(-90 657 590)">Dresser 48" × 16"</text>
-
-<!-- door -->
-<path d="M690.2,700 A134.4,134.4 0 0,0 555.8,834.4" class="ghost"/>
-<line x1="690.2" y1="834.4" x2="555.8" y2="834.4" stroke="var(--ink)" stroke-width="3.5"/>
-<text class="sb" x="700" y="775" transform="rotate(-90 700 775)">32" entry door</text>
-
-<!-- fan -->
-<circle cx="415.1" cy="460.6" r="113.4" class="ghost"/>
-<text class="sb" x="415" y="464" text-anchor="middle" fill="var(--ink3)">ceiling fan — blades 85"</text>
-
-<!-- walls -->
-<line class="wall" x1="140" y1="70" x2="690.2" y2="70"/>
-<line class="wall" x1="140" y1="70" x2="140" y2="851.2"/>
-<line class="wall" x1="690.2" y1="70" x2="690.2" y2="851.2"/>
-<line class="wall" x1="140" y1="851.2" x2="690.2" y2="851.2"/>
-<line x1="134" y1="469" x2="134" y2="700" stroke="var(--blue)" stroke-width="5"/>
-<text class="sb" x="126" y="590" text-anchor="middle" transform="rotate(-90 126 590)">window (starts 95" out)</text>
-<text class="sb" x="415" y="872" text-anchor="middle">closet wall</text>
-
-<!-- dims -->
-<line class="dm" x1="140" y1="40" x2="690.2" y2="40" marker-start="url(#p2)" marker-end="url(#p1)"/>
-<text class="dt" x="415" y="32" text-anchor="middle">131"</text>
-<line class="dm" x1="140" y1="56" x2="589.4" y2="56" marker-start="url(#p2)" marker-end="url(#p1)"/>
-<text class="dt" x="364" y="52" text-anchor="middle">107" deck</text>
-<line class="dm" x1="589.4" y1="56" x2="690.2" y2="56" marker-start="url(#p2)" marker-end="url(#p1)"/>
-<text class="dt" x="640" y="52" text-anchor="middle">24"</text>
-<line class="dm" x1="108" y1="70" x2="108" y2="283.2" marker-start="url(#p2)" marker-end="url(#p1)"/>
-<text class="dt" x="102" y="176" text-anchor="middle" transform="rotate(-90 102 176)">50¾"</text>
-<line class="dm" x1="730" y1="70" x2="730" y2="372.4" marker-start="url(#p2)" marker-end="url(#p1)"/>
-<text class="dt" x="740" y="225">72" stair</text>
-<line class="dm" x1="730" y1="372.4" x2="730" y2="498.4" marker-start="url(#p2)" marker-end="url(#p1)"/>
-<text class="dt" x="740" y="440">30" gap</text>
-<line class="dm" x1="730" y1="498.4" x2="730" y2="700" marker-start="url(#p2)" marker-end="url(#p1)"/>
-<text class="dt" x="740" y="602">48" dresser</text>
-<line class="dm" x1="730" y1="700" x2="730" y2="834.4" marker-start="url(#p2)" marker-end="url(#p1)"/>
-<text class="dt" x="740" y="770">32" door</text>
-<line class="dm" x1="730" y1="834.4" x2="730" y2="851.2" marker-start="url(#p2)" marker-end="url(#p1)"/>
-<text class="dt" x="740" y="848">3½"</text>
-<line class="dm" x1="70" y1="70" x2="70" y2="851.2" marker-start="url(#p2)" marker-end="url(#p1)"/>
-<text class="dt" x="64" y="460" text-anchor="middle" transform="rotate(-90 64 460)">186"</text>
-<text class="dt" x="415" y="900" text-anchor="middle">72 + 30 + 48 + 32 + 3½ = 185½" ✓</text>
-</svg>
-<p class="cap">Correct orientation: facing the bed wall, the window and desk are on your left, the stairs, dresser and entry door on your right. Door swing never reaches below the 150" line.</p>
-</div>
-
-<div class="card">
-<h2>2 — Front elevation</h2>
-<svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Front elevation looking at the bed wall">
-<defs>
-<marker id="e1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker>
-<marker id="e2" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 z" fill="#c0392b"/></marker>
-</defs>
-
-<line class="wall" x1="120" y1="98" x2="722.6" y2="98"/>
-<line class="wall" x1="120" y1="540" x2="722.6" y2="540"/>
-<line class="wall" x1="120" y1="98" x2="120" y2="540"/>
-<line class="wall" x1="722.6" y1="98" x2="722.6" y2="540"/>
-<text class="sb" x="421" y="90" text-anchor="middle">ceiling 96"</text>
-
-<!-- stair beyond -->
-<rect x="612.2" y="311.3" width="110.4" height="228.7" fill="#cfe0cf" stroke="var(--green)" stroke-width="1.4"/>
-<text class="sb" x="667" y="335" text-anchor="middle" fill="#2c4a2e">landing 49¾"</text>
-<g class="ghost">
-<line x1="612.2" y1="349.4" x2="722.6" y2="349.4"/><line x1="612.2" y1="387.5" x2="722.6" y2="387.5"/>
-<line x1="612.2" y1="425.6" x2="722.6" y2="425.6"/><line x1="612.2" y1="463.7" x2="722.6" y2="463.7"/>
-<line x1="612.2" y1="501.8" x2="722.6" y2="501.8"/>
-</g>
-<text class="sb" x="667" y="450" text-anchor="middle" fill="var(--ink3)">treads beyond</text>
-
-<!-- deck -->
-<rect x="120" y="273.2" width="492.2" height="19.6" fill="var(--blue2)" stroke="var(--blue)" stroke-width="1"/>
-<rect x="129.2" y="245.6" width="345" height="27.6" fill="#eef3f9" stroke="var(--blue)" stroke-width="1.2"/>
-<text class="sb" x="301" y="265" text-anchor="middle" fill="var(--blueink)">6" mattress</text>
-<line class="ghost" x1="120" y1="236.4" x2="612.2" y2="236.4"/>
-<text class="sb" x="616" y="240" fill="var(--ink3)">boxed ledge top 66" — beyond</text>
-
-<!-- half-wall -->
-<rect x="589.2" y="292.8" width="23" height="247.2" fill="#e3e1d9" stroke="var(--ink)" stroke-width="1.8"/>
-<text class="sb" x="600" y="558" text-anchor="middle">half-wall</text>
-
-<!-- top plate -->
-<rect x="120" y="98" width="492.2" height="16.1" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.4"/>
-<text class="sb" x="366" y="110" text-anchor="middle" fill="#3d3320">2×4 top plate — into ceiling framing / blocking</text>
-
-<!-- screen -->
-<g fill="var(--wood)" stroke="var(--woodline)" stroke-width="0.8">
-<rect x="120.0" y="114.1" width="6.9" height="136.1"/><rect x="142.1" y="114.1" width="6.9" height="136.1"/><rect x="164.1" y="114.1" width="6.9" height="136.1"/><rect x="186.2" y="114.1" width="6.9" height="136.1"/><rect x="208.2" y="114.1" width="6.9" height="136.1"/><rect x="230.3" y="114.1" width="6.9" height="136.1"/><rect x="252.4" y="114.1" width="6.9" height="136.1"/><rect x="274.4" y="114.1" width="6.9" height="136.1"/><rect x="296.5" y="114.1" width="6.9" height="136.1"/><rect x="318.5" y="114.1" width="6.9" height="136.1"/><rect x="340.6" y="114.1" width="6.9" height="136.1"/><rect x="362.7" y="114.1" width="6.9" height="136.1"/><rect x="384.7" y="114.1" width="6.9" height="136.1"/><rect x="406.8" y="114.1" width="6.9" height="136.1"/><rect x="428.8" y="114.1" width="6.9" height="136.1"/><rect x="450.9" y="114.1" width="6.9" height="136.1"/><rect x="473.0" y="114.1" width="6.9" height="136.1"/><rect x="495.0" y="114.1" width="6.9" height="136.1"/><rect x="517.1" y="114.1" width="6.9" height="136.1"/><rect x="539.1" y="114.1" width="6.9" height="136.1"/><rect x="561.2" y="114.1" width="6.9" height="136.1"/><rect x="583.3" y="114.1" width="6.9" height="136.1"/><rect x="605.3" y="114.1" width="6.9" height="136.1"/>
-</g>
-<text class="sb" x="366" y="185" text-anchor="middle" fill="#3d3320">23 slats @ 3.30" clear — end stiles flush both ends</text>
-
-<line x1="300" y1="149" x2="545" y2="149" stroke="var(--red)" stroke-width="2" stroke-dasharray="8 5"/>
-<text class="al" x="422" y="142" text-anchor="middle">fan blade plane 85" — screen blocks reach</text>
-
-<!-- beam -->
-<rect x="120" y="250.2" width="492.2" height="42.5" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.6"/>
-<text class="lb" x="366" y="277" text-anchor="middle" fill="#3d3320">doubled 2×10 + ¾" wrap — 5" stands above deck</text>
-
-<!-- desk -->
-<rect x="120" y="406.6" width="110.4" height="133.4" fill="none" stroke="var(--ink2)" stroke-width="1.5" stroke-dasharray="7 4"/>
-<text class="sb" x="175" y="430" text-anchor="middle" fill="var(--ink2)">Desk</text>
-<text class="sb" x="420" y="470" text-anchor="middle" fill="var(--ink3)">under-loft space left open — standalone bookcase / furniture</text>
-
-<!-- dims -->
-<line class="dm" x1="122" y1="522" x2="587" y2="522" marker-start="url(#e2)" marker-end="url(#e1)"/>
-<text class="dt" x="354" y="515" text-anchor="middle">102" clear opening — no posts (deck is 107"; half-wall takes 5")</text>
-<line class="dm" x1="88" y1="540" x2="88" y2="273.2" marker-start="url(#e2)" marker-end="url(#e1)"/>
-<text class="dt" x="82" y="410" text-anchor="middle" transform="rotate(-90 82 410)">58" deck</text>
-<line class="dm" x1="760" y1="250.2" x2="760" y2="98" marker-start="url(#e2)" marker-end="url(#e1)"/>
-<text class="dt" x="770" y="178">33" · slats 31½"</text>
-</svg>
-</div>
-
-<div class="card">
-<h2>3 — Section through platform edge</h2>
-<svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Section showing ledger, joists, beam, boxed ledge and screen">
-<defs>
-<marker id="s1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker>
-<marker id="s2" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 z" fill="#c0392b"/></marker>
-</defs>
-
-<line class="wall" x1="200" y1="64" x2="760" y2="64"/>
-<line class="wall" x1="200" y1="64" x2="200" y2="640"/>
-<line class="wall" x1="200" y1="640" x2="760" y2="640"/>
-<text class="sb" x="192" y="100" text-anchor="end">bed</text>
-<text class="sb" x="192" y="114" text-anchor="end">wall</text>
-
-<!-- ============ structure ============ -->
-<rect x="200" y="284.5" width="9" height="33" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.4"/>
-<rect x="209" y="296.5" width="273" height="21" fill="var(--wood2)" stroke="var(--woodline)" stroke-width="1.4"/>
-<rect x="209" y="292" width="273" height="4.5" fill="#8d7a58"/>
-<rect x="209" y="296.5" width="16" height="21" fill="none" stroke="var(--red)" stroke-width="1.8"/>
-
-<rect x="482" y="262" width="18" height="55.5" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.8"/>
-<rect x="500" y="262" width="4.5" height="60" fill="#8d7a58" stroke="var(--woodline)" stroke-width="1"/>
-<rect x="482" y="317.5" width="22.5" height="4.5" fill="#8d7a58" stroke="var(--woodline)" stroke-width="1"/>
-
-<rect x="209" y="248.5" width="34.5" height="43.5" fill="#f7f5ef" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4 3"/>
-<rect x="200" y="244" width="48" height="4.5" fill="var(--wood2)" stroke="var(--woodline)" stroke-width="1.2"/>
-<rect x="243.5" y="248.5" width="4.5" height="43.5" fill="var(--wood2)" stroke="var(--woodline)" stroke-width="1.2"/>
-
-<rect x="254" y="256" width="228" height="36" fill="#eef3f9" stroke="var(--blue)" stroke-width="1.4"/>
-<rect x="248" y="256" width="6" height="36" fill="none" stroke="var(--red)" stroke-width="1"/>
-
-<rect x="495.5" y="73" width="9" height="189" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.2"/>
-<rect x="479" y="64" width="21" height="9" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.4"/>
-<rect x="500" y="64" width="4.5" height="9" fill="#8d7a58" stroke="var(--woodline)" stroke-width="1"/>
-
-<rect x="200" y="466" width="330" height="174" fill="none" stroke="var(--ink2)" stroke-width="1.5" stroke-dasharray="7 4"/>
-<line x1="596" y1="130" x2="740" y2="130" stroke="var(--red)" stroke-width="2" stroke-dasharray="8 5"/>
-
-<!-- ============ labels ============ -->
-<!-- boxed ledge, upper left -->
-<text class="lb" x="86" y="150" fill="#3d3320">Boxed ledge</text>
-<text class="sb" x="86" y="164">top 66" — 2" proud</text>
-<text class="sb" x="86" y="178">of the mattress</text>
-<text class="sb" x="86" y="196">well 5¾"×7¼"</text>
-<text class="sb" x="86" y="210">≈2.5 cu ft</text>
-<line class="thin" x1="150" y1="216" x2="204" y2="241"/>
-
-<!-- blocking -->
-<text class="al" x="214" y="222">2×4 blocking —</text>
-<text class="al" x="214" y="234">carries the ply's rear edge</text>
-<line class="dm" x1="217" y1="240" x2="217" y2="296"/>
-
-<text class="al" x="258" y="252">1" slack</text>
-<text class="sb" x="368" y="278" text-anchor="middle" fill="var(--blueink)">38" mattress in a 39" bay</text>
-
-<!-- ledger -->
-<text class="lb" x="96" y="300" fill="#3d3320">2×6 ledger</text>
-<text class="sb" x="96" y="314">bottom flush w/ joists</text>
-
-<!-- deck build-up, below platform -->
-<line class="thin" x1="300" y1="336" x2="300" y2="320"/>
-<text class="sb" x="245" y="348" fill="#3d3320">¾" ply glued &amp; screwed to 2×4 joists @ 12" o.c.</text>
-<text class="sb" x="245" y="362" fill="#3d3320">45½" span — the ply is the diaphragm</text>
-
-<!-- beam -->
-<line class="thin" x1="508" y1="286" x2="536" y2="286"/>
-<text class="lb" x="540" y="290" fill="#3d3320">doubled 2×10</text>
-<text class="sb" x="540" y="304" fill="#3d3320">+ ¾" poplar wrap, mitered</text>
-
-<!-- screen -->
-<text class="lb" x="516" y="180" fill="#3d3320">2×2 slats</text>
-<text class="sb" x="516" y="194" fill="#3d3320">faces flush with wrap &amp; band</text>
-
-<text class="al" x="596" y="122">fan blades 85"</text>
-<text class="sb" x="365" y="490" text-anchor="middle" fill="var(--ink2)">Desk 55" deep × 29" high — projects 4¼" past the beam</text>
-
-<!-- ============ dimensions ============ -->
-<line class="dm" x1="200" y1="196" x2="248" y2="196" marker-start="url(#s2)" marker-end="url(#s1)"/>
-<text class="dt" x="224" y="189" text-anchor="middle">8"</text>
-<line class="dm" x1="248" y1="196" x2="482" y2="196" marker-start="url(#s2)" marker-end="url(#s1)"/>
-<text class="dt" x="365" y="189" text-anchor="middle">39" bay</text>
-<line class="dm" x1="184" y1="244" x2="184" y2="292" marker-start="url(#s2)" marker-end="url(#s1)"/>
-<text class="dt" x="178" y="268" text-anchor="middle" transform="rotate(-90 178 268)">8"</text>
-<line class="dm" x1="200" y1="418" x2="504.5" y2="418" marker-start="url(#s2)" marker-end="url(#s1)"/>
-<text class="dt" x="352" y="411" text-anchor="middle">50¾" platform depth (8 + 39 + 3 + ¾)</text>
-<line class="dm" x1="112" y1="640" x2="112" y2="317.5" marker-start="url(#s2)" marker-end="url(#s1)"/>
-<text class="dt" x="106" y="480" text-anchor="middle" transform="rotate(-90 106 480)">53¾" clear</text>
-<line class="dm" x1="88" y1="640" x2="88" y2="292" marker-start="url(#s2)" marker-end="url(#s1)"/>
-<text class="dt" x="82" y="466" text-anchor="middle" transform="rotate(-90 82 466)">58" deck</text>
-<line class="dm" x1="700" y1="256" x2="700" y2="64" marker-start="url(#s2)" marker-end="url(#s1)"/>
-<text class="dt" x="710" y="155">32" sitting</text>
-<text class="dt" x="710" y="170">headroom</text>
-</svg>
-</div>
-
-<div class="card">
-<h2>4 — Stair section</h2>
-<svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Stair section">
-<defs>
-<marker id="t1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker>
-<marker id="t2" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 z" fill="#c0392b"/></marker>
-<marker id="tb" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#5b8fc7"/></marker>
-</defs>
-
-
-<line class="wall" x1="120" y1="120" x2="700" y2="120"/>
-<line class="wall" x1="120" y1="600" x2="700" y2="600"/>
-<line class="wall" x1="120" y1="120" x2="120" y2="600"/>
-<text class="sb" x="410" y="112" text-anchor="middle">ceiling 96"</text>
-<text class="sb" x="112" y="230" text-anchor="middle" transform="rotate(-90 112 230)">bed wall</text>
-
-
-<path d="M480,600 L480,558.6 L435,558.6 L435,517.2 L390,517.2 L390,475.7 L345,475.7 L345,434.3 L300,434.3 L300,392.9 L255,392.9 L255,351.5 L120,351.5 L120,600 Z"
-fill="#efeee8" stroke="var(--ink)" stroke-width="2.2" stroke-linejoin="miter"/>
-<rect x="120" y="351.5" width="135" height="9" fill="var(--green)"/>
-
-<!-- everything beyond the section plane, overlaid in front -->
-<g stroke="var(--ink3)" stroke-width="1.1" stroke-dasharray="5 4">
-<rect x="120" y="331.25" width="253.75" height="268.75" fill="#ecead3" fill-opacity=".4"/>
-<rect x="120" y="310" width="253.75" height="21.25" fill="#e9eff7" fill-opacity=".9"/>
-<rect x="355" y="285" width="18.75" height="46.25" fill="#ded2bd" fill-opacity=".9"/>
-<rect x="120" y="270" width="40" height="40" fill="#e9eff7" fill-opacity=".9"/>
-</g>
-<line class="ghost" x1="373.75" y1="270" x2="373.75" y2="476"/>
-
-<text class="lb" x="187" y="342" text-anchor="middle" fill="#2c4a2e">27" landing @ 49¾"</text>
-<text class="sb" x="252" y="303" text-anchor="middle" fill="var(--ink3)">loft deck 58" — beyond the half-wall</text>
-<text class="sb" x="168" y="282" fill="var(--ink3)">boxed ledge — 8" × 8", ends at the half-wall</text>
-<text class="sb" x="382" y="300" fill="var(--ink3)">beam end</text>
-<text class="sb" x="382" y="348" fill="var(--ink3)">half-wall beyond —</text>
-<text class="sb" x="382" y="360" fill="var(--ink3)">floor to 53¾"</text>
-<text class="sb" x="382" y="490" fill="var(--ink3)">platform edge 50¾"</text>
-
-<line class="dm" x1="187" y1="351.5" x2="187" y2="120" marker-start="url(#t2)" marker-end="url(#t1)"/>
-<text class="dt" x="197" y="250">46¼" headroom — stand &amp; turn</text>
-<line class="dm" x1="330" y1="310" x2="330" y2="120" marker-start="url(#t2)" marker-end="url(#t1)"/>
-<text class="dt" x="340" y="215">38" at deck</text>
-
-<text class="al" x="160" y="385">8¼" step sideways onto the deck</text>
-
-<!-- 30in guard threshold -->
-<line x1="120" y1="450" x2="700" y2="450" stroke="var(--red)" stroke-width="1.6" stroke-dasharray="7 4"/>
-<text class="al" x="560" y="444">30" — guards required above this line</text>
-<line class="dm" x1="373.75" y1="628" x2="120" y2="628" marker-start="url(#t2)" marker-end="url(#t1)"/>
-<text class="dt" x="247" y="646" text-anchor="middle">half-wall guards this stretch (0–50¾")</text>
-<line class="dm" x1="373.75" y1="628" x2="480" y2="628" marker-start="url(#t2)" marker-end="url(#t1)"/>
-<text class="dt" x="427" y="646" text-anchor="middle">skirt only</text>
-
-<text class="sb" x="497" y="562">8¼"</text><text class="sb" x="452" y="521">16½"</text>
-<text class="sb" x="407" y="479">24⅞"</text><text class="sb" x="362" y="438">33"</text>
-<text class="sb" x="317" y="396">41½"</text>
-
-<line class="dm" x1="120" y1="674" x2="480" y2="674" marker-start="url(#t2)" marker-end="url(#t1)"/>
-<text class="dt" x="300" y="692" text-anchor="middle">72" total — 27" landing + 5 treads @ 9" · 7 uniform risers @ 8¼" · 42.6°</text>
-<line class="dm" x1="88" y1="600" x2="88" y2="351.5" marker-start="url(#t2)" marker-end="url(#t1)"/>
-<text class="dt" x="82" y="480" text-anchor="middle" transform="rotate(-90 82 480)">49¾"</text>
-</svg>
-<p class="cap">Shaded areas are beyond the section plane — the half-wall, the loft deck, the boxed ledge, and the beam end. All seven risers are a uniform 8¼", including the last step from landing to deck. Handrail on the right wall for the full run; loft side guarded by the half-wall where the drop exceeds 30", finished skirt below that. Note the headroom dimensions: above about 38" of tread height you're ducking, so the top two steps and the landing are a crouch for everyone.</p>
-</div>
-
-<div class="card">
-<h2>5 — Under-stair nook</h2>
-<svg viewBox="0 0 900 790" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Under-stair nook elevation and reflected ceiling">
-<defs>
-<marker id="k1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker>
-<marker id="k2" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 z" fill="#c0392b"/></marker>
-</defs>
-
-<text class="lb" x="60" y="38">ELEVATION — from the under-loft space</text>
-
-<path d="M120,152 L309,152 L309,210 L372,210 L372,268 L435,268 L435,326 L498,326 L498,384 L561,384 L561,442 L624,442 L624,500 L120,500 Z"
-fill="#f6f4ee" stroke="var(--ink3)" stroke-width="1.1"/>
-<line class="ghost" x1="120" y1="181.8" x2="309" y2="181.8"/>
-<line x1="309" y1="259" x2="570.8" y2="500" stroke="var(--ink3)" stroke-width="2" stroke-dasharray="7 4"/>
-<text class="sb" x="180" y="176" fill="var(--ink3)">landing framing 45½"</text>
-<text class="sb" x="470" y="330" fill="var(--ink3)">stringer underside — 34½" to 16"</text>
-
-<rect x="120" y="94" width="355.25" height="29.75" fill="#dce7f3" stroke="#5b8fc7" stroke-width="1.2"/>
-<text class="sb" x="290" y="113" text-anchor="middle" fill="#2b4a6b">loft deck 58"</text>
-<rect x="120" y="123.75" width="355.25" height="21" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.3"/>
-
-<rect x="141" y="181.8" width="108.5" height="27.7" fill="#fdf6e3" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4 3"/>
-<path d="M249.5,181.8 L309,181.8 L309,259 L249.5,209.5 Z" fill="#f2efe4" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4 3"/>
-<text class="sb" x="195" y="200" text-anchor="middle">4" chase</text>
-<text class="sb" x="322" y="220">non-structural gussets</text>
-
-<path d="M141,144.75 L449,144.75 L449,393.25 L249.5,209.5 L141,209.5 Z" fill="#e9e7df" stroke="var(--ink)" stroke-width="1.2" fill-opacity=".5"/>
-<rect x="127" y="144.75" width="14" height="355.25" fill="#e3e1d9" stroke="var(--ink)" stroke-width="1.3"/>
-<rect x="449" y="144.75" width="26" height="355.25" fill="#e3e1d9" stroke="var(--ink)" stroke-width="1.3"/>
-<text class="sb" x="462" y="524" text-anchor="middle">doubled stud</text>
-
-<path d="M141,209.5 L249.5,209.5 L449,393.25 L449,500 L141,500 Z" fill="#fbfaf6" stroke="var(--ink)" stroke-width="2.2"/>
-<line x1="141" y1="209.5" x2="249.5" y2="209.5" stroke="var(--wood)" stroke-width="8"/>
-<line x1="249.5" y1="209.5" x2="449" y2="393.25" stroke="var(--wood)" stroke-width="8"/>
-<ellipse cx="195" cy="214.5" rx="21" ry="5" fill="none" stroke="var(--red)" stroke-width="2"/>
-
-<text class="lb" x="270" y="440" text-anchor="middle">OPEN NOOK — carpet runs through</text>
-<text class="sb" x="270" y="456" text-anchor="middle">44" wide · 24" deep · rake parallel to the stair at 42.6°</text>
-<line class="thin" x1="200" y1="244" x2="200" y2="270"/>
-<text class="sb" x="146" y="284" fill="#3d3320">flat ceiling 41½" — 15½" × 24", one 6" recessed</text>
-<line class="thin" x1="380" y1="330" x2="380" y2="356"/>
-<text class="sb" x="330" y="370" fill="#3d3320">panel lands straight on the stringers past 27"</text>
-
-<line class="dm" x1="141" y1="560" x2="449" y2="560" marker-start="url(#k2)" marker-end="url(#k1)"/>
-<text class="dt" x="295" y="578" text-anchor="middle">44" opening</text>
-<line class="dm" x1="105" y1="500" x2="105" y2="209.5" marker-start="url(#k2)" marker-end="url(#k1)"/>
-<text class="dt" x="99" y="355" text-anchor="middle" transform="rotate(-90 99 355)">41½"</text>
-<line class="dm" x1="490" y1="500" x2="490" y2="393.25" marker-start="url(#k2)" marker-end="url(#k1)"/>
-<text class="dt" x="500" y="450">15¼"</text>
-<line class="dm" x1="141" y1="60" x2="249.5" y2="60" marker-start="url(#k2)" marker-end="url(#k1)"/>
-<text class="dt" x="195" y="53" text-anchor="middle">15½" flat</text>
-<line class="dm" x1="249.5" y1="60" x2="449" y2="60" marker-start="url(#k2)" marker-end="url(#k1)"/>
-<text class="dt" x="349" y="53" text-anchor="middle">28½" raked</text>
-
-<line class="wall" x1="120" y1="500" x2="660" y2="500"/>
-<line class="wall" x1="120" y1="94" x2="120" y2="500"/>
-<text class="sb" x="112" y="330" text-anchor="middle" transform="rotate(-90 112 330)">bed wall</text>
-
-<text class="lb" x="60" y="630">REFLECTED CEILING — flat portion</text>
-
-<rect x="120" y="688" width="228.4" height="22.5" fill="#e3e1d9" stroke="var(--ink)" stroke-width="1.4"/>
-<rect x="133.5" y="688" width="198" height="22.5" fill="#fbfaf6" stroke="var(--ink)" stroke-width="1.2" stroke-dasharray="5 4"/>
-<rect x="133.5" y="580" width="198" height="108" fill="#fbfaf6" stroke="var(--ink)" stroke-width="2"/>
-<rect x="133.5" y="580" width="69.75" height="108" fill="#fdf6e3" stroke="var(--wood)" stroke-width="1.6"/>
-<circle cx="168.4" cy="634" r="13.5" fill="none" stroke="var(--red)" stroke-width="2"/>
-<text class="sb" x="168" y="600" text-anchor="middle" fill="#3d3320">flat 15½" × 24"</text>
-<text class="sb" x="168" y="668" text-anchor="middle" fill="var(--red)">6" recessed</text>
-<text class="sb" x="280" y="640" text-anchor="middle">raked from here out</text>
-<text class="sb" x="360" y="703">5" half-wall</text>
-
-<line class="wall" x1="120" y1="580" x2="480" y2="580"/>
-<text class="sb" x="410" y="574">right wall</text>
-<line class="dm" x1="500" y1="580" x2="500" y2="710.5" marker-start="url(#k2)" marker-end="url(#k1)"/>
-<text class="dt" x="512" y="650">24"</text>
-<line class="dm" x1="133.5" y1="740" x2="203.25" y2="740" marker-start="url(#k2)" marker-end="url(#k1)"/>
-<text class="dt" x="168" y="758" text-anchor="middle">15½"</text>
-</svg>
-<p class="cap">Ceiling height is set by the nook header (doubled 2×10, bottom at 41½") — that member is sized by what the landing rim needs to hang from, not by load, so the opening head and the flat ceiling line up at the same height. The gussets over the 18½"–27" transition carry the soffit panel only; the stair's load runs through the rim into the header, never through them. Power has to be run into the half-wall before it's sheathed; switch on the half-wall face, reachable from the desk side.</p>
-</div>
-
-<div class="card">
-<h2>6 — Platform framing plan</h2>
-<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Platform framing plan showing ledgers, joists, blocking, beam and rim">
-<defs>
-<marker id="f1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker>
-<marker id="f2" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 z" fill="#c0392b"/></marker>
-</defs>
-
-<!-- half-wall below -->
-<rect x="701.2" y="90" width="28" height="284.2" class="hid"/>
-
-<!-- joists -->
-<g fill="var(--wood2)" stroke="var(--woodline)" stroke-width="1.1">
-<rect x="138.4" y="98.4" width="8.4" height="254.8"/><rect x="205.6" y="98.4" width="8.4" height="254.8"/>
-<rect x="272.8" y="98.4" width="8.4" height="254.8"/><rect x="340" y="98.4" width="8.4" height="254.8"/>
-<rect x="407.2" y="98.4" width="8.4" height="254.8"/><rect x="474.4" y="98.4" width="8.4" height="254.8"/>
-<rect x="541.6" y="98.4" width="8.4" height="254.8"/><rect x="608.8" y="98.4" width="8.4" height="254.8"/>
-<rect x="676" y="98.4" width="8.4" height="254.8"/>
-</g>
-<!-- rim on the half-wall -->
-<rect x="716.6" y="98.4" width="8.4" height="254.8" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.2"/>
-
-<!-- blocking at the ledger -->
-<g fill="#e6d9bd" stroke="var(--red)" stroke-width="1.2">
-<rect x="146.8" y="98.4" width="58.8" height="19.6"/><rect x="214" y="98.4" width="58.8" height="19.6"/>
-<rect x="281.2" y="98.4" width="58.8" height="19.6"/><rect x="348.4" y="98.4" width="58.8" height="19.6"/>
-<rect x="415.6" y="98.4" width="58.8" height="19.6"/><rect x="482.8" y="98.4" width="58.8" height="19.6"/>
-<rect x="550" y="98.4" width="58.8" height="19.6"/><rect x="617.2" y="98.4" width="58.8" height="19.6"/>
-<rect x="684.4" y="98.4" width="32.2" height="19.6"/>
-</g>
-
-<!-- ledgers -->
-<rect x="130" y="90" width="599.2" height="8.4" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.4"/>
-<rect x="130" y="90" width="8.4" height="268.8" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.4"/>
-<!-- beam + wrap -->
-<rect x="130" y="353.2" width="599.2" height="16.8" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.4"/>
-<rect x="130" y="370" width="599.2" height="4.2" fill="#8d7a58"/>
-
-<!-- boxed ledge extent -->
-<line class="ghost" x1="130" y1="134.8" x2="729.2" y2="134.8"/>
-
-<!-- walls -->
-<line class="wall" x1="122" y1="88" x2="735" y2="88"/>
-<line class="wall" x1="128" y1="88" x2="128" y2="382"/>
-
-<!-- labels -->
-<text class="sb" x="200" y="80" fill="#3d3320">2×6 rear ledger — lags into every stud</text>
-<line class="thin" x1="250" y1="84" x2="250" y2="93"/>
-
-<line class="thin" x1="736" y1="110" x2="706" y2="106"/>
-<text class="al" x="740" y="112">2×4 blocking at the ledger —</text>
-<text class="al" x="740" y="126">carries the ply's rear edge</text>
-<text class="sb" x="740" y="160" fill="var(--ink3)">boxed ledge above (8")</text>
-
-<line class="thin" x1="736" y1="225" x2="686" y2="225"/>
-<text class="lb" x="740" y="228" fill="#3d3320">2×4 joists @ 12" o.c.</text>
-<text class="sb" x="740" y="242" fill="#3d3320">45½" span · 9 joists</text>
-
-<line class="thin" x1="738" y1="302" x2="729" y2="318"/>
-<text class="sb" x="742" y="300" fill="#3d3320">rim set to 106¼" so the</text>
-<text class="sb" x="742" y="314" fill="#3d3320">wall panel lands flush at 107"</text>
-
-<line class="thin" x1="742" y1="388" x2="724" y2="378"/>
-<text class="sb" x="746" y="392" fill="var(--ink2)">half-wall below</text>
-
-<line class="thin" x1="300" y1="394" x2="300" y2="376"/>
-<text class="lb" x="196" y="406" fill="#3d3320">doubled 2×10 + ¾" wrap — 102" clear span</text>
-
-<line class="thin" x1="140" y1="432" x2="134" y2="364"/>
-<text class="sb" x="70" y="444" fill="#3d3320">2×10 side ledger, 48" out — carries the beam's left end</text>
-<text class="sb" x="70" y="466" fill="#3d3320">¾" ply deck: 104¾" × 45½" — seams on joist centres, glued &amp; screwed</text>
-
-<!-- dims -->
-<line class="dm" x1="130" y1="60" x2="729.2" y2="60" marker-start="url(#f2)" marker-end="url(#f1)"/>
-<text class="dt" x="430" y="53" text-anchor="middle">107"</text>
-<line class="dm" x1="142.6" y1="170" x2="209.8" y2="170" marker-start="url(#f2)" marker-end="url(#f1)"/>
-<text class="dt" x="176" y="163" text-anchor="middle">12" o.c.</text>
-<line class="dm" x1="100" y1="90" x2="100" y2="374.2" marker-start="url(#f2)" marker-end="url(#f1)"/>
-<text class="dt" x="94" y="272" text-anchor="middle" transform="rotate(-90 94 272)">50¾"</text>
-<line class="dm" x1="116" y1="90" x2="116" y2="358.8" marker-start="url(#f2)" marker-end="url(#f1)"/>
-<text class="dt" x="110" y="180" text-anchor="middle" transform="rotate(-90 110 180)">48"</text>
-</svg>
-<p class="cap">Joists run front-to-back, hung off the rear ledger and landing on the beam. Nothing bears in the field — the whole platform is carried by the two walls and the half-wall. Lay the joists out so plywood seams land on centres; field-adjust spacing rather than accepting an unsupported seam.</p>
-</div>
-
-<div class="card">
-<h2>7 — Half-wall detail</h2>
-<svg viewBox="0 0 900 780" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Half-wall plan and section detail">
-<defs>
-<marker id="h1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker>
-<marker id="h2" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 z" fill="#c0392b"/></marker>
-</defs>
-
-<text class="lb" x="60" y="40">PLAN DETAIL — horizontal section, cut at 30"</text>
-<text class="sb" x="420" y="40">rotated 90° CCW from Drawing 1 — bed wall at left, stair side up</text>
-
-<!-- stud packs only; opening between -->
-<g>
-<rect x="140" y="120" width="33" height="8.25" fill="#8d7a58" stroke="var(--woodline)" stroke-width="1"/>
-<rect x="140" y="166.75" width="33" height="8.25" fill="#8d7a58" stroke="var(--woodline)" stroke-width="1"/>
-<rect x="657" y="120" width="41.3" height="8.25" fill="#8d7a58" stroke="var(--woodline)" stroke-width="1"/>
-<rect x="657" y="166.75" width="41.3" height="8.25" fill="#8d7a58" stroke="var(--woodline)" stroke-width="1"/>
-</g>
-<g fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.2">
-<rect x="140" y="128.25" width="16.5" height="38.5"/>
-<rect x="156.5" y="128.25" width="16.5" height="38.5"/>
-<rect x="657" y="128.25" width="16.5" height="38.5"/>
-<rect x="673.5" y="128.25" width="16.5" height="38.5"/>
-</g>
-<text class="sb" x="156" y="212" text-anchor="middle">king + trimmer</text>
-<text class="sb" x="673" y="212" text-anchor="middle">trimmer + king</text>
-<text class="al" x="673" y="226" text-anchor="middle">beam bears here</text>
-
-<line class="ghost" x1="173" y1="147" x2="657" y2="147"/>
-<text class="lb" x="415" y="140" text-anchor="middle">44" NOOK OPENING — wall removed, both faces</text>
-<text class="sb" x="415" y="166" text-anchor="middle">header above carries the deck rim only</text>
-
-<rect x="657" y="112" width="41.3" height="71" fill="none" stroke="var(--blue)" stroke-width="1.6" stroke-dasharray="7 4"/>
-<text class="sb" x="678" y="106" text-anchor="middle" fill="#2b4a6b">beam end above</text>
-
-<line class="wall" x1="140" y1="100" x2="140" y2="200"/>
-<text class="sb" x="132" y="240" text-anchor="middle" transform="rotate(-90 132 240)">bed wall</text>
-
-<text class="sb" x="410" y="108" text-anchor="middle">stair side</text>
-<text class="sb" x="410" y="196" text-anchor="middle">loft side</text>
-
-<line class="dm" x1="760" y1="120" x2="760" y2="128.25" marker-start="url(#h2)" marker-end="url(#h1)"/>
-<text class="dt" x="772" y="128">¾"</text>
-<line class="dm" x1="760" y1="128.25" x2="760" y2="166.75" marker-start="url(#h2)" marker-end="url(#h1)"/>
-<text class="dt" x="772" y="152">3½"</text>
-<line class="dm" x1="760" y1="166.75" x2="760" y2="175" marker-start="url(#h2)" marker-end="url(#h1)"/>
-<text class="dt" x="772" y="176">¾"</text>
-<line class="dm" x1="835" y1="120" x2="835" y2="175" marker-start="url(#h2)" marker-end="url(#h1)"/>
-<text class="dt" x="847" y="152">5"</text>
-
-<line class="dm" x1="140" y1="264" x2="698" y2="264" marker-start="url(#h2)" marker-end="url(#h1)"/>
-<text class="dt" x="419" y="282" text-anchor="middle">50¾" — full platform depth</text>
-<line class="dm" x1="173" y1="86" x2="657" y2="86" marker-start="url(#h2)" marker-end="url(#h1)"/>
-<text class="dt" x="415" y="80" text-anchor="middle">44"</text>
-
-<!-- ================= SECTION ================= -->
-<text class="lb" x="60" y="350">SECTION — opening framing</text>
-
-<line class="wall" x1="140" y1="370" x2="140" y2="700"/>
-<line class="wall" x1="120" y1="700" x2="500" y2="700"/>
-<text class="sb" x="132" y="530" text-anchor="middle" transform="rotate(-90 132 530)">bed wall</text>
-
-<rect x="140" y="691.75" width="279" height="8.25" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.2"/>
-<!-- king studs: full height, bottom plate to top plate -->
-<g fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.2">
-<rect x="140" y="395.5" width="8.25" height="296.25"/>
-<rect x="406.75" y="395.5" width="8.25" height="296.25"/>
-</g>
-<!-- trimmers: stop at the header underside -->
-<g fill="var(--wood2)" stroke="var(--woodline)" stroke-width="1.2">
-<rect x="148.25" y="451" width="8.25" height="240.75"/>
-<rect x="398.5" y="451" width="8.25" height="240.75"/>
-</g>
-<!-- header bears ON the trimmers, ends butt the kings -->
-<rect x="148.25" y="395.5" width="258.5" height="55.5" fill="var(--wood2)" stroke="var(--woodline)" stroke-width="1.8"/>
-<!-- landing beyond, hanging off the header; rim seen end-on -->
-<rect x="140" y="401.7" width="148.5" height="25.5" fill="none" stroke="var(--ink3)" stroke-width="1.2" stroke-dasharray="6 4"/>
-<rect x="280.25" y="406.2" width="8.25" height="55.5" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-dasharray="5 4"/>
-<line class="thin" x1="260" y1="464" x2="283" y2="456"/>
-<text class="sb" x="180" y="470" fill="var(--ink2)">landing beyond — first 27" of the opening</text>
-<text class="sb" x="180" y="484" fill="var(--ink2)">2×10 rim, seen end-on</text>
-<text class="sb" x="180" y="498" fill="var(--ink2)">hung off the header w/ a joist hanger</text>
-<rect x="140" y="377.5" width="279" height="18" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.4"/>
-<rect x="140" y="356.5" width="279" height="21" fill="var(--wood2)" stroke="var(--woodline)" stroke-width="1.2"/>
-<rect x="140" y="352" width="279" height="4.5" fill="#8d7a58"/>
-<rect x="398.5" y="322" width="20.5" height="55.5" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.6"/>
-
-<text class="sb" x="266" y="424" text-anchor="middle" fill="#3d3320">2×10 + ½" ply spacer + 2×10 = 3½", flush with the studs</text>
-<text class="sb" x="266" y="438" text-anchor="middle" fill="#3d3320">47" long, bears 1½" each end</text>
-<text class="sb" x="266" y="452" text-anchor="middle" fill="#3d3320">sized by connection depth, not load (~140 psi)</text>
-<text class="sb" x="280" y="390" text-anchor="middle">double top plate — deck rim bears here</text>
-<text class="lb" x="280" y="570" text-anchor="middle">44" × 41½" ROUGH OPENING</text>
-<text class="sb" x="112" y="600" text-anchor="end">king</text>
-<text class="sb" x="152" y="620" text-anchor="middle">trimmer</text>
-<line class="thin" x1="118" y1="596" x2="142" y2="580"/>
-<line class="thin" x1="152" y1="612" x2="152" y2="596"/>
-<text class="al" x="432" y="340">beam end —</text>
-<text class="al" x="432" y="353">bypasses the opening</text>
-
-<circle cx="152" cy="404" r="12" fill="none" stroke="var(--red)" stroke-width="2"/>
-<circle cx="403" cy="404" r="12" fill="none" stroke="var(--red)" stroke-width="2"/>
-<text class="al" x="186" y="532">strap both header-to-king joints</text>
-
-<line class="dm" x1="105" y1="700" x2="105" y2="377.5" marker-start="url(#h2)" marker-end="url(#h1)"/>
-<text class="dt" x="99" y="560" text-anchor="middle" transform="rotate(-90 99 560)">53¾" to top plate</text>
-<line class="dm" x1="530" y1="700" x2="530" y2="451" marker-start="url(#h2)" marker-end="url(#h1)"/>
-<text class="dt" x="542" y="590">41½" opening</text>
-<line class="dm" x1="600" y1="700" x2="600" y2="322" marker-start="url(#h2)" marker-end="url(#h1)"/>
-<text class="dt" x="612" y="520">63" beam top</text>
-<line class="dm" x1="156.5" y1="736" x2="402.5" y2="736" marker-start="url(#h2)" marker-end="url(#h1)"/>
-<text class="dt" x="280" y="754" text-anchor="middle">44"</text>
-</svg>
-<p class="cap"><b>The opening removes both faces.</b> What's left is two short posts joined by a header — a portal frame, not a shear wall. The beam's reaction bypasses it entirely (lands on the far doubled stud), and the landing framing ties the top plate across to the right wall, so vertical load and top-of-wall bracing are both fine. But the deck diaphragm is now doing all the lateral work at this end: glue the plywood, and strap both header-to-post joints. Deck rim still set inboard to 106¼".</p>
-</div>
-
-<div class="card">
-<h2>8 — Stair &amp; landing framing</h2>
-<svg viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Landing framing plan and stringer layout">
-<defs>
-<marker id="g1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker>
-<marker id="g2" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 z" fill="#c0392b"/></marker>
-</defs>
-
-<text class="lb" x="60" y="40">PLAN — landing framing &amp; stringer layout</text>
-<text class="sb" x="400" y="40">bed wall at left, right wall at top</text>
-
-<!-- right-wall ledger -->
-<rect x="110" y="108" width="216" height="12" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.3"/>
-<!-- bed-wall ledger -->
-<rect x="110" y="120" width="12" height="180" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.3"/>
-<!-- 2×8 side member on the flush header face -->
-<rect x="122" y="288" width="192" height="12" fill="var(--wood)" stroke="#2c4a2e" stroke-width="2"/>
-<!-- landing joists -->
-<g fill="var(--wood2)" stroke="var(--woodline)" stroke-width="1.2">
-<rect x="174" y="120" width="12" height="168"/>
-<rect x="246" y="120" width="12" height="168"/>
-</g>
-<!-- 2×12 rim — full 24", stringers land on it -->
-<rect x="314" y="120" width="12" height="180" fill="var(--wood)" stroke="var(--woodline)" stroke-width="2.2"/>
-<!-- ¾" ply facing brings the header flush to the wall plane -->
-<rect x="134" y="300" width="382" height="6" fill="#8d7a58"/>
-<!-- header above the opening -->
-<rect x="134" y="306" width="382" height="28" fill="#cdbb9b" stroke="var(--woodline)" stroke-width="1.5" stroke-dasharray="6 4"/>
-<text class="sb" x="325" y="325" text-anchor="middle" fill="#3d3320">sandwich header above — 2×10 + ½" ply + 2×10</text>
-
-<!-- red = connections. bars are hangers, dots are structural screws -->
-<g stroke="var(--red)" stroke-width="3.5" stroke-linecap="butt">
-<line x1="174" y1="286" x2="186" y2="286"/><line x1="246" y1="286" x2="258" y2="286"/>
-<line x1="174" y1="122" x2="186" y2="122"/><line x1="246" y1="122" x2="258" y2="122"/>
-<line x1="314" y1="298" x2="326" y2="298"/>
-</g>
-<g fill="var(--red)"><circle cx="140" cy="294" r="2.6"/><circle cx="176" cy="294" r="2.6"/><circle cx="212" cy="294" r="2.6"/><circle cx="248" cy="294" r="2.6"/><circle cx="280" cy="294" r="2.6"/><circle cx="306" cy="294" r="2.6"/></g>
-<rect x="486" y="286" width="30" height="16" fill="none" stroke="var(--red)" stroke-width="2"/>
-
-<!-- stringers -->
-<g fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.3">
-<rect x="326" y="288" width="360" height="12"/>
-<rect x="326" y="198" width="360" height="12"/>
-<rect x="326" y="108" width="360" height="12"/>
-</g>
-<!-- tread nosings -->
-<g class="ghost">
-<line x1="398" y1="108" x2="398" y2="300"/><line x1="470" y1="108" x2="470" y2="300"/>
-<line x1="542" y1="108" x2="542" y2="300"/><line x1="614" y1="108" x2="614" y2="300"/>
-<line x1="686" y1="108" x2="686" y2="300"/>
-</g>
-
-<!-- half-wall band -->
-<rect x="110" y="300" width="406" height="40" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
-<rect x="110" y="300" width="24" height="40" fill="#e3e1d9" stroke="var(--ink)" stroke-width="1.4"/>
-<rect x="486" y="300" width="30" height="40" fill="#e3e1d9" stroke="var(--ink)" stroke-width="1.4"/>
-<text class="sb" x="250" y="358" text-anchor="middle">half-wall — solid at the ends only</text>
-
-<line class="wall" x1="110" y1="100" x2="110" y2="348"/>
-<line class="wall" x1="104" y1="108" x2="700" y2="108"/>
-<text class="sb" x="102" y="220" text-anchor="middle" transform="rotate(-90 102 220)">bed wall</text>
-<text class="sb" x="600" y="100" text-anchor="middle">right wall</text>
-
-<!-- landing labels -->
-<text class="lb" x="212" y="164" text-anchor="middle" fill="#3d3320">LANDING — framed box</text>
-<text class="sb" x="212" y="180" text-anchor="middle">2×4 ledgers on bed wall + right wall</text>
-<text class="sb" x="212" y="194" text-anchor="middle">2×8 side member on the half-wall</text>
-<text class="sb" x="212" y="208" text-anchor="middle">2×4 joists between them</text>
-<text class="sb" x="368" y="200" text-anchor="middle" transform="rotate(-90 368 200)" fill="#3d3320">2×12 rim — full 24"</text>
-
-<!-- stair labels -->
-<text class="lb" x="520" y="164" text-anchor="middle" fill="#3d3320">3 × 2×12 STRINGERS</text>
-<text class="sb" x="520" y="180" text-anchor="middle">treads 24" long, bearing on all three</text>
-<text class="sb" x="600" y="252" text-anchor="middle">stringer C fastens to the right wall</text>
-
-<!-- notes below -->
-<text class="al" x="130" y="382">¾" ply facing brings the header flush to the wall plane;</text>
-<text class="al" x="130" y="396">2×8 side member screwed to it — ¼"×5", both plies</text>
-<line class="thin" x1="240" y1="374" x2="240" y2="306"/>
-<text class="al" x="546" y="382">stringer A screws to the wall's end stud</text>
-<text class="al" x="546" y="396">— solid wall resumes past 47"</text>
-<line class="thin" x1="556" y1="374" x2="510" y2="306"/>
-
-<!-- red key -->
-<line x1="118" y1="418" x2="130" y2="418" stroke="var(--red)" stroke-width="3.5"/>
-<text class="sb" x="138" y="422">hanger</text>
-<circle cx="212" cy="418" r="2.6" fill="var(--red)"/>
-<text class="sb" x="222" y="422">structural screw</text>
-<rect x="330" y="411" width="14" height="14" fill="none" stroke="var(--red)" stroke-width="2"/>
-<text class="sb" x="352" y="422">direct fastening to framing</text>
-
-<line class="dm" x1="740" y1="108" x2="740" y2="300" marker-start="url(#g2)" marker-end="url(#g1)"/>
-<text class="dt" x="752" y="208">24"</text>
-<line class="dm" x1="110" y1="76" x2="326" y2="76" marker-start="url(#g2)" marker-end="url(#g1)"/>
-<text class="dt" x="218" y="70" text-anchor="middle">27" landing</text>
-<line class="dm" x1="326" y1="76" x2="686" y2="76" marker-start="url(#g2)" marker-end="url(#g1)"/>
-<text class="dt" x="506" y="70" text-anchor="middle">45" run · 5 treads @ 9"</text>
-
-<!-- ============ STRINGER + LANDING ============ -->
-<text class="lb" x="60" y="472">SECTION — landing framing &amp; stringer attachment</text>
-
-<!-- landing framing -->
-<rect x="105" y="575.2" width="127.5" height="36.25" fill="none" stroke="#2c4a2e" stroke-width="1.6" stroke-dasharray="6 4"/>
-<rect x="105" y="571.5" width="135" height="3.7" fill="#8d7a58"/>
-<rect x="105" y="575.2" width="127.5" height="17.5" fill="var(--wood2)" stroke="var(--woodline)" stroke-width="1.2"/>
-<rect x="232.5" y="575.2" width="7.5" height="56.25" fill="var(--wood)" stroke="var(--woodline)" stroke-width="2"/>
-
-<!-- nook soffit context -->
-<line x1="120" y1="612.5" x2="197.5" y2="612.5" stroke="var(--wood)" stroke-width="5"/>
-<path d="M197.5,592.7 L232.5,592.7 L232.5,631.45 L240,631.45 L240,651.65 L197.5,612.5 Z" fill="#f2efe4" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4 3"/>
-
-<!-- stringer -->
-<path d="M240,571.5 L240,612.9 L285,612.9 L285,654.3 L330,654.3 L330,695.7 L375,695.7 L375,737.2 L420,737.2 L420,778.6 L465,778.6 L465,820 L427,820 L240,647.9 Z"
-fill="#e8dcc2" stroke="var(--ink)" stroke-width="2" stroke-linejoin="miter"/>
-<line class="ghost" x1="240" y1="571.5" x2="465" y2="778.6"/>
-<text class="sb" x="390" y="700" fill="var(--ink3)">nosing line</text>
-
-<!-- fasteners into the rim -->
-<g fill="var(--red)"><circle cx="236" cy="581" r="2.8"/><circle cx="236" cy="593" r="2.8"/><circle cx="236" cy="605" r="2.8"/><circle cx="236" cy="617" r="2.8"/><circle cx="236" cy="628" r="2.8"/></g>
-
-<!-- labels -->
-<text class="lb" x="106" y="506" fill="#3d3320">LANDING — 27" deep</text>
-<text class="sb" x="106" y="520">2×4 joists, ply top at 49.71"</text>
-<text class="sb" x="106" y="534" fill="#2c4a2e">2×8 side member behind (dashed) —</text>
-<text class="sb" x="106" y="548" fill="#2c4a2e">carries the joists, tucks above the nook ceiling</text>
-
-<text class="lb" x="400" y="506" fill="#3d3320">2×12 OUTER RIM — full 24"</text>
-<text class="sb" x="400" y="520">top 48.96", bottom 37.71"</text>
-<text class="al" x="400" y="534">left end hangered to the flush header</text>
-<line class="thin" x1="410" y1="540" x2="248" y2="576"/>
-
-<line class="dm" x1="256" y1="575.2" x2="256" y2="631.45" marker-start="url(#g2)" marker-end="url(#g1)"/>
-<text class="dt" x="264" y="646">11¼" bearing face for the stringer</text>
-
-<text class="sb" x="118" y="606" fill="#3d3320">flat ceiling 41½"</text>
-<line class="thin" x1="176" y1="676" x2="214" y2="620"/>
-<text class="sb" x="106" y="688" fill="var(--ink2)">soffit gussets — non-structural</text>
-
-<line class="dm" x1="285" y1="654.3" x2="259" y2="682.5" marker-start="url(#g2)" marker-end="url(#g1)"/>
-<text class="dt" x="252" y="702">throat 5.15"</text>
-<line class="dm" x1="330" y1="720" x2="375" y2="720" marker-start="url(#g2)" marker-end="url(#g1)"/>
-<text class="dt" x="352" y="714" text-anchor="middle">9"</text>
-<line class="dm" x1="385" y1="695.7" x2="385" y2="737.2" marker-start="url(#g2)" marker-end="url(#g1)"/>
-<text class="dt" x="392" y="720">8¼"</text>
-
-<line class="dm" x1="75" y1="820" x2="75" y2="571.5" marker-start="url(#g2)" marker-end="url(#g1)"/>
-<text class="dt" x="69" y="700" text-anchor="middle" transform="rotate(-90 69 700)">49.71" total rise</text>
-<line class="dm" x1="105" y1="856" x2="240" y2="856" marker-start="url(#g2)" marker-end="url(#g1)"/>
-<text class="dt" x="172" y="874" text-anchor="middle">27" landing</text>
-<line class="dm" x1="240" y1="856" x2="465" y2="856" marker-start="url(#g2)" marker-end="url(#g1)"/>
-<text class="dt" x="352" y="874" text-anchor="middle">45" run</text>
-
-<text class="sb" x="480" y="800" fill="#3d3320">seat cut on a kicker</text>
-<text class="sb" x="480" y="814" fill="#3d3320">anchored to the floor</text>
-<line class="wall" x1="90" y1="820" x2="560" y2="820"/>
-<line class="wall" x1="105" y1="560" x2="105" y2="820"/>
-<text class="sb" x="97" y="700" text-anchor="middle" transform="rotate(-90 97 700)">bed wall</text>
-</svg>
-<p class="cap"><b>The header carries everything on the half-wall side.</b> There is no wall to land a ledger on — the opening runs 3"–47" and the landing sits 0"–27" — so the landing joists <i>and</i> the rim all hang off the header's stair-side face. The landing is framed as a box, not hung off a single member. A <b>¾" ply facing</b> on the header's stair face brings it flush with the wall plane, so everything downstream references one line. Then: <b>2×4 ledgers</b> on the bed wall and right wall, a <b>2×8 side member</b> screwed to the flush header with ¼"×5" structural screws through both plies, and a <b>2×12 rim</b> running the full 24" wall to wall with its left end hangered to the header. Joists span between the side member and the right-wall ledger. Two consequences worth knowing: the rim runs through rather than butting the side member, which keeps a continuous face for all three stringers and holds the stair at 24"; and the side member is a 2×8 rather than a 2×10 so its underside tucks just above the nook's 41½" ceiling instead of hanging 1¾" below it. <b>Load path, end to end:</b> stringers → 2×10 rim → nook header at one end and a right-wall ledger at the other → trimmers → bottom plate → floor. Nothing structural passes through the soffit gussets; they carry a panel. The rim is a 2×12 because the stringer is 15¼" deep where it lands, giving 11¼" of face to fasten to, and its bottom still sits above the nook soffit where it stays hidden. Its left end <b>hangs off the header with a joist hanger</b> — the half-wall is open there, so it cannot bear on the wall. Throat comes out at 5.15" against a 3½" minimum; lay out and cut one stringer first, measure the actual throat, then cut the other two.</p>
-</div>
-
-<div class="card">
-<h2>9 — Framing overlay · half-wall + stair</h2>
-<svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Overlay elevation of half-wall framing with landing and stair framing">
-<defs>
-<marker id="o1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker>
-<marker id="o2" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 z" fill="#c0392b"/></marker>
-</defs>
-
-<text class="lb" x="60" y="34">ELEVATION — viewed from inside the stairwell, looking at the half-wall</text>
-<text class="sb" x="60" y="52">half-wall framing solid · landing &amp; stair framing overlaid in green</text>
-
-<!-- ===== half-wall framing ===== -->
-<rect x="110" y="558" width="406" height="12" fill="#e3e1d9" stroke="var(--ink)" stroke-width="1.4"/>
-<rect x="110" y="164" width="12" height="394" fill="#e3e1d9" stroke="var(--ink)" stroke-width="1.4"/>
-<rect x="122" y="238" width="12" height="320" fill="#efeee8" stroke="var(--ink)" stroke-width="1.4"/>
-<rect x="486" y="238" width="12" height="320" fill="#efeee8" stroke="var(--ink)" stroke-width="1.4"/>
-<rect x="498" y="164" width="12" height="394" fill="#e3e1d9" stroke="var(--ink)" stroke-width="1.4"/>
-<rect x="122" y="164" width="376" height="74" fill="#cdbb9b" stroke="var(--woodline)" stroke-width="1.8"/>
-<rect x="110" y="140" width="406" height="24" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.4"/>
-<rect x="110" y="106" width="406" height="34" fill="#dce7f3" stroke="#5b8fc7" stroke-width="1.2"/>
-<rect x="486" y="66" width="30" height="74" fill="var(--wood)" stroke="var(--woodline)" stroke-width="1.5"/>
-
-<text class="sb" x="300" y="196" text-anchor="middle" fill="#3d3320">SANDWICH HEADER — 2×10 + ½" ply + 2×10 = 3½"</text>
-<text class="sb" x="300" y="212" text-anchor="middle" fill="#3d3320">bottom at 41½" · plies nailed 16d @ 12" o.c., two rows</text>
-<text class="sb" x="300" y="128" text-anchor="middle" fill="#3d3320">double top plate</text>
-<text class="sb" x="300" y="98" text-anchor="middle" fill="#2b4a6b">loft deck</text>
-<text class="sb" x="501" y="60" text-anchor="middle" fill="#3d3320">beam</text>
-<text class="sb" x="116" y="600" text-anchor="middle">king</text>
-<text class="sb" x="128" y="616" text-anchor="middle">trim</text>
-<text class="sb" x="492" y="600" text-anchor="middle">trim</text>
-<text class="sb" x="504" y="616" text-anchor="middle">king</text>
-
-<!-- ===== landing + stair framing, overlaid ===== -->
-<g fill="#cfe0cf" fill-opacity=".8" stroke="#2c4a2e" stroke-width="1.6">
-<rect x="110" y="172.3" width="216" height="6"/>
-<rect x="110" y="178.3" width="204" height="58"/>
-<rect x="314" y="178.3" width="12" height="90"/>
-</g>
-<text class="sb" x="150" y="222" fill="#2c4a2e">2×8 side member — screwed to the flush header</text>
-<text class="sb" x="150" y="262" fill="#2c4a2e">2×12 rim, full 24"</text>
-<path d="M326,172.3 L326,238.6 L398,238.6 L398,304.9 L470,304.9 L470,371.1 L542,371.1 L542,437.4 L614,437.4 L614,503.7 L686,503.7 L686,570 L625.2,570 L326,294.6 Z"
-fill="#cfe0cf" fill-opacity=".8" stroke="#2c4a2e" stroke-width="1.8" stroke-linejoin="miter"/>
-<text class="sb" x="560" y="470" fill="#2c4a2e">stringer A — the one nearest the wall</text>
-
-<!-- ===== connection points ===== -->
-<g fill="none" stroke="var(--red)" stroke-width="2.2">
-<rect x="108" y="176" width="16" height="32"/>
-<rect x="204" y="176" width="16" height="32"/>
-<rect x="300" y="176" width="16" height="32"/>
-<rect x="312" y="176" width="16" height="64"/>
-<rect x="496" y="369" width="16" height="94"/>
-</g>
-<g fill="var(--red)" font-size="11.5" font-weight="700" font-family="ui-sans-serif, system-ui, sans-serif">
-<circle cx="116" cy="222" r="9" fill="#c0392b"/><text x="116" y="226" fill="#fff" text-anchor="middle">3</text>
-<circle cx="212" cy="222" r="9" fill="#c0392b"/><text x="212" y="226" fill="#fff" text-anchor="middle">1</text>
-<circle cx="342" cy="256" r="9" fill="#c0392b"/><text x="342" y="260" fill="#fff" text-anchor="middle">2</text>
-<circle cx="530" cy="416" r="9" fill="#c0392b"/><text x="530" y="420" fill="#fff" text-anchor="middle">4</text>
-</g>
-
-<!-- key -->
-<text class="lb" x="150" y="300" fill="var(--ink)">CONNECTION POINTS</text>
-<text class="sb" x="150" y="320"><tspan fill="#c0392b" font-weight="700">1</tspan>  landing joists → 2×8 side member, hangers</text>
-<text class="sb" x="150" y="338"><tspan fill="#c0392b" font-weight="700">2</tspan>  2×12 rim → hangered to the flush header · 7½" engaged</text>
-<text class="sb" x="150" y="356"><tspan fill="#c0392b" font-weight="700">3</tspan>  2×4 ledgers on bed wall and right wall</text>
-<text class="sb" x="150" y="374"><tspan fill="#c0392b" font-weight="700">4</tspan>  stringer A → wall end stud at 47"–50¾"</text>
-<text class="al" x="150" y="392">side member → header: six ¼"×5" screws, both plies</text>
-
-<text class="al" x="150" y="410">Stringer A never meets the header. Between notches</text>
-<text class="al" x="150" y="426">its top edge is the tread cut at 41.43"; the header</text>
-<text class="al" x="150" y="442">bottom is 41.5". They miss by a sixteenth.</text>
-<text class="sb" x="150" y="466" fill="var(--ink2)">Its only wall contact is ➍, where the half-wall is</text>
-<text class="sb" x="150" y="482" fill="var(--ink2)">solid and sheathed again past the opening.</text>
-
-<line class="wall" x1="90" y1="570" x2="720" y2="570"/>
-<line class="dm" x1="110" y1="640" x2="326" y2="640" marker-start="url(#o2)" marker-end="url(#o1)"/>
-<text class="dt" x="218" y="658" text-anchor="middle">27" landing</text>
-<line class="dm" x1="326" y1="640" x2="686" y2="640" marker-start="url(#o2)" marker-end="url(#o1)"/>
-<text class="dt" x="506" y="658" text-anchor="middle">45" stair run</text>
-<line class="dm" x1="134" y1="530" x2="486" y2="530" marker-start="url(#o2)" marker-end="url(#o1)"/>
-<text class="dt" x="310" y="548" text-anchor="middle">44" nook opening</text>
-</svg>
-<p class="cap">On the half-wall side the joists land on the 2×8 side member and the rim hangers directly to the flush-faced header, so the landing has two independent paths into the wall rather than one. The stair itself is held by the rim at the top, the kicker at the bottom, stringer C's tie to the right wall, and stringer A's contact with the end stud at ➍. Cross-check this against Drawings 7 and 8 before framing: if any member's height range here disagrees with those, this drawing is the one to trust, since it's the only view where both assemblies are drawn to the same datum.</p>
-</div>
-
-<div class="card">
-<h2>Structure &amp; load path</h2>
-<table>
-<tr><th>Member</th><th>Spec</th><th>Check</th></tr>
-<tr><td>Front beam</td><td class="n">Doubled 2×10 framing stock, 102" clear span</td><td>~362 psi vs ~900 allowable · deflection ≈ L/2100</td></tr>
-<tr><td>Joists</td><td class="n">2×4 @ 12" o.c., 45½" span</td><td>~352 psi · 8" o.c. optional for extra margin</td></tr>
-<tr><td>Finish</td><td class="n">¾" paint-grade poplar wrap + header band</td><td>Non-structural · beam face, underside, top plate edge, end stiles</td></tr>
-<tr><td>Slats</td><td class="n">23 × 2×2, ripped from 8/4 poplar</td><td>~65 lf · nominal 2×2 framing stock twists</td></tr>
-<tr><td>Deck</td><td class="n">¾" ply, glued + screwed</td><td>Required — acts as the diaphragm in place of posts</td></tr>
-<tr><td>Rear ledger</td><td class="n">2×6, 107" — bottom flush w/ joists</td><td>~110 lb per stud · face-mount hangers only</td></tr>
-<tr><td>Wall blocking</td><td class="n">2×4 between joists at the ledger</td><td>Required — the ply's rear edge lands here</td></tr>
-<tr><td>Side ledger</td><td class="n">2×10, 48" out, bottom flush at 53¾"</td><td>Carries beam's left end · top at 63" = beam top</td></tr>
-<tr><td>Half-wall</td><td class="n">5" total — ¾" ply + 3½" studs @ 16" + ¾" ply · top plate 53¾"</td><td>Deck bears on top · ~3 psi on the floor · leaves 102" clear below</td></tr>
-<tr><td>Stair stringers</td><td class="n">3 × 2×12, 8¼" rise / 9" run</td><td>Throat 5.15" vs 3½" min ✓ · underside 34½" at landing, 16" at far end</td></tr>
-<tr><td>Treads</td><td class="n">10½" boards on 9" run (1½" nosing)</td><td>24" span — closed risers</td></tr>
-<tr><td>Header ply facing</td><td class="n">¾" ply on the header’s stair face</td><td>Brings the header flush to the wall plane so all landing framing references one line</td></tr>
-<tr><td>Landing framing</td><td class="n">2×4 joists; 2×4 ledgers on bed wall + right wall</td><td>Framed box — two load paths on the wall side, not one</td></tr>
-<tr><td>Landing side member</td><td class="n">2×8, 25½", six ¼"×5" screws into the header</td><td>Carries the joists · 2×8 tucks above the nook’s 41½" ceiling; a 2×10 would hang 1¾" below it</td></tr>
-<tr><td>Landing outer rim</td><td class="n">2×12, full 24" wall to wall</td><td>11¼" bearing face for the stringers · left end hangered to the flush header (7½" engaged), right end on the wall ledger</td></tr>
-<tr><td>Stringer A restraint</td><td class="n">Screwed to the wall's end stud at 47"–50¾"</td><td>Its only wall contact — between notches the stringer top is 41.43" and the header bottom 41.5", so they never meet</td></tr>
-<tr><td>Nook soffit</td><td class="n">Panel on stringers past 27"; gussets 18½"–27"</td><td><b>Non-structural</b> — carries the panel only</td></tr>
-<tr><td>Stair top reaction</td><td class="n">≈500 lb</td><td>Stringers → rim → header + right-wall ledger → trimmers → floor</td></tr>
-<tr><td>Nook header</td><td class="n">2×10 + ½" ply spacer + 2×10 = 3½", over a 44" × 41½" opening</td><td>~700 lb → ~140 psi · sized by connection depth, not load · flush with stud faces, spacer is filler only</td></tr>
-<tr><td>Header lamination</td><td class="n">16d @ 12" o.c., two rows, through the spacer</td><td>Hangers on one face reach the far ply only through this nailing</td></tr>
-<tr><td>Half-wall w/ nook</td><td class="n">Two posts + header — portal frame, not a shear wall</td><td>Strap both header-to-post joints · deck diaphragm now does the lateral work</td></tr>
-<tr><td>Whole assembly</td><td class="n">≈850 lb loaded</td><td>~17 psf vs 40 psf floor design load</td></tr>
-</table>
-<div class="note"><b>Ceiling joists run parallel to the bed wall</b> — the top plate can't cross them. Resolve in this order: <b>(1)</b> measure the joist line nearest 50¾" out — the plate spans 47¼"–50¾", so anything landing in that band works as drawn; if it falls outside, adjust the <b>ledge</b> (6"–10" all work) to move the plate onto it; <b>(2)</b> block between joists from the attic; <b>(3)</b> block from below through a 4" drywall strip. Don't skip it — unattached, a 200 lb lean at the top of the screen puts ~1,950 psi into 2×2 baluster bases against ~900 allowable.</div>
-</div>
-
-<div class="card">
-<h2>Open items</h2>
-<ul>
-<li><span class="tag t-chk">CHECK</span> <b>Locate the ceiling joist nearest 50¾" out.</b> The top plate spans roughly 47¼"–50¾"; a joist anywhere in that band works as-is. If it lands elsewhere, adjust the <b>ledge</b> (6"–10" all work) rather than the mattress bay or beam, which are now fixed.</li>
-<li><span class="tag t-chk">SEQUENCE</span> <b>Nook power.</b> The cable for the 6" recessed light has to be run into the half-wall before it's sheathed — same window as the opening itself. Decide the switch location now; drawn on the half-wall face, reachable from the desk side.</li>
-<li><span class="tag t-chk">VERIFY</span> <b>Stringer throat.</b> Lay out and cut one stringer, measure the actual throat, then cut the other two. The soffit line in Drawing 5 depends on this geometry and it's easy to get wrong on paper.</li>
-<li><span class="tag t-lock">LOCKED</span> Deck 58" · platform 107" × 50¾" · 8" boxed ledge full length, capped · 39" mattress bay · doubled 2×10 upstand beam with ¾" poplar wrap · post-free · half-wall at stair end · full-height slat screen · balanced stair, 7 @ 8¼" / 9" run, 27" landing at 49¾".</li>
-<li><span class="tag t-lock">DROPPED</span> Built-in bookcase — standalone furniture instead. Under-loft space left open.</li>
-</ul>
-</div>
-
-<div class="card">
-<h2>Revisions</h2>
-<p class="cap" style="margin:0 0 10px">Drawing numbers in entries below refer to the numbering in force at the time.</p>
-<table>
-<tr><th>Rev</th><th>Change</th></tr>
-<tr><td class="n"><b>T</b></td><td><b>Dimension schedule added</b> as the controlling reference — every height and plan extent derived once, with a derived-quantities table so nothing gets independently re-measured. Cross-check against it found four disagreements, now fixed: <b>(1)</b> "clear underneath 53¾", uniform" was wrong — the ¾" beam wrap puts the beam's underside at 53"; <b>(2)</b> Drawing 8's caption still said 9¼" bearing from when the rim was a 2×10; <b>(3)</b> "33" screen" is beam-top-to-ceiling, but the slats are 31½" with the top plate taking 1½"; <b>(4)</b> throat 5.15" not 5.16", slat clear 3.30" not 3⁵⁄₁₆". Added a build note that the riser is 8.286" — stepping off 8¼" seven times lands ¼" short.</td></tr>
-<tr><td class="n"><b>S.1</b></td><td>Drawing 8 cleaned up. Red now means one thing consistently — bars are hangers, dots are structural screws, an outlined box is direct fastening to framing — with a key on the drawing. Removed the leftover filler rectangle from Rev O. Fixed overlapping label blocks in both views, separated the landing and stair callouts into their own zones, and corrected "treads span 24" between the outer two" to treads 24" long bearing on all three stringers. Rim and ledgers redrawn so they butt properly rather than overlapping at the corners.</td></tr>
-<tr><td class="n"><b>S</b></td><td>Landing reframed as a proper box per Andrew. <b>¾" ply facing</b> on the header's stair face brings it flush with the wall plane. <b>2×4 ledgers</b> on the bed wall and right wall, a <b>2×8 side member</b> screwed to the flush header (¼"×5", both plies) carrying the joists, and a <b>2×12 rim</b> running the full 24" with its left end hangered to the header. Replaces the Rev R single 2×10 ledger, which put every joist and the rim on one member. Rim upsized to 2×12 for 11¼" of stringer bearing; side member held to 2×8 so it clears the nook ceiling. Landing back to full width and the stair stays 24".</td></tr>
-<tr><td class="n"><b>R</b></td><td><b>2×10 ledger added</b> on the header's stair-side face across the landing's 27". Joists and rim now hang from the ledger rather than direct from the header. This moves the critical connection from hanger nails — 1½" long, reaching only the near ply of a built-up header — to ¼"×4" structural screws that pass through both plies, with hangers nailing into 1½" of solid ledger. Also far easier to frame: one level ledger, then joists drop in. Landing narrows to 23¼"; the stair stays 24" since the ledger stops where stringer A begins, and the stringer's plumb cut now bears on the ledger end plus the rim.</td></tr>
-<tr><td class="n"><b>Q.1</b></td><td>Under-stair nook moved to Drawing 5, directly after the stair section, so the two stair-related views sit together and the framing drawings run 6–9 uninterrupted. Live cross-references updated; a note added here that numbers in older entries refer to the numbering of the time.</td></tr>
-<tr><td class="n"><b>Q</b></td><td>Header specified as a proper <b>sandwich header</b> — 2×10 + ½" ply spacer + 2×10 = 3½", flush with the stud faces. Drawing 7's plan already showed 3½" but the notes had been describing it as 3", which is what produced the external-filler idea in Rev O. Ply-to-ply nailing (16d @ 12" o.c., two rows) added to the drawings and the table: the spacer is filler, so hanger load reaches the far ply only through that nailing.</td></tr>
-<tr><td class="n"><b>P</b></td><td>New <b>Drawing 9 — framing overlay</b>: half-wall framing and stair/landing framing drawn to one datum so every connection can be cross-checked. Building it invalidated the Rev O filler: between notches stringer A's top edge is the tread cut at 41.43" while the header bottom is 41.5", so <b>they never overlap</b> and there is nothing to fasten through. The filler is removed. Stringer A's actual wall contact is the half-wall's <b>end stud at 47"–50¾"</b>, where the wall is solid and sheathed again — no added parts needed.</td></tr>
-<tr><td class="n"><b>O</b></td><td>Two connection gaps closed. <b>(1)</b> Drawing 7 still showed a ledger on the half-wall carrying the landing joists — same error as the rim had, since the wall is open across 3"–47". Joists and rim now all hang off the header's stair-side face; that face must be left unsheathed and the header's plies properly laminated so hanger fasteners engage both. <b>(2)</b> Stringer A does not reach the header — ¾" of removed sheathing separates them, and past 36" out the stringer has dropped below the header entirely. Added an optional ¾" ply filler over the 27"–36" band so it can screw in, giving the top of the stair a fourth restraint alongside the rim, the kicker, and stringer C's tie to the right wall.</td></tr>
-<tr><td class="n"><b>N.1</b></td><td>Drawing 6: the landing rim was drawn as a dotted box hanging off the right-hand end of the half-wall, past where the wall stops. That section shows the wall's <b>face</b>, so the rim belongs 25½"–27" from the bed wall, seen end-on, in the middle of the opening. Redrawn there with the landing extent shown behind it. Drawing 7 section labels relaid out; 2×4 rim comparison removed.</td></tr>
-<tr><td class="n"><b>N</b></td><td><b>Load path corrected.</b> The landing's outer rim was drawn bearing on the half-wall at its left end — but the nook opening runs 3"–47", so that end landed on nothing. The rim now <b>hangs off the nook header with a joist hanger</b>. To make that connection possible the header grows to a <b>doubled 2×10</b> (you can't hang a 9¼"–11¼" member off a 5½" one) and the rim becomes a <b>2×10</b> to match. Header demand ≈700 lb over 44" → ~140 psi vs ~900 allowable; it is sized by connection depth, not load. Cost: nook opening 45¼" → <b>41½"</b>; flat ceiling now 15½" × 24" at 41½", light chase improves 2¾" → 4". Soffit gussets relabelled <b>non-structural</b> throughout — they were drawn at framing weight next to an unsupported rim, which made the assembly look like trim was carrying the stair.</td></tr>
-<tr><td class="n"><b>M</b></td><td>Drawings 5 and 6 swapped so platform framing precedes the half-wall detail and the half-wall reads straight into the stair. <b>Landing framing added to Drawing 7's section</b>, which exposed a real problem: the stringer is 15¼" deep where it lands, so a 2×4 rim gave only 3½" of attachment face. The landing's outer joist is now a <b>2×12</b> — 11¼" of bearing, bottom at 37¾", still hidden above the nook soffit. The "furred off the landing" stretch in Drawing 8 is now drawn and specified: tapered plywood gussets on both wall faces spanning 18"–27".</td></tr>
-<tr><td class="n"><b>L.1</b></td><td>Drawing 5 section: header was drawn butting between the posts with no bearing. Corrected to standard opening framing — full-height kings, trimmers stopping at the header underside, and a 47" header bearing 1½" on each trimmer.</td></tr>
-<tr><td class="n"><b>L</b></td><td><b>Under-stair nook added.</b> Single open cavity, 44" × 24", with a 15" × 24" flat ceiling at 42" and a soffit raked parallel to the stair down to 15¼". One 6" recessed light on the flat; carpet runs through. New <b>Drawing 7</b> (stair &amp; landing framing, incl. stringer layout) and <b>Drawing 8</b> (nook). Drawing 5 reworked to show the opening framing. <b>Correction:</b> the stringer underside was wrong twice — properly it runs 34½" at the landing edge to 16" at the far end, derived from the notch inner corners rather than the tread surfaces. <b>Correction:</b> a through-opening removes both wall faces, not one — the half-wall becomes a portal frame, so strap the header-to-post joints and treat the deck diaphragm as the only lateral system at that end.</td></tr>
-<tr><td class="n"><b>K</b></td><td>New <b>Drawing 6 — platform framing plan</b>: ledgers, 9 joists at 12" o.c., blocking row at the ledger, beam, side ledger, and the rim set inboard to 106¼". Drawing 3 labels relaid out to remove overlaps. Drawing 1 ledge and beam callouts centred; step-through text removed.</td></tr>
-<tr><td class="n"><b>J.2</b></td><td>Stair section: crouch-zone shading replaced with a shaded overlay of everything beyond the section plane — half-wall, loft deck, boxed ledge, beam end. Crouch note moved to the caption. Fixed stale 49" platform-edge references in that drawing (deck line and the half-wall guard dimension) that predated the 50¾" depth.</td></tr>
-<tr><td class="n"><b>J.1</b></td><td>Stair section now shows the boxed ledge in dotted outline, sitting on the deck line and terminating at the half-wall. The 19" step-through figure stays on Drawing 1 only.</td></tr>
-<tr><td class="n"><b>J</b></td><td>Boxed ledge raised 6" → <b>8" tall</b>, top at 66". No dimensional cascade — bay stays 39", platform stays 50¾". Now stands 2" proud of a 6" mattress as an intentional curb rather than a flush surface, and hedges the mattress choice: flush at 8", a modest lip at 6". Well deepens to 5¾" × 7¼", ≈2.5 cu ft. Front rail rips to 7¼".</td></tr>
-<tr><td class="n"><b>I.1</b></td><td>Plan detail's loft-side and stair-side face labels were swapped — the detail is rotated 90° CCW from Drawing 1, which puts the stair side up. Orientation note added to the drawing so it can't be misread again.</td></tr>
-<tr><td class="n"><b>I</b></td><td>Half-wall detailed — <b>5" total</b> (¾" paint-grade ply + 3½" studs @ 16" o.c. + ¾" ply), doubled stud under the beam bearing, double top plate at 53¾". New Drawing 5 with plan and section. <b>Correction:</b> the front elevation read "107" clear" — the deck is 107" but the wall takes 5" of it, so the clear opening below is <b>102"</b>, matching the beam's clear span in the structure table. Deck rim set inboard to 106¼" so the stair-side panel is one uncut piece floor to 58".</td></tr>
-<tr><td class="n"><b>H.1</b></td><td>Andrew's markup folded in — arrowheads reduced, redundant direction arrows removed, labels repositioned, <b>door swing arc sweep corrected</b>. Cleanup: ceiling-joist note was still quoting the Rev G target of 49"; now reads 50¾" and matches Open Items. Elevation beam callout now names the wrap.</td></tr>
-<tr><td class="n"><b>H</b></td><td><b>Finish approach set:</b> rough framing lumber for the doubled 2×10, wrapped in ¾" paint-grade poplar on face and underside; matching header band on the top plate; slat faces flush with both so the screen reads as one framed panel. Slats to be ripped from 8/4 poplar. <b>Correction:</b> mattress bay was exactly 38" — zero tolerance — now 39". Platform depth 49" → 50¾" (8 ledge + 39 bay + 3 beam + ¾ wrap). Joist span 45½", fan clearance 15¼", desk projects 4¼".</td></tr>
-<tr><td class="n"><b>G</b></td><td><b>Stairs locked</b> — balanced option: 7 uniform risers @ 8¼", 5 treads @ 9" run with 10½" boards, 24" wide, 27" landing at 49¾" (one riser below deck) for 46¼" of headroom at the transition. 72" projection; dresser slides against the door leaving a 30" gap. Built-in bookcase dropped. Boxed ledge confirmed full 107" with a capped end. Stair's loft side open past 49" with a finished skirt — exposed drops are all under the 30" guard threshold. Floor plan corrected to true orientation and extended to the full room. Under-stair void drawn enclosed.</td></tr>
-<tr><td class="n"><b>F</b></td><td>Ledge boxed in — 8" × 6", top flush with the mattress at 64", running the full 107". Encloses ≈3 cu ft; hinged lids optional. Front rail to be ripped on site to actual mattress thickness.</td></tr>
-<tr><td class="n"><b>E</b></td><td>Screen end stiles flush with beam and top plate at both ends; 23 slats at 3.30" clear. Ceiling joists confirmed parallel to the bed wall.</td></tr>
-<tr><td class="n"><b>D</b></td><td>Rear ledger flipped to bottom-flush with the joists — top 2" proud, concealed inside the boxed ledge. Underside becomes one flat 53¾" plane. Added 2×4 blocking at the wall for the plywood's rear edge.</td></tr>
-<tr><td class="n"><b>C</b></td><td><b>Correction:</b> deck runs over the half-wall, not into it. Deck restored to 107", stair back to 24". Ledge 12" → 8", depth 53" → 49".</td></tr>
-<tr><td class="n"><b>B</b></td><td>Guardrail replaced with full-height slat screen. Posts deleted — doubled 2×10 upstand beam spans full width. Stair-end support changed from post to framed half-wall.</td></tr>
-<tr><td class="n"><b>A</b></td><td>Initial layout. Deck 58" AFF, 2×6 ledger with 2×4 joists, 26" guardrail, two 4×4 posts, 42" platform depth.</td></tr>
-</table>
-</div>
-
-</div>
-</body>
-</html>
+h2{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink2);margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:20px}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:0}
+.spec{background:var(--card);padding:11px 13px}.spec dt{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.spec dd{margin:0;font-size:16px;font-weight:650;font-variant-numeric:tabular-nums}.spec dd span{font-size:11.5px;font-weight:400;color:var(--ink2);display:block;margin-top:1px}
+figure{margin:0 0 12px;overflow-x:auto}figure svg{display:block;width:100%;height:auto}.cap{color:var(--ink2);font-size:12.5px;margin:10px 2px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);font-weight:700}td.n{font-variant-numeric:tabular-nums;white-space:nowrap}tr:last-child td{border-bottom:none}
+ul{margin:0;padding-left:19px}li{margin-bottom:7px}code{font-size:12.5px;background:#f1efe9;padding:1px 4px;border-radius:3px}
+.note{border-left:3px solid var(--red);background:#fdf4f2;padding:11px 14px;border-radius:0 6px 6px 0;font-size:13px;margin-top:14px}.note b{color:var(--red)}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:1.5px 7px;border-radius:4px;vertical-align:1px}.t-open{background:#fdf1e3;color:var(--amber)}.t-lock{background:#e8f0e9;color:var(--green)}.t-chk{background:#fbe9e7;color:var(--red)}
+svg text{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11.5px;fill:var(--ink)}
+.lab{font-weight:650;font-size:12px}.labs{font-size:10.5px;fill:var(--ink2)}.labk{font-weight:650;font-size:11.5px;fill:var(--pencil)}.labb{font-weight:650;font-size:11px;fill:var(--red)}
+.lum{fill:var(--lum);stroke:var(--lumline);stroke-width:1}.lum2{fill:var(--lum2);stroke:var(--lumline);stroke-width:.8}.blk{fill:#e6d9bd;stroke:var(--red);stroke-width:1}
+.sheet{fill:var(--sheet);stroke:var(--lumline);stroke-width:.6}.fin{fill:var(--fin);stroke:var(--lumline);stroke-width:.8}.wall{fill:var(--wall);stroke:none}.ghost{fill:var(--ghost);stroke:none}
+.room{fill:#fff;stroke:var(--ink);stroke-width:4}.deck{fill:var(--blue2);stroke:var(--blue);stroke-width:1.4}.ledge{fill:#eef3f9;stroke:var(--blue);stroke-width:1}.matt{fill:#c8daed;stroke:var(--blue);stroke-width:1}
+.beamplan{fill:var(--lum);stroke:var(--lumline);stroke-width:1.2}.landing{fill:var(--green2);stroke:var(--green);stroke-width:1.6}.tread{fill:#efeee8;stroke:var(--ink);stroke-width:1.2}.exist{fill:#efeee8;stroke:var(--ink);stroke-width:1.4}
+.hid{fill:none;stroke:var(--ink2);stroke-width:1.4;stroke-dasharray:8 5}.dashfill{fill:none;stroke:var(--ink2);stroke-width:1;stroke-dasharray:5 3}.door{stroke:var(--ink);stroke-width:3}.window{stroke:var(--blue);stroke-width:5}
+.green{fill:var(--green2);fill-opacity:.85;stroke:#2c4a2e;stroke-width:1.5}.greend{fill:none;stroke:#2c4a2e;stroke-width:1.2;stroke-dasharray:5 3}.flat{fill:#fdf6e3;stroke:var(--fin);stroke-width:1.2}.rake{fill:#f6f2e6;stroke:var(--fin);stroke-width:.8;stroke-dasharray:4 3}
+.hanger{fill:none;stroke:var(--pencil);stroke-width:2.2}.strap{fill:none;stroke:var(--red);stroke-width:2}.light{fill:none;stroke:var(--red);stroke-width:2}.co{fill:var(--red)}.cot{fill:#fff;font-weight:700;font-size:11.5px}
+.hatchline{stroke:var(--lumline);stroke-width:.6}.badline{stroke:var(--red);stroke-width:1}.bad{fill:url(#bad);stroke:var(--red);stroke-width:1}
+.ink{stroke:var(--ink);stroke-width:1}.dash{stroke:var(--ink2);stroke-width:1;stroke-dasharray:6 4}.ghostl{stroke:var(--ink2);stroke-width:.9;stroke-dasharray:3 3;fill:none}.floor{stroke:var(--wall);stroke-width:3}.redline{stroke:var(--red);stroke-width:1.6;stroke-dasharray:7 4}
+.soffit{fill:none;stroke:var(--fin);stroke-width:3}polyline.hanger{fill:none}
+.dim line{stroke:var(--pencil);stroke-width:.9}.dim text{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;fill:var(--pencil)}marker path{fill:var(--pencil)}
+</style></head><body><div class="wrap">
+<header><h1>Lofted Bed — Working Drawings</h1>
+<div class="meta"><span class="rev">REV U</span><span>Twin loft · 131 × 186 room · 96 ceiling</span><span>Deck 58 AFF · post-free 107 span · stairs locked</span><span>generated 2026-09-04 from dimensions.yaml by drawings.py</span></div></header>
+
+<div class="card"><h2>Conventions</h2><ul>
+<li><b>Every drawing is generated from <code>dimensions.yaml</code>.</b> Nothing here was placed by hand. If a drawing looks wrong, the data is wrong — fix the yaml, run <code>python3 verify.py</code>, then <code>python3 drawings.py</code>.</li>
+<li><b>Orientation.</b> Plans: bed wall at the top, window wall to the left. x–z views look toward the bed wall (window wall left). y–z views keep the <b>bed wall on the left</b> — sections cut at an x position are drawn mirrored where needed so that stays true.</li>
+<li><b>Hatched</b> = cut by the view. <b>Pale</b> = beyond the cut. <b>Dashed</b> = hidden. <b>Blue</b> = hardware. <b>Red</b> = a limit or an open finding.</li>
+<li><b>Framing vs finished.</b> Member extents are framing (actual lumber). Platform 50¾ finished / 50 framed. Half-wall 5 / 3½. Deck 107 / 106¼ rim. Nook 44 × 41½ rough / 42½ × 40¾ finished. Cut lists use the framing numbers.</li></ul></div>
+
+<div class="card"><h2>Locked dimensions</h2><dl class="specs"><div class="spec"><dt>Deck height</dt><dd>58<span>top of plywood, AFF</span></dd></div><div class="spec"><dt>Platform</dt><dd>107 × 50¾<span>finished, incl. ¾ wrap</span></dd></div><div class="spec"><dt>Clear underneath</dt><dd>53¾<span>at joists; 53 under the wrapped beam</span></dd></div><div class="spec"><dt>Sitting headroom</dt><dd>32<span>mattress top to ceiling</span></dd></div><div class="spec"><dt>Boxed ledge</dt><dd>8w × 8h<span>well 5¾ × 7¼</span></dd></div><div class="spec"><dt>Mattress bay</dt><dd>39 × 81<span>1 slack + 2 tuck at the window wall</span></dd></div><div class="spec"><dt>Stair</dt><dd>7 @ 8.286<span>9 run · 42.6° · 24 wide · 5/4 treads</span></dd></div><div class="spec"><dt>Stair landing</dt><dd>24 × 27<span>at 49.71 — one riser below deck</span></dd></div><div class="spec"><dt>Half-wall</dt><dd>5 thick<span>¾ ply + 3½ studs + ¾ ply</span></dd></div><div class="spec"><dt>Clear below deck</dt><dd>102<span>107 deck less the 5 wall</span></dd></div><div class="spec"><dt>Under-stair nook</dt><dd>42½ × 40¾<span>finished, jambed · 14.26 at the far end</span></dd></div></dl></div>
+
+<div class="card"><h2>Dimension schedule — the controlling reference</h2>
+<p class="cap" style="margin:0 0 14px">Every number below is computed by <code>verify.py</code> from the member extents, never typed. All heights are above finished floor; plan positions are from the <b>window wall</b> (x) and the <b>bed wall</b> (y) to finished wall faces.</p>
+<h2 style="margin-top:4px">A · Vertical datums</h2><table><tr><th>Member</th><th>Bottom</th><th>Top</th><th>Note</th></tr>
+<tr><td class="">Half-wall bottom plate</td><td class="n">0</td><td class="n">1½</td><td class=""></td></tr>
+<tr><td class="">Half-wall studs (kings)</td><td class="n">1½</td><td class="n">50¾</td><td class="">49¼ long · trimmers to 41½</td></tr>
+<tr><td class="">Nook header (3½ sandwich)</td><td class="n">41½</td><td class="n">50¾</td><td class="">2×10 + ½ ply + 2×10</td></tr>
+<tr><td class="">Nook finished ceiling / head jamb</td><td class="n">—</td><td class="n">40¾</td><td class="">header bottom 41½ less ¾ jamb; panel top 41½</td></tr>
+<tr><td class="">Landing box — rim, side member, ledgers, all 2×8</td><td class="n">41.71</td><td class="n">48.96</td><td class="">clears the 41½ panel top by 0.21</td></tr>
+<tr><td class="">Landing joists, 2×4</td><td class="n">45.46</td><td class="n">48.96</td><td class=""></td></tr>
+<tr><td class="">Stringer plumb cut (at y 18)</td><td class="n">41.71</td><td class="n">48.96</td><td class="">= the rim, full depth</td></tr>
+<tr><td class="">Landing finished top</td><td class="n">—</td><td class="n">49.71</td><td class="">58 − one riser</td></tr>
+<tr><td class="">Half-wall double top plate</td><td class="n">50¾</td><td class="n">52¼</td><td class="">deck bears here</td></tr>
+<tr><td class="">Beam wrap, underside</td><td class="n">53</td><td class="n">53¾</td><td class="">¾ poplar</td></tr>
+<tr><td class="">Deck joists, 2×4</td><td class="n">53¾</td><td class="n">57¼</td><td class=""></td></tr>
+<tr><td class="">Beam, doubled 2×10</td><td class="n">53¾</td><td class="n">63</td><td class="">5 proud of the deck</td></tr>
+<tr><td class="">Side ledger, 2×10</td><td class="n">53¾</td><td class="n">63</td><td class="">top = beam top</td></tr>
+<tr><td class="">Rear ledger, 2×6</td><td class="n">53¾</td><td class="n">59¼</td><td class="">top inside the ledge box</td></tr>
+<tr><td class="">Deck plywood</td><td class="n">57¼</td><td class="n">58</td><td class=""><b>deck top = 58</b></td></tr>
+<tr><td class="">Mattress</td><td class="n">58</td><td class="n">64</td><td class="">6 ASSUMED</td></tr>
+<tr><td class="">Boxed ledge</td><td class="n">58</td><td class="n">66</td><td class="">2 proud of the mattress</td></tr>
+<tr><td class="">Screen slats</td><td class="n">63</td><td class="n">94½</td><td class="">31½ long</td></tr>
+<tr><td class="">Screen top plate, 2×4 flat</td><td class="n">94½</td><td class="n">96</td><td class=""></td></tr>
+<tr><td class="">Ceiling</td><td class="n">—</td><td class="n">96</td><td class=""></td></tr></table><h2 style="margin-top:18px">B · Stair heights</h2><table><tr><th>Riser</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6 (landing)</th><th>7 (deck)</th></tr><tr><td>Height</td><td class="n">8.29</td><td class="n">16.57</td><td class="n">24.86</td><td class="n">33.14</td><td class="n">41.43</td><td class="n">49.71</td><td class="n">58.00</td></tr></table><div class="note" style="border-left-color:#b07d1a;background:#fdf7ec"><b style="color:#b07d1a">Riser is 8.286, not 8¼.</b> Step the stringer off by dividing 58 into 7, or set the square to 8.286 / 9. Marking 8¼ seven times lands ¼ short. Drop each stringer 1 for the tread thickness.</div><h2 style="margin-top:18px">C · Plan — x, from the window wall</h2><table><tr><th>Element</th><th>From</th><th>To</th><th>Note</th></tr>
+<tr><td class="">Desk (existing)</td><td class="n">0</td><td class="n">24</td><td class=""></td></tr>
+<tr><td class="">Mattress</td><td class="n">2</td><td class="n">77</td><td class="">2 tuck gap at the window wall</td></tr>
+<tr><td class="">Deck landing area</td><td class="n">77</td><td class="n">107</td><td class=""></td></tr>
+<tr><td class="">Half-wall</td><td class="n">102</td><td class="n">107</td><td class="">studs 102¾–106¼</td></tr>
+<tr><td class="">Deck structural rim</td><td class="n">104¾</td><td class="n">106¼</td><td class="">stair-side panel runs to the deck top</td></tr>
+<tr><td class=""><b>Deck, overall</b></td><td class="n">0</td><td class="n">107</td><td class=""></td></tr>
+<tr><td class="">Landing side member</td><td class="n">107</td><td class="n">108½</td><td class="">on the header's flush face</td></tr>
+<tr><td class="">Stringers A / B / C</td><td class="n">107–108½ · 118¼–119¾ · 129½–131</td><td class="n"></td><td class="">11¼ centres</td></tr>
+<tr><td class="">Landing joists</td><td class="n">114¾–116¼ · 121¾–123¼</td><td class="n"></td><td class="">run with the stringers</td></tr>
+<tr><td class="">Right-wall ledger</td><td class="n">129½</td><td class="n">131</td><td class=""></td></tr>
+<tr><td class=""><b>Stair &amp; landing</b></td><td class="n">107</td><td class="n">131</td><td class="">24</td></tr></table><h2 style="margin-top:18px">D · Plan — y, out from the bed wall</h2><table><tr><th>Element</th><th>From</th><th>To</th><th>Note</th></tr>
+<tr><td class="">Rear ledger</td><td class="n">0</td><td class="n">1½</td><td class=""></td></tr>
+<tr><td class="">Boxed ledge</td><td class="n">0</td><td class="n">8</td><td class="">well 5¾ wide</td></tr>
+<tr><td class="">Nook opening — rough</td><td class="n">3</td><td class="n">47</td><td class="">44</td></tr>
+<tr><td class="">Nook opening — finished</td><td class="n">3¾</td><td class="n">46¼</td><td class="">42½ between ¾ jambs</td></tr>
+<tr><td class="">Header (kings 0–1½, 48½–50)</td><td class="n">1½</td><td class="n">48½</td><td class="">47 long, 1½ bearing each end</td></tr>
+<tr><td class="">Nook flat ceiling</td><td class="n">3</td><td class="n">18.23</td><td class="">rake begins where the stringer undersides reach the panel</td></tr>
+<tr><td class="">Mattress bay</td><td class="n">8</td><td class="n">47</td><td class="">39 for a 38 mattress</td></tr>
+<tr><td class="">Landing side member</td><td class="n">1½</td><td class="n">16½</td><td class=""></td></tr>
+<tr><td class="">Landing rim</td><td class="n">16½</td><td class="n">18</td><td class="">2×8</td></tr>
+<tr><td class="">Stringer top runs</td><td class="n">18</td><td class="n">27</td><td class="">under the landing deck</td></tr>
+<tr><td class="">Blocking between stringers</td><td class="n">25½</td><td class="n">27</td><td class="">flush with riser 6</td></tr>
+<tr><td class="">Right-wall ledger</td><td class="n">0</td><td class="n">18</td><td class="">stringer C bears on its end</td></tr>
+<tr><td class="">Landing</td><td class="n">0</td><td class="n">27</td><td class=""></td></tr>
+<tr><td class="">Beam structure</td><td class="n">47</td><td class="n">50</td><td class="">over the end stud pack</td></tr>
+<tr><td class="">Beam wrap</td><td class="n">50</td><td class="n">50¾</td><td class=""></td></tr>
+<tr><td class=""><b>Platform, finished</b></td><td class="n">0</td><td class="n">50¾</td><td class="">8 + 39 + 3 + ¾</td></tr>
+<tr><td class="">Desk (existing)</td><td class="n">0</td><td class="n">55</td><td class="">projects 4¼ past the beam</td></tr>
+<tr><td class="">Fan blade edge</td><td class="n">—</td><td class="n">66</td><td class="">blades at 85</td></tr>
+<tr><td class="">Stair, to bottom riser</td><td class="n">27</td><td class="n">72</td><td class="">5 treads @ 9</td></tr>
+<tr><td class="">Dresser (48 × 16)</td><td class="n">102</td><td class="n">150</td><td class="">30 gap to the stair</td></tr>
+<tr><td class="">Entry door (32)</td><td class="n">150</td><td class="n">182</td><td class="">3½ to the corner</td></tr></table><h2 style="margin-top:18px">E · Derived — do not measure these independently</h2><table><tr><th>Quantity</th><th>Value</th><th>Falls out of</th></tr>
+<tr><td class="">Clear span below the deck</td><td class="n">102</td><td class="n">107 deck − 5 half-wall</td></tr>
+<tr><td class="">Clear height under joists</td><td class="n">53¾</td><td class="n">58 − ¾ ply − 3½ joist</td></tr>
+<tr><td class="">Clear height under the beam</td><td class="n">53</td><td class="n">less the ¾ wrap — not uniform with the joists</td></tr>
+<tr><td class="">Deck joist span</td><td class="n">45½</td><td class="n">ledger face → beam face</td></tr>
+<tr><td class="">Deck plywood</td><td class="n">104¾ × 45½</td><td class="n">1½→106¼ by 1½→47</td></tr>
+<tr><td class="">Sitting headroom</td><td class="n">32</td><td class="n">96 − mattress top</td></tr>
+<tr><td class="">Riser</td><td class="n">8.286</td><td class="n">58 ÷ 7 — <b>not 8¼</b></td></tr>
+<tr><td class="">Stair angle</td><td class="n">42.63°</td><td class="n">atan(rise/run)</td></tr>
+<tr><td class="">Stringer throat</td><td class="n">5.15</td><td class="n">11¼ − notch depth · 3½ min</td></tr>
+<tr><td class="">Stringer plumb cut (y 18)</td><td class="n">41.71 → 48.96</td><td class="n">7¼ tall = the 2×8 rim</td></tr>
+<tr><td class="">Stringer underside at y 27 / 47</td><td class="n">33.42 / 15.01</td><td class="n">notch corners − throat, dropped 1 for the treads</td></tr>
+<tr><td class="">Landing headroom</td><td class="n">46.29</td><td class="n">96 − 49.71</td></tr>
+<tr><td class="">Nook finished opening</td><td class="n">42½ × 40¾</td><td class="n">rough less ¾ jambs</td></tr>
+<tr><td class="">Nook flat ceiling depth</td><td class="n">14.48</td><td class="n">jamb face to y 18.23</td></tr>
+<tr><td class="">Nook far end height</td><td class="n">14.26</td><td class="n">stringer underside at 47 − ¾ panel</td></tr>
+<tr><td class="">Light chase over the flat</td><td class="n">3.96</td><td class="n">joist bottom − header bottom — wafer LED only</td></tr>
+<tr><td class="">Rim ↔ header engagement</td><td class="n">7¼</td><td class="n">full 2×8</td></tr>
+<tr><td class="">Rim ↔ stringer bearing</td><td class="n">7¼</td><td class="n">full 2×8</td></tr>
+<tr><td class="">Slat clear opening</td><td class="n">3.3</td><td class="n">(107 − 23 × 1½) ÷ 22 · 3½ max</td></tr>
+<tr><td class="">Stair projection</td><td class="n">72</td><td class="n">27 landing + 45 run</td></tr>
+<tr><td class="">Fan clearance</td><td class="n">15¼</td><td class="n">66 − 50¾</td></tr>
+<tr><td class="">Room depth chain</td><td class="n">185½</td><td class="n">½ unplaced in 186 — field</td></tr></table>
+<div class="note"><b>Framing vs finished.</b> The platform is 50¾ finished but 50 of framing — the last ¾ is the beam wrap. The half-wall is 5 finished, 3½ of studs. The deck is 107 to the finished wall face but its structural rim stops at 106¼. The nook is 44 × 41½ rough and 42½ × 40¾ finished. Cut lists must use the framing numbers; layout marks use the finished ones.</div></div>
+
+<div class="card"><h2>1 — Floor plan</h2><figure><svg viewBox="0 0 622 747" role="img" aria-label="Room floor plan, bed wall at the top, window wall to the left" style="max-width:808px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="room" x="89.8" y="59.7" width="432.3" height="613.8" /><rect class="deck" x="89.8" y="59.7" width="353.1" height="167.5" /><rect class="ledge" x="89.8" y="59.7" width="353.1" height="26.4" /><rect class="matt" x="96.4" y="86.1" width="247.5" height="125.4" /><rect class="beamplan" x="94.8" y="214.8" width="345.7" height="9.9" /><rect class="fin" x="89.8" y="224.7" width="353.1" height="2.5" /><rect class="hid" x="426.4" y="59.7" width="16.5" height="167.5" /><rect class="landing" x="442.9" y="59.7" width="79.2" height="89.1" /><rect class="tread" x="442.9" y="267.6" width="79.2" height="29.7" /><rect class="tread" x="442.9" y="237.9" width="79.2" height="29.7" /><rect class="tread" x="442.9" y="208.2" width="79.2" height="29.7" /><rect class="tread" x="442.9" y="178.5" width="79.2" height="29.7" /><rect class="tread" x="442.9" y="148.8" width="79.2" height="29.7" /><rect class="dashfill" x="89.8" y="59.7" width="79.2" height="181.5" /><rect class="exist" x="469.3" y="396.3" width="52.8" height="158.4" /><polyline class="ghostl" points="522.1,554.7 515.2,554.9 508.3,555.6 501.5,556.7 494.8,558.3 488.2,560.3 481.7,562.7 475.4,565.6 469.3,568.8 463.4,572.5 457.8,576.5 452.5,580.9 447.4,585.6 442.7,590.7 438.3,596.0 434.3,601.6 430.6,607.5 427.4,613.6 424.5,619.9 422.1,626.4 420.1,633.0 418.5,639.7 417.4,646.5 416.7,653.4 416.5,660.3"/><line class="door" x1="522.1" y1="660.3" x2="416.5" y2="660.3"/><circle class="ghostl" cx="305.9" cy="366.6" r="89.1" fill="none"/><line class="window" x1="85.8" y1="373.2" x2="85.8" y2="554.7"/><text class="labs" x="254.8" y="76.9" text-anchor="middle">8w × 8h BOXED LEDGE — full 107, capped at the deck end</text><text class="lab" x="220.2" y="152.8" text-anchor="middle">Twin mattress 38 × 75</text><text class="labs" x="220.2" y="167.7" text-anchor="middle">in a 39 bay — 1&quot; slack</text><text class="lab" x="393.4" y="152.8" text-anchor="middle">landing area</text><text class="labs" x="393.4" y="167.7" text-anchor="middle">30 × 39</text><text class="labs" x="254.8" y="243.5" text-anchor="middle">doubled 2×10 upstand beam + ¾ poplar wrap — 107, no posts</text><text class="labs" x="435.0" y="158.7" text-anchor="middle" transform="rotate(-90 435.0 158.7)">half-wall below</text><text class="lab" x="482.5" y="103.3" text-anchor="middle">LANDING</text><text class="labs" x="482.5" y="119.8" text-anchor="middle">24 × 27 @ 49.71</text><text class="labs" x="482.5" y="228.7" text-anchor="middle">5 treads @ 9</text><text class="labs" x="129.4" y="263.4" text-anchor="middle">desk 24 × 55</text><text class="labs" x="495.7" y="475.5" text-anchor="middle" transform="rotate(-90 495.7 475.5)">dresser 16 × 48</text><text class="labs" x="305.9" y="370.6" text-anchor="middle">ceiling fan — blades 85</text><text class="labs" x="97.1" y="463.9" text-anchor="middle" transform="rotate(-90 97.1 463.9)">window</text><text class="labs" x="305.9" y="687.4" text-anchor="middle">closet wall</text><text class="labs" x="97.1" y="307.2" text-anchor="middle" transform="rotate(-90 97.1 307.2)">window wall</text><text class="labs" x="514.8" y="350.1" text-anchor="middle" transform="rotate(-90 514.8 350.1)">right wall</text><g class="dim"><line x1="89.8" y1="41.2" x2="522.1" y2="41.2" marker-start="url(#da)" marker-end="url(#db)"/><line x1="89.8" y1="36.2" x2="89.8" y2="46.2"/><line x1="522.1" y1="36.2" x2="522.1" y2="46.2"/><text x="305.9" y="36.2" text-anchor="middle">131</text></g><g class="dim"><line x1="89.8" y1="51.8" x2="442.9" y2="51.8" marker-start="url(#da)" marker-end="url(#db)"/><line x1="89.8" y1="46.8" x2="89.8" y2="56.8"/><line x1="442.9" y1="46.8" x2="442.9" y2="56.8"/><text x="266.3" y="46.8" text-anchor="middle">107 deck</text></g><g class="dim"><line x1="442.9" y1="51.8" x2="522.1" y2="51.8" marker-start="url(#da)" marker-end="url(#db)"/><line x1="442.9" y1="46.8" x2="442.9" y2="56.8"/><line x1="522.1" y1="46.8" x2="522.1" y2="56.8"/><text x="482.5" y="46.8" text-anchor="middle">24</text></g><g class="dim "><line x1="75.0" y1="59.7" x2="75.0" y2="227.2" marker-start="url(#da)" marker-end="url(#db)"/><line x1="70.0" y1="59.7" x2="80.0" y2="59.7"/><line x1="70.0" y1="227.2" x2="80.0" y2="227.2"/><text x="69.0" y="143.4" text-anchor="end" dominant-baseline="middle">50¾</text></g><g class="dim "><line x1="530.7" y1="59.7" x2="530.7" y2="297.3" marker-start="url(#da)" marker-end="url(#db)"/><line x1="525.7" y1="59.7" x2="535.7" y2="59.7"/><line x1="525.7" y1="297.3" x2="535.7" y2="297.3"/><text x="536.7" y="178.5" text-anchor="start" dominant-baseline="middle">72 stair</text></g><g class="dim "><line x1="530.7" y1="297.3" x2="530.7" y2="396.3" marker-start="url(#da)" marker-end="url(#db)"/><line x1="525.7" y1="297.3" x2="535.7" y2="297.3"/><line x1="525.7" y1="396.3" x2="535.7" y2="396.3"/><text x="536.7" y="346.8" text-anchor="start" dominant-baseline="middle">30 gap</text></g><g class="dim "><line x1="530.7" y1="396.3" x2="530.7" y2="554.7" marker-start="url(#da)" marker-end="url(#db)"/><line x1="525.7" y1="396.3" x2="535.7" y2="396.3"/><line x1="525.7" y1="554.7" x2="535.7" y2="554.7"/><text x="536.7" y="475.5" text-anchor="start" dominant-baseline="middle">48 dresser</text></g><g class="dim "><line x1="530.7" y1="554.7" x2="530.7" y2="660.3" marker-start="url(#da)" marker-end="url(#db)"/><line x1="525.7" y1="554.7" x2="535.7" y2="554.7"/><line x1="525.7" y1="660.3" x2="535.7" y2="660.3"/><text x="536.7" y="607.5" text-anchor="start" dominant-baseline="middle">32 door</text></g><g class="dim "><line x1="530.7" y1="660.3" x2="530.7" y2="673.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="525.7" y1="660.3" x2="535.7" y2="660.3"/><line x1="525.7" y1="673.5" x2="535.7" y2="673.5"/><text x="536.7" y="666.9" text-anchor="start" dominant-baseline="middle">4</text></g><g class="dim "><line x1="69.3" y1="59.7" x2="69.3" y2="673.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="64.3" y1="59.7" x2="74.3" y2="59.7"/><line x1="64.3" y1="673.5" x2="74.3" y2="673.5"/><text x="63.3" y="366.6" text-anchor="end" dominant-baseline="middle">186</text></g><text class="labs" x="305.9" y="702.3" text-anchor="middle">72 + 30 + 48 + 32 + 3½ = 185½  ·  room 186 — ½ unplaced (field)</text></svg></figure><p class="cap">Facing the bed wall, the window and desk are on your left; the stairs, dresser and entry door on your right. Door swing never reaches below the 150 line. The room-depth chain is ½ short of 186 — one of the field measurements still owed.</p></div>
+<div class="card"><h2>2 — Front elevation</h2><figure><svg viewBox="0 0 849 505" role="img" aria-label="Front elevation looking toward the bed wall, window wall on the left" style="max-width:1000px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="wall" x="70.0" y="38.8" width="26.4" height="422.4" /><rect class="wall" x="672.8" y="38.8" width="26.4" height="422.4" /><line class="floor" x1="70.0" y1="38.8" x2="699.2" y2="38.8"/><line class="floor" x1="70.0" y1="461.2" x2="699.2" y2="461.2"/><rect class="landing" x="567.2" y="242.5" width="105.6" height="218.7" /><line class="dash" x1="567.2" y1="424.7" x2="672.8" y2="424.7"/><line class="dash" x1="567.2" y1="388.3" x2="672.8" y2="388.3"/><line class="dash" x1="567.2" y1="351.8" x2="672.8" y2="351.8"/><line class="dash" x1="567.2" y1="315.4" x2="672.8" y2="315.4"/><line class="dash" x1="567.2" y1="278.9" x2="672.8" y2="278.9"/><text class="labs" x="620.0" y="238.5" text-anchor="middle">landing 49.71</text><text class="labs" x="624.4" y="364.4" text-anchor="middle">treads</text><rect class="sheet" x="545.2" y="228.0" width="22.0" height="233.2" /><text class="labs" x="556.2" y="426.0" text-anchor="middle" transform="rotate(-90 556.2 426.0)">half-wall</text><rect class="fin" x="96.4" y="184.0" width="470.8" height="44.0" /><rect class="lum" x="96.4" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="117.5" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="138.6" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="159.7" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="180.8" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="201.9" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="223.0" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="244.1" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="265.2" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="286.3" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="307.4" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="328.5" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="349.6" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="370.7" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="391.8" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="412.9" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="434.0" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="455.1" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="476.2" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="497.3" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="518.4" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="539.5" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="560.6" y="45.4" width="6.6" height="138.6" /><rect class="lum" x="96.4" y="38.8" width="470.8" height="6.6" /><line class="ghostl" x1="96.4" y1="179.6" x2="567.2" y2="179.6"/><text class="labs" x="571.6" y="190.6" text-anchor="start">mattress top beyond</text><line class="ghostl" x1="96.4" y1="170.8" x2="567.2" y2="170.8"/><text class="labs" x="571.6" y="167.8" text-anchor="start">ledge top beyond</text><rect class="dashfill" x="96.4" y="333.6" width="105.6" height="127.6" /><text class="labs" x="149.2" y="395.2" text-anchor="middle">desk</text><line class="redline" x1="265.8" y1="87.2" x2="503.4" y2="87.2"/><text class="labb" x="384.6" y="83.2" text-anchor="middle">fan blade plane 85 — screen blocks reach</text><text class="lab" x="331.8" y="210.0" text-anchor="middle">doubled 2×10 + ¾ wrap — 5 above the deck</text><text class="lab" x="331.8" y="113.2" text-anchor="middle">23 × 2×2 slats @ 3.3 clear — end stiles flush both ends</text><text class="labs" x="331.8" y="58.6" text-anchor="middle">2×4 top plate — into ceiling framing / blocking</text><text class="labs" x="316.4" y="285.2" text-anchor="middle">under-loft space left open — standalone furniture</text><g class="dim"><line x1="96.4" y1="443.6" x2="545.2" y2="443.6" marker-start="url(#da)" marker-end="url(#db)"/><line x1="96.4" y1="438.6" x2="96.4" y2="448.6"/><line x1="545.2" y1="438.6" x2="545.2" y2="448.6"/><text x="320.8" y="438.6" text-anchor="middle">102 clear opening — no posts (deck 107; half-wall takes 5)</text></g><g class="dim "><line x1="81.0" y1="206.0" x2="81.0" y2="461.2" marker-start="url(#da)" marker-end="url(#db)"/><line x1="76.0" y1="206.0" x2="86.0" y2="206.0"/><line x1="76.0" y1="461.2" x2="86.0" y2="461.2"/><text x="75.0" y="333.6" text-anchor="end" dominant-baseline="middle">58 deck</text></g><g class="dim "><line x1="708.0" y1="38.8" x2="708.0" y2="184.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="703.0" y1="38.8" x2="713.0" y2="38.8"/><line x1="703.0" y1="184.0" x2="713.0" y2="184.0"/><text x="714.0" y="111.4" text-anchor="start" dominant-baseline="middle">33 · slats 31½</text></g><g class="dim "><line x1="708.0" y1="184.0" x2="708.0" y2="206.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="703.0" y1="184.0" x2="713.0" y2="184.0"/><line x1="703.0" y1="206.0" x2="713.0" y2="206.0"/><text x="714.0" y="195.0" text-anchor="start" dominant-baseline="middle">5</text></g><text class="labs" x="384.6" y="34.8" text-anchor="middle">ceiling 96</text></svg></figure><p class="cap">Looking toward the bed wall. The wrapped beam stands 5 above the deck; the slat screen runs from the beam top to a 2×4 flat plate at the ceiling. The stair is seen face-on to the right of the half-wall.</p></div>
+<div class="card"><h2>3 — Section through the platform edge</h2><figure><svg viewBox="0 0 596 654" role="img" aria-label="Section through the platform at x = 55, bed wall on the left" style="max-width:775px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="wall" x="90.0" y="34.0" width="24.0" height="576.0" /><line class="floor" x1="90.0" y1="34.0" x2="474.0" y2="34.0"/><line class="floor" x1="90.0" y1="610.0" x2="474.0" y2="610.0"/><rect class="lum" x="114.0" y="254.5" width="9.0" height="33.0" fill="url(#hatch)"/><rect class="lum" x="123.0" y="266.5" width="9.0" height="21.0" fill="url(#hatch)"/><rect class="lum2" x="123.0" y="266.5" width="273.0" height="21.0" /><rect class="sheet" x="123.0" y="262.0" width="273.0" height="4.5" fill="url(#hatch)"/><rect class="fin" x="157.5" y="218.5" width="4.5" height="43.5" fill="url(#hatch)"/><rect class="fin" x="114.0" y="214.0" width="48.0" height="4.5" fill="url(#hatch)"/><rect class="matt" x="162.0" y="226.0" width="228.0" height="36.0" /><rect class="lum" x="396.0" y="232.0" width="18.0" height="55.5" fill="url(#hatch)"/><rect class="fin" x="414.0" y="232.0" width="4.5" height="60.0" fill="url(#hatch)"/><rect class="fin" x="396.0" y="287.5" width="18.0" height="4.5" fill="url(#hatch)"/><rect class="lum2" x="409.5" y="43.0" width="9.0" height="189.0" /><rect class="lum" x="397.5" y="34.0" width="21.0" height="9.0" fill="url(#hatch)"/><rect class="dashfill" x="114.0" y="436.0" width="330.0" height="174.0" /><line class="redline" x1="510.0" y1="100.0" x2="474.0" y2="100.0"/><text class="labb" x="513.0" y="96.0" text-anchor="start">fan 85</text><text class="labs" x="106.8" y="430.0" text-anchor="middle" transform="rotate(-90 106.8 430.0)">bed wall</text><text class="lab" x="138.0" y="184.0" text-anchor="start">boxed ledge</text><text class="labs" x="138.0" y="196.0" text-anchor="start">top 66 — 2 proud of the mattress</text><text class="labs" x="138.0" y="206.2" text-anchor="start">well 5¾ × 7¼</text><text class="labs" x="126.0" y="296.8" text-anchor="start">2×6 ledger, bottom flush with the joists — lags into every stud</text><text class="labs" x="126.0" y="311.2" text-anchor="start">2×4 blocking on edge — carries the ply&#x27;s rear edge</text><text class="labs" x="126.0" y="325.6" text-anchor="start">2×4 joists @ 12 o.c. beyond · 45½ span · ¾ ply glued &amp; screwed</text><text class="labs" x="276.0" y="248.0" text-anchor="middle">38 mattress in a 39 bay</text><text class="lab" x="405.0" y="259.6" text-anchor="middle" transform="rotate(-90 405.0 259.6)">doubled 2×10</text><text class="labs" x="435.0" y="442.0" text-anchor="start" transform="rotate(-90 435.0 442.0)">¾ poplar wrap, mitered — underside stops at the half-wall</text><text class="labs" x="450.0" y="214.0" text-anchor="start" transform="rotate(-90 450.0 214.0)">2×2 slats beyond, flush with the wrap</text><text class="labs" x="372.0" y="28.0" text-anchor="end">2×4 top plate, flat</text><text class="labs" x="276.0" y="520.0" text-anchor="middle">desk 55 deep × 29 high — projects 4¼ past the beam</text><g class="dim"><line x1="114.0" y1="166.0" x2="162.0" y2="166.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="114.0" y1="161.0" x2="114.0" y2="171.0"/><line x1="162.0" y1="161.0" x2="162.0" y2="171.0"/><text x="138.0" y="161.0" text-anchor="middle">8</text></g><g class="dim"><line x1="162.0" y1="166.0" x2="396.0" y2="166.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="162.0" y1="161.0" x2="162.0" y2="171.0"/><line x1="396.0" y1="161.0" x2="396.0" y2="171.0"/><text x="279.0" y="161.0" text-anchor="middle">39 bay</text></g><g class="dim"><line x1="396.0" y1="166.0" x2="418.5" y2="166.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="396.0" y1="161.0" x2="396.0" y2="171.0"/><line x1="418.5" y1="161.0" x2="418.5" y2="171.0"/><text x="407.2" y="161.0" text-anchor="middle">3¾</text></g><g class="dim"><line x1="114.0" y1="355.0" x2="418.5" y2="355.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="114.0" y1="350.0" x2="114.0" y2="360.0"/><line x1="418.5" y1="350.0" x2="418.5" y2="360.0"/><text x="266.2" y="368.0" text-anchor="middle">50¾ platform depth (8 + 39 + 3 + ¾)</text></g><g class="dim "><line x1="94.2" y1="262.0" x2="94.2" y2="610.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="89.2" y1="262.0" x2="99.2" y2="262.0"/><line x1="89.2" y1="610.0" x2="99.2" y2="610.0"/><text x="88.2" y="436.0" text-anchor="end" dominant-baseline="middle">58 deck</text></g><g class="dim "><line x1="94.2" y1="214.0" x2="94.2" y2="262.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="89.2" y1="214.0" x2="99.2" y2="214.0"/><line x1="89.2" y1="262.0" x2="99.2" y2="262.0"/><text x="88.2" y="238.0" text-anchor="end" dominant-baseline="middle">8</text></g><g class="dim "><line x1="234.0" y1="287.5" x2="234.0" y2="610.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="229.0" y1="287.5" x2="239.0" y2="287.5"/><line x1="229.0" y1="610.0" x2="239.0" y2="610.0"/><text x="228.0" y="448.8" text-anchor="end" dominant-baseline="middle">53¾ clear</text></g><g class="dim "><line x1="418.5" y1="292.0" x2="418.5" y2="610.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="413.5" y1="292.0" x2="423.5" y2="292.0"/><line x1="413.5" y1="610.0" x2="423.5" y2="610.0"/><text x="424.5" y="451.0" text-anchor="start" dominant-baseline="middle">53 under the beam</text></g><g class="dim "><line x1="378.0" y1="34.0" x2="378.0" y2="226.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="373.0" y1="34.0" x2="383.0" y2="34.0"/><line x1="373.0" y1="226.0" x2="383.0" y2="226.0"/><text x="372.0" y="130.0" text-anchor="end" dominant-baseline="middle">32 sitting headroom</text></g></svg></figure><p class="cap">Cut at x = 55, between joists, so the joist reads pale (beyond) and the blocking, ply, ledger, beam and top plate are hatched (cut). The deck ply is the floor of the ledge well. The rear ledger's bottom is flush with the joists so the underside is one plane at 53¾; the beam wrap brings its own underside to 53.</p></div>
+<div class="card"><h2>4 — Stair section</h2><figure><svg viewBox="0 0 648 615" role="img" aria-label="Stair section through stringer B, bed wall on the left, drawn with the bed wall left like every y–z view" style="max-width:842px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="wall" x="130.0" y="33.6" width="22.4" height="537.6" /><line class="floor" x1="130.0" y1="33.6" x2="578.0" y2="33.6"/><line class="floor" x1="130.0" y1="571.2" x2="578.0" y2="571.2"/><rect class="sheet" x="152.4" y="246.4" width="16.8" height="324.8" /><rect class="sheet" x="169.2" y="246.4" width="246.4" height="92.4" /><rect class="sheet" x="415.6" y="246.4" width="16.8" height="324.8" /><rect class="dashfill" x="160.8" y="287.0" width="263.2" height="51.8" /><rect class="dashfill" x="160.8" y="338.8" width="8.4" height="224.0" /><rect class="dashfill" x="415.6" y="338.8" width="8.4" height="224.0" /><rect class="dashfill" x="152.4" y="287.0" width="8.4" height="275.8" /><rect class="dashfill" x="424.0" y="287.0" width="8.4" height="275.8" /><rect class="fin" x="169.2" y="338.8" width="246.4" height="4.2" /><line class="dash" x1="152.4" y1="246.4" x2="436.6" y2="246.4"/><text class="labs" x="163.6" y="242.4" text-anchor="start">loft deck 58 — beyond the half-wall</text><rect class="dashfill" x="415.6" y="218.4" width="21.0" height="28.0" /><text class="labs" x="443.6" y="232.4" text-anchor="start">beam end, beyond</text><rect class="lum2" x="160.8" y="297.0" width="84.0" height="40.6" /><rect class="dashfill" x="160.8" y="297.0" width="84.0" height="19.6" /><rect class="dashfill" x="295.2" y="297.0" width="8.4" height="19.6" /><rect class="lum" x="152.4" y="297.0" width="8.4" height="40.6" fill="url(#hatch)"/><rect class="lum" x="244.8" y="297.0" width="8.4" height="40.6" fill="url(#hatch)"/><rect class="sheet" x="152.4" y="292.8" width="151.2" height="4.2" fill="url(#hatch)"/><rect class="lum" x="536.0" y="562.8" width="19.6" height="8.4" fill="url(#hatch)"/><polygon class="lum" points="253.2,337.6 253.2,297.0 302.1,297.0 303.6,298.4 303.6,344.8 354.0,344.8 354.0,391.2 354.0,391.2 404.4,391.2 404.4,437.6 404.4,437.6 454.8,437.6 454.8,484.0 454.8,484.0 505.2,484.0 505.2,530.4 505.2,530.4 555.6,530.4 555.6,571.2 506.9,571.2" fill="url(#hatch)"/><rect class="fin" x="505.2" y="524.8" width="58.8" height="5.6" /><rect class="fin" x="551.4" y="530.4" width="4.2" height="40.8" /><rect class="fin" x="454.8" y="478.4" width="58.8" height="5.6" /><rect class="fin" x="501.0" y="484.0" width="4.2" height="40.8" /><rect class="fin" x="404.4" y="432.0" width="58.8" height="5.6" /><rect class="fin" x="450.6" y="437.6" width="4.2" height="40.8" /><rect class="fin" x="354.0" y="385.6" width="58.8" height="5.6" /><rect class="fin" x="400.2" y="391.2" width="4.2" height="40.8" /><rect class="fin" x="303.6" y="339.2" width="58.8" height="5.6" /><rect class="fin" x="349.8" y="344.8" width="4.2" height="40.8" /><rect class="fin" x="303.6" y="292.8" width="4.2" height="46.4" /><polyline class="soffit" points="169.2,343.0 254.5,343.0 415.6,491.3"/><line class="redline" x1="152.4" y1="403.2" x2="578.0" y2="403.2"/><text class="labb" x="421.2" y="399.2" text-anchor="start">30 — guards above this line</text><text class="labs" x="141.2" y="224.0" text-anchor="middle" transform="rotate(-90 141.2 224.0)">bed wall</text><text class="labs" x="174.8" y="369.0" text-anchor="start">nook ceiling 40¾</text><text class="labs" x="337.2" y="432.2" text-anchor="start" transform="rotate(-42.63375200854422 337.2 432.2)">soffit panel on the stringer undersides</text><text class="lab" x="249.0" y="317.5" text-anchor="middle" transform="rotate(-90 249.0 317.5)">rim 2×8</text><text class="labs" x="197.2" y="330.4" text-anchor="middle">side member beyond</text><text class="labs" x="307.0" y="312.5" text-anchor="start">blocking</text><text class="labs" x="197.2" y="306.9" text-anchor="middle">joists beyond</text><text class="labs" x="443.6" y="526.4" text-anchor="start">treads 5/4 · 1</text><text class="labs" x="538.8" y="553.3" text-anchor="end">kicker</text><text class="labs" x="559.0" y="530.0" text-anchor="start">8.29</text><text class="labs" x="508.6" y="483.6" text-anchor="start">16.57</text><text class="labs" x="458.2" y="437.2" text-anchor="start">24.86</text><text class="labs" x="407.8" y="390.8" text-anchor="start">33.14</text><text class="labs" x="357.4" y="344.4" text-anchor="start">41.43</text><text class="labs" x="307.0" y="298.0" text-anchor="start">49.71</text><text class="labs" x="307.0" y="251.6" text-anchor="start">58.00</text><text class="labs" x="354.0" y="156.8" text-anchor="start">above about 38&quot; of tread you&#x27;re ducking — the top two steps and the landing are a crouch</text><g class="dim "><line x1="137.8" y1="292.8" x2="137.8" y2="571.2" marker-start="url(#da)" marker-end="url(#db)"/><line x1="132.8" y1="292.8" x2="142.8" y2="292.8"/><line x1="132.8" y1="571.2" x2="142.8" y2="571.2"/><text x="131.8" y="432.0" text-anchor="end" dominant-baseline="middle">49.71 landing</text></g><g class="dim "><line x1="197.2" y1="33.6" x2="197.2" y2="292.8" marker-start="url(#da)" marker-end="url(#db)"/><line x1="192.2" y1="33.6" x2="202.2" y2="33.6"/><line x1="192.2" y1="292.8" x2="202.2" y2="292.8"/><text x="203.2" y="163.2" text-anchor="start" dominant-baseline="middle">46.29 headroom — stand &amp; turn</text></g><g class="dim "><line x1="328.8" y1="33.6" x2="328.8" y2="339.2" marker-start="url(#da)" marker-end="url(#db)"/><line x1="323.8" y1="33.6" x2="333.8" y2="33.6"/><line x1="323.8" y1="339.2" x2="333.8" y2="339.2"/><text x="334.8" y="186.4" text-anchor="start" dominant-baseline="middle">54.57 over tread 5</text></g><g class="dim"><line x1="152.4" y1="277.2" x2="253.2" y2="277.2" marker-start="url(#da)" marker-end="url(#db)"/><line x1="152.4" y1="272.2" x2="152.4" y2="282.2"/><line x1="253.2" y1="272.2" x2="253.2" y2="282.2"/><text x="202.8" y="272.2" text-anchor="middle">18</text></g><g class="dim"><line x1="253.2" y1="277.2" x2="303.6" y2="277.2" marker-start="url(#da)" marker-end="url(#db)"/><line x1="253.2" y1="272.2" x2="253.2" y2="282.2"/><line x1="303.6" y1="272.2" x2="303.6" y2="282.2"/><text x="278.4" y="272.2" text-anchor="middle">9 top run</text></g><g class="dim"><line x1="303.6" y1="277.2" x2="555.6" y2="277.2" marker-start="url(#da)" marker-end="url(#db)"/><line x1="303.6" y1="272.2" x2="303.6" y2="282.2"/><line x1="555.6" y1="272.2" x2="555.6" y2="282.2"/><text x="429.6" y="272.2" text-anchor="middle">45 run · 5 @ 9</text></g><g class="dim"><line x1="152.4" y1="579.6" x2="555.6" y2="579.6" marker-start="url(#da)" marker-end="url(#db)"/><line x1="152.4" y1="574.6" x2="152.4" y2="584.6"/><line x1="555.6" y1="574.6" x2="555.6" y2="584.6"/><text x="354.0" y="592.6" text-anchor="middle">72 total — 7 risers @ 8.286 · 42.6°</text></g><g class="dim "><line x1="258.2" y1="297.0" x2="258.2" y2="337.6" marker-start="url(#da)" marker-end="url(#db)"/><line x1="253.2" y1="297.0" x2="263.2" y2="297.0"/><line x1="253.2" y1="337.6" x2="263.2" y2="337.6"/><text x="264.2" y="317.3" text-anchor="start" dominant-baseline="middle">7¼ plumb cut = rim</text></g><text class="labs" x="299.4" y="306.9" text-anchor="start"></text></svg></figure><p class="cap">Cut through stringer B. Each stringer runs 9 under the landing: its top plumb cut, at y 18, is 7.26 tall — exactly the 2×8 rim it bears on. Stringers are dropped 1 for the 5/4 treads. All seven risers are 8.286; the last is the sideways step from the landing onto the deck. Handrail on the right wall for the full run.</p></div>
+<div class="card"><h2>5 — Under-stair nook</h2><figure><svg viewBox="0 0 538 522" role="img" aria-label="Under-stair nook, elevation from the under-loft space, bed wall on the left" style="max-width:699px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="wall" x="90.0" y="30.0" width="14.0" height="448.0" /><line class="floor" x1="90.0" y1="478.0" x2="468.0" y2="478.0"/><rect class="ghost" x="130.2" y="192.8" width="297.5" height="285.2" /><polyline class="soffit" points="130.2,192.8 231.6,192.8 427.8,373.3"/><ellipse class="light" cx="170.5" cy="192.8" rx="21.0" ry="4.9"/><rect class="sheet" x="104.0" y="101.8" width="21.0" height="376.2" /><rect class="sheet" x="125.0" y="101.8" width="308.0" height="85.8" /><rect class="sheet" x="433.0" y="101.8" width="21.0" height="376.2" /><rect class="sheet" x="454.0" y="107.0" width="5.2" height="371.0" /><rect class="dashfill" x="114.5" y="122.8" width="329.0" height="64.8" /><rect class="dashfill" x="104.0" y="122.8" width="10.5" height="344.8" /><rect class="dashfill" x="443.5" y="122.8" width="10.5" height="344.8" /><rect class="dashfill" x="114.5" y="187.5" width="10.5" height="280.0" /><rect class="dashfill" x="433.0" y="187.5" width="10.5" height="280.0" /><rect class="fin" x="125.0" y="187.5" width="308.0" height="5.2" /><rect class="fin" x="125.0" y="192.8" width="5.2" height="285.2" /><rect class="fin" x="427.8" y="192.8" width="5.2" height="285.2" /><rect class="dashfill" x="114.5" y="135.3" width="105.0" height="50.8" /><rect class="dashfill" x="219.5" y="135.3" width="10.5" height="50.8" /><rect class="lum" x="104.0" y="112.2" width="350.0" height="10.5" /><rect class="lum" x="104.0" y="101.8" width="350.0" height="10.5" /><rect class="lum2" x="114.5" y="77.2" width="318.5" height="24.5" /><rect class="sheet" x="114.5" y="72.0" width="318.5" height="5.2" /><rect class="lum" x="433.0" y="37.0" width="21.0" height="64.8" /><rect class="fin" x="454.0" y="37.0" width="5.2" height="70.0" /><text class="labs" x="97.0" y="268.0" text-anchor="middle" transform="rotate(-90 97.0 268.0)">bed wall</text><text class="lab" x="279.0" y="338.0" text-anchor="middle">OPEN NOOK — carpet runs through</text><text class="labs" x="279.0" y="359.0" text-anchor="middle">finished 42½ wide × 40¾ high · 24 deep · rake follows the stringers at 42.6°</text><text class="labs" x="279.0" y="226.0" text-anchor="middle">flat ceiling 40¾ to y = 18.23 · one 6&quot; wafer LED</text><text class="labs" x="370.0" y="296.0" text-anchor="start" transform="rotate(-42.63375200854422 370.0 296.0)">raked panel on the stringers</text><text class="labs" x="279.0" y="193.1" text-anchor="middle">¾ poplar head jamb — flush with the ceiling</text><text class="labs" x="127.8" y="338.0" text-anchor="middle" transform="rotate(-90 127.8 338.0)">jamb</text><text class="labs" x="430.2" y="338.0" text-anchor="middle" transform="rotate(-90 430.2 338.0)">jamb</text><text class="labs" x="279.0" y="151.8" text-anchor="middle">header beyond the sheathing · landing framing beyond</text><text class="labs" x="272.0" y="89.5" text-anchor="middle">loft deck</text><text class="labs" x="446.3" y="72.0" text-anchor="middle" transform="rotate(-90 446.3 72.0)">beam</text><g class="dim"><line x1="130.2" y1="488.5" x2="427.8" y2="488.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="130.2" y1="483.5" x2="130.2" y2="493.5"/><line x1="427.8" y1="483.5" x2="427.8" y2="493.5"/><text x="279.0" y="501.5" text-anchor="middle">42½ finished opening</text></g><g class="dim"><line x1="125.0" y1="44.0" x2="433.0" y2="44.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="125.0" y1="39.0" x2="125.0" y2="49.0"/><line x1="433.0" y1="39.0" x2="433.0" y2="49.0"/><text x="279.0" y="39.0" text-anchor="middle">44 rough opening</text></g><g class="dim "><line x1="92.8" y1="192.8" x2="92.8" y2="478.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="87.8" y1="192.8" x2="97.8" y2="192.8"/><line x1="87.8" y1="478.0" x2="97.8" y2="478.0"/><text x="86.8" y="335.4" text-anchor="end" dominant-baseline="middle">40¾</text></g><g class="dim "><line x1="455.4" y1="378.2" x2="455.4" y2="478.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="450.4" y1="378.2" x2="460.4" y2="378.2"/><line x1="450.4" y1="478.0" x2="460.4" y2="478.0"/><text x="461.4" y="428.1" text-anchor="start" dominant-baseline="middle">14.26</text></g><g class="dim"><line x1="130.2" y1="208.5" x2="231.6" y2="208.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="130.2" y1="203.5" x2="130.2" y2="213.5"/><line x1="231.6" y1="203.5" x2="231.6" y2="213.5"/><text x="180.9" y="203.5" text-anchor="middle">14.48 flat</text></g><g class="dim"><line x1="231.6" y1="208.5" x2="427.8" y2="208.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="231.6" y1="203.5" x2="231.6" y2="213.5"/><line x1="427.8" y1="203.5" x2="427.8" y2="213.5"/><text x="329.7" y="203.5" text-anchor="middle">28.02 raked</text></g></svg></figure><figure><svg viewBox="0 0 419 474" role="img" aria-label="Reflected ceiling plan of the nook, bed wall at the top" style="max-width:545px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="wall" x="308.0" y="30.0" width="16.0" height="400.0" /><rect class="sheet" x="76.0" y="30.0" width="40.0" height="400.0" /><rect class="ghost" x="76.0" y="54.0" width="40.0" height="352.0" /><rect class="fin" x="76.0" y="54.0" width="40.0" height="6.0" /><rect class="fin" x="76.0" y="400.0" width="40.0" height="6.0" /><rect class="flat" x="116.0" y="54.0" width="192.0" height="121.8" /><rect class="rake" x="116.0" y="175.8" width="192.0" height="230.2" /><rect class="dashfill" x="116.0" y="42.0" width="12.0" height="120.0" /><rect class="dashfill" x="116.0" y="162.0" width="180.0" height="12.0" /><rect class="dashfill" x="296.0" y="30.0" width="12.0" height="144.0" /><rect class="dashfill" x="116.0" y="30.0" width="180.0" height="12.0" /><rect class="dashfill" x="178.0" y="42.0" width="12.0" height="120.0" /><rect class="dashfill" x="234.0" y="42.0" width="12.0" height="120.0" /><rect class="dashfill" x="128.0" y="234.0" width="78.0" height="12.0" /><rect class="dashfill" x="218.0" y="234.0" width="78.0" height="12.0" /><rect class="dashfill" x="116.0" y="174.0" width="12.0" height="256.0" /><rect class="dashfill" x="206.0" y="174.0" width="12.0" height="256.0" /><rect class="dashfill" x="296.0" y="174.0" width="12.0" height="256.0" /><circle class="light" cx="212.0" cy="134.0" r="24.0"/><text class="lab" x="212.0" y="86.0" text-anchor="middle">flat 40¾ · 14.48 × 24 from the jamb</text><text class="labs" x="212.0" y="174.0" text-anchor="middle">wafer LED</text><text class="labs" x="212.0" y="298.0" text-anchor="middle">raked from here</text><text class="labs" x="96.0" y="230.0" text-anchor="middle" transform="rotate(-90 96.0 230.0)">half-wall · jambed opening</text><text class="labs" x="122.0" y="350.0" text-anchor="middle" transform="rotate(-90 122.0 350.0)">stringer A</text><text class="labs" x="212.0" y="350.0" text-anchor="middle">B</text><text class="labs" x="302.0" y="350.0" text-anchor="middle" transform="rotate(-90 302.0 350.0)">C</text><g class="dim "><line x1="320.8" y1="60.0" x2="320.8" y2="175.8" marker-start="url(#da)" marker-end="url(#db)"/><line x1="315.8" y1="60.0" x2="325.8" y2="60.0"/><line x1="315.8" y1="175.8" x2="325.8" y2="175.8"/><text x="326.8" y="117.9" text-anchor="start" dominant-baseline="middle">14.48</text></g><g class="dim "><line x1="320.8" y1="175.8" x2="320.8" y2="400.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="315.8" y1="175.8" x2="325.8" y2="175.8"/><line x1="315.8" y1="400.0" x2="325.8" y2="400.0"/><text x="326.8" y="287.9" text-anchor="start" dominant-baseline="middle">28.02</text></g><g class="dim"><line x1="116.0" y1="18.0" x2="308.0" y2="18.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="116.0" y1="13.0" x2="116.0" y2="23.0"/><line x1="308.0" y1="13.0" x2="308.0" y2="23.0"/><text x="212.0" y="13.0" text-anchor="middle">24 deep</text></g></svg></figure><p class="cap">The opening through the half-wall is finished with ¾ poplar jambs; the head jamb and the flat soffit panel share one plane at 40¾, so the ceiling runs straight through the opening. The panel's top at 41½ clears every 2×8 in the landing box by 0.21. Where the stringer undersides come down to that line (y ≈ 18.23) the panel simply continues on the stringers to 14.26 at the far end. No gussets. Power for the wafer light must be in the half-wall before it is sheathed.</p></div>
+<div class="card"><h2>6 — Platform framing plan</h2><figure><svg viewBox="0 0 762 410" role="img" aria-label="Platform framing plan, bed wall at the top" style="max-width:990px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="wall" x="80.0" y="40.0" width="621.5" height="16.5" /><rect class="wall" x="80.0" y="56.5" width="16.5" height="291.5" /><rect class="hid" x="661.6" y="56.5" width="19.2" height="275.0" /><rect class="lum2" x="104.8" y="64.8" width="8.2" height="250.2" /><rect class="lum2" x="170.8" y="64.8" width="8.2" height="250.2" /><rect class="lum2" x="236.8" y="64.8" width="8.2" height="250.2" /><rect class="lum2" x="302.8" y="64.8" width="8.2" height="250.2" /><rect class="lum2" x="368.8" y="64.8" width="8.2" height="250.2" /><rect class="lum2" x="434.8" y="64.8" width="8.2" height="250.2" /><rect class="lum2" x="500.8" y="64.8" width="8.2" height="250.2" /><rect class="lum2" x="566.8" y="64.8" width="8.2" height="250.2" /><rect class="lum2" x="632.8" y="64.8" width="8.2" height="250.2" /><rect class="blk" x="113.0" y="64.8" width="57.8" height="8.2" /><rect class="blk" x="179.0" y="64.8" width="57.8" height="8.2" /><rect class="blk" x="245.0" y="64.8" width="57.8" height="8.2" /><rect class="blk" x="311.0" y="64.8" width="57.8" height="8.2" /><rect class="blk" x="377.0" y="64.8" width="57.8" height="8.2" /><rect class="blk" x="443.0" y="64.8" width="57.8" height="8.2" /><rect class="blk" x="509.0" y="64.8" width="57.8" height="8.2" /><rect class="blk" x="575.0" y="64.8" width="57.8" height="8.2" /><rect class="blk" x="641.0" y="64.8" width="31.6" height="8.2" /><rect class="lum" x="104.8" y="56.5" width="576.1" height="8.2" /><rect class="lum" x="96.5" y="56.5" width="8.2" height="264.0" /><rect class="lum" x="672.6" y="64.8" width="8.2" height="250.2" /><rect class="lum" x="104.8" y="315.0" width="576.1" height="16.5" /><rect class="fin" x="96.5" y="331.5" width="588.5" height="4.1" /><line class="ghostl" x1="96.5" y1="100.5" x2="685.0" y2="100.5"/><text class="labs" x="371.5" y="64.6" text-anchor="middle">2×6 rear ledger — lags into every stud</text><text class="labs" x="129.5" y="188.5" text-anchor="middle" transform="rotate(-90 129.5 188.5)">2×10 side ledger, 48 out</text><text class="lab" x="371.5" y="192.5" text-anchor="middle">2×4 joists @ 12 o.c. · 9 joists · 45½ span</text><text class="labs" x="371.5" y="68.9" text-anchor="start"></text><text class="lab" x="371.5" y="327.2" text-anchor="middle">doubled 2×10 + ¾ wrap — 102 clear span</text><text class="labs" x="676.8" y="188.5" text-anchor="middle" transform="rotate(-90 676.8 188.5)">2×4 rim at 104¾–106¼</text><text class="labs" x="509.0" y="118.2" text-anchor="middle">boxed ledge above (8)</text><text class="labs" x="212.0" y="85.2" text-anchor="start">2×4 blocking at the ledger — carries the ply&#x27;s rear edge</text><text class="labs" x="393.5" y="365.2" text-anchor="middle">¾ ply deck: 104¾ × 45½ — seams on joist centres, glued &amp; screwed</text><text class="labb" x="96.5" y="349.8" text-anchor="start">PARKED: beam end backed by 1&quot; of the 48&quot; ledger — see open items</text><g class="dim"><line x1="96.5" y1="45.5" x2="685.0" y2="45.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="96.5" y1="40.5" x2="96.5" y2="50.5"/><line x1="685.0" y1="40.5" x2="685.0" y2="50.5"/><text x="390.8" y="40.5" text-anchor="middle">107</text></g><g class="dim"><line x1="104.8" y1="276.5" x2="170.8" y2="276.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="104.8" y1="271.5" x2="104.8" y2="281.5"/><line x1="170.8" y1="271.5" x2="170.8" y2="281.5"/><text x="137.8" y="271.5" text-anchor="middle">12 o.c.</text></g><g class="dim "><line x1="696.0" y1="56.5" x2="696.0" y2="335.6" marker-start="url(#da)" marker-end="url(#db)"/><line x1="691.0" y1="56.5" x2="701.0" y2="56.5"/><line x1="691.0" y1="335.6" x2="701.0" y2="335.6"/><text x="702.0" y="196.1" text-anchor="start" dominant-baseline="middle">50¾</text></g><g class="dim "><line x1="87.7" y1="56.5" x2="87.7" y2="320.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="82.7" y1="56.5" x2="92.7" y2="56.5"/><line x1="82.7" y1="320.5" x2="92.7" y2="320.5"/><text x="81.7" y="188.5" text-anchor="end" dominant-baseline="middle">48</text></g><g class="dim "><line x1="536.5" y1="64.8" x2="536.5" y2="315.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="531.5" y1="64.8" x2="541.5" y2="64.8"/><line x1="531.5" y1="315.0" x2="541.5" y2="315.0"/><text x="542.5" y="189.9" text-anchor="start" dominant-baseline="middle">45½ span</text></g></svg></figure><p class="cap">Joists hang off the rear ledger and off the beam's inside face (LUS24 hangers, both ends — they cannot 'land on' a beam that shares their bottom). Nothing bears in the field; the platform is carried by the two walls and the half-wall. Lay the joists out so plywood seams land on centres. <b>Parked finding:</b> the side ledger stops at 48 while the beam occupies 47→50 — 1 of 3 backed; recommended fix is a 50¾ ledger and a double-2×10 hanger.</p></div>
+<div class="card"><h2>7 — Half-wall detail</h2><figure><svg viewBox="0 0 637 164" role="img" aria-label="Half-wall plan detail, horizontal section at 30 inches, rotated so the bed wall is on the left and the stair side up" style="max-width:828px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="wall" x="70.0" y="42.6" width="9.0" height="63.0" /><rect class="lum" x="79.0" y="58.4" width="13.5" height="31.5" fill="url(#hatch)"/><rect class="lum" x="515.5" y="58.4" width="13.5" height="31.5" fill="url(#hatch)"/><rect class="lum2" x="92.5" y="58.4" width="13.5" height="31.5" fill="url(#hatch)"/><rect class="lum2" x="502.0" y="58.4" width="13.5" height="31.5" fill="url(#hatch)"/><rect class="sheet" x="79.0" y="89.9" width="27.0" height="6.8" /><rect class="sheet" x="502.0" y="89.9" width="27.0" height="6.8" /><rect class="sheet" x="79.0" y="51.6" width="27.0" height="6.8" /><rect class="sheet" x="502.0" y="51.6" width="27.0" height="6.8" /><rect class="fin" x="529.0" y="51.6" width="6.8" height="45.0" /><rect class="fin" x="106.0" y="51.6" width="6.8" height="45.0" /><rect class="fin" x="495.2" y="51.6" width="6.8" height="45.0" /><rect class="dashfill" x="502.0" y="58.4" width="27.0" height="31.5" /><text class="lab" x="304.0" y="78.1" text-anchor="middle">42½ FINISHED OPENING — wall removed, both faces · ¾ poplar jambs</text><text class="labs" x="304.0" y="88.9" text-anchor="middle">header above carries the deck rim and the landing rim</text><text class="labs" x="92.5" y="45.0" text-anchor="middle">king + trimmer</text><text class="labs" x="515.5" y="45.0" text-anchor="middle">trimmer + king</text><text class="labk" x="515.5" y="30.6" text-anchor="middle">beam end above — bears here</text><text class="labs" x="304.0" y="45.0" text-anchor="middle">stair side</text><text class="labs" x="304.0" y="113.2" text-anchor="middle">loft side</text><g class="dim "><line x1="542.5" y1="51.6" x2="542.5" y2="58.4" marker-start="url(#da)" marker-end="url(#db)"/><line x1="537.5" y1="51.6" x2="547.5" y2="51.6"/><line x1="537.5" y1="58.4" x2="547.5" y2="58.4"/><text x="548.5" y="55.0" text-anchor="start" dominant-baseline="middle">¾</text></g><g class="dim "><line x1="542.5" y1="58.4" x2="542.5" y2="89.9" marker-start="url(#da)" marker-end="url(#db)"/><line x1="537.5" y1="58.4" x2="547.5" y2="58.4"/><line x1="537.5" y1="89.9" x2="547.5" y2="89.9"/><text x="548.5" y="74.1" text-anchor="start" dominant-baseline="middle">3½</text></g><g class="dim "><line x1="542.5" y1="89.9" x2="542.5" y2="96.6" marker-start="url(#da)" marker-end="url(#db)"/><line x1="537.5" y1="89.9" x2="547.5" y2="89.9"/><line x1="537.5" y1="96.6" x2="547.5" y2="96.6"/><text x="548.5" y="93.2" text-anchor="start" dominant-baseline="middle">¾</text></g><g class="dim "><line x1="558.7" y1="51.6" x2="558.7" y2="96.6" marker-start="url(#da)" marker-end="url(#db)"/><line x1="553.7" y1="51.6" x2="563.7" y2="51.6"/><line x1="553.7" y1="96.6" x2="563.7" y2="96.6"/><text x="564.7" y="74.1" text-anchor="start" dominant-baseline="middle">5</text></g><g class="dim"><line x1="106.0" y1="39.0" x2="502.0" y2="39.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="106.0" y1="34.0" x2="106.0" y2="44.0"/><line x1="502.0" y1="34.0" x2="502.0" y2="44.0"/><text x="304.0" y="34.0" text-anchor="middle">44 rough</text></g><g class="dim"><line x1="112.8" y1="113.7" x2="495.2" y2="113.7" marker-start="url(#da)" marker-end="url(#db)"/><line x1="112.8" y1="108.7" x2="112.8" y2="118.7"/><line x1="495.2" y1="108.7" x2="495.2" y2="118.7"/><text x="304.0" y="126.7" text-anchor="middle">42½ finished</text></g><g class="dim"><line x1="79.0" y1="126.3" x2="535.8" y2="126.3" marker-start="url(#da)" marker-end="url(#db)"/><line x1="79.0" y1="121.3" x2="79.0" y2="131.3"/><line x1="535.8" y1="121.3" x2="535.8" y2="131.3"/><text x="307.4" y="139.3" text-anchor="middle">50¾ — full platform depth</text></g></svg></figure><figure><svg viewBox="0 0 568 536" role="img" aria-label="Half-wall section at x = 104.5, bed wall on the left" style="max-width:738px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="wall" x="120.0" y="30.0" width="14.0" height="462.0" /><line class="floor" x1="120.0" y1="492.0" x2="498.0" y2="492.0"/><rect class="lum" x="134.0" y="481.5" width="350.0" height="10.5" /><rect class="lum" x="134.0" y="136.8" width="10.5" height="344.8" /><rect class="lum" x="473.5" y="136.8" width="10.5" height="344.8" /><rect class="lum" x="134.0" y="126.2" width="350.0" height="10.5" /><rect class="lum" x="134.0" y="115.8" width="350.0" height="10.5" /><rect class="lum2" x="144.5" y="201.5" width="10.5" height="280.0" /><rect class="lum2" x="463.0" y="201.5" width="10.5" height="280.0" /><rect class="lum" x="144.5" y="136.8" width="329.0" height="64.8" fill="url(#hatch)"/><rect class="fin" x="155.0" y="201.5" width="308.0" height="5.2" /><rect class="fin" x="155.0" y="206.8" width="5.2" height="285.2" /><rect class="fin" x="457.8" y="206.8" width="5.2" height="285.2" /><rect class="fin" x="484.0" y="121.0" width="5.2" height="371.0" /><rect class="lum2" x="144.5" y="91.2" width="318.5" height="24.5" /><rect class="sheet" x="144.5" y="86.0" width="318.5" height="5.2" fill="url(#hatch)"/><rect class="lum" x="463.0" y="51.0" width="21.0" height="64.8" fill="url(#hatch)"/><rect class="fin" x="484.0" y="51.0" width="5.2" height="70.0" /><rect class="dashfill" x="144.5" y="149.3" width="105.0" height="50.8" /><rect class="dashfill" x="249.5" y="149.3" width="10.5" height="50.8" /><rect class="dashfill" x="134.0" y="144.0" width="189.0" height="5.2" /><polygon class="dashfill" points="260.0,200.0 260.0,149.2 321.1,149.2 323.0,151.0 323.0,209.0" /><circle class="strap" cx="144.5" cy="170.0" r="11.2"/><circle class="strap" cx="473.5" cy="170.0" r="11.2"/><text class="labs" x="309.0" y="164.2" text-anchor="middle">2×10 + ½ ply spacer + 2×10 = 3½ · 47 long · bears 1½ each end</text><text class="labs" x="309.0" y="178.2" text-anchor="middle">sized by connection depth, not load (~140 psi)</text><text class="labs" x="309.0" y="130.6" text-anchor="middle">double top plate — deck rim bears here</text><text class="lab" x="288.0" y="408.0" text-anchor="middle">44 × 41½ ROUGH · 42½ × 40¾ FINISHED</text><text class="labs" x="139.2" y="317.0" text-anchor="middle" transform="rotate(-90 139.2 317.0)">king</text><text class="labs" x="149.8" y="317.0" text-anchor="middle" transform="rotate(-90 149.8 317.0)">trimmer</text><text class="labs" x="157.8" y="317.0" text-anchor="middle" transform="rotate(-90 157.8 317.0)">jamb</text><text class="labs" x="169.0" y="216.2" text-anchor="start">landing beyond — side member, rim, deck (dashed)</text><text class="labs" x="291.5" y="228.8" text-anchor="start">stringer A beyond</text><text class="labb" x="162.0" y="144.8" text-anchor="start">strap both header-to-king joints</text><text class="labk" x="456.0" y="41.9" text-anchor="end">beam end — bypasses the opening</text><g class="dim "><line x1="122.8" y1="115.8" x2="122.8" y2="492.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="117.8" y1="115.8" x2="127.8" y2="115.8"/><line x1="117.8" y1="492.0" x2="127.8" y2="492.0"/><text x="116.8" y="303.9" text-anchor="end" dominant-baseline="middle">53¾ to top plate</text></g><g class="dim "><line x1="442.0" y1="206.8" x2="442.0" y2="492.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="437.0" y1="206.8" x2="447.0" y2="206.8"/><line x1="437.0" y1="492.0" x2="447.0" y2="492.0"/><text x="436.0" y="349.4" text-anchor="end" dominant-baseline="middle">40¾ finished head</text></g><g class="dim "><line x1="487.5" y1="51.0" x2="487.5" y2="492.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="482.5" y1="51.0" x2="492.5" y2="51.0"/><line x1="482.5" y1="492.0" x2="492.5" y2="492.0"/><text x="493.5" y="271.5" text-anchor="start" dominant-baseline="middle">63 beam top</text></g><g class="dim"><line x1="155.0" y1="502.5" x2="463.0" y2="502.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="155.0" y1="497.5" x2="155.0" y2="507.5"/><line x1="463.0" y1="497.5" x2="463.0" y2="507.5"/><text x="309.0" y="515.5" text-anchor="middle">44</text></g><g class="dim"><line x1="144.5" y1="102.8" x2="473.5" y2="102.8" marker-start="url(#da)" marker-end="url(#db)"/><line x1="144.5" y1="97.8" x2="144.5" y2="107.8"/><line x1="473.5" y1="97.8" x2="473.5" y2="107.8"/><text x="309.0" y="97.8" text-anchor="middle">47 header</text></g></svg></figure><p class="cap">Plan detail is a horizontal section at 30, rotated so the bed wall is on the left and the stair side up. The opening removes both faces: what remains is two posts and a sandwich header — a portal frame, not a shear wall. The beam's reaction bypasses it (lands on the far stud pack); the landing box ties the top plate across to the right wall. Glue the deck ply and strap both header-to-king joints.</p></div>
+<div class="card"><h2>8 — Stair &amp; landing framing</h2><figure><svg viewBox="0 0 467 410" role="img" aria-label="Landing framing plan at z 47, bed wall at the top" style="max-width:607px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="wall" x="110.0" y="40.0" width="297.0" height="13.5" /><rect class="wall" x="389.0" y="53.5" width="18.0" height="306.0" /><rect class="lum" x="134.8" y="53.5" width="31.5" height="13.5" /><rect class="lum" x="134.8" y="67.0" width="31.5" height="292.5" /><rect class="sheet" x="128.0" y="53.5" width="6.8" height="27.0" /><rect class="sheet" x="128.0" y="80.5" width="6.8" height="279.0" /><rect class="sheet" x="166.2" y="53.5" width="6.8" height="27.0" /><rect class="sheet" x="166.2" y="80.5" width="6.8" height="279.0" /><rect class="lum" x="134.8" y="80.5" width="31.5" height="279.0" fill="url(#hatch)"/><rect class="lum" x="173.0" y="53.5" width="202.5" height="13.5" /><rect class="lum" x="375.5" y="53.5" width="13.5" height="162.0" /><rect class="lum" x="173.0" y="67.0" width="13.5" height="135.0" /><rect class="lum" x="242.8" y="67.0" width="13.5" height="135.0" /><rect class="lum" x="305.8" y="67.0" width="13.5" height="135.0" /><rect class="lum" x="186.5" y="283.0" width="87.8" height="13.5" /><rect class="lum" x="287.8" y="283.0" width="87.8" height="13.5" /><rect class="lum" x="173.0" y="202.0" width="202.5" height="13.5" fill="url(#hatch)"/><rect class="lum" x="173.0" y="215.5" width="13.5" height="144.0" fill="url(#hatch)"/><rect class="lum" x="274.2" y="215.5" width="13.5" height="144.0" fill="url(#hatch)"/><rect class="lum" x="375.5" y="215.5" width="13.5" height="144.0" fill="url(#hatch)"/><rect class="hanger" x="173.0" y="198.4" width="13.5" height="20.7" /><rect class="hanger" x="362.0" y="198.4" width="13.5" height="20.7" /><text class="lab" x="150.5" y="323.5" text-anchor="middle" transform="rotate(-90 150.5 323.5)">header</text><text class="lab" x="179.8" y="134.5" text-anchor="middle" transform="rotate(-90 179.8 134.5)">side member 2×8</text><text class="labs" x="249.5" y="134.5" text-anchor="middle" transform="rotate(-90 249.5 134.5)">joist 2×4</text><text class="labs" x="312.5" y="134.5" text-anchor="middle" transform="rotate(-90 312.5 134.5)">joist 2×4</text><text class="lab" x="276.5" y="212.8" text-anchor="middle">rim 2×8 · 22½</text><text class="labk" x="192.8" y="196.6" text-anchor="start">HUC28</text><text class="labk" x="355.7" y="196.6" text-anchor="end">HUC28</text><text class="lab" x="382.2" y="134.5" text-anchor="middle" transform="rotate(-90 382.2 134.5)">ledger 2×8, to y 18</text><text class="labs" x="272.0" y="64.2" text-anchor="middle">bed-wall ledger 2×8</text><text class="labs" x="230.4" y="293.8" text-anchor="middle">2×4 blocking</text><text class="labs" x="331.6" y="293.8" text-anchor="middle">2×4 blocking</text><text class="labk" x="179.8" y="350.9" text-anchor="middle">A</text><text class="labk" x="281.0" y="350.9" text-anchor="middle">B</text><text class="labk" x="382.2" y="350.9" text-anchor="middle">C</text><text class="labk" x="193.7" y="242.9" text-anchor="start">stringers run 9 under the landing</text><text class="labs" x="290.0" y="98.0" text-anchor="middle">nook below</text><g class="dim"><line x1="173.0" y1="40.0" x2="389.0" y2="40.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="173.0" y1="35.0" x2="173.0" y2="45.0"/><line x1="389.0" y1="35.0" x2="389.0" y2="45.0"/><text x="281.0" y="35.0" text-anchor="middle">24</text></g><g class="dim "><line x1="117.2" y1="53.5" x2="117.2" y2="296.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="112.2" y1="53.5" x2="122.2" y2="53.5"/><line x1="112.2" y1="296.5" x2="122.2" y2="296.5"/><text x="111.2" y="175.0" text-anchor="end" dominant-baseline="middle">27 landing</text></g><g class="dim "><line x1="128.0" y1="215.5" x2="128.0" y2="296.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="123.0" y1="215.5" x2="133.0" y2="215.5"/><line x1="123.0" y1="296.5" x2="133.0" y2="296.5"/><text x="122.0" y="256.0" text-anchor="end" dominant-baseline="middle">9 top run</text></g><g class="dim "><line x1="347.6" y1="202.0" x2="347.6" y2="215.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="342.6" y1="202.0" x2="352.6" y2="202.0"/><line x1="342.6" y1="215.5" x2="352.6" y2="215.5"/><text x="341.6" y="208.8" text-anchor="end" dominant-baseline="middle">1½</text></g><g class="dim"><line x1="173.0" y1="309.1" x2="375.5" y2="309.1" marker-start="url(#da)" marker-end="url(#db)"/><line x1="173.0" y1="304.1" x2="173.0" y2="314.1"/><line x1="375.5" y1="304.1" x2="375.5" y2="314.1"/><text x="274.2" y="322.1" text-anchor="middle">rim 22½</text></g></svg></figure><figure><svg viewBox="0 0 477 268" role="img" aria-label="Section at y 20 through the stringers&#x27; top runs, looking toward the bed wall" style="max-width:620px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="wall" x="399.0" y="30.0" width="18.0" height="198.0" /><rect class="ghost" x="120.0" y="30.0" width="18.0" height="198.0" /><rect class="lum2" x="144.8" y="133.5" width="31.5" height="94.5" /><rect class="sheet" x="138.0" y="30.0" width="6.8" height="198.0" /><rect class="sheet" x="176.2" y="30.0" width="6.8" height="198.0" /><rect class="lum" x="144.8" y="30.0" width="31.5" height="20.2" /><rect class="lum" x="144.8" y="50.2" width="31.5" height="83.2" fill="url(#hatch)"/><rect class="fin" x="138.0" y="133.5" width="45.0" height="6.8" /><rect class="fin" x="183.0" y="133.5" width="216.0" height="6.8" /><text class="labs" x="291.0" y="177.6" text-anchor="middle">flat soffit panel · face 40¾ · top 41½</text><rect class="lum" x="183.0" y="66.4" width="202.5" height="65.2" /><rect class="lum2" x="385.5" y="66.4" width="13.5" height="65.2" /><rect class="hanger" x="183.0" y="73.2" width="13.5" height="58.4" /><rect class="hanger" x="372.0" y="73.2" width="13.5" height="58.4" /><text class="labk" x="201.0" y="154.6" text-anchor="start">HUC28 on the header</text><text class="labs" x="201.0" y="165.4" text-anchor="start">SD screws through the ¾ facing</text><text class="labk" x="377.4" y="154.6" text-anchor="end">HUC28 on the ledger</text><rect class="sheet" x="183.0" y="59.6" width="216.0" height="6.8" fill="url(#hatch)"/><rect class="lum" x="183.0" y="66.3" width="13.5" height="81.9" fill="url(#hatch)"/><rect class="lum" x="284.2" y="66.3" width="13.5" height="81.9" fill="url(#hatch)"/><rect class="lum" x="385.5" y="66.3" width="13.5" height="81.9" fill="url(#hatch)"/><text class="labk" x="189.8" y="110.5" text-anchor="middle">A</text><text class="labk" x="291.0" y="110.5" text-anchor="middle">B</text><text class="labk" x="392.2" y="110.5" text-anchor="middle">C</text><text class="lab" x="205.5" y="82.6" text-anchor="start">rim 2×8 beyond</text><text class="lab" x="160.5" y="93.0" text-anchor="middle" transform="rotate(-90 160.5 93.0)">header</text><text class="labs" x="160.5" y="178.5" text-anchor="middle" transform="rotate(-90 160.5 178.5)">trimmer beyond</text><text class="labs" x="291.0" y="197.4" text-anchor="middle">stringers cut at y = 20</text><g class="dim "><line x1="129.0" y1="66.4" x2="129.0" y2="133.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="124.0" y1="66.4" x2="134.0" y2="66.4"/><line x1="124.0" y1="133.5" x2="134.0" y2="133.5"/><text x="123.0" y="99.9" text-anchor="end" dominant-baseline="middle">7.46 header ↔ rim</text></g><g class="dim "><line x1="349.5" y1="66.4" x2="349.5" y2="131.6" marker-start="url(#da)" marker-end="url(#db)"/><line x1="344.5" y1="66.4" x2="354.5" y2="66.4"/><line x1="344.5" y1="131.6" x2="354.5" y2="131.6"/><text x="343.5" y="99.0" text-anchor="end" dominant-baseline="middle">7¼ rim = plumb cut</text></g><g class="dim"><line x1="183.0" y1="51.6" x2="399.0" y2="51.6" marker-start="url(#da)" marker-end="url(#db)"/><line x1="183.0" y1="46.6" x2="183.0" y2="56.6"/><line x1="399.0" y1="46.6" x2="399.0" y2="56.6"/><text x="291.0" y="46.6" text-anchor="middle">24 between wall faces</text></g></svg></figure><p class="cap">Section at y 20 cuts the three top runs: A is fixed by SDS into the header through the facing, B by SDS from inside the box through the rim, C bears on the ledger end and screws to the right-wall studs. The landing box is four 2×8s at one elevation (41.71→48.96) — rim, side member, bed-wall ledger, right-wall ledger — with two 2×4 joists running with the stringers and 2×4 blocking flush with riser 6. The rim hangs on concealed-flange HUC28s: into the header (SD screws through the ¾ facing) and into the right-wall ledger. <b>Framing order:</b> ledgers → side member (6 × ¼×6 SDS through the facing) → HUC28s and rim → 2 × A35 at the side-member/rim corner → LUS24s and joists → stringer A (4 × ¼×4½ SDS into the header over its top run, 2 toe-screws to the rim), stringer C (4 × ¼×4½ SDS into right-wall studs, 2 toe-screws to the ledger end), then stringer B (3 × ¼×3½ SDS from inside the box through the rim) → kicker → blocking → deck ply, treads, risers.</p></div>
+<div class="card"><h2>9 — Framing overlay · half-wall + landing</h2><figure><svg viewBox="0 0 538 540" role="img" aria-label="Framing overlay: half-wall framing with the landing box and stringer A drawn to one datum, bed wall on the left" style="max-width:699px;margin:0 auto"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7,0 L0,3.5 L7,7 z"/></marker><marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z"/></marker><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern><pattern id="bad" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" class="badline"/></pattern></defs><rect class="wall" x="90.0" y="34.0" width="14.0" height="462.0" /><line class="floor" x1="90.0" y1="496.0" x2="468.0" y2="496.0"/><rect class="lum" x="104.0" y="485.5" width="350.0" height="10.5" /><rect class="lum" x="104.0" y="140.8" width="10.5" height="344.8" /><rect class="lum" x="443.5" y="140.8" width="10.5" height="344.8" /><rect class="lum" x="104.0" y="130.2" width="350.0" height="10.5" /><rect class="lum" x="104.0" y="119.8" width="350.0" height="10.5" /><rect class="lum2" x="114.5" y="205.5" width="10.5" height="280.0" /><rect class="lum2" x="433.0" y="205.5" width="10.5" height="280.0" /><rect class="lum" x="114.5" y="140.8" width="329.0" height="64.8" fill="url(#hatch)"/><rect class="fin" x="125.0" y="205.5" width="308.0" height="5.2" /><rect class="fin" x="125.0" y="210.8" width="5.2" height="285.2" /><rect class="fin" x="427.8" y="210.8" width="5.2" height="285.2" /><rect class="lum2" x="114.5" y="95.2" width="318.5" height="24.5" /><rect class="sheet" x="114.5" y="90.0" width="318.5" height="5.2" /><rect class="lum" x="433.0" y="55.0" width="21.0" height="64.8" /><rect class="fin" x="454.0" y="55.0" width="5.2" height="70.0" /><rect class="green" x="114.5" y="153.3" width="105.0" height="50.8" /><rect class="green" x="219.5" y="153.3" width="10.5" height="50.8" /><rect class="green" x="104.0" y="153.3" width="10.5" height="50.8" /><rect class="greend" x="114.5" y="153.3" width="105.0" height="24.5" /><rect class="greend" x="114.5" y="153.3" width="105.0" height="24.5" /><rect class="green" x="104.0" y="148.0" width="189.0" height="5.2" /><polygon class="green" points="230.0,204.0 230.0,153.2 291.1,153.2 293.0,155.0 293.0,213.0 356.0,213.0 356.0,271.0 356.0,271.0 419.0,271.0 419.0,329.0 419.0,329.0" /><circle class="co" cx="167.0" cy="178.9" r="9"/><text class="cot" x="167.0" y="182.9" text-anchor="middle">1</text><circle class="co" cx="224.8" cy="178.9" r="9"/><text class="cot" x="224.8" y="182.9" text-anchor="middle">2</text><circle class="co" cx="261.5" cy="178.9" r="9"/><text class="cot" x="261.5" y="182.9" text-anchor="middle">3</text><circle class="co" cx="443.5" cy="356.0" r="9"/><text class="cot" x="443.5" y="360.0" text-anchor="middle">4</text><circle class="co" cx="219.5" cy="209.0" r="9"/><text class="cot" x="219.5" y="213.0" text-anchor="middle">5</text><circle class="co" cx="114.5" cy="165.6" r="9"/><text class="cot" x="114.5" y="169.6" text-anchor="middle">6</text><text class="labs" x="279.0" y="43.8" text-anchor="middle">SANDWICH HEADER — 2×10 + ½ ply + 2×10 = 3½ · bottom 41½ · 16d @ 12 o.c., two rows</text><text class="labs" x="109.2" y="321.0" text-anchor="middle" transform="rotate(-90 109.2 321.0)">king</text><text class="labs" x="119.8" y="321.0" text-anchor="middle" transform="rotate(-90 119.8 321.0)">trim</text><text class="labs" x="438.2" y="321.0" text-anchor="middle" transform="rotate(-90 438.2 321.0)">trim</text><text class="labs" x="448.8" y="321.0" text-anchor="middle" transform="rotate(-90 448.8 321.0)">king</text><text class="labk" x="356.0" y="286.0" text-anchor="start">stringer A</text><g class="dim"><line x1="104.0" y1="506.5" x2="230.0" y2="506.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="104.0" y1="501.5" x2="104.0" y2="511.5"/><line x1="230.0" y1="501.5" x2="230.0" y2="511.5"/><text x="167.0" y="519.5" text-anchor="middle">18</text></g><g class="dim"><line x1="230.0" y1="506.5" x2="293.0" y2="506.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="230.0" y1="501.5" x2="230.0" y2="511.5"/><line x1="293.0" y1="501.5" x2="293.0" y2="511.5"/><text x="261.5" y="519.5" text-anchor="middle">9</text></g><g class="dim"><line x1="293.0" y1="506.5" x2="468.0" y2="506.5" marker-start="url(#da)" marker-end="url(#db)"/><line x1="293.0" y1="501.5" x2="293.0" y2="511.5"/><line x1="468.0" y1="501.5" x2="468.0" y2="511.5"/><text x="380.5" y="519.5" text-anchor="middle">stair run →</text></g><g class="dim"><line x1="125.0" y1="440.0" x2="433.0" y2="440.0" marker-start="url(#da)" marker-end="url(#db)"/><line x1="125.0" y1="435.0" x2="125.0" y2="445.0"/><line x1="433.0" y1="435.0" x2="433.0" y2="445.0"/><text x="279.0" y="435.0" text-anchor="middle">44 nook opening</text></g></svg></figure><p class="cap">Half-wall framing and the landing/stair framing drawn to one datum. Connection points: ➊ side member → header, 6 × ¼×6 SDS through the facing · ➋ rim → header, HUC28 · ➌ stringer A → header, 4 × ¼×4½ SDS through the facing over y 18→27 · ➍ stringer A → end stud at 47→50, 2 × ¼×4½ SDS · ➎ side member → rim, 2 × A35 · ➏ bed-wall ledger, lags into studs. Not in this view: rim → right-wall ledger HUC28, joists on LUS24s. Every one of these is a rule in dimensions.yaml and passes verify.py.</p></div>
+<div class="card"><h2>Structure &amp; load path</h2><table><tr><th>Member</th><th>Spec</th><th>Check</th></tr>
+<tr><td class="">Front beam</td><td class="n">Doubled 2×10, 102 clear span</td><td class="n">~240 psi vs ~900 allowable · deflection ≈ L/2500 · lamination to specify</td></tr>
+<tr><td class="">Joists</td><td class="n">2×4 @ 12 o.c., 45½ span, LUS24 both ends</td><td class="n">~352 psi · joists hang from the beam's face, they do not bear on it</td></tr>
+<tr><td class="">Deck</td><td class="n">¾ ply, glued + screwed</td><td class="n">Required — the diaphragm in place of posts · front-edge blocking at the beam to add</td></tr>
+<tr><td class="">Rear ledger</td><td class="n">2×6, 104¾, bottom flush w/ joists</td><td class="n">~110 lb per stud · lags into every stud</td></tr>
+<tr><td class="">Side ledger</td><td class="n">2×10, 48 out, bottom at 53¾</td><td class="n"><b>PARKED:</b> beam end backed by 1 of 3 — extend to 50¾ + double hanger</td></tr>
+<tr><td class="">Half-wall</td><td class="n">5 total — ¾ ply + 3½ studs + ¾ ply · two stud packs, no field studs · top plate 53¾</td><td class="n">Deck and beam end bear on top · portal frame with a sandwich header</td></tr>
+<tr><td class="">Nook header</td><td class="n">2×10 + ½ ply + 2×10 = 3½, over a 44 × 41½ rough opening</td><td class="n">~700 lb → ~140 psi · sized by connection depth: every landing hanger is fully backed by it</td></tr>
+<tr><td class="">Header lamination</td><td class="n">16d @ 12 o.c., two rows, through the spacer</td><td class="n">Hangers on the stair face reach the far ply only through this nailing — 4½ screws minimum through the ¾ facing</td></tr>
+<tr><td class="">Landing box</td><td class="n">2×8 rim, side member, both ledgers at 41.71→48.96</td><td class="n">Rim on HUC28s, header side with SD screws through the facing · side member 6 × ¼×6 SDS · 2 × A35 at the corner</td></tr>
+<tr><td class="">Landing joists</td><td class="n">2 × 2×4 running with the stringers, LUS24s</td><td class="n">Five support lines under the ¾ deck at ≤ 7</td></tr>
+<tr><td class="">Stringers</td><td class="n">3 × 2×12, 8.286 rise / 9 run, 9 top run under the landing</td><td class="n">Throat 5.15 vs 3½ min · plumb cut 7¼ = full rim depth · one 8' board each</td></tr>
+<tr><td class="">Stringer fixing</td><td class="n">A: 4 SDS into the header + 2 toe-screws · B: 3 SDS from inside the box · C: on the ledger end + 4 SDS into studs</td><td class="n">≈170 lb per stringer at the top</td></tr>
+<tr><td class="">Treads</td><td class="n">5/4 hardwood, 10½ on a 9 run (1½ nosing)</td><td class="n">Stringers dropped 1 · closed risers</td></tr>
+<tr><td class="">Nook finish</td><td class="n">¾ poplar jambs; ¾ soffit panel flat to y ≈ 18¼ then on the stringers</td><td class="n">Finished 42½ × 40¾ · far end 14.26 · wafer LED only (chase 3.96)</td></tr>
+<tr><td class="">Screen</td><td class="n">23 × 2×2 poplar slats @ 3.30 clear, 2×4 flat top plate</td><td class="n">Guard for a 58 deck: top plate into ceiling framing · slat base joints to specify</td></tr>
+<tr><td class="">Whole assembly</td><td class="n">≈850 lb loaded</td><td class="n">~17 psf average — but delivered on two lines (half-wall plate, kicker); floor joists below to be located</td></tr></table><div class="note"><b>Ceiling joists run parallel to the bed wall</b> — the top plate can't cross them. Measure the joist line nearest 50¾ out; the plate spans 47¼–50¾ (text) or 46½–50 with a ¾ band (Drawing 3 of Rev T) — <b>decide the plate position first</b>, then measure. If the joist falls outside the band, adjust the ledge (6–10 all work). Don't skip it: unattached, a 200 lb lean at the top of the screen overloads the slat bases.</div></div>
+<div class="card"><h2>Open items</h2><ul><li><span class="tag t-chk">PARKED</span> <b>Beam left end.</b> Side ledger stops at 48; beam is 47→50 — 1 of 3 backed. Fix: ledger to 50¾ + LUS210-2/HUS210-2 (also gives slat 0 a seat). Builder's call.</li><li><span class="tag t-chk">FIELD</span> <b>Studs</b> in the bed wall, window wall and right wall — every ledger and stringer C depend on them. <b>Ceiling joist</b> nearest 50¾ out. <b>Mattress</b> thickness (6 assumed). <b>Room depth</b> — ½ unplaced in the chain. <b>Floor joists</b> under the half-wall plate and the kicker.</li><li><span class="tag t-chk">SPECIFY</span> Beam lamination · deck-ply front-edge blocking at the beam · header-to-king straps (member) · kicker anchorage · half-wall bottom-plate anchorage · slat-to-beam and slat-to-plate joints · screen top-plate position (47¼→50¾ vs 46½→50 + band).</li><li><span class="tag t-chk">SEQUENCE</span> Nook power into the half-wall before sheathing; switch on the half-wall face, desk side. Stringer B's screws go in before the landing deck.</li><li><span class="tag t-chk">VERIFY</span> Lay out and cut one stringer, measure the actual throat and plumb cut, then cut the other two.</li><li><span class="tag t-lock">LOCKED</span> Deck 58 · platform 107 × 50¾ · 8 boxed ledge · 39 bay · doubled 2×10 upstand beam with ¾ wrap · post-free · half-wall at the stair end · full-height slat screen · 7 @ 8.286 / 9 run · 27 landing at 49.71 · 5/4 treads · stringers 9 under the landing · landing box all 2×8 · nook jambed, ceiling 40¾ flush.</li></ul></div>
+<div class="card"><h2>Revisions</h2><p class="cap" style="margin:0 0 10px">Drawing numbers in entries below refer to the numbering in force at the time.</p><table><tr><th>Rev</th><th>Change</th></tr><tr><td class="n"><b>U</b></td><td><b>Model-first.</b> This set is generated by <code>drawings.py</code> from <code>dimensions.yaml</code>, checked by <code>verify.py</code>. <b>Stringer geometry corrected:</b> the top plumb cut against a rim at y 27 is 7.0 tall, not 11¼ — Rev M/S/T counted wood above the tread-5 cut that doesn't exist, and Drawing 8's path drew it as a zero-width spike. <b>Landing reframed:</b> stringers extend 9 under the landing so the plumb cut is 41.71→48.96, the depth of a 2×8; rim, side member and both ledgers are 2×8 on that line; rim on HUC28s fully backed by the header; joists run with the stringers; blocking flush with riser 6; rake gussets deleted. <b>Treads</b> 5/4, stringers dropped 1. <b>Nook</b> jambed in ¾ poplar, finished 42½ × 40¾, soffit flush through the opening (Rev T's 41½ 'finished' ceiling left no room for the panel under the side member). <b>Cut-list corrections:</b> rear ledger 104¾ not 107; beam 104¾; wrap underside 102; ledge parts start at 1½. Slats drawn at 31½ (Rev T's Drawing 2 still had 29⅝). <b>Parked:</b> beam left end on the side ledger (1 of 3 backed) and slat 0. See audits/.</td></tr><tr><td class="n"><b>T</b></td><td><b>Dimension schedule added</b> as the controlling reference — every height and plan extent derived once, with a derived-quantities table so nothing gets independently re-measured. Cross-check against it found four disagreements, now fixed: <b>(1)</b> "clear underneath 53¾", uniform" was wrong — the ¾" beam wrap puts the beam's underside at 53"; <b>(2)</b> Drawing 8's caption still said 9¼" bearing from when the rim was a 2×10; <b>(3)</b> "33" screen" is beam-top-to-ceiling, but the slats are 31½" with the top plate taking 1½"; <b>(4)</b> throat 5.15" not 5.16", slat clear 3.30" not 3⁵⁄₁₆". Added a build note that the riser is 8.286" — stepping off 8¼" seven times lands ¼" short.</td></tr><tr><td class="n"><b>S.1</b></td><td>Drawing 8 cleaned up. Red now means one thing consistently — bars are hangers, dots are structural screws, an outlined box is direct fastening to framing — with a key on the drawing. Removed the leftover filler rectangle from Rev O. Fixed overlapping label blocks in both views, separated the landing and stair callouts into their own zones, and corrected "treads span 24" between the outer two" to treads 24" long bearing on all three stringers. Rim and ledgers redrawn so they butt properly rather than overlapping at the corners.</td></tr><tr><td class="n"><b>S</b></td><td>Landing reframed as a proper box per Andrew. <b>¾" ply facing</b> on the header's stair face brings it flush with the wall plane. <b>2×4 ledgers</b> on the bed wall and right wall, a <b>2×8 side member</b> screwed to the flush header (¼"×5", both plies) carrying the joists, and a <b>2×12 rim</b> running the full 24" with its left end hangered to the header. Replaces the Rev R single 2×10 ledger, which put every joist and the rim on one member. Rim upsized to 2×12 for 11¼" of stringer bearing; side member held to 2×8 so it clears the nook ceiling. Landing back to full width and the stair stays 24".</td></tr><tr><td class="n"><b>R</b></td><td><b>2×10 ledger added</b> on the header's stair-side face across the landing's 27". Joists and rim now hang from the ledger rather than direct from the header. This moves the critical connection from hanger nails — 1½" long, reaching only the near ply of a built-up header — to ¼"×4" structural screws that pass through both plies, with hangers nailing into 1½" of solid ledger. Also far easier to frame: one level ledger, then joists drop in. Landing narrows to 23¼"; the stair stays 24" since the ledger stops where stringer A begins, and the stringer's plumb cut now bears on the ledger end plus the rim.</td></tr><tr><td class="n"><b>Q.1</b></td><td>Under-stair nook moved to Drawing 5, directly after the stair section, so the two stair-related views sit together and the framing drawings run 6–9 uninterrupted. Live cross-references updated; a note added here that numbers in older entries refer to the numbering of the time.</td></tr><tr><td class="n"><b>Q</b></td><td>Header specified as a proper <b>sandwich header</b> — 2×10 + ½" ply spacer + 2×10 = 3½", flush with the stud faces. Drawing 7's plan already showed 3½" but the notes had been describing it as 3", which is what produced the external-filler idea in Rev O. Ply-to-ply nailing (16d @ 12" o.c., two rows) added to the drawings and the table: the spacer is filler, so hanger load reaches the far ply only through that nailing.</td></tr><tr><td class="n"><b>P</b></td><td>New <b>Drawing 9 — framing overlay</b>: half-wall framing and stair/landing framing drawn to one datum so every connection can be cross-checked. Building it invalidated the Rev O filler: between notches stringer A's top edge is the tread cut at 41.43" while the header bottom is 41.5", so <b>they never overlap</b> and there is nothing to fasten through. The filler is removed. Stringer A's actual wall contact is the half-wall's <b>end stud at 47"–50¾"</b>, where the wall is solid and sheathed again — no added parts needed.</td></tr><tr><td class="n"><b>O</b></td><td>Two connection gaps closed. <b>(1)</b> Drawing 7 still showed a ledger on the half-wall carrying the landing joists — same error as the rim had, since the wall is open across 3"–47". Joists and rim now all hang off the header's stair-side face; that face must be left unsheathed and the header's plies properly laminated so hanger fasteners engage both. <b>(2)</b> Stringer A does not reach the header — ¾" of removed sheathing separates them, and past 36" out the stringer has dropped below the header entirely. Added an optional ¾" ply filler over the 27"–36" band so it can screw in, giving the top of the stair a fourth restraint alongside the rim, the kicker, and stringer C's tie to the right wall.</td></tr><tr><td class="n"><b>N.1</b></td><td>Drawing 6: the landing rim was drawn as a dotted box hanging off the right-hand end of the half-wall, past where the wall stops. That section shows the wall's <b>face</b>, so the rim belongs 25½"–27" from the bed wall, seen end-on, in the middle of the opening. Redrawn there with the landing extent shown behind it. Drawing 7 section labels relaid out; 2×4 rim comparison removed.</td></tr><tr><td class="n"><b>N</b></td><td><b>Load path corrected.</b> The landing's outer rim was drawn bearing on the half-wall at its left end — but the nook opening runs 3"–47", so that end landed on nothing. The rim now <b>hangs off the nook header with a joist hanger</b>. To make that connection possible the header grows to a <b>doubled 2×10</b> (you can't hang a 9¼"–11¼" member off a 5½" one) and the rim becomes a <b>2×10</b> to match. Header demand ≈700 lb over 44" → ~140 psi vs ~900 allowable; it is sized by connection depth, not load. Cost: nook opening 45¼" → <b>41½"</b>; flat ceiling now 15½" × 24" at 41½", light chase improves 2¾" → 4". Soffit gussets relabelled <b>non-structural</b> throughout — they were drawn at framing weight next to an unsupported rim, which made the assembly look like trim was carrying the stair.</td></tr><tr><td class="n"><b>M</b></td><td>Drawings 5 and 6 swapped so platform framing precedes the half-wall detail and the half-wall reads straight into the stair. <b>Landing framing added to Drawing 7's section</b>, which exposed a real problem: the stringer is 15¼" deep where it lands, so a 2×4 rim gave only 3½" of attachment face. The landing's outer joist is now a <b>2×12</b> — 11¼" of bearing, bottom at 37¾", still hidden above the nook soffit. The "furred off the landing" stretch in Drawing 8 is now drawn and specified: tapered plywood gussets on both wall faces spanning 18"–27".</td></tr><tr><td class="n"><b>L.1</b></td><td>Drawing 5 section: header was drawn butting between the posts with no bearing. Corrected to standard opening framing — full-height kings, trimmers stopping at the header underside, and a 47" header bearing 1½" on each trimmer.</td></tr><tr><td class="n"><b>L</b></td><td><b>Under-stair nook added.</b> Single open cavity, 44" × 24", with a 15" × 24" flat ceiling at 42" and a soffit raked parallel to the stair down to 15¼". One 6" recessed light on the flat; carpet runs through. New <b>Drawing 7</b> (stair &amp; landing framing, incl. stringer layout) and <b>Drawing 8</b> (nook). Drawing 5 reworked to show the opening framing. <b>Correction:</b> the stringer underside was wrong twice — properly it runs 34½" at the landing edge to 16" at the far end, derived from the notch inner corners rather than the tread surfaces. <b>Correction:</b> a through-opening removes both wall faces, not one — the half-wall becomes a portal frame, so strap the header-to-post joints and treat the deck diaphragm as the only lateral system at that end.</td></tr><tr><td class="n"><b>K</b></td><td>New <b>Drawing 6 — platform framing plan</b>: ledgers, 9 joists at 12" o.c., blocking row at the ledger, beam, side ledger, and the rim set inboard to 106¼". Drawing 3 labels relaid out to remove overlaps. Drawing 1 ledge and beam callouts centred; step-through text removed.</td></tr><tr><td class="n"><b>J.2</b></td><td>Stair section: crouch-zone shading replaced with a shaded overlay of everything beyond the section plane — half-wall, loft deck, boxed ledge, beam end. Crouch note moved to the caption. Fixed stale 49" platform-edge references in that drawing (deck line and the half-wall guard dimension) that predated the 50¾" depth.</td></tr><tr><td class="n"><b>J.1</b></td><td>Stair section now shows the boxed ledge in dotted outline, sitting on the deck line and terminating at the half-wall. The 19" step-through figure stays on Drawing 1 only.</td></tr><tr><td class="n"><b>J</b></td><td>Boxed ledge raised 6" → <b>8" tall</b>, top at 66". No dimensional cascade — bay stays 39", platform stays 50¾". Now stands 2" proud of a 6" mattress as an intentional curb rather than a flush surface, and hedges the mattress choice: flush at 8", a modest lip at 6". Well deepens to 5¾" × 7¼", ≈2.5 cu ft. Front rail rips to 7¼".</td></tr><tr><td class="n"><b>I.1</b></td><td>Plan detail's loft-side and stair-side face labels were swapped — the detail is rotated 90° CCW from Drawing 1, which puts the stair side up. Orientation note added to the drawing so it can't be misread again.</td></tr><tr><td class="n"><b>I</b></td><td>Half-wall detailed — <b>5" total</b> (¾" paint-grade ply + 3½" studs @ 16" o.c. + ¾" ply), doubled stud under the beam bearing, double top plate at 53¾". New Drawing 5 with plan and section. <b>Correction:</b> the front elevation read "107" clear" — the deck is 107" but the wall takes 5" of it, so the clear opening below is <b>102"</b>, matching the beam's clear span in the structure table. Deck rim set inboard to 106¼" so the stair-side panel is one uncut piece floor to 58".</td></tr><tr><td class="n"><b>H.1</b></td><td>Andrew's markup folded in — arrowheads reduced, redundant direction arrows removed, labels repositioned, <b>door swing arc sweep corrected</b>. Cleanup: ceiling-joist note was still quoting the Rev G target of 49"; now reads 50¾" and matches Open Items. Elevation beam callout now names the wrap.</td></tr><tr><td class="n"><b>H</b></td><td><b>Finish approach set:</b> rough framing lumber for the doubled 2×10, wrapped in ¾" paint-grade poplar on face and underside; matching header band on the top plate; slat faces flush with both so the screen reads as one framed panel. Slats to be ripped from 8/4 poplar. <b>Correction:</b> mattress bay was exactly 38" — zero tolerance — now 39". Platform depth 49" → 50¾" (8 ledge + 39 bay + 3 beam + ¾ wrap). Joist span 45½", fan clearance 15¼", desk projects 4¼".</td></tr><tr><td class="n"><b>G</b></td><td><b>Stairs locked</b> — balanced option: 7 uniform risers @ 8¼", 5 treads @ 9" run with 10½" boards, 24" wide, 27" landing at 49¾" (one riser below deck) for 46¼" of headroom at the transition. 72" projection; dresser slides against the door leaving a 30" gap. Built-in bookcase dropped. Boxed ledge confirmed full 107" with a capped end. Stair's loft side open past 49" with a finished skirt — exposed drops are all under the 30" guard threshold. Floor plan corrected to true orientation and extended to the full room. Under-stair void drawn enclosed.</td></tr><tr><td class="n"><b>F</b></td><td>Ledge boxed in — 8" × 6", top flush with the mattress at 64", running the full 107". Encloses ≈3 cu ft; hinged lids optional. Front rail to be ripped on site to actual mattress thickness.</td></tr><tr><td class="n"><b>E</b></td><td>Screen end stiles flush with beam and top plate at both ends; 23 slats at 3.30" clear. Ceiling joists confirmed parallel to the bed wall.</td></tr><tr><td class="n"><b>D</b></td><td>Rear ledger flipped to bottom-flush with the joists — top 2" proud, concealed inside the boxed ledge. Underside becomes one flat 53¾" plane. Added 2×4 blocking at the wall for the plywood's rear edge.</td></tr><tr><td class="n"><b>C</b></td><td><b>Correction:</b> deck runs over the half-wall, not into it. Deck restored to 107", stair back to 24". Ledge 12" → 8", depth 53" → 49".</td></tr><tr><td class="n"><b>B</b></td><td>Guardrail replaced with full-height slat screen. Posts deleted — doubled 2×10 upstand beam spans full width. Stair-end support changed from post to framed half-wall.</td></tr><tr><td class="n"><b>A</b></td><td>Initial layout. Deck 58" AFF, 2×6 ledger with 2×4 joists, 26" guardrail, two 4×4 posts, 42" platform depth.</td></tr></table></div>
+</div></body></html>
