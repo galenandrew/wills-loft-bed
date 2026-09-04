@@ -54,6 +54,12 @@ E = html.escape
 JAMB_Y = [NOOK_Y[0] + JAMB, NOOK_Y[1] - JAMB]
 
 # --------------------------------------------------------------------------- stair profile
+KICK = M["kicker"]
+# Rev W: the stringers' floor seat runs over the kicker, so they are notched to hook
+# over it. True when the kicker's downhill face is the stringer's bottom plumb cut and
+# it sits on the floor; if the kicker ever moves, the profile falls back to a flat seat.
+NOTCH_KICKER = abs(KICK.y[1] - ST.y_bottom) < 0.011 and KICK.z[0] < 0.011
+
 def stringer_pts():
     top = LAND - ST.deck_t
     pts = []
@@ -62,20 +68,40 @@ def stringer_pts():
         pts = [(ST.y_top, U(ST.y_top)), (ST.y_top, top), (y_edge, top), (ST.y_riser_top, LAND - T)]
     else:
         pts = [(ST.y_top, U(ST.y_top)), (ST.y_top, ST.riser_z[ST.n_treads] - T)]
+    foot = KICK.z[1] if NOTCH_KICKER else 0
     for i in range(ST.n_treads, 0, -1):
         y0, y1 = ST.tread_y(i)
-        pts += [(y0, ST.riser_z[i] - T), (y1, ST.riser_z[i] - T), (y1, (ST.riser_z[i - 1] - T) if i > 1 else 0)]
+        pts += [(y0, ST.riser_z[i] - T), (y1, ST.riser_z[i] - T), (y1, (ST.riser_z[i - 1] - T) if i > 1 else foot)]
+    if NOTCH_KICKER:
+        pts += [(KICK.y[0], KICK.z[1]), (KICK.y[0], 0)]
     pts += [(ST.y_riser_top + U(ST.y_riser_top) / ST.tan, 0)]
     return pts
 
+# Rev W — tread/riser joinery. The exposed face of every plumb notch is its DOWNHILL
+# side (material is uphill of it), so the riser board goes in front of the cut, its
+# bottom edge on the stringer's horizontal cut for the tread below. The tread below
+# starts where that riser ends and butts its face: a simple butt joint, riser behind
+# the tread, nothing notched. The board is still tread_board_width wide, so the
+# nosing-to-nosing going stays exactly stair.run.
+RISER_T = 0.75                                                # 3/4 ply, same as the treads
+NOSE = float(d["stair"]["tread_board_width"]) - ST.run        # 1/8 past the riser face
+
+def tread_y_board(i):
+    """tread i's BOARD extent in y (not the stringer's run — that is ST.tread_y)."""
+    y0, y1 = ST.tread_y(i)
+    return y0 + RISER_T, y1 + RISER_T + NOSE
+
+def riser_y(i):
+    """riser i's y extent: applied to the downhill face of the plumb notch at tread i's foot."""
+    y1 = ST.tread_y(i)[1]
+    return y1, y1 + RISER_T
+
 def draw_treads(v):
     for i in range(1, ST.n_treads + 1):
-        y0, y1 = ST.tread_y(i)
-        v.rect(y0, y0 + float(d["stair"]["tread_board_width"]), ST.riser_z[i] - T, ST.riser_z[i], "fin")
-        # riser drops all the way to the stringer's own notch corner, so its face butts flush against the tread below
-        v.rect(y1 - 0.75, y1, (ST.riser_z[i - 1] - T) if i > 1 else 0, ST.riser_z[i] - T, "fin")
-    # riser 6, under the landing: same convention, recessed under the landing's own 1/8 nose
-    v.rect(ST.y_riser_top - 0.75, ST.y_riser_top, ST.riser_z[ST.n_treads] - T, LAND - T, "fin")
+        v.rect(*tread_y_board(i), ST.riser_z[i] - T, ST.riser_z[i], "fin")
+        v.rect(*riser_y(i), (ST.riser_z[i - 1] - T) if i > 1 else 0, ST.riser_z[i] - T, "fin")
+    # riser 6 — the landing face, tread 5's cut up to the landing deck's underside
+    v.rect(ST.y_riser_top, ST.y_riser_top + RISER_T, ST.riser_z[ST.n_treads] - T, LAND - T, "fin")
 
 def half_wall_yz(v, cut=True):
     """half-wall framing in a y–z view (bed wall left)."""
@@ -85,6 +111,12 @@ def half_wall_yz(v, cut=True):
     if JAMB:
         v.rect(NOOK_Y[0], NOOK_Y[1], CEIL, HB, "fin")
         v.rect(NOOK_Y[0], JAMB_Y[0], 0, CEIL, "fin"); v.rect(JAMB_Y[1], NOOK_Y[1], 0, CEIL, "fin")
+
+# The stair's FINISHED extent — the bottom tread's nosing, 7/8 past the framing line
+# at ST.y_bottom because the riser board stands 3/4 proud of the plumb cut. Clearances
+# (the gap to the dresser, the plan dims) are measured from this; framing layout from
+# ST.y_bottom. Rev W.
+Y_FIN = tread_y_board(1)[1]
 
 # --------------------------------------------------------------------------- named values for content/ placeholders
 # content/*.yaml prose may say {nook_fin_w}; unknown names raise KeyError at build time — that is deliberate.
@@ -96,4 +128,5 @@ VALS.update({
     "angle": f"{math.degrees(ST.angle):.2f}", "n_risers": str(ST.n_risers), "n_treads": str(ST.n_treads),
     "plumb_lo": fr(ST.plumb_cut()[0]), "plumb_hi": fr(ST.plumb_cut()[1]), "top_run": fr(ST.top_run), "tread_t": fr(T),
     "beam_above_deck": fr(m("beam").z[1] - DECK), "slat_count": str(SCR["slat_count"]),
+    "stair_fin": fr(Y_FIN), "landing_fin": fr(m("lnd_ply").y[1]), "riser_t": fr(RISER_T),
 })
