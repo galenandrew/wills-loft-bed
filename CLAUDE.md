@@ -58,6 +58,7 @@ The restructure exists so that a change touches a few small files, not one big o
 - **Fastener penetration counts what it passes through.** A 1½" hanger nail through ¾" sheathing reaches ¾". Hanger flange holes below the supporting member's bottom hit air.
 - **Flag now-or-never decisions** — things that get much harder after a prior step (nook power before sheathing; joist location before the screen top plate).
 - **Push back on the user.** The design improved every time a session did.
+- **Never commit unprompted.** Make the change, say what changed, and stop. Suggest a commit when it makes sense; the user gives the command. This includes `--amend` and `revert`.
 - **Keep replies concise.** No long responses. State the error/update plainly, make the fix, name what changed. The detailed reasoning belongs in the commit message and in `audits/`, not in chat — the user asks when they want more.
 - **Design and geometry changes happen inline, with the full model in context.** Subagents audit; they don't design.
 
