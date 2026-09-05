@@ -22,6 +22,8 @@ def d8a():
     for x, l in ((107.75, "A"), (119, "B"), (130.25, "C")): v.text(x, 32.6, l, "labk", "middle", dy=4)
     v.text(109.3, 20.6, f"stringers run {fr(ST.top_run)} under the landing", "labk", "start", dy=4)
     v.text(120, 4.5, "nook below", "labs", "middle", dy=4)
+    # NOTE: the "24" overall dim sits right on the wall's outer face (v=-1.5, same as the wall rect above) —
+    # push it further out (like d3/d7's outside dims) so the line doesn't overlap the wall.
     v.dim_h(107, 131, -1.5, "24", above=True); v.dim_v(100.8, 0, ST.landing, f"{fr(ST.landing)} landing"); v.dim_v(102.0, ST.y_top, ST.landing, f"{fr(ST.top_run)} top run")
     v.dim_v(126.4, rm.y[0], rm.y[1], "1½", left=True); v.dim_h(107, 129.5, 28.4, "rim 22½", above=False)
     return v.svg("Landing framing plan at z 47, bed wall at the top")
@@ -44,6 +46,7 @@ def d8b():
     v.text(104.5, 46, "header", "lab", "middle", rot=-90); v.text(104.5, 36.5, "trimmer beyond", "labs", "middle", rot=-90)
     v.text(119, 34.4, f"stringers cut at y = {y_cut}", "labs", "middle")
     v.dim_v(101.0, HB, rm.z[1], f"{fr(rm.z[1]-HB)} header ↔ rim"); v.dim_v(125.5, rm.z[0], rm.z[1], f"{fr(DER['rim_stringer_bearing'])} rim = plumb cut", left=True)
+    # NOTE: same overlap as d8a's "24" dim — this sits at v=50.6, inside the wall rect's span (31-53); move it outside.
     v.dim_h(107, 131, 50.6, "24 between wall faces", above=True)
     return v.svg("Section at y 20 through the stringers' top runs, looking toward the bed wall")
 
