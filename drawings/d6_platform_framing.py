@@ -21,8 +21,8 @@ def d6():
     v.text(21, 4.5, "2×4 blocking at the ledger — carries the ply's rear edge", "labs", "start", dy=4)
     v.text(54, 55.4, f"¾ ply deck: {fr(DER['deck_ply'][0])} × {fr(DER['deck_ply'][1])} — seams on joist centres, glued & screwed", "labs", "middle", dy=4)
     v.text(0, 52.6, "PARKED: beam end backed by 1\" of the 48\" ledger — see open items", "labb", "start", dy=4)
-    v.dim_h(0, 107, -2, "107"); v.dim_h(m("deck_joist[0]").x[0], m("deck_joist[1]").x[0], 40, "12 o.c.")
-    v.dim_v(109, 0, m("beam_wrap_face").y[1], fr(m("beam_wrap_face").y[1]), left=False); v.dim_v(-1.6, 0, m("side_ledger").y[1], fr(m("side_ledger").y[1]))
+    v.dim_h(0, 107, -4, "107"); v.dim_h(m("deck_joist[0]").x[0], m("deck_joist[1]").x[0], 40, "12 o.c.")
+    v.dim_v(109, 0, m("beam_wrap_face").y[1], fr(m("beam_wrap_face").y[1]), left=False); v.dim_v(-4, 0, m("side_ledger").y[1], fr(m("side_ledger").y[1]))
     v.dim_v(80, m("rear_ledger").y[1], m("beam").y[0], f"{fr(DER['deck_joist_span'])} span", left=False)
     return v.svg("Platform framing plan, bed wall at the top")
 

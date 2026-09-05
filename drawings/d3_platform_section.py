@@ -32,7 +32,7 @@ def d3():
     # dims
     v.dim_h(0, 8, 74, "8"); v.dim_h(8, m("beam").y[0], 74, f"{fr(m('beam').y[0]-8)} bay"); v.dim_h(m("beam").y[0], m("beam_wrap_face").y[1], 74, "3¾")
     v.dim_h(0, m("beam_wrap_face").y[1], 42.5, f"{fr(m('beam_wrap_face').y[1])} platform depth (8 + {fr(m('beam').y[0]-8)} + 3 + ¾)", above=False)
-    v.dim_v(-3.3, 0, DECK, f"{fr(DECK)} deck"); v.dim_v(-3.3, DECK, m("ledge_lid").z[1], "8", left=True)
+    v.dim_v(-5, 0, DECK, f"{fr(DECK)} deck"); v.dim_v(-5, DECK, m("ledge_lid").z[1], "8", left=True)
     v.dim_v(20, 0, m("deck_joist[0]").z[0], f"{fr(DER['clear_under_joists'])} clear")
     v.dim_v(50.75, 0, m("beam_wrap_underside").z[0], f"{fr(DER['clear_under_beam'])} under the beam", left=False)
     v.dim_v(44, DECK + MAT["thickness"], CEILING, f"{fr(DER['sitting_headroom'])} sitting headroom")

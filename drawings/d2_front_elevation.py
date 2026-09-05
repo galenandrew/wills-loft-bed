@@ -24,7 +24,7 @@ def d2():
     v.text(53.5, m("screen_top_plate").z[0] - 3, "2×4 top plate — into ceiling framing / blocking", "labs", "middle")
     v.text(50, 40, "under-loft space left open — standalone furniture", "labs", "middle")
     v.dim_h(0, m("hw_sheath_loft_a").x[0], 4, f"{fr(DER['clear_below_deck_x'])} clear opening — no posts (deck {fr(107)}; half-wall takes 5)")
-    v.dim_v(-3.5, 0, DECK, f"{fr(DECK)} deck"); v.dim_v(RX + 8, m("beam").z[1], CEILING, f"{fr(CEILING - m('beam').z[1])} · slats {fr(m('slat[0]').size('z'))}", left=False)
+    v.dim_v(-7, 0, DECK, f"{fr(DECK)} deck"); v.dim_v(RX + 8, m("beam").z[1], CEILING, f"{fr(CEILING - m('beam').z[1])} · slats {fr(m('slat[0]').size('z'))}", left=False)
     v.dim_v(RX + 8, DECK, m("beam").z[1], fr(m("beam").z[1] - DECK), left=False)
     v.text(RX / 2, CEILING, f"ceiling {fr(CEILING)}", "labs", "middle", dy=-4)
     return v.svg("Front elevation looking toward the bed wall, window wall on the left")

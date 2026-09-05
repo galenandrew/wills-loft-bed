@@ -44,9 +44,9 @@ def d7b():
     v.text(5, 39.4, "landing beyond — side member, rim, deck (dashed)", "labs", "start"); v.text(27, 34.5, "stringer A beyond", "labs", "start")
     v.text(4, 49.6, "strap both header-to-king joints", "labb", "start")
     v.text(46, 64.3, "beam end — bypasses the opening", "labk", "end")
-    v.dim_v(-1.6, 0, m("hw_top_plate_2").z[1], f"{fr(m('hw_top_plate_2').z[1])} to top plate"); v.dim_v(20, 0, CEIL, f"{fr(CEIL)} finished head", left=True)
-    v.dim_v(50.5, 0, m("beam").z[1], f"{fr(m('beam').z[1])} beam top", left=False)
-    v.dim_h(NOOK_Y[0], NOOK_Y[1], -1.5, fr(NOOK_Y[1]-NOOK_Y[0]), above=False); v.dim_h(m("hw_header").y[0], m("hw_header").y[1], 55.6, f"{fr(m('hw_header').size('y'))} header")
+    v.dim_v(-3, 0, m("hw_top_plate_2").z[1], f"{fr(m('hw_top_plate_2').z[1])} to top plate"); v.dim_v(20, 0, CEIL, f"{fr(CEIL)} finished head", left=True)
+    v.dim_v(52.5, 0, m("beam").z[1], f"{fr(m('beam').z[1])} beam top", left=False)
+    v.dim_h(NOOK_Y[0], NOOK_Y[1], -1.5, fr(NOOK_Y[1]-NOOK_Y[0]), above=False); v.dim_h(m("hw_header").y[0], m("hw_header").y[1], 52, f"{fr(m('hw_header').size('y'))} header")
     return v.svg("Half-wall section at x = 104.5, bed wall on the left")
 
 FIGURES = [("d7a", d7a), ("d7b", d7b)]

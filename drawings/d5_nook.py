@@ -34,7 +34,7 @@ def d5a():
     v.text(24, 55.5, "loft deck", "labs", "middle"); v.text(48.9, 58, "beam", "labs", "middle", rot=-90)
     v.dim_h(JAMB_Y[0], JAMB_Y[1], -1.5 + 0, f"{fr(JAMB_Y[1]-JAMB_Y[0])} finished opening", above=False)
     v.dim_h(NOOK_Y[0], NOOK_Y[1], 62, f"{fr(NOOK_Y[1]-NOOK_Y[0])} rough opening")
-    v.dim_v(-1.6, 0, CEIL, fr(CEIL)); v.dim_v(50.2, 0, soffit(NOOK_Y[1]), fr(soffit(NOOK_Y[1])), left=False)
+    v.dim_v(-3, 0, CEIL, fr(CEIL)); v.dim_v(50.2, 0, soffit(NOOK_Y[1]), fr(soffit(NOOK_Y[1])), left=False)
     v.dim_h(JAMB_Y[0], Y_MEET, 36, f"{fr(Y_MEET - JAMB_Y[0])} flat"); v.dim_h(Y_MEET, JAMB_Y[1], 36, f"{fr(JAMB_Y[1] - Y_MEET)} raked")
     return v.svg("Under-stair nook, elevation from the under-loft space, bed wall on the left")
 
@@ -61,7 +61,7 @@ def d5b():
     v.text(118, 4.4, "2×4-flat nailer wall, 2×2 sill", "labs", "middle", dy=4)
     v.text(117, 44.6, "struts to the stringers", "labs", "middle", dy=4)
     v.text(107.75, 40, "stringer A", "labs", "middle", rot=-90); v.text(119, 40, "B", "labs", "middle"); v.text(130.25, 40, "C", "labs", "middle", rot=-90)
-    v.dim_v(132.6, JAMB_Y[0], Y_MEET, f"{fr(Y_MEET-JAMB_Y[0])}", left=False); v.dim_v(132.6, Y_MEET, JAMB_Y[1], f"{fr(JAMB_Y[1]-Y_MEET)}", left=False)
+    v.dim_v(134, JAMB_Y[0], Y_MEET, f"{fr(Y_MEET-JAMB_Y[0])}", left=False); v.dim_v(134, Y_MEET, JAMB_Y[1], f"{fr(JAMB_Y[1]-Y_MEET)}", left=False)
     v.dim_h(XW[0], XW[1], -0.5 - 1, f"{fr(XW[1]-XW[0])} — outer face of the half-wall to the right wall")
     return v.svg("Reflected ceiling plan of the nook, bed wall at the top")
 
