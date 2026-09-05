@@ -416,3 +416,47 @@ objection this report ended on is gone: the hook stays at 0.06 s, and the 3 s is
 paid only when the geometry actually moved, which is exactly when you wanted to look
 at the figure anyway. The plans (d1, d6, d8a, d9) should stay on box projection —
 the kernel would add cost and nothing else.
+
+---
+
+## Handedness (same day) — the exported solid was mirrored
+
+The builder opened `spike/model.stl` and found the half-wall on the wrong side of
+the stair. It was, and the cause is worth recording because it nearly sent me
+"fixing" a drawing set that was correct all along.
+
+**The yaml's axes are left-handed as they map onto the room.** Facing the closet
+wall (+y), the window wall (x = 0) is on your *right*, so yaml +x runs to your left
+and `x × y = −z`. The labelling is not wrong — facing the **bed** wall, +x really is
+on your right, which is the vantage the sheets are read from — it is just a
+left-handed pairing.
+
+In 2D that is harmless. Every figure maps two yaml axes onto the page, and once the
+frame is read correctly all twelve check out: the plans are true from-above plans,
+Drawing 4's half-wall genuinely is in front of the cut at x 119, and Drawing 8b
+genuinely does look toward the bed wall. My first pass computed the viewpoints
+assuming a right-handed frame and concluded the plans were drawn from below and the
+captions contradicted themselves. **That was wrong**, and it is recorded here
+because acting on it would have mirrored a correct drawing set.
+
+For a solid it is not harmless. A CAD kernel's space is right-handed, so feeding
+these coordinates in builds the mirror image of the room. Fixed in
+`cad/export.py:to_room_frame()`, which mirrors x for STEP and STL only:
+
+    X = room.x − x    from the stair/door wall toward the window wall
+    Y = y             unchanged
+    Z = z             unchanged
+
+`X × Y = Z`, so the export now opens the same way round as the room — stair at
+X 0→24 with stringer C against the door wall, the ¾ facing at 24→24.75, the
+half-wall framing at 24.75→28.25, the loft beyond. Volume is preserved exactly
+(10820.74 cu in before and after) and all 38 labelled children survive; `mirror()`
+had to be applied per piece because it flattens a Compound and drops its labels.
+
+Everything upstream stays in yaml coordinates, where it agrees with the drawings to
+0.0000" — checks, ray casts, sections and the Drawing 4 port are all unaffected.
+
+**The general lesson for this repo:** a coordinate convention that is merely a
+labelling choice in 2D becomes a real geometric error the moment a solid kernel is
+involved. Any future 3D view, render or fabrication output must go through
+`to_room_frame()`.
