@@ -6,7 +6,7 @@ Since Rev T the mechanical checks live in `verify.py`, not in an agent, and sinc
 
 | Agent | Model | When | What it adds beyond `verify.py` and the build |
 |---|---|---|---|
-| `drawing-auditor` | fable | After any change to drawing modules, content, or the model. Always before cutting. | Is the yaml a faithful encoding of the design decisions? Do hand-typed numbers in labels, captions, tables and the revisions log agree with the model? Is each view drawing the right members? Is anything unspecified that the builder will have to guess? |
+| `drawing-auditor` | opus | After any change to drawing modules, content, or the model. Always before cutting. | Is the yaml a faithful encoding of the design decisions? Do hand-typed numbers in labels, captions, tables and the revisions log agree with the model? Is each view drawing the right members? Is anything unspecified that the builder will have to guess? |
 | `connection-checker` | sonnet | Whenever a connection is added or changed. Before the cut list is final. | Connections the drawings claim but the yaml doesn't declare. Fastener reach through sheathing and into built-up members. Load paths end to end with rough reactions. |
 | `materials-pricer` | sonnet | Once the materials list is settled. | Current pricing, part numbers for hardware, stock vs special-order. Never changes a depth. |
 

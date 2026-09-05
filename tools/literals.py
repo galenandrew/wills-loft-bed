@@ -14,9 +14,12 @@ whole set. Anything inside {…} is computed and skipped, as are member ids.
 import re, sys, glob, os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sel = [a for a in sys.argv[1:] if not a.startswith("-")]
-files = sorted(glob.glob(f"{ROOT}/drawings/d*_*.py")) + sorted(glob.glob(f"{ROOT}/content/*"))
+# schedule.py carries as much hand-typed prose as any sheet — the Rev Y audit found
+# two stale derivations there precisely because this glob used to skip it.
+files = (sorted(glob.glob(f"{ROOT}/drawings/d*_*.py")) + [f"{ROOT}/drawings/schedule.py"]
+         + sorted(glob.glob(f"{ROOT}/content/*")))
 if "--all" not in sys.argv: files = [f for f in files if not f.endswith("revisions.json")]
-if sel: files = [f for f in files if any(os.path.basename(f).startswith(s + "_") for s in sel) or "/content/" in f]
+if sel: files = [f for f in files if any(os.path.basename(f).startswith(s + "_") or os.path.basename(f) == s + ".py" for s in sel) or "/content/" in f]
 NUM = re.compile(r"(?<![\w.#/-])\d+(?:\.\d+)?(?:[½¼¾⅛⅜⅝⅞]|/\d+)?(?![\w.]|px)")
 STR = re.compile(r'''f?(?:"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')''')
 MEMBER_ID = re.compile(r'''f?["'][a-z_]+\[\d+\]["']''')

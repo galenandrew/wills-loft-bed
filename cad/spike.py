@@ -158,7 +158,7 @@ def main():
     import importlib.metadata as md
     say(f"cad spike · build123d {md.version('build123d')} · "
         f"OCP {md.version('cadquery-ocp-novtk')} · python {sys.version.split()[0]}")
-    say(f"dimensions.yaml rev {dm.REV} · stair: {ST.n_risers} risers @ {ST.R:.4f}, "
+    say(f"dimensions.yaml rev {dm.REV} · stair: {ST.n_treads + 1} risers @ {ST.R:.4f} + {ST.R_top:.4f}, "
         f"run {ST.run}, throat {ST.throat:.3f}")
     say()
 

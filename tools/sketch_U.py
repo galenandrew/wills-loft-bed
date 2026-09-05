@@ -1,11 +1,19 @@
-"""Candidate F — stringers extended 9 in under the landing; all landing members 2x8."""
+"""Candidate F — stringers extended 9 in under the landing; all landing members 2x8.
+
+Historical: reproduces the Rev U landing decision, not the current design. Every
+number below the yaml load (HB, CEIL, PANEL, the 48.96/49.71/41.71 literals in the
+figure functions) is frozen to that decision and will silently disagree with a
+newer yaml's live values if one is passed in instead — this tool predates the
+Rev U restructure that made drawings/ generate strictly from the yaml, so it never
+got that guarantee. Default to the frozen snapshot; only override for deliberate
+side-by-side comparison, and don't trust the mix if you do."""
 import sys, json
 sys.path.insert(0, ".")
 import yaml
 from verify import expand, Stair
 from svgview import View
 
-d = yaml.safe_load(open(sys.argv[1]))
+d = yaml.safe_load(open(sys.argv[2] if len(sys.argv) > 2 else "archive/dimensions-U.yaml"))
 M = expand(d["members"]); d["stair"]["_stringer_depth"] = 11.25
 ST = Stair(d["stair"], 58); T = ST.t
 HB = 41.5; CEIL = HB - float(d["nook"].get("wrap", 0.75)); PANEL = 0.75
@@ -110,5 +118,5 @@ def fig_sect20():
     return v.svg("Section at y 20 looking toward the bed wall, candidate F")
 
 figs = dict(planF=fig_plan(), sideF=fig_side(), sect20F=fig_sect20())
-json.dump(figs, open(sys.argv[2], "w"))
+json.dump(figs, open(sys.argv[1], "w"))
 print(f"F: plumb cut {PC[0]:.2f}→{PC[1]:.2f} at y={YT}; soffit break y={Y_MEET:.2f}; far end {soffit(47):.2f}")

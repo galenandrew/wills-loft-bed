@@ -37,7 +37,7 @@ def d8b():
     rm = m("lnd_rim"); R(v, rm, "x", "z", "lum"); v.rect(129.5, 131, rm.z[0], rm.z[1], "lum2")
     for x0 in (107, 128): v.rect(x0, x0 + 1.5, rm.z[0], 48.2, "hanger")
     v.text(109, 39.6, "HUC28 on the header", "labk", "start", dy=4); v.text(109, 38.4, "SD screws through the ¾ facing", "labs", "start", dy=4); v.text(128.6, 39.6, "HUC28 on the ledger", "labk", "end", dy=4)
-    v.rect(107, 131, 48.96, 49.71, "sheet", HATCH)
+    v.rect(107, 131, *m("lnd_ply").z, "sheet", HATCH)
     for k in ("stringer_a", "stringer_b", "stringer_c"): v.rect(*m(k).x, U(y_cut), LAND - ST.deck_t, "lum", HATCH)
     for x, l in ((107.75, "A"), (119, "B"), (130.25, "C")): v.text(x, 44.5, l, "labk", "middle", dy=4)
     v.text(109.5, 47.6, "rim 2×8 beyond", "lab", "start", dy=4)
@@ -48,4 +48,4 @@ def d8b():
     return v.svg("Section at y 20 through the stringers' top runs, looking toward the bed wall")
 
 FIGURES = [("d8a", d8a), ("d8b", d8b)]
-CAPTION = "Section at y 20 cuts the three top runs: A is fixed by SDS into the header through the facing, B by SDS from inside the box through the rim, C bears on the ledger end and screws to the right-wall studs. The landing box is four 2×8s at one elevation (41.71→48.96) — rim, side member, bed-wall ledger, right-wall ledger — with two 2×4 joists running with the stringers and 2×4 blocking flush with riser 6. The rim hangs on concealed-flange HUC28s: into the header (SD screws through the ¾ facing) and into the right-wall ledger. <b>Framing order:</b> ledgers → side member (6 × ¼×6 SDS through the facing) → HUC28s and rim → 2 × A35 at the side-member/rim corner → LUS24s and joists → stringer A (4 × ¼×4½ SDS into the header over its top run, 2 toe-screws to the rim), stringer C (4 × ¼×4½ SDS into right-wall studs, 2 toe-screws to the ledger end), then stringer B (3 × ¼×3½ SDS from inside the box through the rim) → kicker → blocking → deck ply, treads, risers."
+CAPTION = "Section at y 20 cuts the three top runs: A is fixed by SDS into the header through the facing, B by SDS from inside the box through the rim, C bears on the ledger end and screws to the right-wall studs. The landing box is four 2×8s at one elevation (41½→48¾) — rim, side member, bed-wall ledger, right-wall ledger — with two 2×4 joists running with the stringers and 2×4 blocking flush with riser 6. The rim hangs on concealed-flange HUC28s: into the header (SD screws through the ¾ facing) and into the right-wall ledger. <b>Framing order:</b> ledgers → side member (6 × ¼×5 SDS through the facing) → HUC28s and rim → 2 × A35 at the side-member/rim corner → LUS24s and joists → stringer A (4 × ¼×4½ SDS into the header over its top run, 2 toe-screws to the rim), stringer C (4 × ¼×4½ SDS into right-wall studs, 2 toe-screws to the ledger end), then stringer B (3 × ¼×3½ SDS from inside the box through the rim) → kicker → blocking → deck ply, treads, risers."

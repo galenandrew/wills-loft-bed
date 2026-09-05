@@ -3,6 +3,13 @@ from .model import *
 
 NUMBER, TITLE = "7", "Half-wall detail"
 
+# Rev Y.1: this plan used to cut at z 30, which since Rev X is ABOVE the raked head —
+# the plane crossed both head sheathing panels and the rake nailer (undrawn), and the
+# 44 rough / 42½ finished dims were only true lower down. Cut at 12 instead: below the
+# rake everywhere (the underside reaches z 12 at y 50.4, past the opening at 47), so the
+# opening really is full width here, and the short-wall wrap shows.
+CUT_Z = 12.0
+
 def d7a():
     v = View(-1, 52, 97.8, 109.4, 9, ml=70, mr=90, mt=30, mb=30)     # h = y (bed wall left), v = x (stair side up)
     v.rect(-1, 0, 101, 108, "wall")
@@ -10,19 +17,18 @@ def d7a():
     for k in ("hw_trimmer_a", "hw_trimmer_b"): R(v, m(k), "y", "x", "lum2", HATCH)
     for k in ("hw_sheath_loft_a", "hw_sheath_loft_b", "hw_sheath_stair_a", "hw_sheath_stair_b"): R(v, m(k), "y", "x", "sheet")
     R(v, m("hw_end_cap"), "y", "x", "fin")
-    # Rev X: the reveal is ¾ ply wrap. At this cut height only the bed-wall side exists —
-    # the short wall's head is raked down to about 14½, well below 30.
-    v.rect(*m("nk_wrap_bedwall").y, 102, 107, "fin")
-    v.rect(JAMB_Y[1], NOOK_Y[1], 102, 107, "ghost")
+    # the ¾ ply wrap on both reveals — clipped to the wall, since both sheets run on
+    # into the nook to x 131. Both exist at this height; the short wall's tops out at 15.84.
+    for k in ("nk_wrap_bedwall", "nk_wrap_shortwall"): v.rect(*m(k).y, 102, 107, "fin")
     v.rect(m("beam").y[0], m("beam").y[1], m("beam").x[0] and 102.75, m("beam").x[1], "dashfill")
     v.text(25, 104.5, f"{fr(JAMB_Y[1]-JAMB_Y[0])} FINISHED OPENING — wall removed, both faces · ¾ ply wrap", "lab", "middle", dy=4)
-    v.text(25, 103.3, f"header above carries the deck rim and the landing rim · cut at z 30, above the raked head at y {fr(JAMB_Y[1])}", "labs", "middle", dy=4)
+    v.text(25, 103.3, "header above carries the deck rim and the landing rim", "labs", "middle", dy=4)
     v.text(1.5, 107.4, "king + trimmer", "labs", "middle", dy=-3); v.text(48.5, 107.4, "trimmer + king", "labs", "middle", dy=-3); v.text(48.5, 109.0, "beam end above — bears here", "labk", "middle", dy=-3)
     v.text(25, 107.4, "stair side", "labs", "middle", dy=-3); v.text(25, 101.6, "loft side", "labs", "middle", dy=13)
     v.dim_v(51.5, 106.25, 107, "¾", left=False); v.dim_v(51.5, 102.75, 106.25, "3½", left=False); v.dim_v(51.5, 102, 102.75, "¾", left=False); v.dim_v(53.3, 102, 107, "5", left=False)
     v.dim_h(NOOK_Y[0], NOOK_Y[1], 108.4, f"{fr(NOOK_Y[1]-NOOK_Y[0])} rough"); v.dim_h(JAMB_Y[0], JAMB_Y[1], 100.1, f"{fr(JAMB_Y[1]-JAMB_Y[0])} finished", above=False)
     v.dim_h(0, m("hw_end_cap").y[1], 98.7, f"{fr(m('hw_end_cap').y[1])} — full platform depth", above=False)
-    return v.svg("Half-wall plan detail, horizontal section at 30 inches, rotated so the bed wall is on the left and the stair side up")
+    return v.svg(f"Half-wall plan detail, horizontal section at {fr(CUT_Z)} inches, rotated so the bed wall is on the left and the stair side up")
 
 def d7b():
     v = View(-2, 52, 0, 66, 7, ml=120, mr=70, mt=30, mb=44)
@@ -34,7 +40,7 @@ def d7b():
     for k in ("lnd_side_member", "lnd_rim", "lnd_ply"): R(v, m(k), "y", "z", "dashfill")
     v.poly([p for p in stringer_pts() if p[0] <= 27.01], "dashfill")
     for y in (m("hw_king_a").y[1], m("hw_king_b").y[0]): v.out.append(f'<circle class="strap" cx="{v.X(y):.1f}" cy="{v.Y(46):.1f}" r="{1.6*v.s:.1f}"/>')
-    v.text(25, 47.4, f"2×10 + ½ ply + 2×10 = 3½ wide × {fr(m('hw_header').size('z'))} deep (ripped) · 47 long · bears 1½ each end", "labs", "middle", dy=4)
+    v.text(25, 47.4, f"2×10 + ½ ply + 2×10 = 3½ wide × {fr(m('hw_header').size('z'))} deep, full stock · 47 long · bears 1½ each end", "labs", "middle", dy=4)
     v.text(25, 45.4, "sized by connection depth, not load (~140 psi)", "labs", "middle", dy=4)
     v.text(25, 52.2, "double top plate — deck rim bears here", "labs", "middle", dy=4)
     v.text(24, 9, f"{fr(NOOK_Y[1]-NOOK_Y[0])} × {fr(HB)} ROUGH", "lab", "middle")
@@ -50,4 +56,4 @@ def d7b():
     return v.svg("Half-wall section at x = 104.5, bed wall on the left")
 
 FIGURES = [("d7a", d7a), ("d7b", d7b)]
-CAPTION = "Plan detail is a horizontal section at 30, rotated so the bed wall is on the left and the stair side up. The opening removes both faces: what remains is two posts and a sandwich header — a portal frame, not a shear wall. The beam's reaction bypasses it (lands on the far stud pack); the landing box ties the top plate across to the right wall. Glue the deck ply and strap both header-to-king joints."
+CAPTION = f"Plan detail is a horizontal section at {fr(CUT_Z)} — deliberately low, because the opening head is raked and only below {fr(DER['nook_far_end_height'])} is the opening its full {fr(NOOK_Y[1]-NOOK_Y[0])} rough width across the whole span. Rotated so the bed wall is on the left and the stair side up. The opening removes both faces: what remains is two posts and a sandwich header — a portal frame, not a shear wall. The beam's reaction bypasses it (lands on the far stud pack); the landing box ties the top plate across to the right wall. Glue the deck ply and strap both header-to-king joints."

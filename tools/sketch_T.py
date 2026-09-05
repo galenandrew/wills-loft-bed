@@ -1,4 +1,9 @@
-"""Render the landing-rim decision from dimensions.yaml as inline SVG."""
+"""Render the Rev T landing-rim decision as inline SVG.
+
+Historical: defaults to the frozen `archive/dimensions-T.yaml`. HB/JAMB/CEIL below
+and the figure functions' literals are pinned to that decision; passing the live
+dimensions.yaml as the second argument mixes current geometry with Rev T numbers
+rather than reproducing anything real."""
 import sys, html, json
 sys.path.insert(0, ".")
 import yaml

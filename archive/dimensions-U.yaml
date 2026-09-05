@@ -1,9 +1,9 @@
 # dimensions.yaml — the single source of truth for the loft bed.
 #
-# Rev U (2026-09-04). Supersedes the Rev T encoding (archive/dimensions-T.yaml).
+# Rev U (2026-09-04). Supersedes the Rev T encoding; loft-bed-drawings.html is
+# still the Rev T set and lags this file until drawings.py regenerates it.
 # `python3 verify.py` recomputes every derived quantity and checks every
-# declared connection for real three-axis overlap; `python3 build.py` renders
-# site/ from this file. Both run automatically from the edit hook. Fix the data, re-run.
+# declared connection for real three-axis overlap. Fix the data, re-run.
 #
 # COORDINATES (inches, decimal — verify.py prints nearest 1/16 alongside)
 #   x  from the WINDOW wall finished face, toward the right wall (0 … 131)
@@ -13,34 +13,15 @@
 # never a finished dimension. Finished faces are separate members (wrap,
 # sheathing, ply).
 #
-# Rev W decisions:
-#   · tread/riser joinery corrected. The exposed face of each plumb notch is its
-#     DOWNHILL side, so the riser board goes IN FRONT of the cut (y1 → y1+3/4), its
-#     bottom edge on the stringer's horizontal cut for the tread below. The tread
-#     below starts where that riser ends and butts its face — simple butt joint,
-#     riser behind the tread, nothing notched. Rev V's note said the opposite and
-#     the drawing drew a third thing (riser recessed INTO the stringer); a CAD
-#     kernel check found it (audits/V-kernel-spike.md).
-#   · consequence: every board is full 24" width, tread boards stay 9 1/8, and the
-#     nosing-to-nosing going is exactly 9.000 at all five steps. Framing lines are
-#     unchanged; the FINISHED nosings land 7/8 downhill of them, so the stair's
-#     finished projection is 72 7/8 (framing 72) and the landing 27 7/8 (framing 27).
-#   · lnd_ply runs to y 27.875 — 3/4 past the framing line for the riser board, then
-#     the same 1/8 nose the treads get. Rev V drew that nose as a literal in d4.
-#   · the stringers are notched 1 1/2 x 3 1/2 over the kicker at their floor seat.
-#
-# Rev V decisions:
-#   · treads 3/4" plywood, no nosing — 1/8" overhang, tape-sealed edge, painted; stringers dropped 3/4"
-#   · landing plywood colored as the finished surface (matches the tread/riser finish)
-#
 # Rev U decisions (see audits/U-decisions.md):
-#   · stringers extend 9" under the landing; plumb cut 41.74→48.75 = a 2x8
+#   · treads 5/4 (1"); stringers dropped 1"
+#   · stringers extend 9" under the landing; plumb cut 41.71→48.96 = a 2x8
 #   · landing box all 2x8 on that line; rim on HUC28s; joists run with the stringers
 #   · nook opening jambed in 3/4 poplar; finished ceiling 40.75, flush through the opening
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: Y
+rev: U
 units: inches
 room:
   x: 131
@@ -97,12 +78,11 @@ lumber:
   poplar-3/4:
   - 0.75
   - null
+  5/4-board:
+  - 1.0
+  - null
 stair:
-  # Rev Y: the riser is an INPUT now, not 58/7. Six equal risers carry the stair to
-  # the landing; the seventh (landing → loft deck) is set by the framing stack above
-  # the nook header and need not match — see `top_riser`.
-  riser: 8.25
-  top_riser: 8.5
+  total_rise: 58
   risers: 7
   run: 9
   treads: 5
@@ -111,8 +91,8 @@ stair:
   stringer_stock: 2x12
   stringer_count: 3
   stringer_pitch: 11.25
-  tread_thickness: 0.75
-  tread_board_width: 9.125
+  tread_thickness: 1.0
+  tread_board_width: 10.5
   throat_min: 3.5
   top_run: 9
   landing_deck_thickness: 0.75
@@ -121,14 +101,10 @@ nook:
   - 3
   - 47
   header_bottom: 41.5
-  flat_ceiling_to_y: 18.26
+  flat_ceiling_to_y: 18.23
   soffit_panel_thickness: 0.75
   light: 6-inch recessed — fixture depth not stated; chase is ~4 inches
-  wrap: 0.75
-  note: 'Rev X: header_bottom is now the landing-ledger bottom (lnd_ledger_bedwall.z[0]),
-    so the soffit runs flush from under the landing out through the opening. `wrap` is the
-    3/4 ply lining thickness — Rev U''s poplar jambs are gone; the nook is one ply-wrapped
-    tube from the half-wall''s outer face (x 102) to the right wall (x 131).'
+  head_jamb: 0.75
 screen:
   slat_count: 23
   slat_size: 1.5
@@ -321,33 +297,18 @@ members:
   - 58
   - 66
   role: finish
-- id: hw_bottom_plate_a
+- id: hw_bottom_plate
   stock: 2x4
   x:
   - 102.75
   - 106.25
   y:
   - 0
-  - 3
-  z:
-  - 0
-  - 1.5
-  role: structural
-  note: 'Rev X: the plate no longer runs the full 50. The opening (y 3→47) is open to the
-    floor so you can walk into the nook. This piece carries hw_king_a and hw_trimmer_a.'
-- id: hw_bottom_plate_b
-  stock: 2x4
-  x:
-  - 102.75
-  - 106.25
-  y:
-  - 47
   - 50
   z:
   - 0
   - 1.5
   role: structural
-  note: 'Rev X: carries hw_trimmer_b and hw_king_b.'
 - id: hw_king_a
   stock: 2x4
   x:
@@ -408,11 +369,6 @@ members:
   - 41.5
   - 50.75
   role: structural
-  note: 'Rev Y: full 9-1/4 stock again, no rip. Its bottom is the landing-ledger bottom
-    (41.5), so the nook soffit is one plane; its top is still on the plates at 50.75. That
-    closes only because the riser is 8.25 with a 8.5 top riser — the stack from the ledger
-    bottom up to the deck is a fixed 16.5, so the landing-to-deck rise is 8.5 whatever the
-    stair riser is. Hanger zone 41.5→48.75 is a true 2x8, so HUC28/LUS24 are unchanged.'
 - id: hw_top_plate_1
   stock: 2x4
   x:
@@ -471,17 +427,9 @@ members:
   - 3
   - 47
   z:
-  - 15.16
+  - 41.5
   - 53.75
   role: sheet
-  kind: raked
-  rake:
-    profile: soffit
-    offset: 0.75
-    side: above
-  note: 'Rev X: the opening head is raked, not square. This panel''s bottom edge rides the
-    soffit framing line — flat at 41.5 to y 18.26, then on the stringer undersides. z is
-    the bbox; the true edge comes from `rake`.'
 - id: hw_sheath_loft_b
   stock: ply-3/4
   x:
@@ -515,17 +463,11 @@ members:
   - 3
   - 47
   z:
-  - 15.16
+  - 41.5
   - 58
   role: sheet
-  kind: raked
-  rake:
-    profile: soffit
-    offset: 0.75
-    side: above
-  note: This is Rev S's '3/4 ply facing on the header's stair face' — every landing fastener
-    into the header passes through it. Rev X rakes its bottom edge with the opening head; the
-    fastener zone (41.5→48.75) is well above the rake, so every path through it is unchanged.
+  note: This is Rev S's '3/4 ply facing on the header's stair face'. Every landing fastener into the header passes
+    through it.
 - id: hw_sheath_stair_b
   stock: ply-3/4
   x:
@@ -538,29 +480,6 @@ members:
   - 0
   - 58
   role: sheet
-- id: hw_rake_nailer
-  stock: 2x4
-  x:
-  - 102.75
-  - 106.25
-  y:
-  - 18.26
-  - 47
-  z:
-  - 15.16
-  - 41.5
-  role: structural
-  kind: raked
-  rake:
-    profile: stringer_underside
-    side: above
-    band: 1.5
-    clip: 41.5
-  note: 'Rev X: a 2x4 laid flat in the half-wall''s stud bay, its underside on the stringer
-    underside line, so the raked soffit can run out through the wall to the outer face. Runs
-    from where the line leaves the header bottom (y 18.26) down to hw_trimmer_b; its upper end
-    is bevelled where it dies into the header. Ends where trimmer_b starts — the trimmer backs
-    the last 1.5. The 1.5 is measured vertically, as the soffit panel''s is.'
 - id: lnd_ledger_bedwall
   stock: 2x8
   x:
@@ -570,8 +489,8 @@ members:
   - 0
   - 1.5
   z:
-  - 41.5
-  - 48.75
+  - 41.71
+  - 48.96
   role: structural
   note: 'Rev U: 2x8 like the rest of the box'
 - id: lnd_ledger_rightwall
@@ -583,8 +502,8 @@ members:
   - 0
   - 18
   z:
-  - 41.5
-  - 48.75
+  - 41.71
+  - 48.96
   role: structural
   note: 'Rev U: 2x8; runs to y 18 so stringer C''s plumb cut bears on its end and the rim''s right end hangs on
     its face'
@@ -597,8 +516,8 @@ members:
   - 1.5
   - 16.5
   z:
-  - 41.5
-  - 48.75
+  - 41.71
+  - 48.96
   role: structural
   note: 'Rev U: stops at the rim (16.5)'
 - id: lnd_joist
@@ -610,8 +529,8 @@ members:
   - 1.5
   - 16.5
   z:
-  - 45.25
-  - 48.75
+  - 45.46
+  - 48.96
   role: structural
   repeat:
     count: 2
@@ -627,10 +546,10 @@ members:
   - 16.5
   - 18
   z:
-  - 41.5
-  - 48.75
+  - 41.71
+  - 48.96
   role: structural
-  note: 'Rev U: 2x8 rim moved to y 16.5–18; stringers extend 9 in under the landing and bear on it full depth (41.5–48.75)'
+  note: 'Rev U: 2x8 rim moved to y 16.5–18; stringers extend 9 in under the landing and bear on it full depth (41.71–48.96)'
 - id: lnd_ply
   stock: ply-3/4
   x:
@@ -638,14 +557,11 @@ members:
   - 131
   y:
   - 0
-  - 27.875
+  - 27
   z:
-  - 48.75
-  - 49.5
+  - 48.96
+  - 49.71
   role: sheet
-  note: 'Rev W: 27 7/8 deep, not 27. The framing line is 27; the riser-6 board is applied to the stringers'' end
-    faces at 27→27.75, and the deck noses 1/8 past it exactly as the treads do. Rev V had the member at 27 and
-    typed the nose into Drawing 4 as a literal. CUT-LIST: 24 x 27 7/8.'
 - id: stringer_a
   stock: 2x12
   kind: stringer
@@ -657,7 +573,7 @@ members:
   - 72
   z:
   - 0
-  - 48.75
+  - 48.96
   role: structural
 - id: stringer_b
   stock: 2x12
@@ -670,7 +586,7 @@ members:
   - 72
   z:
   - 0
-  - 48.75
+  - 48.96
   role: structural
 - id: stringer_c
   stock: 2x12
@@ -683,7 +599,7 @@ members:
   - 72
   z:
   - 0
-  - 48.75
+  - 48.96
   role: structural
 - id: kicker
   stock: 2x4
@@ -697,144 +613,7 @@ members:
   - 0
   - 1.5
   role: structural
-  note: 'Rev W: position FIXED at y 68.5→72, downhill face flush with the stringers'' bottom plumb cut. The
-    stringers are notched 1 1/2 x 3 1/2 to hook over it (they are 7.54 deep there, so 6.04 remains — well over the 3 1/2 throat minimum);
-    riser 1 sits in front of it at y 72→72.75 and clears it. Anchorage to the floor still to specify.'
-- id: nk_bedwall_plate
-  stock: 2x2
-  x:
-  - 107
-  - 131
-  y:
-  - 1.5
-  - 3
-  z:
-  - 0
-  - 1.5
-  role: structural
-  note: 'Rev X: runs parallel to the bed wall instead of the deleted half-wall plate, and is
-    the sill for the nook''s bed-wall side. Stops at x 107 because hw_sheath_stair_a runs to
-    the floor at x 106.25→107; the two plates cannot be one stick.'
-- id: nk_bedwall_stud
-  stock: 2x4
-  x:
-  - 107
-  - 110.5
-  y:
-  - 1.5
-  - 3
-  z:
-  - 1.5
-  - 40
-  role: structural
-  repeat:
-    count: 3
-    axis: x
-    pitch: 10.25
-  note: 'Rev X: non-bearing nailer wall in line with hw_trimmer_a, so the nook''s bed-wall
-    face is flush with the opening reveal. End studs land flush at x 107 and x 131.'
-- id: nk_bedwall_cap
-  stock: 2x2
-  x:
-  - 107
-  - 131
-  y:
-  - 1.5
-  - 3
-  z:
-  - 40
-  - 41.5
-  role: structural
-  note: 'Rev X: flat top plate; its top is the landing-ledger plane, so lnd_side_member lands
-    on it over x 107→108.5 and the soffit panel butts its face.'
-- id: nk_shortwall_plate
-  stock: 2x2
-  x:
-  - 107
-  - 131
-  y:
-  - 47
-  - 48.5
-  z:
-  - 0
-  - 1.5
-  role: structural
-  note: 'Rev X: sill for the nook''s short (far) wall, in line with hw_trimmer_b.'
-- id: nk_shortwall_strut
-  stock: 2x4
-  x:
-  - 107
-  - 110.5
-  y:
-  - 47
-  - 48.5
-  z:
-  - 1.5
-  - 15.16
-  role: structural
-  kind: raked
-  rake:
-    profile: stringer_underside
-    side: below
-  repeat:
-    count: 3
-    axis: x
-    pitch: 10.25
-  note: 'Rev X: struts from the sill to the stringer undersides, tops cut to the rake, so the
-    short wall''s ply has backing. z is the bbox; the true top comes from `rake`.'
-- id: nk_wrap_bedwall
-  stock: ply-3/4
-  x:
-  - 102
-  - 131
-  y:
-  - 3
-  - 3.75
-  z:
-  - 0
-  - 41.5
-  role: sheet
-  note: 'Rev X: one sheet from the half-wall''s outer face through the reveal and on into the
-    nook. Runs to the framing plane (41.5); the soffit panel butts its face.'
-- id: nk_wrap_shortwall
-  stock: ply-3/4
-  x:
-  - 102
-  - 131
-  y:
-  - 46.25
-  - 47
-  z:
-  - 0
-  - 15.84
-  role: sheet
-  kind: raked
-  rake:
-    profile: stringer_underside
-    side: below
-  note: 'Rev X: the same sheet on the short wall; its top edge is raked and tucks under the
-    stringers. z is the bbox.'
-- id: nk_soffit_panel
-  stock: ply-3/4
-  x:
-  - 102
-  - 131
-  y:
-  - 3.75
-  - 46.25
-  role: sheet
-  z:
-  - 15.09
-  - 41.5
-  kind: raked
-  rake:
-    profile: soffit
-    side: above
-    band: 0.75
-  note: 'Rev X: the nook ceiling, promoted from a derived kernel-only piece to a real member.
-    Flat at 40.75 under the landing to y 18.26, then on the stringer undersides to 14.41 at
-    the far end. Runs the full x 102→131 — through the half-wall on hw_rake_nailer, then on
-    the stringers — so the rake reads continuously from the outer face.'
+  note: ASSUMED position — 'seat cut on a kicker anchored to the floor', no dimensions given.
 - id: slat
   stock: 2x2
   x:
@@ -912,8 +691,8 @@ members:
   - 25.5
   - 27
   z:
-  - 45.25
-  - 48.75
+  - 45.46
+  - 48.96
   role: structural
   repeat:
     count: 2
@@ -926,7 +705,7 @@ connections:
   b: rear_ledger
   type: hanger
   face: y
-  fastener: LUS24
+  fastener: face-mount hanger, model UNSPECIFIED
 - a: deck_joist[*]
   b: beam
   type: hanger
@@ -976,39 +755,10 @@ connections:
 - a: hw_top_plate_1
   b: hw_king_b
   type: bearing
-- a: hw_bottom_plate_a
+- a: hw_bottom_plate
   b: floor
   type: floor
   fastener: UNSPECIFIED
-- a: hw_bottom_plate_b
-  b: floor
-  type: floor
-  fastener: UNSPECIFIED
-- a: nk_bedwall_plate
-  b: floor
-  type: floor
-  fastener: UNSPECIFIED
-- a: nk_shortwall_plate
-  b: floor
-  type: floor
-  fastener: UNSPECIFIED
-- a: nk_bedwall_stud[*]
-  b: nk_bedwall_plate
-  type: bearing
-  fastener: 2 x 3 in screws toe-driven each stud
-- a: nk_bedwall_cap
-  b: nk_bedwall_stud[*]
-  type: bearing
-  fastener: 2 x 3 in screws through the cap into each stud
-- a: nk_shortwall_strut[*]
-  b: nk_shortwall_plate
-  type: bearing
-  fastener: 2 x 3 in screws toe-driven each strut
-- a: hw_rake_nailer
-  b: hw_trimmer_b
-  type: face-screw
-  face: y
-  fastener: 3 x 3 in screws through the trimmer into the nailer's end
 - a: lnd_side_member
   b: hw_header
   type: face-screw
@@ -1016,6 +766,10 @@ connections:
   through:
   - hw_sheath_stair_head
   fastener: 6 × 1/4 × 5 structural screws
+- a: lnd_ledger_bedwall
+  b: wall:bed
+  type: wall
+  fastener: UNSPECIFIED
 - a: lnd_ledger_rightwall
   b: wall:right
   type: wall
@@ -1125,21 +879,21 @@ expected:
   - 104.75
   - 45.5
   sitting_headroom: 32
-  riser: 8.25
-  stair_angle_deg: 42.51
-  stringer_throat: 5.17
-  stringer_underside_at_27: 33.49
-  stringer_underside_at_47: 15.16
-  landing_top: 49.5
-  landing_headroom: 46.5
+  riser: 8.286
+  stair_angle_deg: 42.63
+  stringer_throat: 5.15
+  stringer_underside_at_27: 33.42
+  stringer_underside_at_47: 15.01
+  landing_top: 49.71
+  landing_headroom: 46.25
   deck_headroom: 38
   nook_opening:
   - 44
   - 41.5
-  nook_light_chase: 3.75
-  nook_far_end_height: 14.41
+  nook_light_chase: 3.96
+  nook_far_end_height: 14.26
   rim_header_overlap: 7.25
-  rim_stringer_bearing: 7.01
+  rim_stringer_bearing: 7.25
   slat_clear: 3.3
   stair_projection: 72
   fan_clearance: 15.25

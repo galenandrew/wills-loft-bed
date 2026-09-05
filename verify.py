@@ -133,7 +133,14 @@ def overlap(a, b):
 # ----------------------------------------------------------------- stair
 class Stair:
     def __init__(self, s, deck_top):
-        self.R = float(s["total_rise"]) / s["risers"]
+        # Rev Y: the riser is stated, not 58/7. The last riser (landing → loft deck) is a
+        # separate number because it is not set by the stair at all — it is the fixed
+        # framing stack from the landing-ledger bottom up to the deck (9-1/4 header +
+        # two 1-1/2 plates + 3-1/2 deck rim + 3/4 ply, less the 8 the ledger takes up
+        # below the landing = 8.5), so it holds whatever `riser` is.
+        # Archived pre-Rev-Y yaml (Rev T, Rev U) has no `riser` key, only `total_rise` and
+        # `risers` — fall back to their uniform division so those snapshots still load.
+        self.R = float(s["riser"]) if "riser" in s else float(s["total_rise"]) / s["risers"]
         self.run = float(s["run"])
         self.n_risers = s["risers"]
         self.n_treads = s["treads"]
@@ -147,8 +154,12 @@ class Stair:
         self.hyp = math.hypot(self.R, self.run)
         self.notch = self.R * self.run / self.hyp          # perpendicular depth of a notch
         self.throat = self.stock_depth - self.notch
+        self.R_top = float(s.get("top_riser", self.R))     # landing → deck; need not match
         # z of riser i (1..7) top; tread i occupies y in [72-9i, 81-9i] for a 27" landing
-        self.riser_z = {i: i * self.R for i in range(1, self.n_risers + 1)}
+        self.riser_z = {i: i * self.R for i in range(1, self.n_treads + 2)}
+        for i in range(self.n_treads + 2, self.n_risers + 1):
+            self.riser_z[i] = self.riser_z[i - 1] + self.R_top
+        self.total_rise = self.riser_z[self.n_risers]
         self.y_riser_top = self.landing                      # riser n+1 = the landing face
         self.y_top = self.landing - self.top_run             # plumb cut against the rim
         self.y_bottom = self.landing + self.run * self.n_treads
@@ -537,7 +548,9 @@ def check_derived(rep, d, members, stair, room):
             rep.fail(f"{k}: {s_have}   ← expected {s_want}")
 
     # things worth printing even without an expectation
-    rep.info(f"riser exact: {stair.R:.4f}  (7 × 8¼ = 57¾ — ¼ short)")
+    rep.info(f"risers: {stair.n_treads + 1} × {fr(stair.R)} to the landing, then {fr(stair.R_top)} "
+             f"landing → deck ({stair.n_risers} × {fr(stair.R)} would be {fr(stair.n_risers * stair.R)}, "
+             f"{fr(stair.total_rise - stair.n_risers * stair.R)} short of the deck)")
     rep.info(f"riser heights: " + ", ".join(f"{fr(z)}" for z in stair.riser_z.values()))
     rep.info(f"stringer plumb cut z: {fr(stair.plumb_cut()[0])} → {fr(stair.plumb_cut()[1])} (top = landing − tread {fr(stair.t)})")
     rep.info(f"nosing-line length over {stair.n_treads} treads: {fr(stair.hyp * stair.n_treads)} — stringer stock must exceed this plus the plumb and seat cuts")

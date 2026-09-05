@@ -99,9 +99,6 @@ SCOPE = {
 # ASSUMED build-up (the drawings never state the lay-up order); flagged in the report.
 LAMINATIONS = {
     "header-2x10-sandwich": [("2x10-loft", 1.5), ("ply-1/2", 0.5), ("2x10-stair", 1.5)],
-    # Rev X: same lay-up, all three plies ripped to 9.04 deep so the header's bottom
-    # meets the landing-ledger bottom with its top still on the plates.
-    "header-2x10-rip": [("2x10-loft", 1.5), ("ply-1/2", 0.5), ("2x10-stair", 1.5)],
     "2x10x2": [("2x10-a", 1.5), ("2x10-b", 1.5)],
 }
 

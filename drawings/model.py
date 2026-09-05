@@ -18,7 +18,7 @@ from fractions import Fraction
 from svgview import View
 
 def fr(v):
-    """53.75 → 53¾ · 49.714 → 49.71 — sixteenths or two decimals, never sevenths."""
+    """53.75 → 53¾ · 15.155 → 15.16 — sixteenths where they are exact, else two decimals."""
     if v is None: return "—"
     v = float(v); n = round(v * 16); f = Fraction(n, 16)
     if abs(n / 16 - v) > 0.004: return f"{v:.2f}".rstrip("0").rstrip(".")
