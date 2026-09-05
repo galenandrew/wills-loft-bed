@@ -460,3 +460,28 @@ Everything upstream stays in yaml coordinates, where it agrees with the drawings
 labelling choice in 2D becomes a real geometric error the moment a solid kernel is
 involved. Any future 3D view, render or fabrication output must go through
 `to_room_frame()`.
+
+---
+
+## Up-axis (2026-09-05)
+
+The builder previewed `model.step` and found the bed wall reading as the bottom
+plane, the ceiling as the front, and the door/window walls as left/right. Not a
+handedness problem — left/right were correct, so `to_room_frame()` is doing its job.
+It is the up-axis: the room frame is **Z-up**, the CAD convention, while Quick Look
+and most web/STL previewers assume **Y-up** and so show a Z-up model lying on its
+back.
+
+`export.to_preview_frame()` rotates −90° about X, `(X, Y, Z) → (X, Z, −Y)`. A
+rotation, so handedness is preserved and the frame stays right-handed. Floor → Y 0,
+ceiling → +Y, bed wall → Z 0 with the closet running to −Z, so a previewer's default
+front view looks at the bed wall — the same vantage the sheets are read from.
+
+`cad.spike` now writes both, and neither is authoritative over the other:
+
+| file | up-axis | for |
+|---|---|---|
+| `model.step`, `model.stl` | Z-up | FreeCAD, Fusion, SolidWorks, anything mechanical |
+| `model-yup.step`, `model-yup.stl` | Y-up | Quick Look, Preview, web previewers |
+
+Volume is identical across all four (10820.74 cu in).
