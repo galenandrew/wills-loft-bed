@@ -47,6 +47,7 @@ The restructure exists so that a change touches a few small files, not one big o
 - Anything not stated in the drawings and guessed during encoding is marked `ASSUMED` in a `note:`. Resolve these with the user, don't silently keep them.
 - `expected:` holds the values Rev T states. When a change legitimately moves one, update it deliberately — that's the audit trail.
 - View conventions (stated on the index page): plans bed-wall-up, window wall left; x–z views look toward the bed wall; y–z views keep the bed wall on the left, mirrored where needed.
+- **The yaml's axes are LEFT-handed as they map onto the room, and that is load-bearing.** Facing the closet wall (+y), the window wall (x = 0) is on your RIGHT — so yaml +x runs to your left and `x × y = −z`. The naming is consistent from the other vantage: facing the BED wall, +x really is on your right, which is how the sheets are read. This is harmless in 2D — every figure maps two yaml axes onto the page and all twelve come out correct (plans are true from-above plans; d4's half-wall really is in front of the cut; d8b really does look toward the bed wall). It is **not** harmless for a solid: feeding these coordinates straight into a CAD kernel builds the mirror image of the room. `cad/export.py:to_room_frame()` mirrors x into a right-handed room frame (`X = room.x − x`, from the stair/door wall toward the window) for STEP and STL only. Everything else stays in yaml coordinates. Do not "fix" the drawings' mirroring — it is what makes them right.
 
 ## Working rules (hard-won — do not relitigate)
 
