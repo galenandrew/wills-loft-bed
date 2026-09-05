@@ -291,13 +291,9 @@ def main():
     t = time.time()
     export.step(pieces, os.path.join(OUT, "model.step"))
     export.stl(pieces, os.path.join(OUT, "model.stl"))
-    # Y-up copies for Quick Look and web previewers, which assume Y-up and otherwise
-    # show a Z-up model lying on its back
-    export.step(pieces, os.path.join(OUT, "model-yup.step"), up="y")
-    export.stl(pieces, os.path.join(OUT, "model-yup.stl"), up="y")
     t_exp = time.time() - t
-    say(f"[export] model.step/.stl (Z-up, CAD) + model-yup.step/.stl (Y-up, previewers) "
-        f"in {t_exp:.2f}s")
+    say(f"[export] model.step {os.path.getsize(os.path.join(OUT,'model.step'))/1024:.0f} kB, "
+        f"model.stl {os.path.getsize(os.path.join(OUT,'model.stl'))/1024:.0f} kB in {t_exp:.2f}s")
     # no GUI here, so read the STEP back and check it survived the round trip
     from build123d import import_step
     back = import_step(os.path.join(OUT, "model.step"))
