@@ -13,7 +13,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 for p in (ROOT, os.path.join(ROOT, "tools")):
     if p not in sys.path: sys.path.insert(0, p)
 import yaml
-from verify import expand, Stair, compute_derived
+from verify import expand, Stair, compute_derived, RAKED, rake_pts, rake_range, rake_z
 from fractions import Fraction
 from svgview import View
 
@@ -36,7 +36,7 @@ d["stair"]["_stringer_depth"] = lumber[d["stair"]["stringer_stock"]][1]
 ST = Stair(d["stair"], float(d["expected"]["deck_top"])); T = ST.t
 DER = compute_derived(d, M, ST, room)
 REV = str(d["rev"])
-nook = d["nook"]; HB = float(nook["header_bottom"]); JAMB = float(nook.get("head_jamb", 0)); CEIL = HB - JAMB
+nook = d["nook"]; HB = float(nook["header_bottom"]); JAMB = float(nook.get("wrap", 0)); CEIL = HB - JAMB
 PANEL = float(nook["soffit_panel_thickness"]); NOOK_Y = [float(a) for a in nook["opening_y"]]
 CEILING = float(room["ceiling"]); RX, RY = float(room["x"]), float(room["y"])
 MAT = d["mattress"]; SCR = d["screen"]
@@ -46,7 +46,14 @@ Y_MEET = ST.y_riser_top - (CEIL + PANEL - U(ST.y_riser_top)) / ST.tan
 def soffit(y): return CEIL if y <= Y_MEET else U(y) - PANEL
 def m(i): return M[i]
 def ids(prefix): return [k for k in M if k == prefix or k.startswith(prefix + "[")]
-def R(v, mem, h, vv, cls="lum", extra=""): v.rect(*mem.ext(h), *mem.ext(vv), cls, extra)
+def R(v, mem, h, vv, cls="lum", extra=""):
+    """Project a member's box onto the (h, vv) axes. A `kind: raked` member has no
+    honest box, so on a y-z view it is drawn from its true profile instead."""
+    if mem.kind == "raked" and (h, vv) == ("y", "z"):
+        v.poly(rake_pts(mem, ST, nook), cls, extra); return
+    v.rect(*mem.ext(h), *mem.ext(vv), cls, extra)
+
+def RAKE(mem, y): return rake_z(mem, y, ST, nook)
 HATCH = 'fill="url(#hatch)"'
 E = html.escape
 
@@ -129,7 +136,9 @@ def kernel_cut(v, axis, at, skip=(), cls=None, extra=None, order=("lum", "fin"))
     drawn = []
     for pid, pts in _cached_cut(axis, at):
         base = pid.split("#")[0]
-        if base in skip or base.split("[")[0] in skip:
+        stem = base.split("[")[0]
+        if base in skip or stem in skip or any(
+                s.endswith("*") and stem.startswith(s[:-1]) for s in skip):
             continue
         c, ex = cut_class(pid)
         c = (cls or {}).get(base, (cls or {}).get(base.split("[")[0], c))
@@ -191,12 +200,15 @@ def draw_treads(v):
 
 def half_wall_yz(v, cut=True):
     """half-wall framing in a y–z view (bed wall left)."""
-    for k in ("hw_bottom_plate", "hw_king_a", "hw_king_b", "hw_top_plate_1", "hw_top_plate_2"): R(v, m(k), "y", "z", "lum")
+    for k in ("hw_bottom_plate_a", "hw_bottom_plate_b", "hw_king_a", "hw_king_b",
+              "hw_top_plate_1", "hw_top_plate_2"): R(v, m(k), "y", "z", "lum")
     for k in ("hw_trimmer_a", "hw_trimmer_b"): R(v, m(k), "y", "z", "lum2")
     R(v, m("hw_header"), "y", "z", "lum", HATCH if cut else "")
-    if JAMB:
-        v.rect(NOOK_Y[0], NOOK_Y[1], CEIL, HB, "fin")
-        v.rect(NOOK_Y[0], JAMB_Y[0], 0, CEIL, "fin"); v.rect(JAMB_Y[1], NOOK_Y[1], 0, CEIL, "fin")
+    R(v, m("hw_rake_nailer"), "y", "z", "lum2")
+    # Rev X: the opening is ply-wrapped, and its head follows the rake. The wrap is
+    # drawn from the members themselves, so nothing here is hand-kept.
+    R(v, m("nk_soffit_panel"), "y", "z", "fin")
+    R(v, m("nk_wrap_bedwall"), "y", "z", "fin"); R(v, m("nk_wrap_shortwall"), "y", "z", "fin")
 
 # The stair's FINISHED extent — the bottom tread's nosing, 7/8 past the framing line
 # at ST.y_bottom because the riser board stands 3/4 proud of the plumb cut. Clearances

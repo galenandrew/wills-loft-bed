@@ -6,7 +6,7 @@ NUMBER, TITLE = "6", "Platform framing plan"
 def d6():
     v = View(-3, 110, -3, 57, 5.5, ml=80, mr=60, mt=40, mb=40, vdown=True)
     v.rect(-3, 110, -3, 0, "wall"); v.rect(-3, 0, 0, 53, "wall")
-    v.rect(m("hw_bottom_plate").x[0], m("hw_bottom_plate").x[1], 0, m("hw_top_plate_1").y[1], "hid")
+    v.rect(m("hw_bottom_plate_a").x[0], m("hw_bottom_plate_a").x[1], 0, m("hw_top_plate_1").y[1], "hid")
     for k in ids("deck_joist"): R(v, m(k), "x", "y", "lum2")
     for k in ids("ledger_blocking") + ["ledger_blocking_last"]: R(v, m(k), "x", "y", "blk")
     for k in ("rear_ledger", "side_ledger", "deck_rim", "beam"): R(v, m(k), "x", "y", "lum")

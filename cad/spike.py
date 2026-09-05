@@ -100,10 +100,14 @@ def hausdorff(a, b):
     return max(_to_boundary(a, b), _to_boundary(b, a))
 
 
-def compare_section(loops, shapes):
-    """Match each kernel cut face to the nearest hand-drawn shape and measure."""
+def compare_section(loops, shapes, skip=()):
+    """Match each kernel cut face to the nearest hand-drawn shape and measure.
+    `skip` is the sheet's own skip list — a member the sheet deliberately leaves
+    out has nothing to compare against and is not a fidelity finding."""
     rows = []
     for pid, pts in loops:
+        if any(pid.startswith(p) for p in skip):
+            continue
         c = _centroid(pts)
         best, bd = None, 1e9
         for cls, loop in shapes:
@@ -197,7 +201,7 @@ def main():
 
     # soffit clearance, kernel vs verify.py
     P = model.by_id(pieces)
-    panel = P["soffit_panel"]
+    panel = P["nk_soffit_panel"]
     # only where a stringer exists: the stringers start at y_top, the nook opening at y=3
     ys = [round(y, 2) for y in [ST.y_top, dm.Y_MEET, 20.0, 27.0, 35.0, 40.0, dm.NOOK_Y[1]]]
     lines += ["", "SOFFIT PANEL → STRINGER UNDERSIDE  (kernel ray cast vs verify.py's Stair.underside)"]
@@ -266,7 +270,7 @@ def main():
     t_sec = time.time() - t
 
     shapes = parse_sheet(os.path.join(ROOT, "site", "figs", "d4.svg"), D4_VIEW)
-    rows = compare_section(L4.cut, shapes)
+    rows = compare_section(L4.cut, shapes, skip=("nk_",))   # Drawing 4 leaves the nook to Drawing 5
     slines = [f"section fidelity · kernel cut at x=119 vs site/figs/d4.svg "
               f"({len(shapes)} drawn shapes parsed back into inches)", ""]
     worst_row = None

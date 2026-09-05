@@ -12,9 +12,10 @@ def d4():
     # beyond the cut plane — axis-aligned boxes, so a box projection is exact
     R(v, m("lnd_side_member"), "y", "z", "lum2"); R(v, m("lnd_joist[0]"), "y", "z", "dashfill"); R(v, m("lnd_blocking[0]"), "y", "z", "dashfill")
     # ON the cut plane — the kernel decides what stringer B's plane crosses, and gives
-    # the real notched profile rather than a hand-kept polygon. The soffit panel is in
-    # this cut too; it belongs to Drawing 5's nook story, so this sheet leaves it out.
-    kernel_cut(v, "x", CUT_X, skip=("soffit_panel",))
+    # the real notched profile rather than a hand-kept polygon. The nook's lining and
+    # nailer walls are in this cut too; they are Drawing 5's story, so this sheet
+    # leaves the whole nk_ family out.
+    kernel_cut(v, "x", CUT_X, skip=("nk_*",))
     # half-wall framing, in front of the section cut from this angle — shown as a transparent outline so it doesn't hide the stair
     for k in ("hw_sheath_stair_a", "hw_sheath_stair_head", "hw_sheath_stair_b", "hw_header", "hw_trimmer_a", "hw_trimmer_b", "hw_king_a", "hw_king_b"):
         R(v, m(k), "y", "z", "dashfill")

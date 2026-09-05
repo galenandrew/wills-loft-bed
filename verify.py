@@ -82,6 +82,7 @@ class Member:
         self.stock = d.get("stock")
         self.role = d.get("role", "structural")
         self.kind = d.get("kind")
+        self.rake = d.get("rake")
         self.note = d.get("note", "")
         self.x, self.y, self.z = (list(map(float, d[k])) for k in "xyz")
 
@@ -192,6 +193,77 @@ class Stair:
         return [lo, max(tops)] if tops else [lo, lo]
 
 
+# ------------------------------------------------------- raked members
+# `kind: raked` generalises `kind: stringer`: a member whose z extents follow a
+# profile in y instead of being constant. Its yaml z is the bbox — informational,
+# like a stringer's — and the truth comes from `rake`:
+#     profile  stringer_underside | soffit   the line the member is built to
+#     offset   inches added to that line     (default 0)
+#     side     above | below                 which side of the line it occupies
+#     band     inches, measured VERTICALLY   omit to take the far edge from the bbox
+#     clip     hard ceiling on z1            e.g. the header bottom
+# One place computes it, and drawings/ and cad/ import it from here.
+RAKED = ("stringer", "raked")
+
+
+def rake_profile(name, stair, nook):
+    """(z(y), [break points]) for a named profile line. The breaks matter: the soffit
+    is flat then raked, and a polygon sampled only at its ends would cut the corner —
+    which is exactly the interference the kernel found on the first Rev X run."""
+    if name == "stringer_underside":
+        return stair.underside, []
+    if name == "soffit":
+        panel = float(nook["soffit_panel_thickness"])
+        face = float(nook["header_bottom"]) - float(nook.get("wrap", 0))
+        y_meet = stair.y_riser_top - (face + panel - stair.underside(stair.y_riser_top)) / stair.tan
+        return (lambda y: face if y <= y_meet else stair.underside(y) - panel), [y_meet]
+    raise KeyError(f"unknown rake profile {name!r}")
+
+
+def rake_z(m, y, stair, nook):
+    """(z0, z1) of a raked member at plan position y."""
+    r = m.rake
+    base = rake_profile(r["profile"], stair, nook)[0](y) + float(r.get("offset", 0))
+    band = r.get("band")
+    if r.get("side", "above") == "above":
+        z0, z1 = base, (base + float(band) if band else m.z[1])
+    else:
+        z0, z1 = (base - float(band) if band else m.z[0]), base
+    if "clip" in r:
+        z1 = min(z1, float(r["clip"]))
+    return z0, max(z0, z1)
+
+
+def rake_range(m, y0, y1, stair, nook):
+    """The member's true z envelope over [y0, y1] — the raked answer to a bbox."""
+    y0, y1 = max(y0, m.y[0]), min(y1, m.y[1])
+    if y1 <= y0:
+        return [0.0, 0.0]
+    breaks = rake_profile(m.rake["profile"], stair, nook)[1]
+    zs = [rake_z(m, y, stair, nook)
+          for y in {y0, y1, *(b for b in breaks if y0 < b < y1)}]
+    return [min(z[0] for z in zs), max(z[1] for z in zs)]
+
+
+def rake_pts(m, stair, nook, n=2):
+    """The member's y-z profile as a closed polygon (both edges are straight here,
+    except where `clip` breaks the top, so the break point is added explicitly)."""
+    y0, y1 = m.y
+    breaks = rake_profile(m.rake["profile"], stair, nook)[1]
+    ys = sorted({y0, y1, *(b for b in breaks if y0 + 1e-6 < b < y1 - 1e-6)})
+    if "clip" in (m.rake or {}):
+        c = float(m.rake["clip"])
+        lo, hi = y0, y1
+        for _ in range(48):                     # bisect to the y where the clip releases
+            mid = (lo + hi) / 2
+            (lo, hi) = (mid, hi) if rake_z(m, mid, stair, nook)[1] >= c - 1e-9 else (lo, mid)
+        if y0 + 1e-6 < lo < y1 - 1e-6:
+            ys = sorted(set(ys) | {lo})
+    top = [(y, rake_z(m, y, stair, nook)[1]) for y in ys]
+    bot = [(y, rake_z(m, y, stair, nook)[0]) for y in reversed(ys)]
+    return top + bot
+
+
 # ----------------------------------------------------------------- checks
 def check_sections(rep, members, lumber):
     rep.section("MEMBER SECTIONS — do the extents match the stock?")
@@ -203,18 +275,26 @@ def check_sections(rep, members, lumber):
             rep.warn(f"{m.id}: unknown stock '{m.stock}'")
             continue
         sizes = sorted([m.size("x"), m.size("y"), m.size("z")])
+        if m.kind == "raked" and m.rake and m.rake.get("band"):
+            # the thin dimension is the vertical band, not an extent
+            sizes = sorted([m.size("x"), float(m.rake["band"])])
         t, d = spec
         if d is None:  # sheet
             if abs(sizes[0] - t) > TOL:
                 rep.fail(f"{m.id}: {m.stock} thickness {fr(t)} but thinnest extent is {fr(sizes[0])}")
             continue
-        if m.kind == "stringer":
-            # bbox z is the whole rise; only check thickness
+        if m.kind in RAKED:
+            # bbox z follows a profile, not the stock; only check thickness
             if abs(sizes[0] - t) > TOL:
-                rep.fail(f"{m.id}: stringer thickness {fr(sizes[0])} ≠ {fr(t)}")
+                rep.fail(f"{m.id}: {m.kind} thickness {fr(sizes[0])} ≠ {fr(t)}")
             continue
-        if abs(sizes[0] - t) > TOL or abs(sizes[1] - d) > TOL:
-            rep.fail(f"{m.id}: {m.stock} is {fr(t)}×{fr(d)} but extents give {fr(sizes[0])}×{fr(sizes[1])}")
+        # the section is any TWO of the three extents — a stub (a 3" plate off a
+        # 2x4) is shorter than its own stock depth, so sorting cannot pick them.
+        ext = [m.size("x"), m.size("y"), m.size("z")]
+        pairs = [(ext[i], ext[j]) for i in range(3) for j in range(3) if i != j]
+        if not any(abs(a - t) <= TOL and abs(b - d) <= TOL for a, b in pairs):
+            rep.fail(f"{m.id}: {m.stock} is {fr(t)}×{fr(d)} but no two extents match "
+                     f"({fr(ext[0])} × {fr(ext[1])} × {fr(ext[2])})")
     rep.ok("all remaining members match their stock section")
 
 
@@ -238,7 +318,7 @@ def wall_plane(name, room):
             "right": ("x", float(room["x"]), 1), "closet": ("y", float(room["y"]), 1)}[name]
 
 
-def check_connection(rep, c, members, stair, room):
+def check_connection(rep, c, members, stair, room, nook):
     typ = c["type"]
     a_list = resolve(c["a"], members)
     b_key = c["b"]
@@ -267,8 +347,8 @@ def check_connection(rep, c, members, stair, room):
             lab = f"{a.id} → {b.id}"
             if typ == "bearing":
                 # a sits on b
-                if a.kind == "stringer":
-                    # stringer on kicker: just plan overlap
+                if a.kind in RAKED:
+                    # a raked member seats on a plan footprint, not a z plane
                     ox, oy = overlap(a.x, b.x), overlap(a.y, b.y)
                     if ox <= 0 or oy <= 0:
                         rep.fail(f"{lab}: no plan overlap (x {fr(ox)}, y {fr(oy)})")
@@ -304,6 +384,14 @@ def check_connection(rep, c, members, stair, room):
                         oy = [max(a.y[0], b.y[0]), min(a.y[1], b.y[1])]
                         za = stair.z_range_over(*oy) if oy[1] > oy[0] else [0, 0]
                     ovs[ax] = (overlap(za, b.z), za)
+                elif a.kind == "raked" and ax == "z":
+                    if face == "y":
+                        # the joint is a plane: take a's envelope at the end that meets b
+                        ya = a.y[1] if abs(a.y[1] - b.y[0]) < abs(a.y[0] - b.y[1]) else a.y[0]
+                        za = list(rake_z(a, ya, stair, nook))
+                    else:
+                        za = rake_range(a, b.y[0], b.y[1], stair, nook)
+                    ovs[ax] = (overlap(za, b.z), za)
                 else:
                     ovs[ax] = (overlap(a.ext(ax), b.ext(ax)), a.ext(ax))
             msgs = []
@@ -328,10 +416,10 @@ def check_connection(rep, c, members, stair, room):
                 w_ov, w_ext = ovs[width_ax]
                 width = w_ext[1] - w_ext[0]
                 # a stringer is fastened locally along its run; its full length need not be backed
-                if w_ov < width - TOL and a.kind != "stringer":
+                if w_ov < width - TOL and a.kind not in RAKED:
                     bad = True
                     extra += f" · only {fr(w_ov)} of a's {fr(width)} width is backed by b"
-                if "z" in ovs and a.kind != "stringer":
+                if "z" in ovs and a.kind not in RAKED:
                     eng, z_ext = ovs["z"]
                     depth = z_ext[1] - z_ext[0]
                     if depth > 0 and eng < depth - TOL:
@@ -365,7 +453,7 @@ def check_clashes(rep, members, connections):
         except KeyError:
             pass
     found = 0
-    solids = [m for m in members.values() if m.role != "existing" and m.kind != "stringer"]
+    solids = [m for m in members.values() if m.role != "existing" and m.kind not in RAKED]
     for a, b in combinations(solids, 2):
         ox, oy, oz = overlap(a.x, b.x), overlap(a.y, b.y), overlap(a.z, b.z)
         if ox > TOL and oy > TOL and oz > TOL:
@@ -412,8 +500,8 @@ def check_derived(rep, d, members, stair, room):
     oy = nook["opening_y"]
     got["nook_opening"] = [oy[1] - oy[0], float(nook["header_bottom"])]
     got["nook_light_chase"] = M["lnd_joist[0]"].z[0] - float(nook["header_bottom"])
-    jamb = float(nook.get("head_jamb", 0)); panel = float(nook["soffit_panel_thickness"])
-    got["nook_far_end_height"] = stair.underside(oy[1]) - panel if jamb else float(nook["header_bottom"]) - (oy[1] - float(nook["flat_ceiling_to_y"])) * stair.tan
+    wrap = float(nook.get("wrap", 0)); panel = float(nook["soffit_panel_thickness"])
+    got["nook_far_end_height"] = stair.underside(oy[1]) - panel if wrap else float(nook["header_bottom"]) - (oy[1] - float(nook["flat_ceiling_to_y"])) * stair.tan
     got["rim_header_overlap"] = overlap(M["lnd_rim"].z, M["hw_header"].z)
     got["rim_stringer_bearing"] = overlap(M["lnd_rim"].z, stair.plumb_cut())
     ex = scr["extent_x"]
@@ -467,10 +555,10 @@ def check_stair_and_nook(rep, d, members, stair):
     hb = float(nook["header_bottom"])
     t_panel = float(nook["soffit_panel_thickness"])
     y_break = float(nook["flat_ceiling_to_y"])
-    jamb = float(nook.get("head_jamb", 0))
-    face = hb - jamb                       # finished flat-ceiling face
-    if jamb:
-        rep.info(f"nook head jamb {fr(jamb)} → finished flat ceiling at {fr(face)}, panel top at {fr(face + t_panel)}")
+    wrap = float(nook.get("wrap", 0))
+    face = hb - wrap                       # finished flat-ceiling face
+    if wrap:
+        rep.info(f"nook ply wrap {fr(wrap)} → finished flat ceiling at {fr(face)}, framing plane at {fr(face + t_panel)}")
 
     # landing top must equal riser 6
     want = stair.riser_z[stair.n_treads + 1]
@@ -519,7 +607,7 @@ def check_stair_and_nook(rep, d, members, stair):
 
     # every landing member must clear the soffit along its whole y extent
     for m in members.values():
-        if m.role == "existing" or m.kind == "stringer" or m.x[0] < 107 - TOL: continue
+        if m.role == "existing" or m.kind in RAKED or m.x[0] < 107 - TOL: continue
         if overlap(m.y, [3, 47]) <= TOL or m.z[0] > face + 8: continue
         worst = min(m.z[0] - (soffit(y) + (t_panel if y <= y_meet else 0)) for y in (m.y[0], m.y[1]))
         (rep.ok if worst > -TOL else rep.fail)(f"{m.id} bottom {fr(m.z[0])} clears the soffit by {fr(worst)} over y {fr(m.y[0])}→{fr(m.y[1])}")
@@ -557,7 +645,7 @@ def main():
     rep.section("CONNECTIONS — does each claimed connection exist in all three axes?")
     for c in d["connections"]:
         try:
-            check_connection(rep, c, members, stair, d["room"])
+            check_connection(rep, c, members, stair, d["room"], d["nook"])
         except KeyError as e:
             rep.fail(f"connection {c}: unknown member {e}")
 

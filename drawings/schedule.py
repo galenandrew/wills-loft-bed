@@ -12,9 +12,9 @@ def z_row(name, k, note=""):
     mm = m(k); return (name, fr(mm.z[0]), fr(mm.z[1]), note)
 
 def schedule():
-    A = [z_row("Half-wall bottom plate", "hw_bottom_plate"), z_row("Half-wall studs (kings)", "hw_king_a", f"{fr(m('hw_king_a').size('z'))} long · trimmers to {fr(m('hw_trimmer_a').z[1])}"),
-         z_row("Nook header (3½ sandwich)", "hw_header", "2×10 + ½ ply + 2×10"),
-         ("Nook finished ceiling / head jamb", "—", fr(CEIL), f"header bottom {fr(HB)} less ¾ jamb; panel top {fr(CEIL+PANEL)}"),
+    A = [z_row("Half-wall bottom plates (y 0→3, 47→50)", "hw_bottom_plate_a", "split at the opening — the nook is open to the floor"), z_row("Half-wall studs (kings)", "hw_king_a", f"{fr(m('hw_king_a').size('z'))} long · trimmers to {fr(m('hw_trimmer_a').z[1])}"),
+         z_row("Nook header (3½ sandwich)", "hw_header", f"2×10 + ½ ply + 2×10, all ripped to {fr(m('hw_header').size('z'))} deep"),
+         ("Nook finished ceiling (flat run)", "—", fr(CEIL), f"header/ledger bottom {fr(HB)} less the ¾ panel; framing plane {fr(CEIL+PANEL)}"),
          z_row("Landing box — rim, side member, ledgers, all 2×8", "lnd_rim", f"clears the {fr(CEIL+PANEL)} panel top by {fr(m('lnd_rim').z[0]-CEIL-PANEL)}"),
          z_row("Landing joists, 2×4", "lnd_joist[0]"), z_row("Stringer plumb cut (at y 18)", "lnd_rim", "= the rim, full depth"),
          ("Landing finished top", "—", fr(LAND), f"{fr(DECK)} − one riser"),
@@ -37,7 +37,7 @@ def schedule():
     def y_row(name, k, note=""):
         mm = m(k); return (name, fr(mm.y[0]), fr(mm.y[1]), note)
     D = [y_row("Rear ledger", "rear_ledger"), ("Boxed ledge", "0", "8", f"well {fr(m('ledge_front_rail').y[0]-m('rear_ledger').y[1])} wide"),
-         ("Nook opening — rough", fr(NOOK_Y[0]), fr(NOOK_Y[1]), fr(NOOK_Y[1]-NOOK_Y[0])), ("Nook opening — finished", fr(JAMB_Y[0]), fr(JAMB_Y[1]), f"{fr(JAMB_Y[1]-JAMB_Y[0])} between ¾ jambs"),
+         ("Nook opening — rough", fr(NOOK_Y[0]), fr(NOOK_Y[1]), fr(NOOK_Y[1]-NOOK_Y[0])), ("Nook opening — finished", fr(JAMB_Y[0]), fr(JAMB_Y[1]), f"{fr(JAMB_Y[1]-JAMB_Y[0])} between ¾ ply wraps"),
          y_row("Header (kings 0–1½, 48½–50)", "hw_header", f"{fr(m('hw_header').size('y'))} long, 1½ bearing each end"),
          ("Nook flat ceiling", fr(NOOK_Y[0]), fr(Y_MEET), "rake begins where the stringer undersides reach the panel"),
          ("Mattress bay", "8", fr(m("beam").y[0]), f"{fr(m('beam').y[0]-8)} for a {MAT['size'][0]} mattress"),
@@ -52,8 +52,8 @@ def schedule():
           ("Deck plywood", " × ".join(fr(a) for a in DER["deck_ply"]), "1½→106¼ by 1½→47"), ("Sitting headroom", fr(DER["sitting_headroom"]), f"{fr(CEILING)} − mattress top"),
           ("Riser", f"{ST.R:.3f}", f"{fr(DECK)} ÷ {ST.n_risers} — <b>not 8¼</b>"), ("Stair angle", f"{math.degrees(ST.angle):.2f}°", "atan(rise/run)"), ("Stringer throat", fr(ST.throat), "11¼ − notch depth · 3½ min"),
           ("Stringer plumb cut (y 18)", f"{fr(ST.plumb_cut()[0])} → {fr(ST.plumb_cut()[1])}", "≈7 tall = the 2×8 rim"), ("Stringer underside at y 27 / 47", f"{fr(U(27))} / {fr(U(47))}", f"notch corners − throat, dropped {fr(T)} for the treads"),
-          ("Landing headroom", fr(DER["landing_headroom"]), f"{fr(CEILING)} − {fr(LAND)}"), ("Nook finished opening", f"{fr(JAMB_Y[1]-JAMB_Y[0])} × {fr(CEIL)}", "rough less ¾ jambs"),
-          ("Nook flat ceiling depth", fr(Y_MEET - JAMB_Y[0]), f"jamb face to y {fr(Y_MEET)}"), ("Nook far end height", fr(DER["nook_far_end_height"]), "stringer underside at 47 − ¾ panel"),
+          ("Landing headroom", fr(DER["landing_headroom"]), f"{fr(CEILING)} − {fr(LAND)}"), ("Nook finished opening", f"{fr(JAMB_Y[1]-JAMB_Y[0])} × {fr(CEIL)}", "rough less ¾ ply wrap; head raked past y 18¼"),
+          ("Nook flat ceiling depth", fr(Y_MEET - JAMB_Y[0]), f"wrap face to y {fr(Y_MEET)}"), ("Nook far end height", fr(DER["nook_far_end_height"]), "stringer underside at 47 − ¾ panel"),
           ("Light chase over the flat", fr(DER["nook_light_chase"]), "joist bottom − header bottom — wafer LED only"), ("Rim ↔ header engagement", fr(DER["rim_header_overlap"]), "full 2×8"),
           ("Rim ↔ stringer bearing", fr(DER["rim_stringer_bearing"]), "≈ full 2×8"), ("Slat clear opening", fr(DER["slat_clear"]), f"(107 − {SCR['slat_count']} × 1½) ÷ {SCR['slat_count']-1} · 3½ max"),
           ("Stair projection", f"{fr(DER['stair_projection'])} framing · {fr(Y_FIN)} finished", f"{fr(ST.landing)} landing + {fr(ST.y_bottom-ST.y_riser_top)} run + {fr(RISER_T)} riser + {fr(NOSE)} nose"), ("Fan clearance", fr(DER["fan_clearance"]), f"{fr(m('fan').y[0])} − {fr(m('beam_wrap_face').y[1])}"),
@@ -72,5 +72,5 @@ def cards():
             ("Boxed ledge", "8w × 8h", f"well {fr(m('ledge_front_rail').y[0]-1.5)} × {fr(m('ledge_front_rail').z[1]-DECK)}"), ("Mattress bay", f"{fr(m('beam').y[0]-8)} × {fr(107-2-24)}", "1 slack + 2 tuck at the window wall"),
             ("Stair", f"{ST.n_risers} @ {ST.R:.3f}", f"{fr(ST.run)} run · {math.degrees(ST.angle):.1f}° · 24 wide · 5/4 treads"), ("Stair landing", f"24 × {fr(ST.landing)}", f"at {fr(LAND)} — one riser below deck"),
             ("Half-wall", "5 thick", "¾ ply + 3½ studs + ¾ ply"), ("Clear below deck", fr(DER["clear_below_deck_x"]), "107 deck less the 5 wall"),
-            ("Under-stair nook", f"{fr(JAMB_Y[1]-JAMB_Y[0])} × {fr(CEIL)}", f"finished, jambed · {fr(DER['nook_far_end_height'])} at the far end")]
+            ("Under-stair nook", f"{fr(JAMB_Y[1]-JAMB_Y[0])} × {fr(CEIL)}", f"finished, ply-wrapped · {fr(DER['nook_far_end_height'])} at the far end")]
     return "".join(f'<div class="spec"><dt>{E(a)}</dt><dd>{E(b)}<span>{E(c)}</span></dd></div>' for a, b, c in rows)

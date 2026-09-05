@@ -70,16 +70,27 @@ def prism_yz(pts, x0, x1):
 
 
 # ------------------------------------------------------------------ the scope
-# The spike's scope, from cad/BRIEF.md: stair + landing, with the half-wall as
-# context. Everything else in the yaml (platform, screen, room fixtures) is out.
+# Three components, as the builder splits them (2026-09-05). The landing is part of
+# the STAIR — it is the top step — not a thing of its own. The nook's *framing* is
+# the half-wall's rough opening and stays with the half-wall; what belongs to the
+# nook is its lining and the two nailer walls that carry it.
+# The platform, screen and room fixtures are still out of scope.
 SCOPE = {
-    "stair":    ["stringer_a", "stringer_b", "stringer_c", "kicker"],
-    "landing":  ["lnd_ledger_bedwall", "lnd_ledger_rightwall", "lnd_side_member",
-                 "lnd_joist[0]", "lnd_joist[1]", "lnd_rim",
-                 "lnd_blocking[0]", "lnd_blocking[1]", "lnd_ply"],
-    "half_wall": ["hw_header", "hw_king_a", "hw_king_b", "hw_trimmer_a", "hw_trimmer_b",
+    "stair":     ["stringer_a", "stringer_b", "stringer_c", "kicker",
+                  "lnd_ledger_bedwall", "lnd_ledger_rightwall", "lnd_side_member",
+                  "lnd_joist[0]", "lnd_joist[1]", "lnd_rim",
+                  "lnd_blocking[0]", "lnd_blocking[1]", "lnd_ply"],
+    "half_wall": ["hw_bottom_plate_a", "hw_bottom_plate_b",
+                  "hw_king_a", "hw_king_b", "hw_trimmer_a", "hw_trimmer_b",
+                  "hw_header", "hw_top_plate_1", "hw_top_plate_2", "hw_rake_nailer",
+                  "hw_sheath_loft_a", "hw_sheath_loft_head", "hw_sheath_loft_b",
                   "hw_sheath_stair_a", "hw_sheath_stair_head", "hw_sheath_stair_b",
-                  "hw_top_plate_1", "hw_top_plate_2", "hw_bottom_plate"],
+                  "hw_end_cap"],
+    "nook":      ["nk_bedwall_plate", "nk_bedwall_stud[0]", "nk_bedwall_stud[1]",
+                  "nk_bedwall_stud[2]", "nk_bedwall_cap",
+                  "nk_shortwall_plate", "nk_shortwall_strut[0]", "nk_shortwall_strut[1]",
+                  "nk_shortwall_strut[2]",
+                  "nk_wrap_bedwall", "nk_wrap_shortwall", "nk_soffit_panel"],
 }
 
 # A "2x10 sandwich" header is two 2x10s over a 1/2 ply flitch — 1.5 + 0.5 + 1.5 = 3.5,
@@ -88,6 +99,9 @@ SCOPE = {
 # ASSUMED build-up (the drawings never state the lay-up order); flagged in the report.
 LAMINATIONS = {
     "header-2x10-sandwich": [("2x10-loft", 1.5), ("ply-1/2", 0.5), ("2x10-stair", 1.5)],
+    # Rev X: same lay-up, all three plies ripped to 9.04 deep so the header's bottom
+    # meets the landing-ledger bottom with its top still on the plates.
+    "header-2x10-rip": [("2x10-loft", 1.5), ("ply-1/2", 0.5), ("2x10-stair", 1.5)],
     "2x10x2": [("2x10-a", 1.5), ("2x10-b", 1.5)],
 }
 
@@ -109,6 +123,15 @@ def _member_pieces(mid, assembly, split_laminations=True):
                          stock, note=f"lamination of {mid}", parent=mid))
         lo += t
     return out
+
+
+# --------------------------------------------------------------- raked members
+def raked_solid(mid):
+    """`kind: raked` — the true y-z profile from verify.rake_pts(), extruded through
+    the member's own x extent. Same treatment the stringers get, and the same source:
+    verify.py owns the profile, nothing here re-derives it."""
+    m = M[mid]
+    return prism_yz(dm.rake_pts(m, ST, dm.nook), float(m.x[0]), float(m.x[1]))
 
 
 # ----------------------------------------------------------------- stringers
@@ -188,21 +211,8 @@ def riser_pieces(scheme="standard", x0=None, x1=None):
     return out
 
 
-# --------------------------------------------------------------- soffit panel
-def soffit_piece():
-    """The nook soffit: one 3/4 panel, flat at the finished ceiling to y_meet, then
-    riding the stringer undersides. Vertical thickness, exactly as verify.py's
-    check_stair_and_nook() models it. Not a member in dimensions.yaml."""
-    y0, y1 = dm.NOOK_Y
-    ym, top = dm.Y_MEET, dm.CEIL + dm.PANEL
-    pts = [(y0, dm.CEIL), (y0, top), (ym, top),
-           (y1, dm.U(y1)), (y1, dm.U(y1) - dm.PANEL), (ym, dm.CEIL)]
-    return Piece("soffit_panel", "nook", prism_yz(pts, *WIDTH_X), "ply-3/4",
-                 derived=True, note="flat to y_meet, then raked on the stringer undersides")
-
-
 # ------------------------------------------------------------------- assembly
-def build(riser_scheme="standard", laminations=True, with_soffit=True):
+def build(riser_scheme="standard", laminations=True):
     """Every solid in the spike's scope. Returns a list of Piece."""
     pieces = []
     for assembly, ids in SCOPE.items():
@@ -210,11 +220,12 @@ def build(riser_scheme="standard", laminations=True, with_soffit=True):
             if M[mid].kind == "stringer":
                 pieces.append(Piece(mid, assembly, stringer_solid(mid), M[mid].stock,
                                     note="true notched profile, not the yaml bbox"))
+            elif M[mid].kind == "raked":
+                pieces.append(Piece(mid, assembly, raked_solid(mid), M[mid].stock,
+                                    note="true raked profile, not the yaml bbox"))
             else:
                 pieces.extend(_member_pieces(mid, assembly, laminations))
     pieces += tread_pieces(riser_scheme) + riser_pieces(riser_scheme)
-    if with_soffit:
-        pieces.append(soffit_piece())
     return pieces
 
 

@@ -8,7 +8,7 @@ from svgview import View
 d = yaml.safe_load(open(sys.argv[1]))
 M = expand(d["members"]); d["stair"]["_stringer_depth"] = 11.25
 ST = Stair(d["stair"], 58); T = ST.t
-HB = 41.5; CEIL = HB - float(d["nook"]["head_jamb"]); PANEL = 0.75
+HB = 41.5; CEIL = HB - float(d["nook"].get("wrap", 0.75)); PANEL = 0.75
 def U(y): return ST.underside(y)
 Y_MEET = 27 - (CEIL + PANEL - U(27)) / ST.tan
 PC = ST.plumb_cut(); RIM = M["lnd_rim"]; YT = ST.y_top
