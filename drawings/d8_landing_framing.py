@@ -7,7 +7,7 @@ def d8a():
     v = View(100, 133, -1.5, 34, 9, ml=110, mr=60, mt=40, mb=50, vdown=True)
     v.rect(100, 133, -1.5, 0, "wall"); v.rect(131, 133, 0, 34, "wall")
     for k in ("hw_king_a", "hw_king_b", "hw_header"): R(v, m(k), "x", "y", "lum")
-    for k in ids("hw_sheath_loft_a") + ids("hw_sheath_loft_head") + ids("hw_sheath_loft_b") + ids("hw_sheath_stair_a") + ids("hw_sheath_stair_head") + ids("hw_sheath_stair_b"): R(v, m(k), "x", "y", "sheet")
+    for k in ids("hw_sheath_loft_a") + ids("hw_sheath_loft_head") + ids("hw_sheath_loft_b") + ids("hw_sheath_stair_a") + ids("hw_sheath_stair_a_head") + ids("hw_sheath_stair_head") + ids("hw_sheath_stair_b"): R(v, m(k), "x", "y", "sheet")
     v.rect(m("hw_header").x[0], m("hw_header").x[1], NOOK_Y[0], NOOK_Y[1], "lum", HATCH)
     for k in ("lnd_ledger_bedwall", "lnd_ledger_rightwall", "lnd_side_member") + tuple(ids("lnd_joist")) + tuple(ids("lnd_blocking")): R(v, m(k), "x", "y", "lum")
     R(v, m("lnd_rim"), "x", "y", "lum", HATCH)

@@ -19,11 +19,14 @@ def d7a():
     for k in ("hw_sheath_loft_a", "hw_sheath_loft_b", "hw_sheath_stair_a", "hw_sheath_stair_b"): R(v, m(k), "y", "x", "sheet")
     R(v, m("hw_end_cap"), "y", "x", "fin")
     # the ¾ ply wrap on both reveals — clipped to the wall, since both sheets run on
-    # into the nook to x 131. Both exist at this height; the short wall's tops out at 15.84.
-    for k in ("nk_wrap_bedwall", "nk_wrap_shortwall"): v.rect(*m(k).y, 102, 107, "fin")
+    # into the nook to x 131. Both exist at this height; the short wall's tops out at 16.3.
+    # Rev AD: drawn from the member's own start (102.75), so this section shows the lap —
+    # the face panel in front of the wrap's end, not butted to it.
+    for k in ("nk_wrap_bedwall", "nk_wrap_shortwall"): v.rect(*m(k).y, m(k).x[0], 107, "fin")
     v.rect(m("beam").y[0], m("beam").y[1], m("beam").x[0] and 102.75, m("beam").x[1], "dashfill")
     v.text(25, 104.5, f"{fr(JAMB_Y[1]-JAMB_Y[0])} FINISHED OPENING — wall removed, both faces · ¾ ply wrap", "lab", "middle", dy=4)
     v.text(25, 103.3, "header above carries the deck rim and the landing rim", "labs", "middle", dy=4)
+    v.text(25, 105.84, "nook face laps the wrap · the stair face is lapped by it", "labs", "middle", dy=4)
     v.text(1.75, 107.4, "king + ½ ply + trimmer", "labs", "middle", dy=-3); v.text(48.25, 107.4, "trimmer + ½ ply + king", "labs", "middle", dy=-3); v.text(48.5, 109.0, "beam end above — bears here", "labk", "middle", dy=-3)
     v.text(25, 107.4, "stair side", "labs", "middle", dy=-3); v.text(25, 101.6, "loft side", "labs", "middle", dy=13)
     v.dim_v(51.5, 106.25, 107, "¾", left=False); v.dim_v(51.5, 102.75, 106.25, "3½", left=False); v.dim_v(51.5, 102, 102.75, "¾", left=False); v.dim_v(53.3, 102, 107, "5", left=False)

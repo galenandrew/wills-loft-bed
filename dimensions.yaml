@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AC
+rev: AD
 units: inches
 room:
   x: 131
@@ -137,7 +137,8 @@ nook:
   note: 'Rev X: header_bottom is now the landing-ledger bottom (lnd_ledger_bedwall.z[0]),
     so the soffit runs flush from under the landing out through the opening. `wrap` is the
     3/4 ply lining thickness — Rev U''s poplar jambs are gone; the nook is one ply-wrapped
-    tube from the half-wall''s outer face (x 102) to the right wall (x 131).'
+    tube from x 102.75 to the right wall (x 131). Rev AD: the tube starts 3/4 back from the
+    half-wall''s outer face, not on it — the face is its own panel and laps the tube''s end.'
 screen:
   slat_count: 23
   slat_size: 1.5
@@ -344,7 +345,7 @@ members:
     window wall at x 0 — it is above the side ledger''s top (63), so no notch, it simply
     caps the tongue. Stops at 106.25 where ledge_end_cap starts.'
 - id: ledge_end_cap
-  stock: poplar-3/4
+  stock: ply-3/4
   x:
   - 106.25
   - 107
@@ -355,6 +356,10 @@ members:
   - 58
   - 66
   role: finish
+  note: 'Rev AD: still the boxed ledge''s end, but no longer a separate part — it is the top
+    of piece 1 of the stair face (with hw_sheath_stair_a and hw_sheath_stair_a_head), so the
+    stock changes from 3/4 poplar to 3/4 ply and the joint that used to run across at z 58 is
+    gone. Its ply edges meet poplar at the lid and the front rail; band or fill them.'
 - id: hw_bottom_plate_a
   stock: 2x4
   x:
@@ -527,43 +532,59 @@ members:
   - 102.75
   y:
   - 0
-  - 3.5
+  - 4.25
   z:
   - 0
   - 53.75
   role: sheet
+  note: 'Rev AD: the nook face is TWO pieces, not three, and the wrap no longer shows on it.
+    This is the narrow one — a full-height stile in the bed-wall corner, 4 1/4 x 53 3/4. It
+    now runs past the reveal (3.5) to the finished jamb line (4.25), lapping the end of
+    nk_wrap_bedwall, which stops at 102.75 behind it. Piece 2 is hw_sheath_loft_head +
+    hw_sheath_loft_b, one board. The seam between them is on y 4.25 — the same line as the
+    opening jamb below it — so it reads as that line carried up, and it is backed by the wrap
+    end below 41.5 and by the header above. One seam, not three, is what the 4x8 sheet costs:
+    the whole face is 50 x 53 3/4 and neither dimension fits a 48 sheet.'
 - id: hw_sheath_loft_head
   stock: ply-3/4
   x:
   - 102
   - 102.75
   y:
-  - 3.5
-  - 46.5
+  - 4.25
+  - 45.75
   z:
-  - 15.61
+  - 15.55
   - 53.75
   role: sheet
   kind: raked
   rake:
     profile: soffit
-    offset: 0.75
     side: above
-  note: 'Rev X: the opening head is raked, not square. This panel''s bottom edge rides the
-    soffit framing line — flat at 41.5 to y 18.26, then on the stringer undersides. z is
-    the bbox; the true edge comes from `rake`.'
+  note: 'Rev X: the opening head is raked, not square. Rev AD: this row and hw_sheath_loft_b
+    are ONE board — the big piece of the two-piece face, 45 3/4 x 53 3/4, cut from a 4x8 with
+    the opening sawn out of it. Its edges moved in to the FINISHED jamb lines (y 4.25/45.75)
+    and the offset came off the rake, so its bottom edge is now the soffit FACE (40.75 flat,
+    then the stringer undersides less the panel) instead of the framing line 3/4 above it.
+    That is what lets the one panel cover the ends of all three lining sheets: nk_wrap_bedwall,
+    nk_wrap_shortwall and nk_soffit_panel all stop at 102.75 behind it. z is the bbox; the
+    true edge comes from `rake`.'
 - id: hw_sheath_loft_b
   stock: ply-3/4
   x:
   - 102
   - 102.75
   y:
-  - 46.5
+  - 45.75
   - 50
   z:
   - 0
   - 53.75
   role: sheet
+  note: 'Rev AD: not a separate piece — the full-height far end of the same board as
+    hw_sheath_loft_head, below its raked edge. Out 3/4 to the finished jamb line so it laps
+    the end of nk_wrap_shortwall. Its outer end at y 50 meets hw_end_cap''s return, so the
+    corner you walk round has no joint in it.'
 - id: hw_sheath_stair_a
   stock: ply-3/4
   x:
@@ -576,13 +597,40 @@ members:
   - 0
   - 58
   role: sheet
-- id: hw_sheath_stair_head
+  note: 'Rev AD: the stair face is TWO pieces, like the nook face. This row,
+    hw_sheath_stair_a_head and ledge_end_cap are ONE board — 8 x 66, floor to the top of the
+    boxed ledge, so the face you meet at the top of the stair runs unbroken from the floor up
+    over the ledge''s end. It is the piece that lands on the bed wall.'
+- id: hw_sheath_stair_a_head
   stock: ply-3/4
   x:
   - 106.25
   - 107
   y:
   - 3.5
+  - 8
+  z:
+  - 41.5
+  - 58
+  role: sheet
+  kind: raked
+  rake:
+    profile: soffit
+    offset: 0.75
+    side: above
+  note: 'Rev AD: the part of the opening head that belongs to piece 1 — the same board as
+    hw_sheath_stair_a and ledge_end_cap, not a separate panel. The stair face keeps its head
+    on the soffit FRAMING line (41.5) and its jambs on the reveal, unlike the nook face:
+    the lining runs on through this plane into the nook, so here the wrap laps the sheathing,
+    not the other way round. Over y 3.5→8 the head is flat, so no bevel — the rake is
+    declared only so the row moves with the profile if the stair ever changes.'
+- id: hw_sheath_stair_head
+  stock: ply-3/4
+  x:
+  - 106.25
+  - 107
+  y:
+  - 8
   - 46.5
   z:
   - 15.61
@@ -593,9 +641,14 @@ members:
     profile: soffit
     offset: 0.75
     side: above
-  note: This is Rev S's '3/4 ply facing on the header's stair face' — every landing fastener
-    into the header passes through it. Rev X rakes its bottom edge with the opening head; the
-    fastener zone (41.5→48.75) is well above the rake, so every path through it is unchanged.
+  note: 'This is Rev S''s ''3/4 ply facing on the header''s stair face'' — every landing
+    fastener into the header passes through it. Rev X rakes its bottom edge with the opening
+    head; the fastener zone (41.5→48.75) is well above the rake, so every path through it is
+    unchanged. Rev AD: starts at y 8, not 3.5 — this row, hw_sheath_stair_b and beam_end_cap
+    are ONE board, piece 2 of the stair face, 42 x 63. The seam with piece 1 is on y 8, the
+    boxed ledge''s front face, so the ledge''s line carries down the wall to the nook head;
+    it is backed by the header, the top plates, the deck rim and the deck ply over its whole
+    length (z 41.5→58) and is open below that, where the nook opening is.'
 - id: hw_sheath_stair_b
   stock: ply-3/4
   x:
@@ -608,6 +661,28 @@ members:
   - 0
   - 58
   role: sheet
+  note: 'Rev AD: not a separate piece — the full-height far end of the same board as
+    hw_sheath_stair_head, carried on up past the deck as beam_end_cap.'
+- id: beam_end_cap
+  stock: ply-3/4
+  x:
+  - 106.25
+  - 107
+  y:
+  - 47
+  - 50
+  z:
+  - 58
+  - 63
+  role: finish
+  note: 'Rev AD: NEW. The beam''s stair end was open above the deck — hw_sheath_stair_b
+    stopped at 58 and the beam runs to 63, so 5 inches of end grain and the 2x10/2x10 seam
+    faced the landing. It is the top of piece 2 of the stair face, so the cap is not a
+    separate part to fit: the board runs floor to 63 in one line. Sits on the beam''s end
+    (x 106.25) and dies into beam_wrap_face, which already runs to 107. Its inboard edge is
+    on the beam at y 47, half an inch off the sheathing edge below it at 46.5 — the reveal
+    and the beam simply do not line up; align it to 46.5 with a 1/2 unbacked lip if you want
+    one continuous line instead.'
 - id: hw_rake_nailer
   stock: 2x4
   x:
@@ -907,7 +982,7 @@ members:
 - id: nk_wrap_bedwall
   stock: ply-3/4
   x:
-  - 102
+  - 102.75
   - 131
   y:
   - 3.5
@@ -919,11 +994,14 @@ members:
   note: 'Rev X: one sheet from the half-wall''s outer face through the reveal and on into the
     nook. Runs to the framing plane (41.5); the soffit panel butts its face. Rev Z: out 1/2
     with the reveal — it lands on hw_trimmer_a''s face over the half-wall and on the nook
-    studs'' faces beyond, and those are one plane again because of the jamb flitch.'
+    studs'' faces beyond, and those are one plane again because of the jamb flitch. Rev AD:
+    starts at 102.75, not 102 — recessed 3/4 so the one-piece nook face laps its end instead
+    of butting it. Cut 28 1/4 long, was 29. Its FACE (4.25) is unmoved, so the finished
+    opening and everything inside the nook are exactly as they were.'
 - id: nk_wrap_shortwall
   stock: ply-3/4
   x:
-  - 102
+  - 102.75
   - 131
   y:
   - 45.75
@@ -938,11 +1016,12 @@ members:
     side: below
   note: 'Rev X: the same sheet on the short wall; its top edge is raked and tucks under the
     stringers. z is the bbox. Rev Z: in 1/2 with the reveal, so the bbox top rises from 15.84
-    to 16.3 — it now meets the stringer undersides half an inch further up the rake.'
+    to 16.3 — it now meets the stringer undersides half an inch further up the rake. Rev AD:
+    recessed to 102.75 with the other two lining sheets; 28 1/4 long, was 29.'
 - id: nk_soffit_panel
   stock: ply-3/4
   x:
-  - 102
+  - 102.75
   - 131
   y:
   - 4.25
@@ -958,9 +1037,11 @@ members:
     band: 0.75
   note: 'Rev X: the nook ceiling, promoted from a derived kernel-only piece to a real member.
     Flat at 40.75 under the landing to y 18.26, then on the stringer undersides. Runs the full
-    x 102→131 — through the half-wall on hw_rake_nailer, then on the stringers — so the rake
-    reads continuously from the outer face. Rev Z: 1 shorter in y as the reveal closed in from
-    both sides; its far edge is now 14.86 above the floor, not 14.41.'
+    x 102.75→131 — through the half-wall on hw_rake_nailer, then on the stringers — so the
+    rake reads continuously from the outer face. Rev Z: 1 shorter in y as the reveal closed in
+    from both sides; its far edge is now 14.86 above the floor, not 14.41. Rev AD: recessed to
+    102.75 (28 1/4 long, was 29) so the nook face laps its end; hw_rake_nailer still starts at
+    102.75, so the panel is backed from its first inch.'
 - id: slat
   stock: 2x2
   x:

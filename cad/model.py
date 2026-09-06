@@ -81,7 +81,7 @@ SCOPE = {
                   *[f"deck_joist[{i}]" for i in range(9)], "deck_rim",
                   "beam", "deck_ply",
                   "beam_wrap_face", "beam_wrap_underside",
-                  "ledge_front_rail", "ledge_lid", "ledge_end_cap"],
+                  "ledge_front_rail", "ledge_lid"],
     "screen":    ["screen_top_plate", *[f"slat[{i}]" for i in range(23)]],
     "stair":     ["stringer_a", "stringer_b", "stringer_c", "kicker",
                   "lnd_ledger_bedwall", "lnd_ledger_rightwall", "lnd_side_member",
@@ -92,8 +92,8 @@ SCOPE = {
                   "hw_king_a", "hw_king_b", "hw_trimmer_a", "hw_trimmer_b",
                   "hw_jamb_ply_a", "hw_jamb_ply_b",
                   "hw_header", "hw_top_plate_1", "hw_top_plate_2", "hw_rake_nailer",
-                  "hw_sheath_loft_a", "hw_sheath_loft_head", "hw_sheath_loft_b",
-                  "hw_sheath_stair_a", "hw_sheath_stair_head", "hw_sheath_stair_b",
+                  "hw_sheath_loft_a", "hw_sheath_loft_head",
+                  "hw_sheath_stair_a", "hw_sheath_stair_head",
                   "hw_end_cap"],
     "nook":      ["nk_bedwall_plate", "nk_bedwall_stud[0]", "nk_bedwall_stud[1]",
                   "nk_bedwall_stud[2]", "nk_bedwall_cap",
@@ -123,19 +123,45 @@ LAMINATIONS = {
 # board as the full-depth body plus the tongue left above the notch. Fusing the two
 # boxes gives the L-shaped solid the board actually is — one solid, one volume, and a
 # clash or ray cast sees the notch instead of a square end 1 1/2 short of the wall.
+# Rev AD adds three more: the two faces of the half-wall are one board each side of a
+# single seam, and the yaml carries each board as the two or three rectangles it is made
+# of (a raked head panel is not a box, and the ledge and beam ends stand above the deck).
+# As with the front rail, the fused rows are NOT listed in SCOPE — they are covered by
+# NOTCH_PARTS, and listing them too would build them a second time and clash with the
+# board they are part of. The stair face carries ledge_end_cap and beam_end_cap, so that
+# one board is reported under half_wall even though both ends belong to the loft.
 NOTCHED = {
     "ledge_front_rail": ["ledge_front_rail_tongue"],
+    # the nook face: a 4 1/4 stile, then one 45 3/4 x 53 3/4 board with the opening in it
+    "hw_sheath_loft_head": ["hw_sheath_loft_b"],
+    # the stair face: floor-to-ledge-top on the bed-wall side, floor-to-beam-top beyond
+    "hw_sheath_stair_a": ["hw_sheath_stair_a_head", "ledge_end_cap"],
+    "hw_sheath_stair_head": ["hw_sheath_stair_b", "beam_end_cap"],
 }
 NOTCH_PARTS = {p for parts in NOTCHED.values() for p in parts}
 
 
 def notched_solid(mid):
-    """One member id plus the yaml rows that are the rest of the same piece, fused."""
-    solid = box(M[mid].x, M[mid].y, M[mid].z)
+    """One member id plus the yaml rows that are the rest of the same piece, fused.
+
+    A row may be raked (the half-wall faces are), so each is built the way build()
+    would build it on its own rather than assumed to be a box."""
+    solid = _row_solid(mid)
     for part in NOTCHED[mid]:
-        p = M[part]
-        solid = solid + box(p.x, p.y, p.z)
+        solid = solid + _row_solid(part)
     return solid
+
+
+def _row_solid(mid):
+    """The solid for ONE yaml row, by its kind — box unless the row says otherwise."""
+    if mid in PROFILED:
+        return profiled_solid(mid)
+    if M[mid].kind == "stringer":
+        return stringer_solid(mid)
+    if M[mid].kind == "raked":
+        return raked_solid(mid)
+    m = M[mid]
+    return box(m.x, m.y, m.z)
 
 
 def _member_pieces(mid, assembly, split_laminations=True):
@@ -298,7 +324,9 @@ def build(riser_scheme="standard", laminations=True, context=False):
     pieces = []
     for assembly, ids in SCOPE.items():
         for mid in ids:
-            if mid in PROFILED:
+            if mid in NOTCHED:
+                pieces.extend(_member_pieces(mid, assembly, laminations))
+            elif mid in PROFILED:
                 pieces.append(Piece(mid, assembly, profiled_solid(mid), M[mid].stock,
                                     note="true stepped outline, not the yaml bbox"))
             elif M[mid].kind == "stringer":
