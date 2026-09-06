@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AO
+rev: AP
 units: inches
 room:
   x: 131
@@ -357,6 +357,30 @@ members:
     The slats stand on it (y 49.25 to 50.75, so the full 1 1/2 x 1 1/2 foot is on the cap)
     and screw through it into the LVL, which is the first time that fastener has been real
     rather than UNSPECIFIED.'
+- id: loft_ceiling
+  stock: ply-3/4
+  x:
+  - 0
+  - 102
+  y:
+  - 0
+  - 50
+  z:
+  - 53
+  - 53.75
+  role: finish
+  note: 'Rev AP: NEW. A finished ceiling under the whole loft platform, from the bed wall to
+    beam_wrap_face, closing the joist bays that were bare framing. This is what
+    beam_wrap_underside used to do for the 3 under the beam alone before Rev AG deleted it
+    ("no reason anyone could point to" for the beam to have less clearance than the joists,
+    see revisions.json) — generalised to the full 50 x 102 rather than a narrow strip.
+    Stops at 102, the half-wall''s loft face (hw_sheath_loft_a''s near face), same line the
+    deleted member used; the half-wall''s own framing and hw_end_cap close the rest. Screwed
+    up from below into rear_ledger, side_ledger, deck_joist and beam bottoms, all flush at
+    53.75 (see clear_under_joists / clear_under_beam, now 53 finished instead of bare
+    framing). SPECIFY: 102 x 50 fits no single sheet good in either dimension, so this is at
+    least two pieces with a seam — land it on a joist bay line for backing; the builder''s
+    call, same as beam_wrap_face.'
 - id: ledge_front_rail
   stock: poplar-3/4
   x:
@@ -1293,7 +1317,6 @@ connections:
   type: bearing
   fastener: 'construction adhesive + #8 x 1-5/8 at 6 in o.c., same as the side ledger — Rev
     AO drops rear_ledger to deck level so the ply runs over its top the same way'
-
 - a: beam
   b: hw_top_plate_2
   type: bearing
@@ -1603,8 +1626,8 @@ expected:
   - 107
   - 50.75
   clear_below_deck_x: 102
-  clear_under_joists: 53.75
-  clear_under_beam: 53.75
+  clear_under_joists: 53
+  clear_under_beam: 53
   deck_joist_span: 46.75
   deck_ply:
   - 106.25

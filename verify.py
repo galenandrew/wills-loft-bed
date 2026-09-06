@@ -541,8 +541,8 @@ def check_derived(rep, d, members, stair, room):
     got["deck_top"] = M["deck_ply"].z[1]
     got["platform_finished"] = [M["beam_wrap_face"].x[1], M["beam_wrap_face"].y[1]]
     got["clear_below_deck_x"] = M["hw_sheath_loft_a"].x[0]
-    got["clear_under_joists"] = M["deck_joist[0]"].z[0]
-    got["clear_under_beam"] = M["beam"].z[0]
+    got["clear_under_joists"] = M["loft_ceiling"].z[0]
+    got["clear_under_beam"] = M["loft_ceiling"].z[0]
     got["deck_joist_span"] = M["beam"].y[0] - M["rear_ledger"].y[1]
     got["deck_ply"] = [M["deck_ply"].size("x"), M["deck_ply"].size("y")]
     got["sitting_headroom"] = ceiling - (got["deck_top"] + mattress_t)

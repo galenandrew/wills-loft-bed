@@ -5,10 +5,10 @@ Full write-up: `audits/V-kernel-spike.md`.
 
 ```
 cad spike · build123d 0.11.1 · OCP 7.9.3.1.1 · python 3.13.12
-dimensions.yaml rev AO · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
+dimensions.yaml rev AP · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
 
-[build] 107 solids in 0.15s (12 derived, not yaml members)
-        loft        24 solids     8.05 cu ft
+[build] 108 solids in 0.15s (12 derived, not yaml members)
+        loft        25 solids    10.26 cu ft
         screen      24 solids     1.10 cu ft
         stair       26 solids     3.67 cu ft
         half_wall   18 solids     3.14 cu ft
@@ -25,10 +25,10 @@ dimensions.yaml rev AO · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.1
        · slat[22]: only 0.75 of its 1.50 width is over the LVL (it overhangs the beam's end onto the stair face) — offset its screw inboard
        · fan → nearest slat: kernel 16.1250", yaml expects 15.25
 [fasteners] 8 rays in 0.02s → spike/fasteners.txt
-[section] cut+HLR in 0.83s → spike/d4-kernel.svg, spike/d8b-kernel.svg
+[section] cut+HLR in 0.84s → spike/d4-kernel.svg, spike/d8b-kernel.svg
           worst cut-edge deviation vs d4.svg: 0.0048" on stringer_b (1/16" = 0.0625)
-[export] model.step 1962 kB, model.stl 73 kB in 0.41s
-         re-imported: 103 solids (wrote 103), volume 30605.38 vs 30605.38 cu in, Δ 0.0000
+[export] model.step 1978 kB, model.stl 74 kB in 0.41s
+         re-imported: 104 solids (wrote 104), volume 34430.38 vs 34430.38 cu in, Δ 0.0000
 
-TOTAL 2.55s  (build 0.15 · clash 0.64 · fasteners 0.02 · section 0.83 · export 0.41)
+TOTAL 2.55s  (build 0.15 · clash 0.64 · fasteners 0.02 · section 0.84 · export 0.41)
 ```

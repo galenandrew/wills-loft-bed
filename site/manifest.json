@@ -1,5 +1,5 @@
 {
- "rev": "AO",
+ "rev": "AP",
  "yaml": "dimensions.yaml",
  "generated": "2026-09-06",
  "figures": {
@@ -12,14 +12,14 @@
   "d2": {
    "sheet": "2",
    "page": "index",
-   "sha": "ac550b254290",
-   "elements": 83
+   "sha": "5ce286af299e",
+   "elements": 85
   },
   "d3": {
    "sheet": "3",
    "page": "loft",
-   "sha": "d0d4f2cc0d7c",
-   "elements": 90
+   "sha": "9e4e7ea97c44",
+   "elements": 92
   },
   "d4": {
    "sheet": "4",
@@ -77,9 +77,9 @@
   }
  },
  "pages": {
-  "index": "532199b4c402",
+  "index": "8730903ccc6c",
   "stairs": "b3664cf208b5",
-  "loft": "a2dc1382a807",
-  "appendix": "991f30453d9d"
+  "loft": "63ba8873fc98",
+  "appendix": "0a5b4cbd2893"
  }
 }
