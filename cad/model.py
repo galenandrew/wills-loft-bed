@@ -80,7 +80,7 @@ SCOPE = {
                   *[f"ledger_blocking[{i}]" for i in range(8)], "ledger_blocking_last",
                   *[f"deck_joist[{i}]" for i in range(9)], "deck_rim",
                   "beam", "deck_ply",
-                  "beam_wrap_face", "beam_wrap_underside",
+                  "beam_wrap_face",
                   "ledge_front_rail", "ledge_lid"],
     "screen":    ["screen_top_plate", *[f"slat[{i}]" for i in range(23)]],
     "stair":     ["stringer_a", "stringer_b", "stringer_c", "kicker",

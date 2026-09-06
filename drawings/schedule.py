@@ -18,7 +18,7 @@ def schedule():
          z_row("Landing box — rim, side member, ledgers, all 2×8", "lnd_rim", f"clears the {fr(CEIL+PANEL)} panel top by {fr(m('lnd_rim').z[0]-CEIL-PANEL)}"),
          z_row("Landing joists, 2×4", "lnd_joist[0]"), z_row("Stringer plumb cut (at y 18)", "lnd_rim", f"{fr(ST.plumb_cut()[1]-ST.plumb_cut()[0])} tall against a {fr(m('lnd_rim').size('z'))} rim"),
          ("Landing finished top", "—", fr(LAND), f"{fr(DECK)} − the {fr(ST.R_top)} top riser — <b>not</b> a {fr(ST.R)} stair riser"),
-         z_row("Half-wall double top plate", "hw_top_plate_1", "deck bears here"), z_row("Beam wrap, underside", "beam_wrap_underside", "¾ poplar"),
+         z_row("Half-wall double top plate", "hw_top_plate_1", "deck bears here"),
          z_row("Deck joists, 2×4", "deck_joist[0]"), z_row("Beam, doubled 2×10", "beam", f"{fr(m('beam').z[1]-DECK)} proud of the deck"),
          z_row("Side ledger, 2×10", "side_ledger", "top = beam top"), z_row("Rear ledger, 2×6", "rear_ledger", "top inside the ledge box"),
          z_row("Deck plywood", "deck_ply", f"<b>deck top = {fr(DECK)}</b>"), ("Mattress", fr(DECK), fr(DECK + MAT["thickness"]), f"{fr(MAT['thickness'])} ASSUMED"),
@@ -50,7 +50,7 @@ def schedule():
          ("Fan blade edge", "—", fr(m("fan").y[0]), f"blades at {fr(m('fan').z[0])}"), ("Stair, to the bottom nosing", fr(ST.y_riser_top), fr(Y_FIN), f"{ST.n_treads} treads @ {fr(ST.run)} · framing line {fr(ST.y_bottom)}"),
          y_row("Dresser (48 × 16)", "dresser", f"{fr(m('dresser').y[0]-Y_FIN)} gap to the stair"), ("Entry door (32)", fr(float(room["door"]["y"][0])), fr(float(room["door"]["y"][1])), f"{fr(float(room['door']['to_corner']))} to the corner")]
     Ed = [("Clear span below the deck", fr(DER["clear_below_deck_x"]), "107 deck − 5 half-wall"), ("Clear height under joists", fr(DER["clear_under_joists"]), "58 − ¾ ply − 3½ joist"),
-          ("Clear height under the beam", fr(DER["clear_under_beam"]), "less the ¾ wrap — not uniform with the joists"), ("Deck joist span", fr(DER["deck_joist_span"]), "ledger face → beam face"),
+          ("Clear height under the beam", fr(DER["clear_under_beam"]), "same plane as the joists — no underside wrap"), ("Deck joist span", fr(DER["deck_joist_span"]), "ledger face → beam face"),
           ("Deck plywood", " × ".join(fr(a) for a in DER["deck_ply"]), "1½→106¼ by 1½→47"), ("Sitting headroom", fr(DER["sitting_headroom"]), f"{fr(CEILING)} − mattress top"),
           ("Riser", fr(ST.R), f"{ST.n_treads+1} of them, floor → landing"), ("Top riser (landing → deck)", fr(ST.R_top), "set by the framing stack over the header, not by the stair"), ("Stair angle", f"{math.degrees(ST.angle):.2f}°", "atan(rise/run)"), ("Stringer throat", fr(ST.throat), "11¼ − notch depth · 3½ min"),
           ("Stringer plumb cut (y 18)", f"{fr(ST.plumb_cut()[0])} → {fr(ST.plumb_cut()[1])}", "≈7 tall = the 2×8 rim"), ("Stringer underside at y 27 / 47", f"{fr(U(27))} / {fr(U(47))}", f"notch corners − throat, dropped {fr(T)} for the treads"),
@@ -70,7 +70,7 @@ def schedule():
 
 def cards():
     rows = [("Deck height", fr(DECK), "top of plywood, AFF"), ("Platform", f"107 × {fr(m('beam_wrap_face').y[1])}", "finished, incl. ¾ wrap"),
-            ("Clear underneath", fr(DER["clear_under_joists"]), f"at joists; {fr(DER['clear_under_beam'])} under the wrapped beam"), ("Sitting headroom", fr(DER["sitting_headroom"]), "mattress top to ceiling"),
+            ("Clear underneath", fr(DER["clear_under_joists"]), "same at the joists and the beam"), ("Sitting headroom", fr(DER["sitting_headroom"]), "mattress top to ceiling"),
             ("Boxed ledge", "8w × 8h", f"well {fr(m('ledge_front_rail').y[0]-1.5)} × {fr(m('ledge_front_rail').z[1]-DECK)}"), ("Mattress bay", f"{fr(m('beam').y[0]-8)} × {fr(107-2-24)}", "1 slack + 2 tuck at the window wall"),
             ("Stair", f"{ST.n_treads+1} @ {fr(ST.R)} + {fr(ST.R_top)}", f"{fr(ST.run)} run · {math.degrees(ST.angle):.1f}° · 24 wide · ¾ ply treads"), ("Stair landing", f"24 × {fr(ST.landing)}", f"at {fr(LAND)} — {fr(ST.R_top)} below the deck"),
             ("Half-wall", "5 thick", "¾ ply + 3½ studs + ¾ ply"), ("Clear below deck", fr(DER["clear_below_deck_x"]), "107 deck less the 5 wall"),

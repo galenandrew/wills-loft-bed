@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AE
+rev: AF
 units: inches
 room:
   x: 131
@@ -282,20 +282,6 @@ members:
   z:
   - 53
   - 63
-  role: finish
-- id: beam_wrap_underside
-  stock: poplar-3/4
-  x:
-  - 0
-  - 102
-  note: 'Underside wrap stops at the half-wall''s loft face (102) — the beam bears on the top plate beyond that.
-    CUT-LIST CORRECTION: 102 long, not 107.'
-  y:
-  - 47
-  - 50
-  z:
-  - 53
-  - 53.75
   role: finish
 - id: ledge_front_rail
   stock: poplar-3/4
@@ -1382,7 +1368,7 @@ expected:
   - 50.75
   clear_below_deck_x: 102
   clear_under_joists: 53.75
-  clear_under_beam: 53
+  clear_under_beam: 53.75
   deck_joist_span: 45.5
   deck_ply:
   - 104.75

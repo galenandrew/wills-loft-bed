@@ -421,7 +421,7 @@ def loft_report(pieces):
              float(exp["deck_headroom"])),
             ("floor → deck joist underside", P["deck_joist[0]"].bbox[2][0],
              float(exp["clear_under_joists"])),
-            ("floor → wrapped beam underside", P["beam_wrap_underside"].bbox[2][0],
+            ("floor → beam underside", P["beam#2x10-a"].bbox[2][0],
              float(exp["clear_under_beam"]))]
     for name, got, want in rows:
         flag = "" if abs(got - want) <= 0.011 else "   ← differs from expected:"
