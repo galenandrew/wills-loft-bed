@@ -29,21 +29,21 @@ def schedule():
     def x_row(name, k, note=""):
         mm = m(k); return (name, fr(mm.x[0]), fr(mm.x[1]), note)
     C = [x_row("Desk (existing)", "desk"), ("Mattress", "2", fr(2 + MAT["size"][1]), "2 tuck gap at the window wall"), ("Deck landing area", fr(2 + MAT["size"][1]), "107", ""),
-         ("Half-wall", fr(m("hw_sheath_loft_a").x[0]), fr(m("hw_sheath_stair_a").x[1]), f"studs {fr(m('hw_king_a').x[0])}–{fr(m('hw_king_a').x[1])}"),
+         ("Half-wall", fr(m("hw_sheath_loft_a").x[0]), fr(SKIRT.x[1]), f"studs {fr(m('hw_king_a').x[0])}–{fr(m('hw_king_a').x[1])} · stair face is a skirt above the stringers"),
          x_row("Deck structural rim", "deck_rim", "stair-side panel runs to the deck top"), ("<b>Deck, overall</b>", "0", "107", ""),
-         x_row("Landing side member", "lnd_side_member", "on the header's flush face"), ("Stringers A / B / C", " · ".join(f"{fr(m(k).x[0])}–{fr(m(k).x[1])}" for k in ("stringer_a", "stringer_b", "stringer_c")), "", f"{fr(float(d['stair']['stringer_pitch']))} centres"),
+         x_row("Landing side member", "lnd_side_member", "on the header's framing face — no ply between"), ("Stringers A / B / C", " · ".join(f"{fr(m(k).x[0])}–{fr(m(k).x[1])}" for k in ("stringer_a", "stringer_b", "stringer_c")), "", f"{fr(float(d['stair']['stringer_pitch']))} centres"),
          ("Landing joists", " · ".join(f"{fr(m(k).x[0])}–{fr(m(k).x[1])}" for k in ids("lnd_joist")), "", "run with the stringers"),
-         x_row("Stringer A skin, ¾ ply", "stringer_a_skin", f"y {fr(m('stringer_a_skin').y[0])}→{fr(m('stringer_a_skin').y[1])} — continues the half-wall's stair-side sheathing band, ¾ inboard of its visible face; boards lap it, so they are {fr(STAIR_X[1] - SKIN_X0)} there"),
-         x_row("Right-wall ledger", "lnd_ledger_rightwall"), ("<b>Stair &amp; landing</b>", "107", fr(RX), "24")]
+         x_row("Stringer A skin, ¾ ply", "stringer_a_skin", f"y {fr(m('stringer_a_skin').y[0])}→{fr(m('stringer_a_skin').y[1])} — on stringer A's outer face, {fr(STAIR_X[0]-SKIN_X0)} back from the half-wall's finished stair face; boards lap it, so they are {fr(STAIR_X[1] - SKIN_X0)} there"),
+         x_row("Right-wall ledger", "lnd_ledger_rightwall"), ("<b>Stair &amp; landing</b>", fr(STAIR_X[0]), fr(RX), f"{fr(STAIR_X[1]-STAIR_X[0])} finished · carriage from {fr(m('stringer_a').x[0])}")]
     def y_row(name, k, note=""):
         mm = m(k); return (name, fr(mm.y[0]), fr(mm.y[1]), note)
     D = [y_row("Rear ledger", "rear_ledger"), ("Boxed ledge", "0", "8", f"well {fr(m('ledge_front_rail').y[0]-m('rear_ledger').y[1])} wide"),
          ("Nook opening — rough", fr(NOOK_Y[0]), fr(NOOK_Y[1]), fr(NOOK_Y[1]-NOOK_Y[0])), ("Nook opening — finished", fr(JAMB_Y[0]), fr(JAMB_Y[1]), f"{fr(JAMB_Y[1]-JAMB_Y[0])} between ¾ ply wraps"),
          y_row(f"Header (kings {fr(m('hw_king_a').y[0])}–{fr(m('hw_king_a').y[1])}, {fr(m('hw_king_b').y[0])}–{fr(m('hw_king_b').y[1])})", "hw_header", f"{fr(m('hw_header').size('y'))} long, {fr(m('hw_trimmer_a').y[1] - m('hw_header').y[0])} bearing each end (trimmer + ½ ply flitch)"),
-         ("Nook flat ceiling", fr(NOOK_Y[0]), fr(Y_MEET), "rake begins where the stringer undersides reach the panel"),
+         ("Nook flat ceiling", fr(m("nk_soffit_flat").y[0]), fr(Y_MEET), "own board; the raked board butts it here, flush"),
          ("Mattress bay", "8", fr(m("beam").y[0]), f"{fr(m('beam').y[0]-8)} for a {MAT['size'][0]} mattress"),
          y_row("Landing side member", "lnd_side_member"), y_row("Landing rim", "lnd_rim", "2×8"), ("Stringer top runs", fr(ST.y_top), fr(ST.y_riser_top), "under the landing deck"),
-         y_row("Stringer A skin", "stringer_a_skin", "half-wall end cap → riser 1's plumb cut · 2×2 floor cleat behind it to 61⅞"),
+         y_row("Stringer A skin", "stringer_a_skin", f"into the end cap's notch → riser 1's plumb cut · 2×4 cleat behind it to {fr(m('stringer_a_skin_cleat').y[1])}"),
          y_row("Blocking between stringers", "lnd_blocking[0]", "flush with riser 6"), y_row("Right-wall ledger", "lnd_ledger_rightwall", "stringer C bears on its end"),
          ("Landing", "0", fr(ST.landing), ""), y_row("Beam structure", "beam", "over the end stud pack"), y_row("Beam wrap", "beam_wrap_face"),
          ("<b>Platform, finished</b>", "0", fr(m("beam_wrap_face").y[1]), f"8 + {fr(m('beam').y[0]-8)} + 3 + ¾"), y_row("Desk (existing)", "desk", f"projects {fr(m('desk').y[1]-m('beam_wrap_face').y[1])} past the beam"),

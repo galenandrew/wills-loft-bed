@@ -191,24 +191,29 @@ def riser_y(i):
     y1 = ST.tread_y(i)[1]
     return y1, y1 + RISER_T
 
-# Rev AC — stringer A's outer face is skinned in 3/4 ply from the half-wall's end cap
-# to riser 1, closing the understair cavity on the room side. The skin's outer face is
-# coplanar with the half-wall's stair-side sheathing, so the boards that pass it run
-# 3/4 wider and lap it; the boards uphill of it butt the wall and stay 24. Board 3
-# straddles the wall's end and is notched. All of it comes off the two members.
+# Rev AC — stringer A's outer face is skinned in 3/4 ply, closing the understair cavity
+# on the room side; the boards that pass it run wider and lap it, the boards uphill of
+# the half-wall's end butt the wall and stay 24. Board 3 straddles the step and is
+# notched. Rev AE: the two faces are no longer 3/4 apart. Stringer A moved out onto the
+# half-wall framing, taking the skin with it, so the finished face past the wall's end
+# is at 105.5 while the wall's own face is still 107 — a 1 1/2 step, and it falls on the
+# END CAP's face at y 50.75, not on the skin's start (the skin now runs behind the cap's
+# notched corner to y 50). All of it still comes off the members.
 SKIN = M["stringer_a_skin"]
-SKIN_X0, SKIN_Y0 = float(SKIN.x[0]), float(SKIN.y[0])
-STAIR_X = (float(M["kicker"].x[0]), float(M["kicker"].x[1]))   # 107 -> 131
+SKIRT = M["hw_sheath_stair"]                                   # the half wall's stair face
+SKIN_X0, SKIN_Y0 = float(SKIN.x[0]), float(SKIN.y[0])          # 105.5, 50
+STEP_Y = float(M["hw_end_cap"].y[1])                           # 50.75 — where a board steps
+STAIR_X = (float(SKIRT.x[1]), float(M["kicker"].x[1]))         # 107 -> 131, the finished 24
 
 def board_rects(y0, y1):
-    """A tread or riser board as (x0, x1, y0, y1) pieces. One rect uphill of the skin
-    (24 wide, butting the half-wall sheathing), one over it (24 3/4, lapping it), and
-    both for the one board that straddles the wall's end — that is its notch."""
-    if y1 <= SKIN_Y0 + 1e-9:
+    """A tread or riser board as (x0, x1, y0, y1) pieces. One rect uphill of the wall's
+    end (24 wide, butting the skirt), one past it (25 1/2, lapping the skin), and both
+    for the one board that straddles the end cap — that is its notch."""
+    if y1 <= STEP_Y + 1e-9:
         return [(STAIR_X[0], STAIR_X[1], y0, y1)]
-    if y0 >= SKIN_Y0 - 1e-9:
+    if y0 >= STEP_Y - 1e-9:
         return [(SKIN_X0, STAIR_X[1], y0, y1)]
-    return [(STAIR_X[0], STAIR_X[1], y0, SKIN_Y0), (SKIN_X0, STAIR_X[1], SKIN_Y0, y1)]
+    return [(STAIR_X[0], STAIR_X[1], y0, STEP_Y), (SKIN_X0, STAIR_X[1], STEP_Y, y1)]
 
 def skin_pts():
     """The skin's true y-z outline: stringer A's stepped top edge over the skin's own
@@ -240,7 +245,7 @@ def half_wall_yz(v, cut=True):
     R(v, m("hw_rake_nailer"), "y", "z", "lum2")
     # Rev X: the opening is ply-wrapped, and its head follows the rake. The wrap is
     # drawn from the members themselves, so nothing here is hand-kept.
-    R(v, m("nk_soffit_panel"), "y", "z", "fin")
+    R(v, m("nk_soffit_flat"), "y", "z", "fin"); R(v, m("nk_soffit_rake"), "y", "z", "fin")
     R(v, m("nk_wrap_bedwall"), "y", "z", "fin"); R(v, m("nk_wrap_shortwall"), "y", "z", "fin")
 
 # The stair's FINISHED extent — the bottom tread's nosing, 7/8 past the framing line
@@ -261,5 +266,5 @@ VALS.update({
     "beam_above_deck": fr(m("beam").z[1] - DECK), "slat_count": str(SCR["slat_count"]),
     "stair_fin": fr(Y_FIN), "landing_fin": fr(m("lnd_ply").y[1]), "riser_t": fr(RISER_T),
     "board_w": fr(STAIR_X[1] - STAIR_X[0]), "board_w_skin": fr(STAIR_X[1] - SKIN_X0),
-    "skin_y0": fr(SKIN_Y0), "skin_y1": fr(float(SKIN.y[1])),
+    "skin_y0": fr(SKIN_Y0), "skin_y1": fr(float(SKIN.y[1])), "step_y": fr(STEP_Y),
 })

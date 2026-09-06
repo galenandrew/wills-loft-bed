@@ -2,7 +2,7 @@
 from .model import *
 
 NUMBER, TITLE = "4", "Stair section"
-CUT_X = 119.0        # through stringer B (x 118¼→119¾)
+CUT_X = 118.6        # through stringer B (Rev AE: x 117⅞→119⅜)
 
 def d4():
     v = View(-4, 76, 0, CEILING + 1, 5.6, ml=130, mr=70, mt=28, mb=44)
@@ -17,7 +17,7 @@ def d4():
     # leaves the whole nk_ family out.
     kernel_cut(v, "x", CUT_X, skip=("nk_*",))
     # half-wall framing, in front of the section cut from this angle — shown as a transparent outline so it doesn't hide the stair
-    for k in ("hw_sheath_stair_a", "hw_sheath_stair_a_head", "hw_sheath_stair_head", "hw_sheath_stair_b", "hw_header", "hw_trimmer_a", "hw_trimmer_b",
+    for k in ("hw_sheath_stair", "hw_header", "hw_trimmer_a", "hw_trimmer_b",
               "hw_jamb_ply_a", "hw_jamb_ply_b", "hw_king_a", "hw_king_b"):
         R(v, m(k), "y", "z", "dashfill")
     # Rev AC: stringer A's ply skin — in front of this cut with the half-wall. Outline
@@ -26,7 +26,7 @@ def d4():
     v.poly(skin_pts(), "ghostl")
     # labels
     v.text(-1, 62, "bed wall", "labw", "middle", rot=-90)
-    v.text(SKIN_Y0 + 0.8, 28, "skin on stringer A beyond — ¾ ply, wall end cap to riser 1", "labs", "start")
+    v.text(SKIN_Y0 + 0.8, 28, "¾ skin on stringer A beyond", "labs", "start")
     v.text(74, 4.5, f"treads {fr(T)} ply · 1/8 overhang, taped edge, painted", "labs", "end"); v.text(69, 3.2, "kicker", "labs", "end")
     for i in range(1, ST.n_risers + 1):
         y = ST.tread_y(i)[1] if i <= ST.n_treads else ST.y_riser_top
@@ -41,4 +41,4 @@ def d4():
     return v.svg("Stair section through stringer B, bed wall on the left, drawn with the bed wall left like every y–z view")
 
 FIGURES = [("d4", d4)]
-CAPTION = f"Cut through stringer B. Each stringer runs {fr(ST.top_run)} under the landing: its top plumb cut, at y {fr(ST.y_top)}, is {fr(ST.plumb_cut()[1]-ST.plumb_cut()[0])} tall — close to the 2×8 rim it bears on. Stringers are dropped {fr(T)} for the ¾ plywood treads — no nosing, just a 1/8 overhang with a tape-sealed edge, painted. <b>Tread/riser joint:</b> the riser board goes on the front of each plumb cut, its bottom edge on the stringer&#8217;s horizontal cut for the tread below; that tread starts where the riser ends and butts its face. Simple butt joint, riser behind the tread, nothing notched — the nosing-to-nosing going is exactly {fr(ST.run)}. <b>Rev AC:</b> boards are {fr(STAIR_X[1] - STAIR_X[0])} where they butt the half-wall and {fr(STAIR_X[1] - SKIN_X0)} where they lap the ¾ ply skin on stringer A&#8217;s outer face (y {fr(SKIN_Y0)} to the bottom riser); board 3 straddles the wall&#8217;s end and is notched ¾ × 5. At the foot the stringers are notched {fr(1.5)} × {fr(3.5)} over the kicker. The {ST.n_treads+1} stair risers are {fr(ST.R)}; the {ST.n_risers}th — the sideways step from the landing onto the deck — is {fr(ST.R_top)}, because it is the framing stack over the nook header rather than a stair riser. Do not step {fr(ST.R)} off {ST.n_risers} times. Half-wall framing (dashed) sits in front of this section from this angle. Handrail on the right wall for the full run."
+CAPTION = f"Cut through stringer B. Each stringer runs {fr(ST.top_run)} under the landing: its top plumb cut, at y {fr(ST.y_top)}, is {fr(ST.plumb_cut()[1]-ST.plumb_cut()[0])} tall — close to the 2×8 rim it bears on. Stringers are dropped {fr(T)} for the ¾ plywood treads — no nosing, just a 1/8 overhang with a tape-sealed edge, painted. <b>Tread/riser joint:</b> the riser board goes on the front of each plumb cut, its bottom edge on the stringer&#8217;s horizontal cut for the tread below; that tread starts where the riser ends and butts its face. Simple butt joint, riser behind the tread, nothing notched — the nosing-to-nosing going is exactly {fr(ST.run)}. <b>Rev AE:</b> stringer A moved ¾ out onto the half-wall framing at {fr(m('stringer_a').x[0])} — the ¾ ply that used to sit between them, and behind the whole landing box, is gone, and what is left of the half-wall&#8217;s stair face is a SKIRT: <code>hw_sheath_stair</code>, one board cut to the stringers&#8217; own top line and lapping nothing. The treads and risers are trimmed back ¾ to butt it, so the finished stair is still {fr(STAIR_X[1] - STAIR_X[0])} wide and the finished wall face is still at x 107. Boards are {fr(STAIR_X[1] - STAIR_X[0])} uphill of the wall&#8217;s end and {fr(STAIR_X[1] - SKIN_X0)} past it, where they lap the skin on stringer A&#8217;s outer face; board 3 straddles the end cap at y {fr(STEP_Y)} and is notched {fr(STAIR_X[0]-SKIN_X0)} × {fr(STEP_Y - tread_y_board(3)[0])}. At the foot the stringers are notched {fr(1.5)} × {fr(3.5)} over the kicker. The {ST.n_treads+1} stair risers are {fr(ST.R)}; the {ST.n_risers}th — the sideways step from the landing onto the deck — is {fr(ST.R_top)}, because it is the framing stack over the nook header rather than a stair riser. Do not step {fr(ST.R)} off {ST.n_risers} times. Half-wall framing (dashed) sits in front of this section from this angle. Handrail on the right wall for the full run."

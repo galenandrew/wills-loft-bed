@@ -123,19 +123,23 @@ def compare_section(loops, shapes, skip=()):
 
 # ============================================================ 3 · fasteners
 FASTENERS = [
-    # stringer A into the nook header, through the 3/4 facing (yaml: 4 × 1/4 × 4-1/2
-    # SDS through the facing, over y 18-27). Driven from the stringer's outer face.
-    *[check.Fastener(f"stringer_a→hw_header #{i+1}", (108.5, y, z), (-1, 0, 0), 4.5,
-                     "1/4 x 4-1/2 SDS")
+    # stringer A into the nook header (yaml: 4 × 1/4 × 3-1/2 SDS over y 18-27). Driven
+    # from the stringer's outer face — Rev AE: the face is at 107.75 and there is no
+    # facing in the path any more, so 3-1/2 goes as deep as 4-1/2 used to.
+    *[check.Fastener(f"stringer_a→hw_header #{i+1}",
+                     (float(dm.m("stringer_a").x[1]), y, z), (-1, 0, 0), 3.5,
+                     "1/4 x 3-1/2 SDS")
       for i, (y, z) in enumerate([(20.0, 43.0), (20.0, 47.5), (25.0, 43.0), (25.0, 47.5)])],
     # stringer B off the rim (yaml: 3 × 1/4 × 3-1/2 SDS from inside the box through
     # the rim, before the deck goes on). Driven from the rim's inside face.
-    *[check.Fastener(f"stringer_b→lnd_rim #{i+1}", (119.0, 16.5, z), (0, 1, 0), 3.5,
+    *[check.Fastener(f"stringer_b→lnd_rim #{i+1}",
+                     (float(sum(dm.m("stringer_b").x)) / 2, 16.5, z), (0, 1, 0), 3.5,
                      "1/4 x 3-1/2 SDS")
       for i, z in enumerate([43.0, 45.3, 47.5])],
-    # and the side member, whose 5" screws are the longest in the box
-    check.Fastener("lnd_side_member→hw_header #1", (108.5, 9.0, 45.0), (-1, 0, 0), 5.0,
-                   "1/4 x 5 structural screw"),
+    # and the side member, the longest screws in the box
+    check.Fastener("lnd_side_member→hw_header #1",
+                   (float(dm.m("lnd_side_member").x[1]), 9.0, 45.0), (-1, 0, 0), 4.0,
+                   "1/4 x 4 structural screw"),
 ]
 
 
@@ -208,7 +212,8 @@ def main():
 
     # soffit clearance, kernel vs verify.py
     P = model.by_id(pieces)
-    panel = P["nk_soffit_panel"]
+    panel = P["nk_soffit_rake"]      # Rev AE: the soffit is two boards; the rake is the one
+                                     # that rides the stringers
     # only where a stringer exists: the stringers start at y_top, the nook opening at y=3
     ys = [round(y, 2) for y in [ST.y_top, dm.Y_MEET, 20.0, 27.0, 35.0, 40.0, dm.NOOK_Y[1]]]
     lines += ["", "SOFFIT PANEL → STRINGER UNDERSIDE  (kernel ray cast vs verify.py's Stair.underside)"]

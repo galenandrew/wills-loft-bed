@@ -30,7 +30,7 @@ M = dm.M
 T = dm.T                      # tread thickness
 LAND = dm.LAND                # finished landing top
 STAIR = dm.d["stair"]
-WIDTH_X = (float(M["kicker"].x[0]), float(M["kicker"].x[1]))   # stair width, wall to wall: 107 → 131
+WIDTH_X = dm.STAIR_X          # the finished board width, skirt face to right wall: 107 → 131
 
 
 # --------------------------------------------------------------------- pieces
@@ -93,13 +93,13 @@ SCOPE = {
                   "hw_jamb_ply_a", "hw_jamb_ply_b",
                   "hw_header", "hw_top_plate_1", "hw_top_plate_2", "hw_rake_nailer",
                   "hw_sheath_loft_a", "hw_sheath_loft_head",
-                  "hw_sheath_stair_a", "hw_sheath_stair_head",
-                  "hw_end_cap"],
-    "nook":      ["nk_bedwall_plate", "nk_bedwall_stud[0]", "nk_bedwall_stud[1]",
+                  "hw_sheath_stair", "hw_end_cap"],
+    "nook":      ["nk_bedwall_stud[0]", "nk_bedwall_stud[1]",
                   "nk_bedwall_stud[2]", "nk_bedwall_cap",
-                  "nk_shortwall_plate", "nk_shortwall_strut[0]", "nk_shortwall_strut[1]",
+                  "nk_shortwall_strut[0]", "nk_shortwall_strut[1]",
                   "nk_shortwall_strut[2]",
-                  "nk_wrap_bedwall", "nk_wrap_shortwall", "nk_soffit_panel"],
+                  "nk_wrap_bedwall", "nk_wrap_shortwall",
+                  "nk_soffit_flat", "nk_soffit_rake"],
 }
 
 # Context, not the build: the mattress and the three things already in the room. They
@@ -135,8 +135,10 @@ NOTCHED = {
     # the nook face: a 4 1/4 stile, then one 45 3/4 x 53 3/4 board with the opening in it
     "hw_sheath_loft_head": ["hw_sheath_loft_b"],
     # the stair face: floor-to-ledge-top on the bed-wall side, floor-to-beam-top beyond
-    "hw_sheath_stair_a": ["hw_sheath_stair_a_head", "ledge_end_cap"],
-    "hw_sheath_stair_head": ["hw_sheath_stair_b", "beam_end_cap"],
+    # Rev AE: the stair face is ONE skirt board, floor-to-ledge and floor-to-beam ends included
+    "hw_sheath_stair": ["ledge_end_cap", "beam_end_cap"],
+    # and the wall's end cap is one board with a corner cut out of it for stringer A
+    "hw_end_cap": ["hw_end_cap_foot"],
 }
 NOTCH_PARTS = {p for parts in NOTCHED.values() for p in parts}
 

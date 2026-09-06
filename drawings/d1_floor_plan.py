@@ -11,9 +11,9 @@ def d1():
     v.rect(0, m("beam_wrap_face").x[1], 0, 8, "ledge")
     v.rect(MAT["size"][1] and 2, 2 + MAT["size"][1], 8, 8 + MAT["size"][0], "matt")
     R(v, m("beam"), "x", "y", "beamplan"); R(v, m("beam_wrap_face"), "x", "y", "fin")
-    v.rect(m("hw_sheath_loft_a").x[0], m("hw_sheath_stair_a").x[1], 0, m("hw_end_cap").y[1], "hid")
+    v.rect(m("hw_sheath_loft_a").x[0], SKIRT.x[1], 0, m("hw_end_cap").y[1], "hid")
     # landing + stair
-    v.rect(107, RX, 0, m("lnd_ply").y[1], "landing")          # finished deck, incl. its 1/8 nose
+    v.rect(*m("lnd_ply").x, 0, m("lnd_ply").y[1], "landing")  # finished deck, incl. its 1/8 nose
     for i in range(1, ST.n_treads + 1):
         for bx0, bx1, by0, by1 in board_rects(*tread_y_board(i)):
             v.rect(bx0, bx1, by0, by1, "tread")               # the boards, not the stringer runs
@@ -37,7 +37,7 @@ def d1():
     v.text(119, 12, "LANDING", "lab", "middle", dy=4); v.text(119, 17, f"24 × {fr(m('lnd_ply').y[1])} finished @ {fr(LAND)}", "labs", "middle", dy=4)
     v.text(119, 50, f"{ST.n_treads} treads @ {fr(ST.run)}", "labs", "middle", dy=4)
     v.text(RX, 78, "¾ ply skin on stringer A closes the understair cavity", "labs", "end", dy=4)
-    v.text(RX, 82, f"boards lap it {fr(STAIR_X[1] - SKIN_X0)} — board 3 notched ¾ × {fr(SKIN_Y0 - tread_y_board(3)[0])}", "labs", "end", dy=4)
+    v.text(RX, 82, f"boards lap it {fr(STAIR_X[1] - SKIN_X0)} — board 3 notched {fr(STAIR_X[0]-SKIN_X0)} × {fr(STEP_Y - tread_y_board(3)[0])}", "labs", "end", dy=4)
     v.text(12, 60.5, "desk 24 × 55", "labs", "middle", dy=4)
     v.text(123, 126, "dresser 16 × 48", "labs", "middle", rot=-90)
     v.text(cx, cy, f"ceiling fan — blades {fr(fan.z[0])}", "labs", "middle", dy=4)

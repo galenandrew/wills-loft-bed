@@ -213,7 +213,7 @@ class Stair:
 # `kind: raked` generalises `kind: stringer`: a member whose z extents follow a
 # profile in y instead of being constant. Its yaml z is the bbox — informational,
 # like a stringer's — and the truth comes from `rake`:
-#     profile  stringer_underside | soffit   the line the member is built to
+#     profile  stringer_underside | soffit | stair_top   the line it is built to
 #     offset   inches added to that line     (default 0)
 #     side     above | below                 which side of the line it occupies
 #     band     inches, measured VERTICALLY   omit to take the far edge from the bbox
@@ -228,6 +228,27 @@ def rake_profile(name, stair, nook):
     which is exactly the interference the kernel found on the first Rev X run."""
     if name == "stringer_underside":
         return stair.underside, []
+    if name == "stair_top":
+        # Rev AE: the line the half-wall's stair face (a skirt now) is cut to — the top of
+        # everything the stair puts against that wall. 48.75 under the landing box and the
+        # stringers' top run, then the tread cuts, 8.25 down at every riser line. It is a
+        # STEP function, so each riser line is a break twice over: rake_pts must put two
+        # points there or it would draw a diagonal across the step.
+        top = stair.riser_z[stair.n_treads + 1] - stair.deck_t
+        def z(y):
+            # NOT Stair.top_edge(): its TOL slop makes the tread below win at a run
+            # boundary, which drags the profile a whole riser down and buries the skirt
+            # in the stringer. Here the runs are half-open, so each boundary is exact.
+            if y <= stair.y_riser_top:
+                return top
+            for i in range(stair.n_treads, 0, -1):
+                y0, y1 = stair.tread_y(i)
+                if y0 <= y < y1:
+                    return stair.riser_z[i] - stair.t
+            return stair.riser_z[1] - stair.t
+        eps = 1e-7
+        ys = [stair.y_riser_top] + [stair.tread_y(i)[1] for i in range(1, stair.n_treads + 1)]
+        return z, [b for y in ys for b in (y - eps, y + eps)]
     if name == "soffit":
         panel = float(nook["soffit_panel_thickness"])
         face = float(nook["header_bottom"]) - float(nook.get("wrap", 0))
@@ -628,7 +649,9 @@ def check_stair_and_nook(rep, d, members, stair):
 
     # every landing member must clear the soffit along its whole y extent
     for m in members.values():
-        if m.role == "existing" or m.kind in RAKED or m.x[0] < 107 - TOL: continue
+        # Rev AE: the landing box moved out to the half-wall framing at 106.25, so the
+        # cut-off that keeps the half wall itself out of this loop moved with it.
+        if m.role == "existing" or m.kind in RAKED or m.x[0] < members["hw_sheath_stair"].x[0] - TOL: continue
         if overlap(m.y, oy) <= TOL or m.z[0] > face + 8: continue
         worst = min(m.z[0] - (soffit(y) + (t_panel if y <= y_meet else 0)) for y in (m.y[0], m.y[1]))
         (rep.ok if worst > -TOL else rep.fail)(f"{m.id} bottom {fr(m.z[0])} clears the soffit by {fr(worst)} over y {fr(m.y[0])}→{fr(m.y[1])}")

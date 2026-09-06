@@ -11,7 +11,11 @@ def d2():
     for i in range(1, ST.n_risers - 1): v.line(107, ST.riser_z[i], RX, ST.riser_z[i], "dash")
     v.text(119, LAND, f"landing {fr(LAND)}", "labs", "middle", dy=-4); v.text(120, 22, "treads", "labs", "middle")
     # half-wall end, wrap, slats, plate
-    ec = m("hw_end_cap"); v.rect(*ec.x, *ec.z, "sheet"); v.text((ec.x[0]+ec.x[1])/2, 8, "half-wall", "labs", "middle", rot=-90)
+    # Rev AE: the wall's end is two rects — the cap returns the full 5 above the stringer
+    # and 3½ below it, where stringer A and its skin pass.
+    ec, ef = m("hw_end_cap"), m("hw_end_cap_foot")
+    v.rect(*ec.x, *ec.z, "sheet"); v.rect(*ef.x, *ef.z, "sheet")
+    v.text((ec.x[0]+ec.x[1])/2, 8, "half-wall", "labs", "middle", rot=-90)
     wf = m("beam_wrap_face"); v.rect(*wf.x, *wf.z, "fin")
     for k in ids("slat"): R(v, m(k), "x", "z", "lum")
     R(v, m("screen_top_plate"), "x", "z", "lum")

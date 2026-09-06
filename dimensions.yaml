@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AD
+rev: AE
 units: inches
 room:
   x: 131
@@ -119,7 +119,7 @@ stair:
   width: 24
   stringer_stock: 2x12
   stringer_count: 3
-  stringer_pitch: 11.25
+  stringer_pitch: 11.625
   tread_thickness: 0.75
   tread_board_width: 9.125
   throat_min: 3.5
@@ -161,10 +161,9 @@ members:
   - 53.75
   - 59.25
   role: structural
-  note: 'Rev T says 107 long and draws it 0→107, but the side ledger occupies x 0→1.5 and the stair-side sheathing
-    (floor to 58) occupies 106.25→107. Cut length is therefore 104.75. CUT-LIST CORRECTION.
-
-    '
+  note: 'Rev T says 107 long and draws it 0-107, but the side ledger occupies x 0-1.5 and the
+    half-wall''s stair face - hw_sheath_stair, which still covers 106.25-107 at this height -
+    takes the other end. Cut length is therefore 104.75. CUT-LIST CORRECTION.'
 - id: side_ledger
   stock: 2x10
   x:
@@ -356,15 +355,15 @@ members:
   - 58
   - 66
   role: finish
-  note: 'Rev AD: still the boxed ledge''s end, but no longer a separate part — it is the top
-    of piece 1 of the stair face (with hw_sheath_stair_a and hw_sheath_stair_a_head), so the
-    stock changes from 3/4 poplar to 3/4 ply and the joint that used to run across at z 58 is
-    gone. Its ply edges meet poplar at the lid and the front rail; band or fill them.'
+  note: 'Rev AD: still the boxed ledge''s end, but no longer a separate part - it is the top of
+    the stair face (Rev AE: of hw_sheath_stair, the one skirt board), so the stock is 3/4 ply,
+    not 3/4 poplar, and the joint that used to run across at z 58 is gone. Its ply edges meet
+    poplar at the lid and the front rail; band or fill them.'
 - id: hw_bottom_plate_a
   stock: 2x4
   x:
   - 102.75
-  - 106.25
+  - 131
   y:
   - 0
   - 3.5
@@ -372,14 +371,17 @@ members:
   - 0
   - 1.5
   role: structural
-  note: 'Rev Z: 3.5 long, not 3 — the jamb pack it carries gained a 1/2 ply flitch. The plate
-    still does not run the full 50: the opening (y 3.5→46.5) is open to the floor so you can
-    walk into the nook. Carries hw_king_a, hw_jamb_ply_a and hw_trimmer_a.'
+  note: 'Rev AE: ONE plate, 28 1/4 long — the half-wall''s bed-wall-side plate and the nook''s
+    bed-wall nailer plate (was nk_bedwall_plate, x 107→131) are the same board now that the
+    3/4 sheathing that used to separate them at 106.25→107 is gone. Carries hw_king_a,
+    hw_jamb_ply_a and hw_trimmer_a over its first 3.5, then the three nook studs. Rev Z: 3.5
+    wide, not 3 — the jamb pack it carries gained a 1/2 ply flitch. It still does not run the
+    full 50 in y: the opening (y 3.5→46.5) is open to the floor so you can walk into the nook.'
 - id: hw_bottom_plate_b
   stock: 2x4
   x:
   - 102.75
-  - 106.25
+  - 131
   y:
   - 46.5
   - 50
@@ -387,7 +389,10 @@ members:
   - 0
   - 1.5
   role: structural
-  note: 'Rev Z: 3.5 long, not 3. Carries hw_trimmer_b, hw_jamb_ply_b and hw_king_b.'
+  note: 'Rev AE: ONE plate with what was nk_shortwall_plate (x 107→131), for the same reason
+    as hw_bottom_plate_a. Carries hw_trimmer_b, hw_jamb_ply_b and hw_king_b over its first
+    3.5, then the three nook struts — which now sit under stringers A, B and C at 106.25,
+    117 7/8 and 129.5. Rev Z: 3.5 wide, not 3.'
 - id: hw_king_a
   stock: 2x4
   x:
@@ -521,10 +526,28 @@ members:
   - 50
   - 50.75
   z:
-  - 0
+  - 24
   - 53
   role: finish
-  note: ASSUMED — Rev T never says what closes the wall's end at y 50→50.75 below the wrap.
+  note: 'ASSUMED - Rev T never says what closes the wall''s end at y 50-50.75 below the wrap.
+    Rev AE: one board with hw_end_cap_foot, notched. Stringer A now runs past the wall''s end
+    at 106.25-107.75 with its skin at 105.5-106.25, so below the stringer''s top edge - z 24 at
+    this y, tread 3''s cut - the cap can only be 3 1/2 wide; above it, it returns the full 5.
+    Cut it as one 5 x 53 board with a 1 1/2 x 24 corner taken out, and let the skin butt the
+    cut edge at 105.5.'
+- id: hw_end_cap_foot
+  stock: poplar-3/4
+  x:
+  - 102
+  - 105.5
+  y:
+  - 50
+  - 50.75
+  z:
+  - 0
+  - 24
+  role: finish
+  note: 'Rev AE: not a separate part - the narrow lower half of hw_end_cap, beside stringer A.'
 - id: hw_sheath_loft_a
   stock: ply-3/4
   x:
@@ -544,7 +567,8 @@ members:
     hw_sheath_loft_b, one board. The seam between them is on y 4.25 — the same line as the
     opening jamb below it — so it reads as that line carried up, and it is backed by the wrap
     end below 41.5 and by the header above. One seam, not three, is what the 4x8 sheet costs:
-    the whole face is 50 x 53 3/4 and neither dimension fits a 48 sheet.'
+    the whole face is 50 x 53 3/4 and neither dimension fits a 48 sheet. (Rev AE: the STAIR
+    face is one piece now — see hw_sheath_stair.)'
 - id: hw_sheath_loft_head
   stock: ply-3/4
   x:
@@ -567,7 +591,7 @@ members:
     and the offset came off the rake, so its bottom edge is now the soffit FACE (40.75 flat,
     then the stringer undersides less the panel) instead of the framing line 3/4 above it.
     That is what lets the one panel cover the ends of all three lining sheets: nk_wrap_bedwall,
-    nk_wrap_shortwall and nk_soffit_panel all stop at 102.75 behind it. z is the bbox; the
+    nk_wrap_shortwall and the two nook soffit panels all stop at 102.75 behind it. z is the bbox; the
     true edge comes from `rake`.'
 - id: hw_sheath_loft_b
   stock: ply-3/4
@@ -585,84 +609,34 @@ members:
     hw_sheath_loft_head, below its raked edge. Out 3/4 to the finished jamb line so it laps
     the end of nk_wrap_shortwall. Its outer end at y 50 meets hw_end_cap''s return, so the
     corner you walk round has no joint in it.'
-- id: hw_sheath_stair_a
+- id: hw_sheath_stair
   stock: ply-3/4
   x:
   - 106.25
   - 107
   y:
   - 0
-  - 3.5
-  z:
-  - 0
-  - 58
-  role: sheet
-  note: 'Rev AD: the stair face is TWO pieces, like the nook face. This row,
-    hw_sheath_stair_a_head and ledge_end_cap are ONE board — 8 x 66, floor to the top of the
-    boxed ledge, so the face you meet at the top of the stair runs unbroken from the floor up
-    over the ledge''s end. It is the piece that lands on the bed wall.'
-- id: hw_sheath_stair_a_head
-  stock: ply-3/4
-  x:
-  - 106.25
-  - 107
-  y:
-  - 3.5
-  - 8
-  z:
-  - 41.5
-  - 58
-  role: sheet
-  kind: raked
-  rake:
-    profile: soffit
-    offset: 0.75
-    side: above
-  note: 'Rev AD: the part of the opening head that belongs to piece 1 — the same board as
-    hw_sheath_stair_a and ledge_end_cap, not a separate panel. The stair face keeps its head
-    on the soffit FRAMING line (41.5) and its jambs on the reveal, unlike the nook face:
-    the lining runs on through this plane into the nook, so here the wrap laps the sheathing,
-    not the other way round. Over y 3.5→8 the head is flat, so no bevel — the rake is
-    declared only so the row moves with the profile if the stair ever changes.'
-- id: hw_sheath_stair_head
-  stock: ply-3/4
-  x:
-  - 106.25
-  - 107
-  y:
-  - 8
-  - 46.5
-  z:
-  - 15.61
-  - 58
-  role: sheet
-  kind: raked
-  rake:
-    profile: soffit
-    offset: 0.75
-    side: above
-  note: 'This is Rev S''s ''3/4 ply facing on the header''s stair face'' — every landing
-    fastener into the header passes through it. Rev X rakes its bottom edge with the opening
-    head; the fastener zone (41.5→48.75) is well above the rake, so every path through it is
-    unchanged. Rev AD: starts at y 8, not 3.5 — this row, hw_sheath_stair_b and beam_end_cap
-    are ONE board, piece 2 of the stair face, 42 x 63. The seam with piece 1 is on y 8, the
-    boxed ledge''s front face, so the ledge''s line carries down the wall to the nook head;
-    it is backed by the header, the top plates, the deck rim and the deck ply over its whole
-    length (z 41.5→58) and is open below that, where the nook opening is.'
-- id: hw_sheath_stair_b
-  stock: ply-3/4
-  x:
-  - 106.25
-  - 107
-  y:
-  - 46.5
   - 50
   z:
-  - 0
+  - 24
   - 58
   role: sheet
-  note: 'Rev AD: not a separate piece — the full-height far end of the same board as
-    hw_sheath_stair_head, carried on up past the deck as beam_end_cap.'
+  kind: raked
+  rake:
+    profile: stair_top
+    side: above
+  note: 'Rev AE: ONE board, and only the part of it anyone sees — the answer to "can the new
+    stair face be cut from a single sheet". With ledge_end_cap and beam_end_cap fused to it,
+    the board is 50 x 42 and yields from one 4x8; the Rev AD face was 50 x 66 and needed two.
+    It is a SKIRT now, not a sheathed wall: stringer A and the landing box moved out 3/4 onto
+    the half-wall framing at 106.25, so this panel starts where they stop. Its bottom edge is
+    the `stair_top` profile — 48.75 under the landing box and the stringers'' top run, then
+    the tread cuts at 40.5, 32.25 and 24 — and its face at 107 holds the platform''s finished
+    line, with the treads and risers trimmed back 3/4 to butt it. Everything the old panel
+    covered below that line needed no cover: y 0→3.5 is the nook nailer wall''s own bay, y
+    3.5→46.5 is the nook opening and its soffit, y 46.5→50 is inside the understair void.
+    Nothing fastens THROUGH it any more — stringer A, lnd_side_member and lnd_rim all bear on
+    and screw into the framing direct. Rev AD had it as two boards with a seam on y 8.'
 - id: beam_end_cap
   stock: ply-3/4
   x:
@@ -675,14 +649,12 @@ members:
   - 58
   - 63
   role: finish
-  note: 'Rev AD: NEW. The beam''s stair end was open above the deck — hw_sheath_stair_b
-    stopped at 58 and the beam runs to 63, so 5 inches of end grain and the 2x10/2x10 seam
-    faced the landing. It is the top of piece 2 of the stair face, so the cap is not a
-    separate part to fit: the board runs floor to 63 in one line. Sits on the beam''s end
-    (x 106.25) and dies into beam_wrap_face, which already runs to 107. Its inboard edge is
-    on the beam at y 47, half an inch off the sheathing edge below it at 46.5 — the reveal
-    and the beam simply do not line up; align it to 46.5 with a 1/2 unbacked lip if you want
-    one continuous line instead.'
+  note: 'Rev AD: NEW. The beam''s stair end was open above the deck - the stair face stopped at
+    58 and the beam runs to 63, so 5 inches of end grain and the 2x10/2x10 seam faced the
+    landing. It is the top of the stair face, not a separate part to fit: with hw_sheath_stair
+    it is one board. Sits on the beam''s end (x 106.25) and dies into beam_wrap_face, which
+    already runs to 107. Rev AE: its inboard edge at y 47 is simply the beam''s own end now -
+    the 1/2 mismatch with the old sheathing seam at 46.5 went with that seam.'
 - id: hw_rake_nailer
   stock: 2x4
   x:
@@ -709,7 +681,7 @@ members:
 - id: lnd_ledger_bedwall
   stock: 2x8
   x:
-  - 107
+  - 106.25
   - 129.5
   y:
   - 0
@@ -718,7 +690,7 @@ members:
   - 41.5
   - 48.75
   role: structural
-  note: 'Rev U: 2x8 like the rest of the box'
+  note: 'Rev AE: 23 1/4 long, out to 106.25 with the rest of the box. Rev U: 2x8 like the rest of the box'
 - id: lnd_ledger_rightwall
   stock: 2x8
   x:
@@ -736,8 +708,8 @@ members:
 - id: lnd_side_member
   stock: 2x8
   x:
-  - 107
-  - 108.5
+  - 106.25
+  - 107.75
   y:
   - 1.5
   - 16.5
@@ -745,7 +717,10 @@ members:
   - 41.5
   - 48.75
   role: structural
-  note: 'Rev U: stops at the rim (16.5)'
+  note: 'Rev AE: out 3/4 with stringer A, so it lands flat on the half-wall framing at 106.25
+    and its screws go straight into the header instead of through 3/4 of ply facing. It is
+    directly over nk_bedwall_stud[0] and beds on nk_bedwall_cap across its full 1.5. Rev U:
+    stops at the rim (16.5)'
 - id: lnd_joist
   stock: 2x4
   x:
@@ -766,7 +741,7 @@ members:
 - id: lnd_rim
   stock: 2x8
   x:
-  - 107
+  - 106.25
   - 129.5
   y:
   - 16.5
@@ -775,7 +750,9 @@ members:
   - 41.5
   - 48.75
   role: structural
-  note: 'Rev U: 2x8 rim moved to y 16.5–18; stringers extend 9 in under the landing and bear on it full depth (41.5–48.75)'
+  note: 'Rev AE: 23 1/4 long, out to 106.25 — stringer A''s plumb cut now meets it across the
+    stringer''s full 1.5 (at x 107 it would have caught only 3/4 of it). Rev U: 2x8 rim moved to
+    y 16.5–18; stringers extend 9 in under the landing and bear on it full depth (41.5–48.75)'
 - id: lnd_ply
   stock: ply-3/4
   x:
@@ -795,8 +772,8 @@ members:
   stock: 2x12
   kind: stringer
   x:
-  - 107
-  - 108.5
+  - 106.25
+  - 107.75
   y:
   - 18
   - 72
@@ -808,8 +785,8 @@ members:
   stock: 2x12
   kind: stringer
   x:
-  - 118.25
-  - 119.75
+  - 117.875
+  - 119.375
   y:
   - 18
   - 72
@@ -830,51 +807,64 @@ members:
   - 0
   - 48.75
   role: structural
+  note: 'Rev AE: unmoved. Stringer A went out 3/4 to land on the half-wall framing at 106.25
+    and B was recentred to 117 7/8, so the three sit at 106.25 / 117.875 / 129.5 — 11 5/8
+    centres, 10 1/8 clear each bay (was 11 1/4 and 9 3/4). The FINISHED stair is still 24
+    wide: the treads and risers stop at 107 and butt hw_sheath_stair, which fills 106.25→107
+    above the stringers.'
 - id: stringer_a_skin
   stock: ply-3/4
   x:
+  - 105.5
   - 106.25
-  - 107
   y:
-  - 50.75
+  - 50
   - 72
   z:
   - 0
   - 24
   role: finish
-  note: 'Rev AC: closes the understair cavity on the room side. 3/4 ply applied to stringer A''s
-    outer face, from the half-wall''s end cap (y 50.75) to riser 1''s plumb cut (y 72). Its outer
-    face at 106.25 lands in the same band the half-wall''s stair-side sheathing occupies, so the
-    skin reads as that sheathing carried on past the end of the wall. It is 3/4 INBOARD of the
-    wall''s visible stair-side face at 107 — which is exactly the 3/4 the boards gain to lap it,
-    so the step in a board''s edge falls on the wall''s end. z is the bbox: the true outline is
-    stringer A''s stepped face carried down to the floor (drawings.skin_pts), because below the
-    stringer underside the cavity is open to the room as well. Treads 1-2 and risers 1-3 run out
-    over it to 106.25; tread 3 is notched 3/4 x 5 where it passes the half wall. CUT-LIST: one
-    stepped panel out of 21 1/4 x 24, scribed off the stringer in place. It cannot be one piece with
-    hw_sheath_stair_b: the end cap runs the full 5 through between them at y 50-50.75, and the combined
-    panel would be 58 x 72 — no sheet yields it. The cap stands 3/4 proud of this panel''s face, the same
-    3/4 the boards gain, so the return at the wall''s end and the notch shoulder are one plane.'
+  note: 'Rev AC: closes the understair cavity on the room side - 3/4 ply on stringer A''s outer
+    face, its true outline the stringer''s stepped face carried down to the floor
+    (drawings.skin_pts), because below the stringer underside the cavity is open to the room as
+    well. z is the bbox. Rev AE: it followed stringer A out 3/4, to 105.5-106.25, and it now
+    starts at y 50 rather than 50.75 - it fills the corner taken out of hw_end_cap and butts
+    that cut edge at 105.5, so the wall''s end return and the skin close the corner between
+    them. Its face is 1 1/2 back from the half-wall''s finished stair face at 107 (was 3/4), so
+    the boards that pass it are 25 1/2 where the boards uphill of the wall''s end are 24; the
+    step still falls exactly on the end cap''s face at y 50.75, and tread 3, which straddles
+    it, is notched 1 1/2 x 5 (was 3/4 x 5). CUT-LIST: one stepped panel out of 22 x 24, scribed
+    off the stringer in place.'
 - id: stringer_a_skin_cleat
-  stock: 2x2
+  stock: 2x4
   x:
-  - 107
-  - 108.5
+  - 106.25
+  - 107.75
   y:
-  - 50.75
-  - 61.875
+  - 50
+  - 63.53
   z:
   - 0
-  - 1.5
+  - 3.5
   role: structural
-  note: 'Rev AC: floor cleat behind the skin''s lower edge. Below the stringer underside the panel
-    has nothing to fasten to for 12 3/4 of run, and that edge is at shin height. Ends at 61 7/8,
-    where the stringer underside comes down to 1 1/2; from 63 1/2 the stringer is on the floor
-    itself and the kicker backs the last 3 1/2 at the foot.'
+  kind: raked
+  rake:
+    profile: stringer_underside
+    side: below
+    clip: 3.5
+  note: 'Rev AE: was a 2x2 that touched nothing at either end - it butted air at y 50.75 and
+    died in mid-air at 61 7/8. Now a 2x4 on edge, directly under stringer A (the same 1 1/2
+    band, x 106.25-107.75) and 13 1/2 long: its uphill end butts hw_bottom_plate_b - the merged
+    shortwall plate - at y 50, and its top is ripped to the stringer underside at the downhill
+    end, dying into the stringer where that line reaches the floor at y 63 1/2. Rev AC''s
+    reason is unchanged: below the stringer underside the skin has nothing to fasten to for 12
+    3/4 of run, and that edge is at shin height. The 2x4 doubles the nailing face to 3 1/2 and
+    takes 2x2 off the material list. CUT: one 2x4, 13 1/2 long, one end square, the other a
+    42.51 degree rip running 3 3/4 back from the top corner. z is the bbox.'
 - id: kicker
   stock: 2x4
   x:
-  - 107
+  - 106.25
   - 131
   y:
   - 68.5
@@ -883,30 +873,14 @@ members:
   - 0
   - 1.5
   role: structural
-  note: 'Rev W: position FIXED at y 68.5→72, downhill face flush with the stringers'' bottom plumb cut. The
+  note: 'Rev AE: 24 3/4 long, out to 106.25 with stringer A. Rev W: position FIXED at y 68.5→72, downhill face flush with the stringers'' bottom plumb cut. The
     stringers are notched 1 1/2 x 3 1/2 to hook over it (they are 7.54 deep there, so 6.04 remains — well over the 3 1/2 throat minimum);
     riser 1 sits in front of it at y 72→72.75 and clears it. Anchorage to the floor still to specify.'
-- id: nk_bedwall_plate
-  stock: 2x4
-  x:
-  - 107
-  - 131
-  y:
-  - 0
-  - 3.5
-  z:
-  - 0
-  - 1.5
-  role: structural
-  note: 'Rev Z: a plain 2x4 laid flat — 3.5 wide, 1.5 tall — flush to the bed wall at y 0. Was
-    a 2x2 set back to y 1.5→3, floating clear of the actual wall with the studs lying flat on
-    it. The full 3.5 only fits because hw_jamb_ply_a takes the jamb pack from 3 to 3.5; it
-    ends on the same plane (3.5) as hw_trimmer_a''s face.'
 - id: nk_bedwall_stud
   stock: 2x4
   x:
-  - 107
-  - 108.5
+  - 106.25
+  - 107.75
   y:
   - 0
   - 3.5
@@ -917,16 +891,17 @@ members:
   repeat:
     count: 3
     axis: x
-    pitch: 11.25
-  note: 'Rev Z: standard stud orientation — 1.5 wide along the wall, 3.5 deep, standing on
-    edge on the flat plate. Was laid flat, 3.5 along the wall and only 1.5 deep. Pitch changed
-    from 10.25 to 11.25 so the three still land flush at x 107 and x 131 on the narrower 1.5
-    face. Non-bearing nailer wall; its face at 3.5 is the reveal plane, in line with
-    hw_trimmer_a.'
+    pitch: 11.625
+  note: 'Rev AE: starts at the half-wall framing (106.25), not 3/4 out from it — the stair-side
+    sheathing that used to fill 106.25→107 is gone, so the bay simply runs on to the wall.
+    stud[0] is now directly under lnd_side_member, which moved out the same 3/4. Pitch 11.625
+    (was 11.25) keeps the three landing flush at 131. Rev Z: standard stud orientation — 1.5
+    wide along the wall, 3.5 deep, standing on edge on the flat plate. Non-bearing nailer
+    wall; its face at 3.5 is the reveal plane, in line with hw_trimmer_a.'
 - id: nk_bedwall_cap
   stock: 2x4
   x:
-  - 107
+  - 106.25
   - 131
   y:
   - 0
@@ -936,30 +911,17 @@ members:
   - 41.5
   role: structural
   note: 'Rev Z: a plain 2x4 flat, 3.5 to match the studs. Its top is the landing-ledger plane,
-    so lnd_side_member lands on it over x 107→108.5 and the soffit panel butts its face. Now
+    so lnd_side_member lands on it over x 106.25→107.75 (Rev AE: the cap runs to the half-wall
+    framing now, so the side member beds on 2x4 across its full 1.5) and the soffit panel butts
+    its face. Now
     that the wall is flush to the bed wall it also runs under lnd_ledger_bedwall over the
     ledger''s full 1.5 depth. BUILD ORDER: lag the ledger to the bed-wall studs first, then
     build this wall up to it and scribe the cap — the cap must not lift the ledger.'
-- id: nk_shortwall_plate
-  stock: 2x4
-  x:
-  - 107
-  - 131
-  y:
-  - 46.5
-  - 50
-  z:
-  - 0
-  - 1.5
-  role: structural
-  note: 'Rev Z: a plain 2x4 laid flat, 3.5 deep, up from 1.5 (a 2x2). Its face at 46.5 is the
-    reveal plane, in line with hw_trimmer_b, and it grows away from the nook toward y 50 so
-    nothing on the walking side moves. Sill for the nook''s short (far) wall.'
 - id: nk_shortwall_strut
   stock: 2x4
   x:
-  - 107
-  - 108.5
+  - 106.25
+  - 107.75
   y:
   - 46.5
   - 50
@@ -970,11 +932,13 @@ members:
   repeat:
     count: 3
     axis: x
-    pitch: 11.25
-  note: 'Rev Z: standing on edge, 1.5 wide x 3.5 deep, was laid flat 3.5 x 1.5. At pitch 11.25
-    the three struts land at x 107, 118.25 and 129.5 — exactly under stringers A, B and C — so
-    each is a post under its stringer rather than backing floating in a bay, and each can be
-    toe-screwed up into the stringer it meets. Tops still cut to the rake; z is the bbox.'
+    pitch: 11.625
+  note: 'Rev AE: pitch 11.625, was 11.25 — the struts follow the stringers, and stringer A moved
+    out to the half-wall framing (106.25) with stringer B recentred to 117 7/8. The three still
+    land at exactly x 106.25, 117.875 and 129.5, under stringers A, B and C, so each is a post
+    under its stringer rather than backing floating in a bay, and each can be toe-screwed up
+    into the stringer it meets. Rev Z: standing on edge, 1.5 wide x 3.5 deep. Tops cut to the
+    rake; z is the bbox.'
   kind: raked
   rake:
     profile: stringer_underside
@@ -1018,13 +982,30 @@ members:
     stringers. z is the bbox. Rev Z: in 1/2 with the reveal, so the bbox top rises from 15.84
     to 16.3 — it now meets the stringer undersides half an inch further up the rake. Rev AD:
     recessed to 102.75 with the other two lining sheets; 28 1/4 long, was 29.'
-- id: nk_soffit_panel
+- id: nk_soffit_flat
   stock: ply-3/4
   x:
   - 102.75
   - 131
   y:
   - 4.25
+  - 18.26
+  z:
+  - 40.75
+  - 41.5
+  role: sheet
+  note: 'Rev AE: the flat half of the nook ceiling, its own board — 28 1/4 x 14. It was one
+    piece with the raked half (nk_soffit_panel), which meant a sheet with a 42.5 degree kink
+    along it: buildable only as a scored-and-folded panel or a lie. The break is at y 18.26,
+    where the stringer undersides come down to the ceiling plane. Under the landing box its
+    face is the 40.75 finished ceiling and its top butts the landing framing at 41.5.'
+- id: nk_soffit_rake
+  stock: ply-3/4
+  x:
+  - 102.75
+  - 131
+  y:
+  - 18.26
   - 45.75
   role: sheet
   z:
@@ -1035,13 +1016,14 @@ members:
     profile: soffit
     side: above
     band: 0.75
-  note: 'Rev X: the nook ceiling, promoted from a derived kernel-only piece to a real member.
-    Flat at 40.75 under the landing to y 18.26, then on the stringer undersides. Runs the full
-    x 102.75→131 — through the half-wall on hw_rake_nailer, then on the stringers — so the
-    rake reads continuously from the outer face. Rev Z: 1 shorter in y as the reveal closed in
-    from both sides; its far edge is now 14.86 above the floor, not 14.41. Rev AD: recessed to
-    102.75 (28 1/4 long, was 29) so the nook face laps its end; hw_rake_nailer still starts at
-    102.75, so the panel is backed from its first inch.'
+  note: 'Rev AE: the raked half of the nook ceiling — 28 1/4 x 37 3/8 on the slope, on the
+    stringer undersides. Its uphill edge is cut plumb at y 18.26 and butts nk_soffit_flat''s
+    plumb edge: at the break both faces are on 40.75, so the butt is flush and full-thickness
+    and the ceiling reads as one plane turning a corner. (A true 3/4 recess behind the flat
+    panel would feather this edge to nothing — the two faces are coplanar at the break.) Rev
+    X: it runs the full x 102.75→131 — through the half-wall on hw_rake_nailer, then on the
+    stringers — so the rake reads continuously from the outer face. Rev Z: its far edge is
+    14.86 above the floor. Rev AD: recessed to 102.75 so the nook face laps its end.'
 - id: slat
   stock: 2x2
   x:
@@ -1113,8 +1095,8 @@ members:
 - id: lnd_blocking
   stock: 2x4
   x:
-  - 108.5
-  - 118.25
+  - 107.75
+  - 117.875
   y:
   - 25.5
   - 27
@@ -1125,9 +1107,10 @@ members:
   repeat:
     count: 2
     axis: x
-    pitch: 11.25
-  note: 'Rev U: 2x4 blocking between the stringers'' top runs, front face flush with riser 6 — backs the deck edge
-    and the riser board'
+    pitch: 11.625
+  note: 'Rev AE: 10 1/8 each, was 9 3/4 — the bays between the stringers grew when A moved out
+    and B was recentred. Rev U: 2x4 blocking between the stringers'' top runs, front face
+    flush with riser 6 — backs the deck edge and the riser board'
 connections:
 - a: deck_joist[*]
   b: rear_ledger
@@ -1215,16 +1198,8 @@ connections:
   b: floor
   type: floor
   fastener: UNSPECIFIED
-- a: nk_bedwall_plate
-  b: floor
-  type: floor
-  fastener: UNSPECIFIED
-- a: nk_shortwall_plate
-  b: floor
-  type: floor
-  fastener: UNSPECIFIED
 - a: nk_bedwall_stud[*]
-  b: nk_bedwall_plate
+  b: hw_bottom_plate_a
   type: bearing
   fastener: 2 x 3 in screws toe-driven each stud
 - a: nk_bedwall_cap
@@ -1245,7 +1220,7 @@ connections:
   type: bearing
   fastener: 2 x 3 in screws up through the cap into the side member
 - a: nk_shortwall_strut[*]
-  b: nk_shortwall_plate
+  b: hw_bottom_plate_b
   type: bearing
   fastener: 2 x 3 in screws toe-driven each strut
 - a: hw_rake_nailer
@@ -1257,9 +1232,8 @@ connections:
   b: hw_header
   type: face-screw
   face: x
-  through:
-  - hw_sheath_stair_head
-  fastener: 6 × 1/4 × 5 structural screws
+  fastener: '6 × 1/4 × 4 structural screws. Rev AE: direct into the header, no 3/4 facing in
+    the path, so 4 in reaches the depth 5 in used to.'
 - a: lnd_ledger_rightwall
   b: wall:right
   type: wall
@@ -1278,6 +1252,16 @@ connections:
   type: face-screw
   face: x
   fastener: 1-1/2 x 16ga finish nails at 8 in o.c. through the skin into the cleat, plus adhesive
+- a: stringer_a_skin_cleat
+  b: hw_bottom_plate_b
+  type: face-screw
+  face: y
+  fastener: '2 x #10 x 3 screws through the plate''s end into the cleat'
+- a: stringer_a_skin_cleat
+  b: stringer_a
+  type: bearing
+  fastener: 'adhesive + 3 x #10 x 2-1/2 screws up through the cleat''s ripped top into the
+    stringer, over the 5 in of angled contact at its downhill end'
 - a: stringer_a_skin_cleat
   b: floor
   type: floor
@@ -1334,24 +1318,32 @@ connections:
   b: hw_header
   type: face-screw
   face: x
-  through:
-  - hw_sheath_stair_head
-  fastener: 4 x 1/4 x 4-1/2 SDS through the facing, over y 18-27
+  fastener: '4 x 1/4 x 3-1/2 SDS over y 18-27. Rev AE: the stringer is on the framing now, not
+    on 3/4 of ply, so a 3-1/2 buries 2 in the header.'
 - a: stringer_a
   b: hw_king_b
   type: face-screw
   face: x
-  through:
-  - hw_sheath_stair_b
-  fastener: 2 x 1/4 x 4-1/2 SDS
+  fastener: 2 x 1/4 x 3-1/2 SDS
+- a: stringer_a
+  b: hw_trimmer_b
+  type: face-screw
+  face: x
+  fastener: '2 x 1/4 x 3-1/2 SDS. Rev AE: the stringer crosses the far jamb pack over z 12-24,
+    so it catches the trimmer as well as the king.'
+- a: hw_rake_nailer
+  b: stringer_a
+  type: face-screw
+  face: x
+  fastener: 'construction adhesive + 6 x 3 in screws toe-driven through the nailer into the
+    stringer''s face. Rev AE: the nailer''s raked end (1-1/2 x 30 on the slope) dies straight
+    onto stringer A now that the sheathing between them is gone.'
 - a: lnd_rim
   b: hw_header
   type: hanger
   face: x
-  through:
-  - hw_sheath_stair_head
-  fastener: HUC28 concealed-flange hanger, SD10212 screws through the 3/4 facing (flanges would foul the side member
-    on an LUS)
+  fastener: 'HUC28 concealed-flange hanger, SD10212 screws straight into the header (flanges
+    would foul the side member on an LUS). Rev AE: no 3/4 facing in the path.'
 - a: lnd_rim
   b: lnd_ledger_rightwall
   type: hanger
