@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AP
+rev: AQ
 units: inches
 room:
   x: 131
@@ -308,7 +308,7 @@ members:
     inboard face, running about 24 past the shoulder. It also gives slat[0] a real seat -
     the beam runs to x 0 now, so slat 0 is no longer a special case.'
 - id: beam_wrap_face
-  stock: poplar-3/4
+  stock: ply-3/4
   x:
   - 0
   - 107
@@ -320,13 +320,14 @@ members:
   - 67.75
   role: finish
   note: 'Rev AG: 14 3/4 tall, was 10. Its top is the LVL''s top; beam_wrap_top laps over it,
-    so no end grain shows on the top edge. SPECIFY: at 10 it came off a 1x12; at 14 3/4 x 107
-    no poplar board is that wide and none is that long, so this is either a glued-up panel,
-    two boards with a horizontal seam, or 3/4 paint-grade ply with solid edges. It is the
-    most-seen face on the bed and it is painted, so the recommendation is ply with a filled
-    vertical butt joint - but it is the builder''s call and it has to be made before ordering.'
+    so no end grain shows on the top edge. Rev AQ: SPECIFY resolved - 3/4 paint-grade ply, not
+    poplar. At 14 3/4 x 107 no poplar board is that size anyway, and it is the most-seen face
+    on the bed and it is painted, so ply was always the likely answer; 107 still exceeds one
+    4x8 sheet, so it is at least two pieces with a filled, sanded vertical butt joint - the
+    corner at beam_end_cap (x 106.25-107) is a butt/lap, not a miter, matching how that member
+    already dies into this one.'
 - id: beam_wrap_inner
-  stock: poplar-3/4
+  stock: ply-3/4
   x:
   - 0
   - 106.25
@@ -340,9 +341,9 @@ members:
   note: 'Rev AG: NEW. The bed side of the beam is 9 3/4 of bare LVL above the deck now, so it
     is wrapped to match the face. It sits ON the deck ply and butts its edge - the ply runs
     to the rough beam at 48.25 - which puts the finished bay at 8 to 47.5 = 39 1/2 for a 38
-    mattress, 1/2 more slack than Rev T had.'
+    mattress, 1/2 more slack than Rev T had. Rev AQ: ply, following beam_wrap_face.'
 - id: beam_wrap_top
-  stock: poplar-3/4
+  stock: ply-3/4
   x:
   - 0
   - 107
@@ -356,7 +357,7 @@ members:
   note: 'Rev AG: NEW. A 3 1/4 cap over the LVL and both wrap faces, lapping their top edges.
     The slats stand on it (y 49.25 to 50.75, so the full 1 1/2 x 1 1/2 foot is on the cap)
     and screw through it into the LVL, which is the first time that fastener has been real
-    rather than UNSPECIFIED.'
+    rather than UNSPECIFIED. Rev AQ: ply, following beam_wrap_face.'
 - id: loft_ceiling
   stock: ply-3/4
   x:

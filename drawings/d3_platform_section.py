@@ -31,7 +31,7 @@ def d3():
     v.text(2, 47.4, f"2×4 joists @ 12 o.c. beyond · {fr(DER['deck_joist_span'])} span · ¾ ply glued & screwed", "labs", "start")
     v.text(2, 44.8, f"¾ finished ceiling below, x 0→{fr(m('loft_ceiling').x[1])} — screwed up into the joists, ledgers and beam", "labs", "start")
     v.text(27, 61, f"{MAT['size'][0]} mattress in a {fr(BAY)} bay, finished", "labs", "middle", dy=4)
-    v.text(49.1, 60, BEAMSTOCK, "lab", "middle", rot=-90); v.text(53.5, 28, "¾ poplar wrap, mitered", "labs", "start", rot=-90)
+    v.text(49.1, 60, BEAMSTOCK, "lab", "middle", rot=-90); v.text(53.5, 28, "¾ paint-grade ply wrap, filled butt joint", "labs", "start", rot=-90)
     v.text(56, 66, f"2×2 slats beyond, centred on the beam — {fr(m('beam_wrap_face').y[1]-m('slat[0]').y[1])} back from each face", "labs", "start", rot=-90)
     v.text(43, 96.5, "2×4 top plate, flat", "labs", "end", dy=-3)
     v.text(27, 15, f"desk {fr(dk.y[1])} deep × {fr(dk.z[1])} high — projects {fr(dk.y[1]-m('beam_wrap_face').y[1])} past the beam", "labs", "middle")

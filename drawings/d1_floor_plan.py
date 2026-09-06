@@ -32,7 +32,7 @@ def d1():
     v.text(39.5, 27, f"Twin mattress {MAT['size'][0]} × {MAT['size'][1]}", "lab", "middle", dy=4)
     v.text(39.5, 31.5, f"in a {fr(BAY)} bay — {fr(BAY-MAT['size'][0])}\" slack", "labs", "middle", dy=4)
     v.text(92, 27, "landing area", "lab", "middle", dy=4); v.text(92, 31.5, f"30 × {fr(BAY)}", "labs", "middle", dy=4)
-    v.text(50, 54.5, f"{BEAMSTOCK} upstand beam + ¾ poplar wrap — {fr(m('beam').x[1])} long, no posts", "labs", "middle", dy=4)
+    v.text(50, 54.5, f"{BEAMSTOCK} upstand beam + ¾ paint-grade ply wrap — {fr(m('beam').x[1])} long, no posts", "labs", "middle", dy=4)
     v.text(104.6, 30, "half-wall below", "labs", "middle", rot=-90)
     v.text(119, 12, "LANDING", "lab", "middle", dy=4); v.text(119, 17, f"24 × {fr(m('lnd_ply').y[1])} finished @ {fr(LAND)}", "labs", "middle", dy=4)
     v.text(119, 50, f"{ST.n_treads} treads @ {fr(ST.run)}", "labs", "middle", dy=4)

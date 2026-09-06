@@ -1,12 +1,12 @@
 {
- "rev": "AP",
+ "rev": "AQ",
  "yaml": "dimensions.yaml",
  "generated": "2026-09-06",
  "figures": {
   "d1": {
    "sheet": "1",
    "page": "index",
-   "sha": "8835c46ff23f",
+   "sha": "961de58fae55",
    "elements": 102
   },
   "d2": {
@@ -18,7 +18,7 @@
   "d3": {
    "sheet": "3",
    "page": "loft",
-   "sha": "9e4e7ea97c44",
+   "sha": "86d7e293832e",
    "elements": 92
   },
   "d4": {
@@ -80,6 +80,6 @@
   "index": "8730903ccc6c",
   "stairs": "b3664cf208b5",
   "loft": "63ba8873fc98",
-  "appendix": "0a5b4cbd2893"
+  "appendix": "db6844cb21b5"
  }
 }
