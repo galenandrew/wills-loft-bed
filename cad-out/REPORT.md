@@ -6,7 +6,7 @@ Full write-up: `audits/V-kernel-spike.md`.
 
 ```
 cad kernel · build123d 0.11.1 · OCP 7.9.3.1.1 · python 3.13.12
-dimensions.yaml rev AR · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
+dimensions.yaml rev AR.1 · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
 
 [build] 108 solids (12 derived, not yaml members)
         loft        25 solids    10.26 cu ft
@@ -24,7 +24,6 @@ dimensions.yaml rev AR · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.1
         underside ray cast vs Stair.underside(): worst Δ 0.00000"
 [loft] bearing areas, slat gaps and clearances → cad-out/loft.txt
        · slat[22]: only 0.75 of its 1.50 width is over the LVL (it overhangs the beam's end onto the stair face) — offset its screw inboard
-       · fan → nearest slat: kernel 16.1250", yaml expects 15.25
 [fasteners] 8 rays → cad-out/fasteners.txt
 [section] cut+HLR → cad-out/d4-kernel.svg, cad-out/d8b-kernel.svg
           worst cut-edge deviation vs d4.svg: 0.0048" on stringer_b (1/16" = 0.0625)

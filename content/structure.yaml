@@ -6,7 +6,7 @@
 # model derives those, so re-check them by hand whenever a member they depend on moves.
 rows:
 - member: "Front beam"
-  spec: "Single {m:beam.size.y} × {m:beam.size.z} LVL, {beam_span} c/c bearings ({beam_clear_span} clear), notched {m:beam_tongue.size.x} × {beam_notch_depth} at the window end"
+  spec: "Single {beam_stock} ({beam_actual} actual), {beam_span} c/c bearings ({beam_clear_span} clear), notched {m:beam_tongue.size.x} × {beam_notch_depth} at the window end"
   check: "~370 psi vs ~2600 allowable · deflection ≈ L/7000 · depth is set by the mattress, not by load · notch shear ≈1,960 lb vs ≈600 · d/b = {beam_db}, and the slat screen at {slat_oc} centres holds its top edge in line"
 - member: "Joists"
   spec: "2×4 @ {joist_oc} o.c., {deck_joist_span} span, LUS24 both ends"

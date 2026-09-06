@@ -44,11 +44,12 @@ SLAT GAPS — kernel minimum distance, vs expected slat_clear 3.3 and screen.max
   22 gaps, min 3.2955" max 3.2955"
 
 CLEARANCES — true minimum distance between solids
-  fan → nearest slat                 kernel  16.1250   expected  15.2500   ← differs from expected:
+  fan → platform face (horizontal)   kernel  15.2500   expected  15.2500
   mattress top → ceiling             kernel  30.0000   expected  30.0000
   deck top → ceiling                 kernel  38.0000   expected  38.0000
   floor → loft ceiling underside     kernel  53.0000   expected  53.0000
   floor → loft ceiling underside (beam) kernel  53.0000   expected  53.0000
+  fan → nearest slat (true 3D)           kernel  16.1250
   mattress → beam inner face (bay slack) kernel   1.5000
 
 UNSPECIFIED fasteners the kernel cannot ray-cast until they are chosen:

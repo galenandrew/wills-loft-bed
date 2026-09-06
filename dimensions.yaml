@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AR
+rev: AR.1
 units: inches
 room:
   x: 131
@@ -95,7 +95,10 @@ lumber:
   2x12:
   - 1.5
   - 11.25
-  lvl-1.75x14:
+  # NOMINAL 2x14, like every other key here; 1.75 x 14 is the actual, the same way
+  # 2x4 is actually 1.5 x 3.5. LVL is sold at the 1-3/4 ply thickness, so 2x is its
+  # nominal. Cut lists and member extents use the ACTUAL, always.
+  lvl-2x14:
   - 1.75
   - 14
   header-2x10-sandwich:
@@ -292,7 +295,7 @@ members:
     side_ledger. This is what let ledger_blocking go: the ply''s wall-side edge now bears on
     the ledger continuously instead of on blocking pieces between joists.'
 - id: beam
-  stock: lvl-1.75x14
+  stock: lvl-2x14
   x:
   - 3
   - 106.25
@@ -314,7 +317,7 @@ members:
     body; beam_tongue is what survives the notch at the window end. Cut list: ONE LVL
     106 1/4 long, notched 3 (x) x 3 1/2 (z) out of the bottom left corner.'
 - id: beam_tongue
-  stock: lvl-1.75x14
+  stock: lvl-2x14
   part_of: beam
   x:
   - 0
@@ -1678,6 +1681,10 @@ expected:
   rim_stringer_bearing: 7.01
   slat_clear: 3.3
   stair_projection: 72
+  # HORIZONTAL reach distance, measured from the platform's FINISHED front face
+  # (beam_wrap_face at y 50.75) to the fan disc - not from the slats. Since Rev AN
+  # the slats are centred on the beam and their outer face is 49.875, so the screen
+  # is 16.125 off the fan; 50.75 is the nearer surface and so the governing one.
   fan_clearance: 15.25
   room_depth_chain: 186
   screen_top_plate_band:

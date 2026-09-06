@@ -45,7 +45,11 @@ DECK = float(d["expected"]["deck_top"]); LAND = ST.riser_z[ST.n_treads + 1]
 BAY = float(M["beam_wrap_inner"].y[0]) - float(M["ledge_front_rail"].y[1])
 BEAM_FIN_TOP = float(M["beam_wrap_top"].z[1])
 _bt, _bd = lumber[M["beam"].stock]
-BEAMSTOCK = f"{fr(_bt)} × {fr(_bd)} LVL"
+# Name the beam the way every other member is named: NOMINAL in prose and labels
+# (2x14 LVL, as 2x4 is a 2x4), ACTUAL wherever the builder needs the real section.
+# Both come off the yaml — the stock key is the nominal, the lumber table the actual.
+BEAMSTOCK = M["beam"].stock.replace("lvl-", "").replace("x", "×") + " LVL"
+BEAM_ACTUAL = f"{fr(_bt)} × {fr(_bd)}"
 def U(y): return ST.underside(y)
 Y_MEET = ST.y_riser_top - (CEIL + PANEL - U(ST.y_riser_top)) / ST.tan
 def soffit(y): return CEIL if y <= Y_MEET else U(y) - PANEL
@@ -268,7 +272,7 @@ VALS.update({
     "panel_top": fr(CEIL + PANEL), "y_meet": fr(Y_MEET), "throat": fr(ST.throat), "riser": f"{ST.R:.3f}", "run": fr(ST.run),
     "angle": f"{math.degrees(ST.angle):.2f}", "n_risers": str(ST.n_risers), "n_treads": str(ST.n_treads),
     "plumb_lo": fr(ST.plumb_cut()[0]), "plumb_hi": fr(ST.plumb_cut()[1]), "top_run": fr(ST.top_run), "tread_t": fr(T),
-    "beam_above_deck": fr(BEAM_FIN_TOP - DECK), "beam_stock": BEAMSTOCK,
+    "beam_above_deck": fr(BEAM_FIN_TOP - DECK), "beam_stock": BEAMSTOCK, "beam_actual": BEAM_ACTUAL,
     # centre to centre of the two bearings: 1 1/2 into the 3 seat at the window wall,
     # 1 3/4 into the 3 1/2 of top plate at the half-wall end.
     "beam_span": fr((float(M["hw_top_plate_2"].x[1]) + float(M["hw_top_plate_2"].x[0])) / 2

@@ -447,9 +447,14 @@ def loft_report(pieces):
     out.append("")
 
     out.append("CLEARANCES — true minimum distance between solids")
-    fan_d = min(check.clearance(P["fan"].solid, P[f"slat[{i}]"].solid)[0]
-                for i in range(n_slats))
-    rows = [("fan → nearest slat", fan_d, float(exp["fan_clearance"])),
+    # fan_clearance is a HORIZONTAL reach distance — the y gap from the platform's
+    # finished front face to the fan disc (verify.py: fan.y0 - platform_finished[1]).
+    # Measure that, not a 3D slat distance: until Rev AN the slats' outer face sat on
+    # 50.75 as well, so the two agreed by coincidence, and the row has read "differs
+    # from expected" ever since the slats moved inboard to centre on the beam.
+    guard = max(P[i].bbox[1][1] for i in ("beam_wrap_face", "beam_wrap_top", "screen_top_plate"))
+    rows = [("fan → platform face (horizontal)", P["fan"].bbox[1][0] - guard,
+             float(exp["fan_clearance"])),
             ("mattress top → ceiling", dm.CEILING - P["mattress"].bbox[2][1],
              float(exp["sitting_headroom"])),
             ("deck top → ceiling", dm.CEILING - P["deck_ply"].bbox[2][1],
@@ -463,6 +468,12 @@ def loft_report(pieces):
         out.append(f"  {name:34s} kernel {got:8.4f}   expected {want:8.4f}{flag}")
         if flag:
             found.append(f"{name}: kernel {got:.4f}\", yaml expects {want}")
+    # What the screen itself keeps between a child and the blades — the kernel's own
+    # answer, in 3D, with no yaml expectation to compare against. Since Rev AN the
+    # slats sit inboard of the platform face, so this is the LARGER of the two.
+    fan_3d = min(check.clearance(P["fan"].solid, P[f"slat[{i}]"].solid)[0]
+                 for i in range(n_slats))
+    out.append(f"  {'fan → nearest slat (true 3D)':38s} kernel {fan_3d:8.4f}")
     # the bay is between the ledge rail and the beam's INNER face; the poplar wrap is
     # on the far side of the beam and is not what the mattress meets.
     d_, _, _ = check.clearance(P["mattress"].solid, P["beam_wrap_inner"].solid)
