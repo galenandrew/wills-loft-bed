@@ -77,7 +77,6 @@ def prism_yz(pts, x0, x1):
 # beam and the boxed ledge; `screen` is the guard above the beam.
 SCOPE = {
     "loft":      ["rear_ledger", "side_ledger",
-                  *[f"ledger_blocking[{i}]" for i in range(8)], "ledger_blocking_last",
                   *[f"deck_joist[{i}]" for i in range(9)], "deck_rim",
                   "beam", "deck_ply",
                   "beam_wrap_face", "beam_wrap_inner", "beam_wrap_top",

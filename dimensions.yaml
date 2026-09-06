@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AN
+rev: AO
 units: inches
 room:
   x: 131
@@ -154,7 +154,7 @@ screen:
   max_clear: 3.5
 members:
 - id: rear_ledger
-  stock: 2x6
+  stock: 2x4
   x:
   - 1.5
   - 106.25
@@ -163,11 +163,18 @@ members:
   - 1.5
   z:
   - 53.75
-  - 59.25
+  - 57.25
   role: structural
   note: 'Rev T says 107 long and draws it 0-107, but the side ledger occupies x 0-1.5 and the
     half-wall''s stair face - hw_sheath_stair, which still covers 106.25-107 at this height -
-    takes the other end. Cut length is therefore 104.75. CUT-LIST CORRECTION.'
+    takes the other end. Cut length is therefore 104.75. CUT-LIST CORRECTION.
+
+    Rev AO: a 2x4 at deck level, not a 2x6 standing 2 proud of it. Top is now the joist top
+    (57.25), matching side_ledger, so deck_ply runs over it to the bed wall instead of
+    butting its face - see deck_ply. This also removes the need for ledger_blocking, which
+    existed only to give the ply edge a bearing shelf between joists while the ledger stood
+    taller than the deck; with the ledger and joists now the same depth that shelf is
+    continuous along the whole run.'
 - id: side_ledger
   stock: 2x4
   x:
@@ -226,38 +233,6 @@ members:
     to y 50 while the other eight stop at the beam face. Sistered to side_ledger over its
     whole length, it is what widens the beam''s seat from the ledger''s 1 1/2 to 3. Cut list:
     deck_joist[0] is one 48 1/2 2x4, the rest are 46 3/4.'
-- id: ledger_blocking
-  stock: 2x4
-  x:
-  - 3
-  - 13.5
-  y:
-  - 1.5
-  - 3
-  z:
-  - 53.75
-  - 57.25
-  role: structural
-  repeat:
-    count: 8
-    axis: x
-    pitch: 12
-  note: 'Drawing 6 draws the blocking 3.5 inches wide in plan and Drawing 3 draws it 3.5 inches tall — a 2x4 can''t
-    be both. Encoded on edge (1.5 in y, 3.5 in z) so its top is flush with the joists and carries the ply edge.
-
-    '
-- id: ledger_blocking_last
-  stock: 2x4
-  x:
-  - 99
-  - 104.75
-  y:
-  - 1.5
-  - 3
-  z:
-  - 53.75
-  - 57.25
-  role: structural
 - id: deck_rim
   stock: 2x4
   x:
@@ -276,7 +251,7 @@ members:
   - 0
   - 106.25
   y:
-  - 1.5
+  - 0
   - 48.25
   z:
   - 57.25
@@ -284,7 +259,12 @@ members:
   role: sheet
   note: 'Rev AG: 106 1/4 x 46 3/4, was 104 3/4 x 45 1/2. It runs over the side ledger to the
     window wall now that the ledger is at deck level, and out to the beam''s new face at
-    48.25. Glue and screw it to the ledger top at 6 o.c. - see side_ledger.'
+    48.25. Glue and screw it to the ledger top at 6 o.c. - see side_ledger.
+
+    Rev AO: now 48.25 x 48.25, flush to the bed wall - rear_ledger dropped to deck level
+    (see rear_ledger) so the ply runs over its top too, the same way it already ran over
+    side_ledger. This is what let ledger_blocking go: the ply''s wall-side edge now bears on
+    the ledger continuously instead of on blocking pieces between joists.'
 - id: beam
   stock: lvl-1.75x14
   x:
@@ -396,7 +376,7 @@ members:
     are deleted. 10 1/4 puts the lid 3 proud of the 66 mattress top - and it is a rip from
     1x12 poplar with margin to spare, where 11 1/4 was the whole board.'
 - id: ledge_cleat
-  stock: 2x4
+  stock: 2x2
   x:
   - 0
   - 106.25
@@ -404,7 +384,7 @@ members:
   - 0
   - 1.5
   z:
-  - 64.75
+  - 66.75
   - 68.25
   role: structural
   note: 'Rev AJ: NEW. The lid had a bearing edge at the front - the top of ledge_front_rail -
@@ -413,7 +393,12 @@ members:
     underside. On edge, not flat, so its face is flush with rear_ledger''s at y 1.5 and the
     well stays 5 3/4 wide; flat it would have eaten 2 more. It is also what the three
     ledge_strut pieces die into. Cut list: 106 1/4 - one 10 ft 2x4, or two pieces butted over
-    a stud.'
+    a stud.
+
+    Rev AO: dropped to a 2x2 - 1 1/2 tall instead of 3 1/2, bottom now 66.75, same range as
+    ledge_strut. Top stays 68.25 (the lid''s underside) and the 1 1/2 proud-of-wall face is
+    unchanged, so nothing else here moves: the strut tenons into the same face, the wall
+    fastener still lands in the same 1 1/2 of thickness, and the well is still 5 3/4 wide.'
 - id: ledge_cleat_rail
   stock: 2x2
   x:
@@ -1303,6 +1288,12 @@ connections:
   fastener: 'construction adhesive + #8 x 1-5/8 at 6 in o.c. — structural, not just an edge
     fixing, because the ply diaphragm is what keeps the shallow ledger from rolling under
     the beam''s eccentric load'
+- a: deck_ply
+  b: rear_ledger
+  type: bearing
+  fastener: 'construction adhesive + #8 x 1-5/8 at 6 in o.c., same as the side ledger — Rev
+    AO drops rear_ledger to deck level so the ply runs over its top the same way'
+
 - a: beam
   b: hw_top_plate_2
   type: bearing
@@ -1318,16 +1309,6 @@ connections:
   type: wall
   fastener: 1/4 x 4 structural screws, 2 per stud staggered top and bottom, plus a pair
     within 6 in of y 50 — FIELD, confirm a stud lands there or add blocking in the wall
-- a: ledger_blocking[*]
-  b: rear_ledger
-  type: face-screw
-  face: y
-  fastener: UNSPECIFIED
-- a: ledger_blocking_last
-  b: rear_ledger
-  type: face-screw
-  face: y
-  fastener: UNSPECIFIED
 - a: hw_header
   b: hw_trimmer_a
   type: bearing
@@ -1627,7 +1608,7 @@ expected:
   deck_joist_span: 46.75
   deck_ply:
   - 106.25
-  - 46.75
+  - 48.25
   sitting_headroom: 30
   riser: 8.25
   stair_angle_deg: 42.51
