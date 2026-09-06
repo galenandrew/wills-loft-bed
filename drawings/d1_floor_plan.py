@@ -9,7 +9,7 @@ def d1():
     # loft
     v.rect(0, m("beam_wrap_face").x[1], 0, m("beam_wrap_face").y[1], "deck")
     v.rect(0, m("beam_wrap_face").x[1], 0, 8, "ledge")
-    v.rect(MAT["size"][1] and 2, 2 + MAT["size"][1], 8, 8 + MAT["size"][0], "matt")
+    v.rect(MAT["size"][1] and 2, 2 + MAT["size"][1], MAT_Y0, MAT_Y1, "matt")
     for k in ("beam", "beam_tongue"): R(v, m(k), "x", "y", "beamplan"); R(v, m("beam_wrap_face"), "x", "y", "fin")
     v.rect(m("hw_sheath_loft_a").x[0], SKIRT.x[1], 0, m("hw_end_cap").y[1], "hid")
     # landing + stair
@@ -36,8 +36,9 @@ def d1():
     v.text(lite["walkway"]["x"], lite["walkway"]["y"], f"{lite['walkway']['fixture'].split('-inch')[0]}in", "labs", "middle", dy=-9)
     # labels
     v.text(50, 4, f"8w × {fr(m('ledge_lid').z[1]-DECK)}h BOXED LEDGE — lid runs the full 107, over the stair face at the deck end", "labs", "middle", dy=4)
-    v.text(39.5, 27, f"Twin mattress {MAT['size'][0]} × {MAT['size'][1]}", "lab", "middle", dy=4)
-    v.text(39.5, 31.5, f"in a {fr(BAY)} bay — {fr(BAY-MAT['size'][0])}\" slack", "labs", "middle", dy=4)
+    mat_mid = (MAT_Y0 + MAT_Y1) / 2
+    v.text(39.5, mat_mid, f"Twin mattress {MAT['size'][0]} × {MAT['size'][1]}", "lab", "middle", dy=4)
+    v.text(39.5, mat_mid + 4.5, f"centered in a {fr(BAY)} bay — {fr(BAY-MAT['size'][0])}\" slack", "labs", "middle", dy=4)
     v.text(92, 27, "landing area", "lab", "middle", dy=4); v.text(92, 31.5, f"30 × {fr(BAY)}", "labs", "middle", dy=4)
     v.text(50, 54.5, f"{BEAMSTOCK} upstand beam + ¾ paint-grade ply wrap — {fr(m('beam').x[1])} long, no posts", "labs", "middle", dy=4)
     v.text(104.6, 30, "half-wall below", "labs", "middle", rot=-90)

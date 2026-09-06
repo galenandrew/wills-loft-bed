@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AR.1
+rev: AR.2
 units: inches
 room:
   x: 131

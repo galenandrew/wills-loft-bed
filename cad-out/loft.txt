@@ -50,7 +50,7 @@ CLEARANCES — true minimum distance between solids
   floor → loft ceiling underside     kernel  53.0000   expected  53.0000
   floor → loft ceiling underside (beam) kernel  53.0000   expected  53.0000
   fan → nearest slat (true 3D)           kernel  16.1250
-  mattress → beam inner face (bay slack) kernel   1.5000
+  mattress → beam inner face (bay slack) kernel   0.7500
 
 UNSPECIFIED fasteners the kernel cannot ray-cast until they are chosen:
   lnd_ledger_rightwall → wall:right: UNSPECIFIED

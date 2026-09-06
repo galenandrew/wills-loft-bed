@@ -1,12 +1,12 @@
 {
- "rev": "AR.1",
+ "rev": "AR.2",
  "yaml": "dimensions.yaml",
  "generated": "2026-09-06",
  "figures": {
   "d1": {
    "sheet": "1",
    "page": "index",
-   "sha": "31e0efc37802",
+   "sha": "5460dbeb2606",
    "elements": 107
   },
   "d2": {
@@ -80,6 +80,6 @@
   "index": "dfff9f7cad40",
   "stairs": "b3664cf208b5",
   "loft": "ca809db2d3f7",
-  "appendix": "5c590fd4a0fa"
+  "appendix": "4e82043f2ae3"
  }
 }

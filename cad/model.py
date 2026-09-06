@@ -307,13 +307,14 @@ def riser_pieces(scheme="standard", x0=None, x1=None):
 # --------------------------------------------------------------------- context
 def mattress_piece():
     """The mattress: not a member, and not in the room either until it is bought.
-    Placed as Drawing 1 draws it — 2 in off the window wall, against the ledge at
-    y = 8, sitting on the finished deck. `mattress.thickness` is still ASSUMED 6."."""
+    Placed as Drawing 1 draws it — 2 in off the window wall, centered in the bay
+    between the boxed ledge and the beam (Rev AR), sitting on the finished deck.
+    `mattress.thickness` is still ASSUMED 6."."""
     mat = dm.d["mattress"]
-    long_, wide = float(mat["size"][1]), float(mat["size"][0])
+    long_ = float(mat["size"][1])
     t = float(mat["thickness"])
     return Piece("mattress", "context",
-                 box((2.0, 2.0 + long_), (8.0, 8.0 + wide), (dm.DECK, dm.DECK + t)),
+                 box((2.0, 2.0 + long_), (dm.MAT_Y0, dm.MAT_Y1), (dm.DECK, dm.DECK + t)),
                  None, derived=True,
                  note="thickness ASSUMED 6 in; still a field measurement owed")
 

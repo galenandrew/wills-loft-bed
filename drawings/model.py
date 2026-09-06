@@ -43,6 +43,10 @@ DECK = float(d["expected"]["deck_top"]); LAND = ST.riser_z[ST.n_treads + 1]
 # The mattress bay is a FINISHED dimension: the ledge's front face to the beam's inner
 # wrap, not to the rough LVL. BEAMSTOCK names the beam in prose so no sheet types it.
 BAY = float(M["beam_wrap_inner"].y[0]) - float(M["ledge_front_rail"].y[1])
+# Rev AR: centered in the bay (half the slack on each side), not flush to the ledge —
+# where a mattress actually sits when it isn't jammed against one wall.
+MAT_Y0 = float(M["ledge_front_rail"].y[1]) + (BAY - float(MAT["size"][0])) / 2
+MAT_Y1 = MAT_Y0 + float(MAT["size"][0])
 BEAM_FIN_TOP = float(M["beam_wrap_top"].z[1])
 _bt, _bd = lumber[M["beam"].stock]
 # Name the beam the way every other member is named: NOMINAL in prose and labels
