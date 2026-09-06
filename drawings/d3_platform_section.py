@@ -11,6 +11,8 @@ def d3():
     blk = [k for k in ids("ledger_blocking") if m(k).x[0] <= xc <= m(k).x[1]][0]; R(v, m(blk), "y", "z", "lum", HATCH)
     R(v, m("deck_joist[4]"), "y", "z", "lum2")
     R(v, m("deck_ply"), "y", "z", "sheet", HATCH)
+    for k in ("ledge_cleat", "ledge_cleat_rail"): R(v, m(k), "y", "z", "lum", HATCH)
+    R(v, m("ledge_strut[1]"), "y", "z", "lum2")
     R(v, m("ledge_front_rail"), "y", "z", "fin", HATCH); R(v, m("ledge_lid"), "y", "z", "fin", HATCH)
     v.rect(8, 8 + MAT["size"][0], DECK, DECK + MAT["thickness"], "matt")
     R(v, m("beam"), "y", "z", "lum", HATCH)
@@ -23,6 +25,9 @@ def d3():
     v.text(4, 71, "boxed ledge", "lab", "start"); v.text(4, 69, f"top {fr(m('ledge_lid').z[1])} — {fr(m('ledge_lid').z[1]-DECK-MAT['thickness'])} proud of the mattress", "labs", "start")
     v.text(4, 67.3, f"well {fr(m('ledge_front_rail').y[0]-m('rear_ledger').y[1])} × {fr(m('ledge_front_rail').z[1]-DECK)}", "labs", "start")
     v.text(2, 52.2, "2×6 ledger, bottom flush with the joists — lags into every stud", "labs", "start")
+    v.text(4, 65.6, "2×4 cleat — the lid's back bearing", "labs", "start")
+    v.text(4, 63.9, "2×2 cleat on the deck — the rail's foot", "labs", "start")
+    v.text(4, 62.2, "3 × 2×2 struts under the lid (one shown, beyond) — hold the rail on 7¼", "labs", "start")
     v.text(2, 49.8, "2×4 blocking on edge — carries the ply's rear edge", "labs", "start")
     v.text(2, 47.4, f"2×4 joists @ 12 o.c. beyond · {fr(DER['deck_joist_span'])} span · ¾ ply glued & screwed", "labs", "start")
     v.text(27, 61, f"{MAT['size'][0]} mattress in a {fr(BAY)} bay, finished", "labs", "middle", dy=4)
@@ -40,4 +45,4 @@ def d3():
     return v.svg(f"Section through the platform at x = {xc}, bed wall on the left")
 
 FIGURES = [("d3", d3)]
-CAPTION = f"Cut at x = 55, between joists, so the joist reads pale (beyond) and the blocking, ply, ledger, beam and top plate are hatched (cut). The deck ply is the floor of the ledge well. The rear ledger's bottom is flush with the joists so the underside is one plane at 53¾, same as the beam's own underside. <b>Rev AG:</b> the beam is a single {BEAMSTOCK} wrapped on three sides — face, bed side and a cap the slats stand on — and its finished top at {fr(BEAM_FIN_TOP)} is ½ proud of a {fr(float(MAT['thickness']))} mattress, so it retains the mattress instead of stopping {fr(DECK+float(MAT['thickness'])-63)} below it. The boxed ledge rose with it: an 11¼ rail keeps the lid 2 proud of the mattress, the curb Rev L chose. Sitting headroom is the price — {fr(DER['sitting_headroom'])}, from a measured 8 mattress plus a 2 topper."
+CAPTION = f"Cut at x = 55, between joists, so the joist reads pale (beyond) and the blocking, ply, ledger, beam and top plate are hatched (cut). The deck ply is the floor of the ledge well. The rear ledger's bottom is flush with the joists so the underside is one plane at 53¾, same as the beam's own underside. <b>Rev AG:</b> the beam is a single {BEAMSTOCK} wrapped on three sides — face, bed side and a cap the slats stand on — and its finished top at {fr(BEAM_FIN_TOP)} is ½ proud of a {fr(float(MAT['thickness']))} mattress, so it retains the mattress instead of stopping {fr(DECK+float(MAT['thickness'])-63)} below it. The boxed ledge tracks it: a {fr(m('ledge_front_rail').size('z'))} rail keeps the lid {fr(m('ledge_lid').z[1]-DECK-float(MAT['thickness']))} proud of the mattress, the curb Rev L chose. Sitting headroom is the price — {fr(DER['sitting_headroom'])}, from a measured 8 mattress plus a 2 topper."

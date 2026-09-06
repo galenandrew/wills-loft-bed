@@ -20,7 +20,7 @@ rows:
   spec: "5 finished where it shows — ¾ ply + 3½ studs + ¾ skirt · 4¼ where the stair runs against it · two stud packs, no field studs · top plate 53¾"
   check: "Deck and beam end bear on top · portal frame with a sandwich header"
 - member: "Half-wall faces"
-  spec: "Nook face two boards from 4×8 ¾ ply — 4¼ stile + 45¾ × 53¾ board, seam on y 4¼ · stair face ONE 50 × 45¼ board, cut to the stringers' top line, both end caps included (Rev AE; 45¼ not 42 since Rev AG raised the ledge cap and Rev AH dropped it ¾ under the lid)"
+  spec: "Nook face two boards from 4×8 ¾ ply — 4¼ stile + 45¾ × 53¾ board, seam on y 4¼ · stair face ONE 50 × 44¼ board, cut to the stringers' top line, both end caps included (Rev AE; 44¼ not 42 — Rev AG raised the ledge cap, AH dropped it ¾ under the lid, AI took the lid to 69)"
   check: "Rev AE · the stair face is a skirt, not sheathing: stringer A and the landing box land on the framing at 106¼ and nothing fastens through ply · seams backed full length · nook face laps the lining, which stops ¾ back at x 102¾"
 - member: "Nook header"
   spec: "2×10 + ½ ply + 2×10 = 3½ wide × 9¼ full stock, over a {nook_rough_w} × {nook_rough_h} rough opening"

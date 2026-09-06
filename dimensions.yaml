@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AH
+rev: AM
 units: inches
 room:
   x: 131
@@ -71,10 +71,11 @@ mattress:
   size:
   - 38
   - 75
-  thickness: 10
-  note: 'Rev AG: MEASURED 2026-09-06 - an 8 mattress with a 2 topper. Was ASSUMED 6. The
-    mattress top moves 64 -> 68: sitting headroom drops 32 -> 28, and both the beam and the
-    boxed ledge are now sized off 68.'
+  thickness: 8
+  note: 'Rev AI: 8, the mattress alone - the 2 topper is dropped, to buy back the sitting
+    headroom it cost (28 -> 30). Rev AG had measured the pair at 10 and sized the beam and
+    the boxed ledge off a 68 mattress top; the top is 66 now, so the beam''s finished top at
+    68.5 stands 2 1/2 proud instead of 1/2. Was ASSUMED 6 before it was measured at all.'
 lumber:
   2x2:
   - 1.5
@@ -386,13 +387,78 @@ members:
   - 8
   z:
   - 58
-  - 69.25
+  - 68.25
   role: finish
-  note: 'Rev AG: rips to 11 1/4 (was 7 1/4) and the notch is GONE. The side ledger is a 2x4
+  note: 'Rev AI: rips to 10 1/4 (Rev AG had 11 1/4 over a 10 mattress; Rev T had 7 1/4). The
+    notch is GONE. The side ledger is a 2x4
     at deck level now, so nothing stands in the rail''s way at the window end: it is one
     plain 106 1/4 board standing on the deck ply from x 0. Rev AB''s notch and its tongue row
-    are deleted. 11 1/4 keeps the lid 2 proud of a 10 mattress, the curb Rev L chose when the
-    mattress was 6. Rip from 1x12 poplar.'
+    are deleted. 10 1/4 puts the lid 3 proud of the 66 mattress top - and it is a rip from
+    1x12 poplar with margin to spare, where 11 1/4 was the whole board.'
+- id: ledge_cleat
+  stock: 2x4
+  x:
+  - 0
+  - 106.25
+  y:
+  - 0
+  - 1.5
+  z:
+  - 64.75
+  - 68.25
+  role: structural
+  note: 'Rev AJ: NEW. The lid had a bearing edge at the front - the top of ledge_front_rail -
+    and nothing at all along the bed wall: an 8 deep board supported on one edge. This is a
+    2x4 ON EDGE against the wall, 1 1/2 proud and 3 1/2 tall, its top on 68.25 = the lid''s
+    underside. On edge, not flat, so its face is flush with rear_ledger''s at y 1.5 and the
+    well stays 5 3/4 wide; flat it would have eaten 2 more. It is also what the three
+    ledge_strut pieces die into. Cut list: 106 1/4 - one 10 ft 2x4, or two pieces butted over
+    a stud.'
+- id: ledge_cleat_rail
+  stock: 2x2
+  x:
+  - 0
+  - 106.25
+  y:
+  - 5.75
+  - 7.25
+  z:
+  - 58
+  - 59.5
+  role: structural
+  note: 'Rev AL: ON THE DECK PLY, giving the front rail''s BOTTOM edge something to fasten to.
+    Rev AK had it at the top of the rail as the lid''s front bearing, which was wrong: it was
+    fixed to the rail and to nothing else, so the whole front of the box hung off the lid.
+    The lid''s front edge fastens straight to the rail''s top edge instead, and the rail is
+    now held at both ends - cleat at the bottom, lid at the top.
+    2x2, not the 2x4 the bed-wall cleat is: a screw has to go DOWN through this one into the
+    joists, and 1 1/2 + 3/4 of ply lets a 3-1/2 bury 1 1/4 in a joist, where 3 1/2 of 2x4 on
+    edge would need a 6. 1 1/2 is ample to screw a 3/4 rail to. It takes 1 1/2 off the well
+    floor and 1 1/2 of its height; the well is still the full 5 3/4 above 59.5.'
+- id: ledge_strut
+  stock: 2x2
+  x:
+  - 0
+  - 1.5
+  y:
+  - 1.5
+  - 7.25
+  z:
+  - 66.75
+  - 68.25
+  role: structural
+  repeat:
+    count: 3
+    axis: x
+    pitch: 52.375
+  note: 'Rev AM: three 5 3/4 struts under the lid, square to ledge_cleat, spanning the well
+    from the cleat''s face to the back of ledge_front_rail. They FIX THE GAP: the rail is a
+    3/4 board cleated only at its foot, and without them nothing holds its top on 7.25, so the
+    lid-to-rail joint would open or close along its length. They also back that joint - the
+    lid lands 1 1/2 x 5 3/4 on each strut instead of bridging bare air between its two long
+    edges. The 52.375 pitch is not arbitrary: it puts strut 0 flush with the window wall,
+    strut 2 flush with the ledge''s stair end at 106.25, and strut 1 exactly on the midpoint
+    (its centre is x 53.125). Three identical 2x2s, 5 3/4 each.'
 - id: ledge_lid
   stock: poplar-3/4
   x:
@@ -402,12 +468,16 @@ members:
   - 0
   - 8
   z:
-  - 69.25
-  - 70
+  - 68.25
+  - 69
   role: finish
-  note: 'Hinged lids optional (Rev F); modelled as one continuous cap. Rev AG: top at 70,
-    2 proud of the 68 mattress top, on an 11 1/4 rail. The well is 5 3/4 x 11 1/4, about
-    3.9 cu ft. Rev AH: it runs the FULL 107, wall to finished face - the butt with
+  note: 'Rev AM: NOT hinged - decided, and Rev F''s optional hinges are off the table. It is
+    one continuous board screwed down onto the cleat, the three struts and the rail. NOTE the
+    consequence: the well is a closed void now, about 3.5 cu ft of it. If that storage is
+    wanted, the lid has to be screwed and filled rather than glued, or the box opened from an
+    end. Rev AI: top at 69,
+    3 proud of the 66 mattress top, on a 10 1/4 rail. The well is 5 3/4 x 10 1/4, about
+    3.5 cu ft. Rev AH: it runs the FULL 107, wall to finished face - the butt with
     ledge_end_cap is reversed, so the lid laps the skirt''s top edge instead of dying into
     its face. Bears on that edge over 3/4 x 8. One ply edge fewer to fill, and the joint at
     the stair end is now a poplar-to-poplar line in the same plane as the front rail''s.'
@@ -421,12 +491,12 @@ members:
   - 8
   z:
   - 58
-  - 69.25
+  - 68.25
   role: finish
   note: 'Rev AD: still the boxed ledge''s end, but no longer a separate part - it is the top of
     the stair face (Rev AE: of hw_sheath_stair, the one skirt board), so the stock is 3/4 ply,
-    not 3/4 poplar, and the joint that used to run across at z 58 is gone. Rev AH: it stops at
-    69.25, 3/4 lower, and ledge_lid runs out over its top edge to 107 - so the only ply edge
+    not 3/4 poplar, and the joint that used to run across at z 58 is gone. Rev AH: it stops 3/4
+    below the lid''s top - 68.25 since Rev AI - and ledge_lid runs out over its top edge to 107 - so the only ply edge
     left showing here is the one that meets the front rail; band or fill that one.'
 - id: hw_bottom_plate_a
   stock: 2x4
@@ -696,9 +766,9 @@ members:
     side: above
   note: 'Rev AE: ONE board, and only the part of it anyone sees — the answer to "can the new
     stair face be cut from a single sheet". With ledge_end_cap and beam_end_cap fused to it,
-    the board is 50 x 45 1/4 (Rev AG took the ledge end to 70 and the beam end to 67 3/4;
-    Rev AH dropped the ledge end to 69 1/4 to let the lid lap it) and still yields from one
-    4x8; the Rev AD face was 50 x 66 and needed two.
+    the board is 50 x 44 1/4 (Rev AG took the ledge end to 70 and the beam end to 67 3/4;
+    Rev AH dropped the ledge end 3/4 to let the lid lap it, Rev AI took the lid itself to 69)
+    and still yields from one 4x8; the Rev AD face was 50 x 66 and needed two.
     It is a SKIRT now, not a sheathed wall: stringer A and the landing box moved out 3/4 onto
     the half-wall framing at 106.25, so this panel starts where they stop. Its bottom edge is
     the `stair_top` profile — 48.75 under the landing box and the stringers'' top run, then
@@ -1409,6 +1479,54 @@ connections:
   fastener: '1 x #8 x 3, OFFSET INBOARD. slat[22] runs x 105.5 to 107 and the LVL ends at
     106.25, so only 3/4 of its 1-1/2 width has beam under the cap - the rest is over
     beam_end_cap, 3/4 ply. A centred screw lands half in ply. Found by the kernel ray cast.'
+- a: ledge_cleat
+  b: wall:bed
+  type: wall
+  fastener: 2 x 3 in screws into every stud — it carries half an 8 wide lid and whatever is
+    set on it, so it is fixed like a ledger, not tacked like trim
+- a: ledge_strut[*]
+  b: ledge_cleat
+  type: face-screw
+  face: y
+  fastener: '2 x #8 x 2-1/2 toe-driven into the cleat, plus adhesive'
+- a: ledge_strut[*]
+  b: ledge_front_rail
+  type: face-screw
+  face: y
+  fastener: 'adhesive + 2 pocket screws from inside the well, angled out of the strut into the
+    back of the rail. Pocket, not toe: a toe screw into 3/4 of poplar from behind breaks out
+    the face, and a screw through the rail''s face lands in the strut''s end grain.'
+- a: ledge_lid
+  b: ledge_strut[*]
+  type: bearing
+  fastener: '#8 x 1-1/4, 2 per strut, countersunk and filled'
+- a: ledge_lid
+  b: ledge_cleat
+  type: bearing
+  fastener: '#8 x 1-1/4 at 12 in o.c., countersunk and filled — the lid is fixed, not hinged'
+- a: ledge_cleat_rail
+  b: ledge_front_rail
+  type: face-screw
+  face: y
+  fastener: 'construction adhesive + #8 x 1-1/4 at 12 in o.c. from inside the well, through
+    the cleat into the rail — screwed from the back so nothing shows on the face'
+- a: ledge_cleat_rail
+  b: deck_ply
+  type: bearing
+  fastener: 'construction adhesive + #10 x 3-1/2 down through the cleat and the ply into a
+    joist at each of the 9 joists, and #8 x 2 into the ply between them'
+- a: ledge_lid
+  b: ledge_front_rail
+  type: bearing
+  fastener: '#8 x 1-1/4 at 12 in o.c. into the rail''s 3/4 top edge, countersunk and filled.
+    Rev AM: the lid is fixed, never hinged, so this joint is permanent - and with the three
+    struts holding the rail''s top on 7.25 it is a flush line the whole 106 1/4, not a joint
+    that has to be pulled closed at assembly.'
+- a: ledge_lid
+  b: ledge_end_cap
+  type: bearing
+  fastener: '#8 x 1-1/4, 2 off — the 3/4 x 8 of skirt top edge the lid laps at the stair end
+    (Rev AH)'
 - a: screen_top_plate
   b: slat[*]
   type: bearing
@@ -1504,7 +1622,7 @@ expected:
   deck_ply:
   - 106.25
   - 46.75
-  sitting_headroom: 28
+  sitting_headroom: 30
   riser: 8.25
   stair_angle_deg: 42.51
   stringer_throat: 5.17
