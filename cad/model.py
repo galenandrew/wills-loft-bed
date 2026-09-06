@@ -86,7 +86,8 @@ SCOPE = {
     "stair":     ["stringer_a", "stringer_b", "stringer_c", "kicker",
                   "lnd_ledger_bedwall", "lnd_ledger_rightwall", "lnd_side_member",
                   "lnd_joist[0]", "lnd_joist[1]", "lnd_rim",
-                  "lnd_blocking[0]", "lnd_blocking[1]", "lnd_ply"],
+                  "lnd_blocking[0]", "lnd_blocking[1]", "lnd_ply",
+                  "stringer_a_skin", "stringer_a_skin_cleat"],
     "half_wall": ["hw_bottom_plate_a", "hw_bottom_plate_b",
                   "hw_king_a", "hw_king_b", "hw_trimmer_a", "hw_trimmer_b",
                   "hw_jamb_ply_a", "hw_jamb_ply_b",
@@ -169,6 +170,17 @@ def raked_solid(mid):
     return prism_yz(dm.rake_pts(m, ST, dm.nook), float(m.x[0]), float(m.x[1]))
 
 
+# ------------------------------------------------------------------ profiled
+# Members whose true outline is a y-z polygon rather than a box or a rake band.
+# The polygon comes from drawings/model.py — nothing here re-derives it.
+PROFILED = {"stringer_a_skin": lambda: dm.skin_pts()}
+
+
+def profiled_solid(mid):
+    m = M[mid]
+    return prism_yz(PROFILED[mid](), float(m.x[0]), float(m.x[1]))
+
+
 # ----------------------------------------------------------------- stringers
 def stringer_solid(mid):
     """The true notched profile from drawings.stringer_pts(), extruded through the
@@ -183,16 +195,27 @@ def stringer_solid(mid):
 # drawings/model.py:draw_treads() draws them, so a kernel section can be compared
 # with Drawing 4 like for like. `riser_scheme` selects between the two readings of
 # the Rev V note — see cad/check.py and the report.
+def board_solid(y0, y1, z, x0=None, x1=None):
+    """A tread or riser board. Rev AC: it is 24 3/4 where it laps the skin on stringer
+    A's face and 24 where it butts the half-wall, so the one board that straddles the
+    wall's end comes out L-shaped — the notch, fused into one solid."""
+    rects = dm.board_rects(y0, y1) if (x0 is None and x1 is None) else \
+        [((WIDTH_X[0] if x0 is None else x0), (WIDTH_X[1] if x1 is None else x1), y0, y1)]
+    solid = None
+    for bx0, bx1, by0, by1 in rects:
+        b = box((bx0, bx1), (by0, by1), z)
+        solid = b if solid is None else solid + b
+    return solid, len(rects) > 1
+
+
 def tread_pieces(scheme="standard", x0=None, x1=None):
-    x0 = WIDTH_X[0] if x0 is None else x0
-    x1 = WIDTH_X[1] if x1 is None else x1
     out = []
     for i in range(1, ST.n_treads + 1):
         ty = tread_extents(i, scheme)
-        out.append(Piece(f"tread[{i}]", "stair",
-                         box((x0, x1), ty, (ST.riser_z[i] - T, ST.riser_z[i])),
-                         "ply-3/4", derived=True,
-                         note=f"{ST.n_treads - i + 1} from the top; 1/8 nose past the riser"))
+        solid, notched = board_solid(*ty, (ST.riser_z[i] - T, ST.riser_z[i]), x0, x1)
+        out.append(Piece(f"tread[{i}]", "stair", solid, "ply-3/4", derived=True,
+                         note=f"{ST.n_treads - i + 1} from the top; 1/8 nose past the riser"
+                              + ("; notched 3/4 at the half-wall end" if notched else "")))
     return out
 
 
@@ -230,18 +253,18 @@ def tread_extents(i, scheme):
 
 
 def riser_pieces(scheme="standard", x0=None, x1=None):
-    x0 = WIDTH_X[0] if x0 is None else x0
-    x1 = WIDTH_X[1] if x1 is None else x1
     out = []
     for i in range(1, ST.n_treads + 1):
         y, z = riser_extents(i, scheme)
-        out.append(Piece(f"riser[{i}]", "stair", box((x0, x1), y, z), "ply-3/4",
-                         derived=True, note=f"riser scheme: {scheme}"))
+        solid, notched = board_solid(*y, z, x0, x1)
+        out.append(Piece(f"riser[{i}]", "stair", solid, "ply-3/4", derived=True,
+                         note=f"riser scheme: {scheme}"
+                              + ("; notched 3/4 at the half-wall end" if notched else "")))
     # riser 6: the landing face, from tread 5's cut up to the landing deck's underside.
     ry = ((ST.y_riser_top - RISER_T, ST.y_riser_top) if scheme == "as-drawn"
           else (ST.y_riser_top, ST.y_riser_top + RISER_T))
     out.append(Piece("riser[6]", "stair",
-                     box((x0, x1), ry, (ST.riser_z[ST.n_treads] - T, LAND - T)),
+                     board_solid(*ry, (ST.riser_z[ST.n_treads] - T, LAND - T), x0, x1)[0],
                      "ply-3/4", derived=True, note="landing face"))
     return out
 
@@ -275,7 +298,10 @@ def build(riser_scheme="standard", laminations=True, context=False):
     pieces = []
     for assembly, ids in SCOPE.items():
         for mid in ids:
-            if M[mid].kind == "stringer":
+            if mid in PROFILED:
+                pieces.append(Piece(mid, assembly, profiled_solid(mid), M[mid].stock,
+                                    note="true stepped outline, not the yaml bbox"))
+            elif M[mid].kind == "stringer":
                 pieces.append(Piece(mid, assembly, stringer_solid(mid), M[mid].stock,
                                     note="true notched profile, not the yaml bbox"))
             elif M[mid].kind == "raked":

@@ -191,6 +191,38 @@ def riser_y(i):
     y1 = ST.tread_y(i)[1]
     return y1, y1 + RISER_T
 
+# Rev AC — stringer A's outer face is skinned in 3/4 ply from the half-wall's end cap
+# to riser 1, closing the understair cavity on the room side. The skin's outer face is
+# coplanar with the half-wall's stair-side sheathing, so the boards that pass it run
+# 3/4 wider and lap it; the boards uphill of it butt the wall and stay 24. Board 3
+# straddles the wall's end and is notched. All of it comes off the two members.
+SKIN = M["stringer_a_skin"]
+SKIN_X0, SKIN_Y0 = float(SKIN.x[0]), float(SKIN.y[0])
+STAIR_X = (float(M["kicker"].x[0]), float(M["kicker"].x[1]))   # 107 -> 131
+
+def board_rects(y0, y1):
+    """A tread or riser board as (x0, x1, y0, y1) pieces. One rect uphill of the skin
+    (24 wide, butting the half-wall sheathing), one over it (24 3/4, lapping it), and
+    both for the one board that straddles the wall's end — that is its notch."""
+    if y1 <= SKIN_Y0 + 1e-9:
+        return [(STAIR_X[0], STAIR_X[1], y0, y1)]
+    if y0 >= SKIN_Y0 - 1e-9:
+        return [(SKIN_X0, STAIR_X[1], y0, y1)]
+    return [(STAIR_X[0], STAIR_X[1], y0, SKIN_Y0), (SKIN_X0, STAIR_X[1], SKIN_Y0, y1)]
+
+def skin_pts():
+    """The skin's true y-z outline: stringer A's stepped top edge over the skin's own
+    y extent, carried down to the floor — the cavity is open below the stringer too."""
+    y0, y1 = float(SKIN.y[0]), float(SKIN.y[1])
+    top = []
+    for i in range(ST.n_treads, 0, -1):                        # runs in increasing y
+        a, b = ST.tread_y(i)
+        if b <= y0 or a >= y1:
+            continue
+        z = ST.riser_z[i] - T
+        top += [(max(a, y0), z), (min(b, y1), z)]
+    return [(y0, 0.0)] + top + [(y1, 0.0)]
+
 def draw_treads(v):
     for i in range(1, ST.n_treads + 1):
         v.rect(*tread_y_board(i), ST.riser_z[i] - T, ST.riser_z[i], "fin")
@@ -228,4 +260,6 @@ VALS.update({
     "plumb_lo": fr(ST.plumb_cut()[0]), "plumb_hi": fr(ST.plumb_cut()[1]), "top_run": fr(ST.top_run), "tread_t": fr(T),
     "beam_above_deck": fr(m("beam").z[1] - DECK), "slat_count": str(SCR["slat_count"]),
     "stair_fin": fr(Y_FIN), "landing_fin": fr(m("lnd_ply").y[1]), "riser_t": fr(RISER_T),
+    "board_w": fr(STAIR_X[1] - STAIR_X[0]), "board_w_skin": fr(STAIR_X[1] - SKIN_X0),
+    "skin_y0": fr(SKIN_Y0), "skin_y1": fr(float(SKIN.y[1])),
 })

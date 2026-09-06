@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AB
+rev: AC
 units: inches
 room:
   x: 131
@@ -57,7 +57,16 @@ room:
     - 150
     - 182
     width: 32
-    to_corner: 3.5
+    to_corner: 4
+    note: 'Rev AB: 4, was 3.5. ASSUMED — not measured. Every placed thing along the right
+      wall agreed on 185.5 from the bed wall to the closet corner while room.y said 186, so
+      the survey missed by 1/2 and the chain could not close. 4 is the value that closes it
+      (186 - the door''s far edge at 182) and it disturbs nothing else, but the 1/2 could
+      equally be in room.y or in any item along the wall. FIELD: confirm with a tape, door
+      casing to the corner and the room''s overall depth. Nothing in the build depends on
+      this — the deepest built member is the stringer foot at y 72 and everything is
+      dimensioned outward from the bed wall — so the whole 1/2 lands in the stair-to-dresser
+      gap either way.'
 mattress:
   size:
   - 38
@@ -746,6 +755,47 @@ members:
   - 0
   - 48.75
   role: structural
+- id: stringer_a_skin
+  stock: ply-3/4
+  x:
+  - 106.25
+  - 107
+  y:
+  - 50.75
+  - 72
+  z:
+  - 0
+  - 24
+  role: finish
+  note: 'Rev AC: closes the understair cavity on the room side. 3/4 ply applied to stringer A''s
+    outer face, from the half-wall''s end cap (y 50.75) to riser 1''s plumb cut (y 72). Its outer
+    face at 106.25 lands in the same band the half-wall''s stair-side sheathing occupies, so the
+    skin reads as that sheathing carried on past the end of the wall. It is 3/4 INBOARD of the
+    wall''s visible stair-side face at 107 — which is exactly the 3/4 the boards gain to lap it,
+    so the step in a board''s edge falls on the wall''s end. z is the bbox: the true outline is
+    stringer A''s stepped face carried down to the floor (drawings.skin_pts), because below the
+    stringer underside the cavity is open to the room as well. Treads 1-2 and risers 1-3 run out
+    over it to 106.25; tread 3 is notched 3/4 x 5 where it passes the half wall. CUT-LIST: one
+    stepped panel out of 21 1/4 x 24, scribed off the stringer in place. It cannot be one piece with
+    hw_sheath_stair_b: the end cap runs the full 5 through between them at y 50-50.75, and the combined
+    panel would be 58 x 72 — no sheet yields it. The cap stands 3/4 proud of this panel''s face, the same
+    3/4 the boards gain, so the return at the wall''s end and the notch shoulder are one plane.'
+- id: stringer_a_skin_cleat
+  stock: 2x2
+  x:
+  - 107
+  - 108.5
+  y:
+  - 50.75
+  - 61.875
+  z:
+  - 0
+  - 1.5
+  role: structural
+  note: 'Rev AC: floor cleat behind the skin''s lower edge. Below the stringer underside the panel
+    has nothing to fasten to for 12 3/4 of run, and that edge is at shin height. Ends at 61 7/8,
+    where the stringer underside comes down to 1 1/2; from 63 1/2 the stringer is on the floor
+    itself and the kicker backs the last 3 1/2 at the foot.'
 - id: kicker
   stock: 2x4
   x:
@@ -1137,6 +1187,20 @@ connections:
   b: wall:right
   type: wall
   fastener: '''fastens to the right wall'''
+- a: stringer_a_skin
+  b: stringer_a
+  type: face-screw
+  face: x
+  fastener: construction adhesive + 1-1/2 x 16ga finish nails at 8 in o.c. into the stringer's outer face (3/4 penetration)
+- a: stringer_a_skin_cleat
+  b: stringer_a_skin
+  type: face-screw
+  face: x
+  fastener: 1-1/2 x 16ga finish nails at 8 in o.c. through the skin into the cleat, plus adhesive
+- a: stringer_a_skin_cleat
+  b: floor
+  type: floor
+  fastener: '3 x #10 x 3 screws into the subfloor'
 - a: stringer_a
   b: kicker
   type: bearing
@@ -1269,7 +1333,7 @@ expected:
   slat_clear: 3.3
   stair_projection: 72
   fan_clearance: 15.25
-  room_depth_chain: 185.5
+  room_depth_chain: 186
   screen_top_plate_band:
   - 47.25
   - 50.75

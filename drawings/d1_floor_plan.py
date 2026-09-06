@@ -15,7 +15,9 @@ def d1():
     # landing + stair
     v.rect(107, RX, 0, m("lnd_ply").y[1], "landing")          # finished deck, incl. its 1/8 nose
     for i in range(1, ST.n_treads + 1):
-        v.rect(107, RX, *tread_y_board(i), "tread")           # the boards, not the stringer runs
+        for bx0, bx1, by0, by1 in board_rects(*tread_y_board(i)):
+            v.rect(bx0, bx1, by0, by1, "tread")               # the boards, not the stringer runs
+    R(v, m("stringer_a_skin"), "x", "y", "fin")               # drawn last — it is the finished edge
     # existing
     dk = m("desk"); v.rect(*dk.x, *dk.y, "dashfill")
     dr = m("dresser"); v.rect(*dr.x, *dr.y, "exist")
@@ -34,6 +36,8 @@ def d1():
     v.text(104.6, 30, "half-wall below", "labs", "middle", rot=-90)
     v.text(119, 12, "LANDING", "lab", "middle", dy=4); v.text(119, 17, f"24 × {fr(m('lnd_ply').y[1])} finished @ {fr(LAND)}", "labs", "middle", dy=4)
     v.text(119, 50, f"{ST.n_treads} treads @ {fr(ST.run)}", "labs", "middle", dy=4)
+    v.text(RX, 78, "¾ ply skin on stringer A closes the understair cavity", "labs", "end", dy=4)
+    v.text(RX, 82, f"boards lap it {fr(STAIR_X[1] - SKIN_X0)} — board 3 notched ¾ × {fr(SKIN_Y0 - tread_y_board(3)[0])}", "labs", "end", dy=4)
     v.text(12, 60.5, "desk 24 × 55", "labs", "middle", dy=4)
     v.text(123, 126, "dresser 16 × 48", "labs", "middle", rot=-90)
     v.text(cx, cy, f"ceiling fan — blades {fr(fan.z[0])}", "labs", "middle", dy=4)
@@ -48,7 +52,9 @@ def d1():
     v.dim_v(RX + 2.6, dg[0], dg[1], f"{fr(dg[1]-dg[0])} dresser", left=False); v.dim_v(RX + 2.6, float(door["y"][0]), hy, f"{fr(w)} door", left=False)
     v.dim_v(RX + 2.6, hy, RY, fr(RY - hy), left=False); v.dim_v(-6.2, 0, RY, fr(RY))
     chain = DER["room_depth_chain"]
-    v.text(RX / 2, RY + 4.8, f"{fr(yb)} + {fr(dg[0]-yb)} + {fr(dg[1]-dg[0])} + {fr(w)} + {fr(float(door['to_corner']))} = {fr(chain)}  ·  room {fr(RY)} — {fr(RY-chain)} unplaced (field)", "labs", "middle", dy=13)
+    # the chain closes only because door.to_corner is ASSUMED 4 — still a field measurement
+    close = f"closes on room {fr(RY)} — to_corner {fr(float(door['to_corner']))} assumed (field)" if abs(RY - chain) < 1e-6 else f"room {fr(RY)} — {fr(RY-chain)} unplaced (field)"
+    v.text(RX / 2, RY + 4.8, f"{fr(yb)} + {fr(dg[0]-yb)} + {fr(dg[1]-dg[0])} + {fr(w)} + {fr(float(door['to_corner']))} = {fr(chain)}  ·  {close}", "labs", "middle", dy=13)
     return v.svg("Room floor plan, bed wall at the top, window wall to the left")
 
 FIGURES = [("d1", d1)]

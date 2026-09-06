@@ -33,6 +33,7 @@ def schedule():
          x_row("Deck structural rim", "deck_rim", "stair-side panel runs to the deck top"), ("<b>Deck, overall</b>", "0", "107", ""),
          x_row("Landing side member", "lnd_side_member", "on the header's flush face"), ("Stringers A / B / C", " · ".join(f"{fr(m(k).x[0])}–{fr(m(k).x[1])}" for k in ("stringer_a", "stringer_b", "stringer_c")), "", f"{fr(float(d['stair']['stringer_pitch']))} centres"),
          ("Landing joists", " · ".join(f"{fr(m(k).x[0])}–{fr(m(k).x[1])}" for k in ids("lnd_joist")), "", "run with the stringers"),
+         x_row("Stringer A skin, ¾ ply", "stringer_a_skin", f"y {fr(m('stringer_a_skin').y[0])}→{fr(m('stringer_a_skin').y[1])} — continues the half-wall's stair-side sheathing band, ¾ inboard of its visible face; boards lap it, so they are {fr(STAIR_X[1] - SKIN_X0)} there"),
          x_row("Right-wall ledger", "lnd_ledger_rightwall"), ("<b>Stair &amp; landing</b>", "107", fr(RX), "24")]
     def y_row(name, k, note=""):
         mm = m(k); return (name, fr(mm.y[0]), fr(mm.y[1]), note)
@@ -42,6 +43,7 @@ def schedule():
          ("Nook flat ceiling", fr(NOOK_Y[0]), fr(Y_MEET), "rake begins where the stringer undersides reach the panel"),
          ("Mattress bay", "8", fr(m("beam").y[0]), f"{fr(m('beam').y[0]-8)} for a {MAT['size'][0]} mattress"),
          y_row("Landing side member", "lnd_side_member"), y_row("Landing rim", "lnd_rim", "2×8"), ("Stringer top runs", fr(ST.y_top), fr(ST.y_riser_top), "under the landing deck"),
+         y_row("Stringer A skin", "stringer_a_skin", "half-wall end cap → riser 1's plumb cut · 2×2 floor cleat behind it to 61⅞"),
          y_row("Blocking between stringers", "lnd_blocking[0]", "flush with riser 6"), y_row("Right-wall ledger", "lnd_ledger_rightwall", "stringer C bears on its end"),
          ("Landing", "0", fr(ST.landing), ""), y_row("Beam structure", "beam", "over the end stud pack"), y_row("Beam wrap", "beam_wrap_face"),
          ("<b>Platform, finished</b>", "0", fr(m("beam_wrap_face").y[1]), f"8 + {fr(m('beam').y[0]-8)} + 3 + ¾"), y_row("Desk (existing)", "desk", f"projects {fr(m('desk').y[1]-m('beam_wrap_face').y[1])} past the beam"),
@@ -57,7 +59,7 @@ def schedule():
           ("Light chase over the flat", fr(DER["nook_light_chase"]), "joist bottom − header bottom — wafer LED only"), ("Rim ↔ header engagement", fr(DER["rim_header_overlap"]), "full 2×8"),
           ("Rim ↔ stringer bearing", fr(DER["rim_stringer_bearing"]), "≈ full 2×8"), ("Slat clear opening", fr(DER["slat_clear"]), f"(107 − {SCR['slat_count']} × 1½) ÷ {SCR['slat_count']-1} · 3½ max"),
           ("Stair projection", f"{fr(DER['stair_projection'])} framing · {fr(Y_FIN)} finished", f"{fr(ST.landing)} landing + {fr(ST.y_bottom-ST.y_riser_top)} run + {fr(RISER_T)} riser + {fr(NOSE)} nose"), ("Fan clearance", fr(DER["fan_clearance"]), f"{fr(m('fan').y[0])} − {fr(m('beam_wrap_face').y[1])}"),
-          ("Room depth chain", fr(DER["room_depth_chain"]), f"{fr(RY - DER['room_depth_chain'])} unplaced in {fr(RY)} — field")]
+          ("Room depth chain", fr(DER["room_depth_chain"]), (f"closes on {fr(RY)} — but only because the door's {fr(float(room['door']['to_corner']))} to the corner is ASSUMED, not measured (field)" if abs(RY - DER["room_depth_chain"]) < 1e-6 else f"{fr(RY - DER['room_depth_chain'])} unplaced in {fr(RY)} — field"))]
     return (f'<h2 style="margin-top:4px">A · Vertical datums</h2>{tbl(A, ["Member", "Bottom", "Top", "Note"])}'
             f'<h2 style="margin-top:18px">B · Stair heights</h2>{B}'
             f'<div class="note" style="border-left-color:#b07d1a;background:#fdf7ec"><b style="color:#b07d1a">The risers are not all equal.</b> The {ST.n_treads+1} risers from the floor to the landing are {fr(ST.R)} — set the square to {fr(ST.R)} / {fr(ST.run)} and step it off. The {ST.n_risers}th, the sideways step from the landing onto the deck, is {fr(ST.R_top)}: it is the framing stack over the nook header, not a stair riser. Stepping {fr(ST.R)} off {ST.n_risers} times lands at {fr(ST.n_risers * ST.R)}, {fr(DECK - ST.n_risers * ST.R)} short of the deck. Drop each stringer {fr(T)} for the tread thickness.</div>'
