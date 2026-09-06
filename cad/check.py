@@ -6,7 +6,7 @@
   clearance()         true minimum distance between two solids
   ray_cast()          a fastener as a segment: which bodies it crosses, and how deep
 
-Nothing here decides anything. It measures, and spike.py prints the numbers next
+Nothing here decides anything. It measures, and cad/__main__.py prints the numbers next
 to verify.py's so the two can be compared.
 """
 from __future__ import annotations

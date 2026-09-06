@@ -1,13 +1,14 @@
 #!/bin/bash
 # PostToolUse hook (Write|Edit). Reads the tool call JSON on stdin.
-#   dimensions.yaml / verify.py      → verify.py; FAIL/WARN lines go back to the model (exit 2)
-#   those + drawings/ content/ tools/svgview.py → build.py; the one-line change report is injected as context
+#   dimensions.yaml / verify.py            → verify.py; FAIL/WARN lines go back to the model (exit 2)
+#   those + drawings/ content/ cad/*.py    → build.py; the one-line change report is injected as context
+#   (cad/*.py is in drawings/model.py's KERNEL_INPUTS: editing it can move Drawing 4.)
 # Runs from the project directory (Claude Code's cwd for hooks).
 f=$(jq -r '.tool_input.file_path // empty')
 [ -z "$f" ] && exit 0
 case "$f" in
   */dimensions.yaml|*/verify.py)      check=1; build=1 ;;
-  */drawings/*.py|*/content/*|*/tools/svgview.py) build=1 ;;
+  */drawings/*.py|*/content/*|*/cad/*.py) build=1 ;;
   *) exit 0 ;;
 esac
 ctx=""

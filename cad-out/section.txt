@@ -1,0 +1,23 @@
+section fidelity · kernel cut at x=119 vs site/figs/d4.svg (32 drawn shapes parsed back into inches)
+
+  stringer_b             vs <lum+hatch>  max deviation 0.0048"
+  kicker                 vs <lum+hatch>  max deviation 0.0000"
+  riser[1]               vs <fin>  max deviation 0.0000"
+  tread[2]               vs <fin>  max deviation 0.0000"
+  tread[3]               vs <fin>  max deviation 0.0000"
+  tread[4]               vs <fin>  max deviation 0.0000"
+  hw_bottom_plate_a      vs <lum+hatch>  max deviation 0.0000"
+  hw_bottom_plate_b      vs <lum+hatch>  max deviation 0.0000"
+  tread[1]               vs <fin>  max deviation 0.0000"
+  riser[2]               vs <fin>  max deviation 0.0000"
+  riser[4]               vs <fin>  max deviation 0.0000"
+  riser[5]               vs <fin>  max deviation 0.0000"
+  lnd_ledger_bedwall     vs <lum+hatch>  max deviation 0.0000"
+  lnd_rim                vs <lum+hatch>  max deviation 0.0000"
+  riser[3]               vs <fin>  max deviation 0.0000"
+  riser[6]               vs <fin>  max deviation 0.0000"
+  lnd_ply                vs <fin>  max deviation 0.0000"
+  tread[5]               vs <fin>  max deviation 0.0000"
+  dresser                NO MATCH within 6" of any drawn shape (nearest centroid 55.49") — not drawn on Drawing 4
+
+overlay written to cad-out/d4-overlay.svg (hand-drawn shapes grey, kernel cut faces red)

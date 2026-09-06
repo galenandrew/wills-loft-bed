@@ -1,0 +1,50 @@
+fastener ray casts · a screw is a segment from a start point along a direction
+
+stringer_a→hw_header #1  [1/4 x 3-1/2 SDS]  start (107.75, 20.0, 43.0) dir (-1, 0, 0) len 3.5
+    0.000 → 1.500   stringer_a                 1.500"
+    1.500 → 3.000   hw_header#2x10-stair       1.500"
+    3.000 → 3.500   hw_header#ply-1/2          0.500"
+    material crossed 3.500" of 3.5"; 0.000" in air/void
+
+stringer_a→hw_header #2  [1/4 x 3-1/2 SDS]  start (107.75, 20.0, 47.5) dir (-1, 0, 0) len 3.5
+    0.000 → 1.500   stringer_a                 1.500"
+    1.500 → 3.000   hw_header#2x10-stair       1.500"
+    3.000 → 3.500   hw_header#ply-1/2          0.500"
+    material crossed 3.500" of 3.5"; 0.000" in air/void
+
+stringer_a→hw_header #3  [1/4 x 3-1/2 SDS]  start (107.75, 25.0, 43.0) dir (-1, 0, 0) len 3.5
+    0.000 → 1.500   stringer_a                 1.500"
+    1.500 → 3.000   hw_header#2x10-stair       1.500"
+    3.000 → 3.500   hw_header#ply-1/2          0.500"
+    material crossed 3.500" of 3.5"; 0.000" in air/void
+
+stringer_a→hw_header #4  [1/4 x 3-1/2 SDS]  start (107.75, 25.0, 47.5) dir (-1, 0, 0) len 3.5
+    0.000 → 1.500   stringer_a                 1.500"
+    1.500 → 3.000   hw_header#2x10-stair       1.500"
+    3.000 → 3.500   hw_header#ply-1/2          0.500"
+    material crossed 3.500" of 3.5"; 0.000" in air/void
+
+stringer_b→lnd_rim #1  [1/4 x 3-1/2 SDS]  start (118.625, 16.5, 43.0) dir (0, 1, 0) len 3.5
+    0.000 → 1.500   lnd_rim                    1.500"
+    1.500 → 3.500   stringer_b                 2.000"
+    material crossed 3.500" of 3.5"; 0.000" in air/void
+
+stringer_b→lnd_rim #2  [1/4 x 3-1/2 SDS]  start (118.625, 16.5, 45.3) dir (0, 1, 0) len 3.5
+    0.000 → 1.500   lnd_rim                    1.500"
+    1.500 → 3.500   stringer_b                 2.000"
+    material crossed 3.500" of 3.5"; 0.000" in air/void
+
+stringer_b→lnd_rim #3  [1/4 x 3-1/2 SDS]  start (118.625, 16.5, 47.5) dir (0, 1, 0) len 3.5
+    0.000 → 1.500   lnd_rim                    1.500"
+    1.500 → 3.500   stringer_b                 2.000"
+    material crossed 3.500" of 3.5"; 0.000" in air/void
+
+lnd_side_member→hw_header #1  [1/4 x 4 structural screw]  start (107.75, 9.0, 45.0) dir (-1, 0, 0) len 4.0
+    0.000 → 1.500   lnd_side_member            1.500"
+    1.500 → 3.000   hw_header#2x10-stair       1.500"
+    3.000 → 3.500   hw_header#ply-1/2          0.500"
+    3.500 → 4.000   hw_header#2x10-loft        0.500"
+    material crossed 4.000" of 4.0"; 0.000" in air/void
+
+yaml `through:` for stringer_a → hw_header: []  (0.00" total) — 4 x 1/4 x 3-1/2 SDS over y 18-27. Rev AE: the stringer is on the framing now, not on 3/4 of ply, so a 3-1/2 buries 2 in the header.
+yaml `through:` for stringer_b → lnd_rim: none — 3 x 1/4 x 3-1/2 SDS from inside the box through the rim, before the deck goes on

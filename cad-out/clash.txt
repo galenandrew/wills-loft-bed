@@ -1,0 +1,62 @@
+kernel interference check · 108 solids
+verify.py reports 0 volume clashes (it skips every `kind: stringer` member and knows nothing about treads/risers, which are not members).
+
+REAL INTERFERENCE — Rev W joinery, riser scheme 'standard': 0
+
+for contrast — riser scheme 'as-drawn', what Rev V drew: 24
+  kicker ∩ riser[1]: 27.84 cu in  (x 106.25→131.00, y 71.25→72.00, z 0.00→1.50)   min penetration 0.750"
+  lnd_blocking[0] ∩ riser[6]: 26.58 cu in  (x 107.75→117.88, y 26.25→27.00, z 45.25→48.75)   min penetration 0.750"
+  lnd_blocking[1] ∩ riser[6]: 26.58 cu in  (x 119.38→129.50, y 26.25→27.00, z 45.25→48.75)   min penetration 0.750"
+  stringer_a ∩ riser[2]: 9.28 cu in  (x 106.25→107.75, y 62.25→63.00, z 7.50→15.75)   min penetration 0.750"
+  stringer_a ∩ riser[3]: 9.28 cu in  (x 106.25→107.75, y 53.25→54.00, z 15.75→24.00)   min penetration 0.750"
+  stringer_b ∩ riser[2]: 9.28 cu in  (x 117.88→119.38, y 62.25→63.00, z 7.50→15.75)   min penetration 0.750"
+  stringer_b ∩ riser[3]: 9.28 cu in  (x 117.88→119.38, y 53.25→54.00, z 15.75→24.00)   min penetration 0.750"
+  stringer_b ∩ riser[4]: 9.28 cu in  (x 117.88→119.38, y 44.25→45.00, z 24.00→32.25)   min penetration 0.750"
+  stringer_b ∩ riser[5]: 9.28 cu in  (x 117.88→119.38, y 35.25→36.00, z 32.25→40.50)   min penetration 0.750"
+  stringer_b ∩ riser[6]: 9.28 cu in  (x 117.88→119.38, y 26.25→27.00, z 40.50→48.75)   min penetration 0.750"
+  stringer_c ∩ riser[2]: 9.28 cu in  (x 129.50→131.00, y 62.25→63.00, z 7.50→15.75)   min penetration 0.750"
+  stringer_c ∩ riser[3]: 9.28 cu in  (x 129.50→131.00, y 53.25→54.00, z 15.75→24.00)   min penetration 0.750"
+  stringer_c ∩ riser[4]: 9.28 cu in  (x 129.50→131.00, y 44.25→45.00, z 24.00→32.25)   min penetration 0.750"
+  stringer_c ∩ riser[5]: 9.28 cu in  (x 129.50→131.00, y 35.25→36.00, z 32.25→40.50)   min penetration 0.750"
+  stringer_c ∩ riser[6]: 9.28 cu in  (x 129.50→131.00, y 26.25→27.00, z 40.50→48.75)   min penetration 0.750"
+  stringer_a ∩ riser[1]: 6.75 cu in  (x 106.25→107.75, y 71.25→72.00, z 1.50→7.50)   min penetration 0.750"
+  stringer_b ∩ riser[1]: 6.75 cu in  (x 117.88→119.38, y 71.25→72.00, z 1.50→7.50)   min penetration 0.750"
+  stringer_c ∩ riser[1]: 6.75 cu in  (x 129.50→131.00, y 71.25→72.00, z 1.50→7.50)   min penetration 0.750"
+  stringer_a ∩ riser[4]: 4.64 cu in  (x 107.00→107.75, y 44.25→45.00, z 24.00→32.25)   min penetration 0.750"
+  stringer_a ∩ riser[5]: 4.64 cu in  (x 107.00→107.75, y 35.25→36.00, z 32.25→40.50)   min penetration 0.750"
+  stringer_a ∩ riser[6]: 4.64 cu in  (x 107.00→107.75, y 26.25→27.00, z 40.50→48.75)   min penetration 0.750"
+  stringer_a_skin ∩ riser[2]: 4.64 cu in  (x 105.50→106.25, y 62.25→63.00, z 7.50→15.75)   min penetration 0.750"
+  stringer_a_skin ∩ riser[3]: 4.64 cu in  (x 105.50→106.25, y 53.25→54.00, z 15.75→24.00)   min penetration 0.750"
+  stringer_a_skin ∩ riser[1]: 4.22 cu in  (x 105.50→106.25, y 71.25→72.00, z 0.00→7.50)   min penetration 0.750"
+
+COINCIDENT FACES (penetration ≤ verify.py's TOL 0.011") — not findings: 3
+  hw_header#2x10-loft ∩ hw_rake_nailer: 0.00 cu in  (x 102.75→104.25, y 18.26→19.90, z 41.50→41.50)   0.0003"
+  hw_header#ply-1/2 ∩ hw_rake_nailer: 0.00 cu in  (x 104.25→104.75, y 18.26→19.90, z 41.50→41.50)   0.0003"
+  hw_header#2x10-stair ∩ hw_rake_nailer: 0.00 cu in  (x 104.75→106.25, y 18.26→19.90, z 41.50→41.50)   0.0003"
+
+SOFFIT PANEL → STRINGER UNDERSIDE  (kernel ray cast vs verify.py's Stair.underside)
+  stringer_a
+    y= 18.00  underside kernel  41.739  verify  41.739  Δ 0.00000   panel top None   gap kernel —  verify  0.239
+    y= 18.26  underside kernel  41.500  verify  41.500  Δ 0.00000   panel top 41.5   gap kernel  0.000  verify  0.000
+    y= 20.00  underside kernel  39.905  verify  39.905  Δ 0.00000   panel top 39.905   gap kernel -0.000  verify  0.000
+    y= 27.00  underside kernel  33.489  verify  33.489  Δ 0.00000   panel top 33.489   gap kernel  0.000  verify  0.000
+    y= 35.00  underside kernel  26.155  verify  26.155  Δ 0.00000   panel top 26.155   gap kernel  0.000  verify  0.000
+    y= 40.00  underside kernel  21.572  verify  21.572  Δ 0.00000   panel top 21.572   gap kernel  0.000  verify  0.000
+    y= 46.50  underside kernel  15.614  verify  15.614  Δ 0.00000   panel top None   gap kernel —  verify  0.000
+  stringer_b
+    y= 18.00  underside kernel  41.739  verify  41.739  Δ 0.00000   panel top None   gap kernel —  verify  0.239
+    y= 18.26  underside kernel  41.500  verify  41.500  Δ 0.00000   panel top 41.5   gap kernel  0.000  verify  0.000
+    y= 20.00  underside kernel  39.905  verify  39.905  Δ 0.00000   panel top 39.905   gap kernel -0.000  verify  0.000
+    y= 27.00  underside kernel  33.489  verify  33.489  Δ 0.00000   panel top 33.489   gap kernel  0.000  verify  0.000
+    y= 35.00  underside kernel  26.155  verify  26.155  Δ 0.00000   panel top 26.155   gap kernel  0.000  verify  0.000
+    y= 40.00  underside kernel  21.572  verify  21.572  Δ 0.00000   panel top 21.572   gap kernel  0.000  verify  0.000
+    y= 46.50  underside kernel  15.614  verify  15.614  Δ 0.00000   panel top None   gap kernel —  verify  0.000
+  stringer_c
+    y= 18.00  underside kernel  41.739  verify  41.739  Δ 0.00000   panel top None   gap kernel —  verify  0.239
+    y= 18.26  underside kernel  41.500  verify  41.500  Δ 0.00000   panel top 41.5   gap kernel  0.000  verify  0.000
+    y= 20.00  underside kernel  39.905  verify  39.905  Δ 0.00000   panel top 39.905   gap kernel -0.000  verify  0.000
+    y= 27.00  underside kernel  33.489  verify  33.489  Δ 0.00000   panel top 33.489   gap kernel  0.000  verify  0.000
+    y= 35.00  underside kernel  26.155  verify  26.155  Δ 0.00000   panel top 26.155   gap kernel  0.000  verify  0.000
+    y= 40.00  underside kernel  21.572  verify  21.572  Δ 0.00000   panel top 21.572   gap kernel  0.000  verify  0.000
+    y= 46.50  underside kernel  15.614  verify  15.614  Δ 0.00000   panel top None   gap kernel —  verify  0.000
+  soffit panel → lnd_side_member: kernel 1.7600"  (verify.py: 0.0000")

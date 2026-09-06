@@ -1,8 +1,8 @@
-"""cad.spike — run the whole spike:  python3 -m cad.spike
+"""cad.__main__ — run the whole kernel model:  python3 -m cad
 
-Writes spike/: model.step, model.stl, d4-kernel.svg, d8b-kernel.svg,
+Writes cad-out/: model.step, model.stl, d4-kernel.svg, d8b-kernel.svg,
 d4-overlay.svg, clash.txt, fasteners.txt, section.txt — and prints a verdict
-against the four criteria in cad/BRIEF.md.
+against the four criteria the kernel was adopted on (archive/CAD-BRIEF.md).
 
 Nothing here writes to dimensions.yaml, verify.py, drawings/, content/ or site/.
 """
@@ -15,14 +15,17 @@ import sys
 import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path[:0] = [ROOT, os.path.join(ROOT, "tools")]
+sys.path[:0] = [ROOT]
 
 import drawings.model as dm                      # noqa: E402
-from svgview import View                          # noqa: E402
+from drawings.svgview import View                # noqa: E402
 
 from . import check, export, model, section       # noqa: E402
 
-OUT = os.path.join(ROOT, "spike")
+OUT = os.path.join(ROOT, "cad-out")
+# " in 0.17s", " (0.64s)" and the whole TOTAL line — the only run-to-run variation
+# in the tracked outputs. Stripped from REPORT.md; still printed.
+TIMINGS = re.compile(r" in \d+\.\d+s|\s*\(\d+\.\d+s\)|^TOTAL .*$\n?", re.M)
 ST, M = dm.ST, dm.M
 TOL = 0.011          # verify.py's coincidence tolerance — a 64th
 
@@ -160,7 +163,7 @@ def main():
         log.append(s)
 
     import importlib.metadata as md
-    say(f"cad spike · build123d {md.version('build123d')} · "
+    say(f"cad kernel · build123d {md.version('build123d')} · "
         f"OCP {md.version('cadquery-ocp-novtk')} · python {sys.version.split()[0]}")
     say(f"dimensions.yaml rev {dm.REV} · stair: {ST.n_treads + 1} risers @ {ST.R:.4f} + {ST.R_top:.4f}, "
         f"run {ST.run}, throat {ST.throat:.3f}")
@@ -195,7 +198,7 @@ def main():
 
     real, rounding = split(clashes)
     real_alt, rounding_alt = split(clashes_alt)
-    lines = [f"kernel interference check · {len(pieces)} solids · {t_clash:.2f}s",
+    lines = [f"kernel interference check · {len(pieces)} solids",
              f"verify.py reports 0 volume clashes (it skips every `kind: stringer` member "
              f"and knows nothing about treads/risers, which are not members).", ""]
     lines.append(f"REAL INTERFERENCE — Rev W joinery, riser scheme 'standard': {len(real)}")
@@ -241,7 +244,7 @@ def main():
                  f"(verify.py: {M['lnd_side_member'].z[0] - (dm.CEIL + dm.PANEL):.4f}\")")
     w("clash.txt", "\n".join(lines) + "\n")
     say(f"[clash] {len(real)} real interferences, {len(rounding)} coincident faces "
-        f"({t_clash:.2f}s) → spike/clash.txt")
+        f"({t_clash:.2f}s) → cad-out/clash.txt")
     say(f"        underside ray cast vs Stair.underside(): worst Δ {worst:.5f}\"")
     for c, pen in sorted(real, key=lambda r: -r[0].volume)[:6]:
         say(f"        · {c}")
@@ -250,7 +253,7 @@ def main():
     t = time.time()
     llines, findings = loft_report(pieces)
     w("loft.txt", "\n".join(llines) + "\n")
-    say(f"[loft] bearing areas, slat gaps and clearances in {time.time()-t:.2f}s → spike/loft.txt")
+    say(f"[loft] bearing areas, slat gaps and clearances in {time.time()-t:.2f}s → cad-out/loft.txt")
     for f in findings:
         say(f"       · {f}")
 
@@ -275,7 +278,7 @@ def main():
                f"{b_thru or 'none'} — {b_spec}"]
     w("fasteners.txt", "\n".join(flines) + "\n")
     t_fast = time.time() - t
-    say(f"[fasteners] {len(FASTENERS)} rays in {t_fast:.2f}s → spike/fasteners.txt")
+    say(f"[fasteners] {len(FASTENERS)} rays in {t_fast:.2f}s → cad-out/fasteners.txt")
 
     # ---------------------------------------------------------------- criterion 1
     t = time.time()
@@ -303,11 +306,11 @@ def main():
         slines.append(f"  {pid:22s} vs <{cls}>  max deviation {dev:.4f}\"{flag}")
         if worst_row is None or dev > worst_row[1]:
             worst_row = (pid, dev, cls)
-    slines += ["", "overlay written to spike/d4-overlay.svg "
+    slines += ["", "overlay written to cad-out/d4-overlay.svg "
                "(hand-drawn shapes grey, kernel cut faces red)"]
     w("section.txt", "\n".join(slines) + "\n")
     w("d4-overlay.svg", overlay_svg(v4, shapes, L4.cut))
-    say(f"[section] cut+HLR in {t_sec:.2f}s → spike/d4-kernel.svg, spike/d8b-kernel.svg")
+    say(f"[section] cut+HLR in {t_sec:.2f}s → cad-out/d4-kernel.svg, cad-out/d8b-kernel.svg")
     say(f"          worst cut-edge deviation vs d4.svg: "
         f"{worst_row[1]:.4f}\" on {worst_row[0]} (1/16\" = 0.0625)")
 
@@ -333,8 +336,14 @@ def main():
     say()
     say(f"TOTAL {total:.2f}s  (build {t_build:.2f} · clash {t_clash:.2f} · "
         f"fasteners {t_fast:.2f} · section {t_sec:.2f} · export {t_exp:.2f})")
-    w("REPORT.md", "# spike run log\n\nRegenerate with `python3 -m cad.spike` from the repo root.\n"
-                   "Full write-up: `audits/V-kernel-spike.md`.\n\n```\n" + "\n".join(log) + "\n```\n")
+    # REPORT.md is tracked, so it must change only when the MODEL does. Timings are
+    # real output but pure noise in a diff — they stay on stdout and are scrubbed here,
+    # so a dirty cad-out/ in `git status` means the kernel genuinely disagrees with the
+    # last committed run, not that the machine was busy.
+    body = TIMINGS.sub("", "\n".join(log)).rstrip()
+    w("REPORT.md", "# cad-out run log\n\nRegenerate with `python3 -m cad` from the repo root.\n"
+                   "Timings are printed, not recorded — this file changes only when the model does.\n"
+                   "Full write-up: `audits/V-kernel-spike.md`.\n\n```\n" + body + "\n```\n")
     return 0
 
 
@@ -362,7 +371,7 @@ BEARINGS = [
 
 
 def loft_report(pieces):
-    """spike/loft.txt — and a short list of things that want the builder's eye."""
+    """cad-out/loft.txt — and a short list of things that want the builder's eye."""
     P = model.by_id(pieces)
     exp = dm.d["expected"]
     out = ["loft + screen · what the kernel can answer that a box cannot", ""]

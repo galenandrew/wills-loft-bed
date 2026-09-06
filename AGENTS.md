@@ -1,4 +1,10 @@
-# Agents — loft bed build
+# Agents and skills — loft bed build
+
+The loop itself is a skill: **`/design-change`** (`.claude/skills/design-change/`) —
+which files to open for each kind of edit, the validation gates in order (hook →
+`literals.py` → `python3 -m cad` → rev bump), and which auditor is cheap enough to be
+worth running. Invoke it for any change to `dimensions.yaml`, `drawings/`, `content/`
+or `cad/`; the agents below are its step 6.
 
 Three subagents live in `.claude/agents/`. They exist because this project's failure mode is self-review: the person producing a drawing shares the assumptions that made it wrong, so checking your own work finds nothing.
 
@@ -11,6 +17,11 @@ Since Rev T the mechanical checks live in `verify.py`, not in an agent, and sinc
 | `materials-pricer` | sonnet | Once the materials list is settled. | Current pricing, part numbers for hardware, stock vs special-order. Never changes a depth. |
 
 Save each report to `audits/<rev>-<agent>.md` so the next session starts from findings, not recollection.
+
+`python3 -m cad` is the fourth check and costs no tokens at all: it builds the whole bed
+as real solids from the yaml and answers what boxes cannot — notched volume, bearing
+areas, ray-cast fasteners, true sections. Run it before any of these agents, so they
+audit a model the kernel already agrees with.
 
 ## Scope the auditor — this is where the tokens go
 

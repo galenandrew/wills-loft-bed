@@ -10,12 +10,11 @@ default dimensions.yaml in the repo root, whatever the cwd.
 """
 import os, sys, html, json, math, datetime, glob, hashlib
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-for p in (ROOT, os.path.join(ROOT, "tools")):
-    if p not in sys.path: sys.path.insert(0, p)
+if ROOT not in sys.path: sys.path.insert(0, ROOT)
 import yaml
 from verify import expand, Stair, compute_derived, RAKED, rake_pts, rake_range, rake_z
 from fractions import Fraction
-from svgview import View
+from .svgview import View
 
 def fr(v):
     """53.75 → 53¾ · 15.155 → 15.16 — sixteenths where they are exact, else two decimals."""
@@ -78,7 +77,7 @@ JAMB_Y = [NOOK_Y[0] + JAMB, NOOK_Y[1] - JAMB]
 # them and the cache misses and the kernel runs; touch a label or a caption and it
 # hits, build123d is never imported, and the build stays at 0.06 s.
 #
-# LOFT_KERNEL_NOCACHE=1 forces a real run. `python3 -m cad.spike` never uses the cache.
+# LOFT_KERNEL_NOCACHE=1 forces a real run. `python3 -m cad` never uses the cache.
 CACHE_DIR = os.path.join(ROOT, ".kernel-cache")
 KERNEL_INPUTS = ([YAML, os.path.join(ROOT, "verify.py"), os.path.abspath(__file__)]
                  + sorted(glob.glob(os.path.join(ROOT, "cad", "*.py"))))
@@ -283,4 +282,59 @@ VALS.update({
     "stair_fin": fr(Y_FIN), "landing_fin": fr(m("lnd_ply").y[1]), "riser_t": fr(RISER_T),
     "board_w": fr(STAIR_X[1] - STAIR_X[0]), "board_w_skin": fr(STAIR_X[1] - SKIN_X0),
     "skin_y0": fr(SKIN_Y0), "skin_y1": fr(float(SKIN.y[1])), "step_y": fr(STEP_Y),
+})
+
+# ---------------------------------------------------------------- prose values
+_EIGHTHS = {"1/8": "\u215b", "3/8": "\u215c", "5/8": "\u215d", "7/8": "\u215e"}
+
+
+def frp(v):
+    """fr() for prose: eighths as one glyph (48 3/8 -> 48 3/8 with the glyph), the way
+    the hand-written tables in content/ have always spelled them. Prose only —
+    sheet labels keep fr() so no figure moves."""
+    t = fr(v)
+    for a, b in _EIGHTHS.items():
+        if t.endswith(" " + a): return t[:-len(a) - 1] + b
+        if t == a: return b
+    return t
+
+
+class _Members:
+    """`{m:<id>.<x|y|z><0|1>}` is one framing extent, `{m:<id>.size.<x|y|z>}` a size —
+    so prose can quote the model without a named VALS entry for every number.
+    An unknown id or a malformed path raises, exactly as an unknown placeholder
+    name does: prose must not drift silently."""
+
+    def __format__(self, spec):
+        parts = spec.split(".")
+        if len(parts) >= 3 and parts[-2] == "size":
+            mid, ax = ".".join(parts[:-2]), parts[-1]
+            if mid not in M: raise KeyError(f"{{m:{spec}}}: no member {mid!r}")
+            if ax not in ("x", "y", "z"): raise KeyError(f"{{m:{spec}}}: axis must be x, y or z")
+            return frp(M[mid].size(ax))
+        mid, tok = ".".join(parts[:-1]), parts[-1]
+        if mid not in M: raise KeyError(f"{{m:{spec}}}: no member {mid!r}")
+        if len(tok) != 2 or tok[0] not in "xyz" or tok[1] not in "01":
+            raise KeyError(f"{{m:{spec}}}: want <id>.<x|y|z><0|1> or <id>.size.<x|y|z>")
+        return frp(float(getattr(M[mid], tok[0])[int(tok[1])]))
+
+
+def _oc(prefix, a, b):
+    """centre spacing of two repeated members, for an '@ N o.c.' claim."""
+    return (float(M[f"{prefix}[{b}]"].x[0]) - float(M[f"{prefix}[{a}]"].x[0])) / (b - a)
+
+
+# Derived quantities the structure table states in prose. Each one used to be typed
+# by hand; each is checked against the model on every build now.
+VALS.update({
+    "beam_notch_depth": frp(float(M["beam_tongue"].z[0]) - float(M["beam"].z[0])),
+    "beam_seat_area": f"{M['beam_tongue'].size('x') * M['beam'].size('y'):.2f}",
+    "beam_db": f"{M['beam'].size('z') / M['beam'].size('y'):g}",
+    "joist0_len": frp(M["deck_joist[0]"].size("y") + M["deck_joist_tail"].size("y")),
+    "joist_oc": frp(_oc("deck_joist", 1, 2)),
+    "hw_fin_w": frp(STAIR_X[0] - float(M["hw_sheath_loft_a"].x[0])),
+    "hw_stair_fin": frp(STAIR_X[0] - float(M["hw_bottom_plate_a"].x[0])),
+    "slat_oc": f"{_oc('slat', 0, SCR['slat_count'] - 1):.3g}",
+    "slat_clear2": f"{DER['slat_clear']:.2f}",
+    "m": _Members(),
 })
