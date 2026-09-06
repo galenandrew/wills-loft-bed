@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AM
+rev: AN
 units: inches
 room:
   x: 131
@@ -1172,8 +1172,8 @@ members:
   - 0
   - 1.5
   y:
-  - 49.25
-  - 50.75
+  - 48.375
+  - 49.875
   z:
   - 68.5
   - 94.5
@@ -1182,9 +1182,15 @@ members:
     count: 23
     axis: x
     pitch: 4.7955
-  note: 'y position ASSUMED: ''faces flush with wrap'' → outer face at 50.75. Rev AG: they
-    start at 68.5 on beam_wrap_top, not 63 - 26 long, was 31 1/2 - and all 23 are identical.
-    slat[0] is no longer a special case: the beam runs to x 0 under it.'
+  note: 'Rev AN: CENTRED on the beam, y 48.375 to 49.875. The centre line is 49.125, which is
+    both the LVL''s centre (48.25 to 50) and the finished beam''s (47.5 to 50.75) - the two
+    wrap faces are 3/4 each, so the two readings are the same line. This replaces Rev T''s
+    ''faces flush with wrap'', which had the outer face on 50.75 and was only ever an ASSUMED
+    reading of that phrase. The look changes deliberately: the screen was one plane with the
+    beam face, and is now a grille set 7/8 back from it on both sides, with a shadow line each
+    side. It also puts every slat screw dead centre in the LVL instead of half in the poplar
+    wrap. Rev AG: they start at 68.5 on beam_wrap_top, not 63 - 26 long, was 31 1/2 - and all
+    23 are identical. slat[0] is no longer a special case: the beam runs to x 0 under it.'
 - id: screen_top_plate
   stock: 2x4
   x:

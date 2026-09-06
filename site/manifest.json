@@ -1,5 +1,5 @@
 {
- "rev": "AM",
+ "rev": "AN",
  "yaml": "dimensions.yaml",
  "generated": "2026-09-06",
  "figures": {
@@ -18,7 +18,7 @@
   "d3": {
    "sheet": "3",
    "page": "loft",
-   "sha": "355090501e6b",
+   "sha": "f6b01715011f",
    "elements": 92
   },
   "d4": {
@@ -79,7 +79,7 @@
  "pages": {
   "index": "532199b4c402",
   "stairs": "b3664cf208b5",
-  "loft": "d6b2678f37fb",
-  "appendix": "29846cfcad86"
+  "loft": "d873847d51f5",
+  "appendix": "0c69f40d8fb0"
  }
 }

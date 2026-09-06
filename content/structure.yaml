@@ -53,7 +53,7 @@ rows:
   spec: "one ¾ ply wrap, x 102¾→131 (recessed ¾ behind the face); soffit in TWO ¾ boards (Rev AE) — flat to y {y_meet}, then a raked board butted flush to it on the stringers; head raked"
   check: "Finished {nook_fin_w} × {nook_fin_h} · far end {nook_far_end_height} · wafer LED only (chase {nook_light_chase})"
 - member: "Screen"
-  spec: "23 × 2×2 poplar slats @ 3.30 clear, 2×4 flat top plate"
+  spec: "23 × 2×2 poplar slats @ 3.30 clear, centred on the beam (y 48⅜–49⅞), 2×4 flat top plate"
   check: "Guard for a 58 deck: top plate into ceiling framing · slat base joints to specify"
 - member: "Whole assembly"
   spec: "≈850 lb loaded"
