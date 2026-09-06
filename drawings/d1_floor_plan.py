@@ -27,6 +27,13 @@ def d1():
     fan = m("fan"); cx, cy, r = (fan.x[0] + fan.x[1]) / 2, (fan.y[0] + fan.y[1]) / 2, (fan.x[1] - fan.x[0]) / 2
     v.out.append(f'<circle class="ghostl" cx="{v.X(cx):.1f}" cy="{v.Y(cy):.1f}" r="{r*v.s:.1f}" fill="none"/>')
     win = room["window"]; v.line(-1.2, float(win["y"][0]), -1.2, float(win["y"][1]), "window")
+    # loft ceiling lights (above, recessed into loft_ceiling)
+    lite = d["loft_lighting"]
+    for ly in lite["desk"]["y"]:
+        v.out.append(f'<circle class="light" cx="{v.X(lite["desk"]["x"]):.1f}" cy="{v.Y(ly):.1f}" r="{2*v.s:.1f}"/>')
+    v.out.append(f'<circle class="light" cx="{v.X(lite["walkway"]["x"]):.1f}" cy="{v.Y(lite["walkway"]["y"]):.1f}" r="{3*v.s:.1f}"/>')
+    v.text(lite["desk"]["x"], sum(lite["desk"]["y"]) / 2, f"2 × {lite['desk']['fixture'].split('-inch')[0]}in", "labs", "middle", rot=-90, dy=-9)
+    v.text(lite["walkway"]["x"], lite["walkway"]["y"], f"{lite['walkway']['fixture'].split('-inch')[0]}in", "labs", "middle", dy=-9)
     # labels
     v.text(50, 4, f"8w × {fr(m('ledge_lid').z[1]-DECK)}h BOXED LEDGE — lid runs the full 107, over the stair face at the deck end", "labs", "middle", dy=4)
     v.text(39.5, 27, f"Twin mattress {MAT['size'][0]} × {MAT['size'][1]}", "lab", "middle", dy=4)
@@ -58,4 +65,4 @@ def d1():
     return v.svg("Room floor plan, bed wall at the top, window wall to the left")
 
 FIGURES = [("d1", d1)]
-CAPTION = "Facing the bed wall, the window and desk are on your left; the stairs, dresser and entry door on your right. Door swing never reaches below the 150 line. The room-depth chain closes on 186, but only because the door's 4 to the corner is assumed rather than measured — still a field item."
+CAPTION = f"Facing the bed wall, the window and desk are on your left; the stairs, dresser and entry door on your right. Door swing never reaches below the 150 line. The room-depth chain closes on 186, but only because the door's 4 to the corner is assumed rather than measured — still a field item. <b>NEW:</b> two {d['loft_lighting']['desk']['fixture']}s over the desk and one {d['loft_lighting']['walkway']['fixture']} over the open floor toward the half-wall, recessed into loft_ceiling — true geometric centres, since these are slim canless fixtures that can intersect a joist ({fr(DER['loft_light_chase'])} of joist depth is all the chase there is). Position and switch location are ASSUMED; confirm before wiring."

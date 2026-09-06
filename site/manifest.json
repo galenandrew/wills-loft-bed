@@ -1,13 +1,13 @@
 {
- "rev": "AQ",
+ "rev": "AR",
  "yaml": "dimensions.yaml",
  "generated": "2026-09-06",
  "figures": {
   "d1": {
    "sheet": "1",
    "page": "index",
-   "sha": "961de58fae55",
-   "elements": 102
+   "sha": "bc0dc2ee47eb",
+   "elements": 107
   },
   "d2": {
    "sheet": "2",
@@ -77,9 +77,9 @@
   }
  },
  "pages": {
-  "index": "8730903ccc6c",
+  "index": "dfff9f7cad40",
   "stairs": "b3664cf208b5",
   "loft": "63ba8873fc98",
-  "appendix": "db6844cb21b5"
+  "appendix": "ee9e0b1b7b3f"
  }
 }

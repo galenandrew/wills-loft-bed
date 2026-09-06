@@ -557,6 +557,7 @@ def check_derived(rep, d, members, stair, room):
     oy = nook["opening_y"]
     got["nook_opening"] = [oy[1] - oy[0], float(nook["header_bottom"])]
     got["nook_light_chase"] = M["lnd_joist[0]"].z[0] - float(nook["header_bottom"])
+    got["loft_light_chase"] = M["deck_joist[0]"].z[1] - M["loft_ceiling"].z[1]
     wrap = float(nook.get("wrap", 0)); panel = float(nook["soffit_panel_thickness"])
     got["nook_far_end_height"] = stair.underside(oy[1]) - panel if wrap else float(nook["header_bottom"]) - (oy[1] - float(nook["flat_ceiling_to_y"])) * stair.tan
     got["rim_header_overlap"] = overlap(M["lnd_rim"].z, M["hw_header"].z)

@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AQ
+rev: AR
 units: inches
 room:
   x: 131
@@ -143,6 +143,32 @@ nook:
     3/4 ply lining thickness — Rev U''s poplar jambs are gone; the nook is one ply-wrapped
     tube from x 102.75 to the right wall (x 131). Rev AD: the tube starts 3/4 back from the
     half-wall''s outer face, not on it — the face is its own panel and laps the tube''s end.'
+loft_lighting:
+  desk:
+    fixture: 4-inch slim canless LED
+    count: 2
+    x: 12
+    y:
+    - 12.5
+    - 37.5
+  walkway:
+    fixture: 6-inch slim canless LED
+    count: 1
+    x: 63
+    y: 25
+  note: 'NEW. Three lights recessed into loft_ceiling, same shallow-cavity problem as the
+    nook light: loft_light_chase is only the joist depth (3.5, ceiling top to deck ply).
+    Slim canless fixtures, which can intersect a joist (unlike a can housing), so
+    positions are true geometric centres, not joist-bay centres. The two 4in over the
+    desk share ONE x, 12 - the centre of the desk''s own depth (x 0-24) - and run along y
+    instead, parallel to the window wall and the desk''s long axis: y 12.5 and 37.5, the
+    quarter points of loft_ceiling''s 0-50 run. The 6in walkway light sits at the true
+    midpoint, x 63, between the desk''s inner edge (x 24) and the half-wall''s loft face
+    (x 102, clear_below_deck_x) - which happens to fall on deck_joist[5] (61.5-63); fine
+    for a slim canless fixture, but worth a field check that the specific fixture chosen
+    can actually straddle a joist before cutting the hole. ASSUMED — confirm fixture
+    choice, exact position and switch location with the user before wiring; see
+    open-items.'
 screen:
   slat_count: 23
   slat_size: 1.5
@@ -1646,6 +1672,7 @@ expected:
   - 43
   - 41.5
   nook_light_chase: 3.75
+  loft_light_chase: 3.5
   nook_far_end_height: 14.86
   rim_header_overlap: 7.25
   rim_stringer_bearing: 7.01
