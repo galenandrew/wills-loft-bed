@@ -163,11 +163,18 @@ def main():
     say()
 
     t = time.time()
-    pieces = model.build(riser_scheme="standard")       # Rev W joinery
+    pieces = model.build(riser_scheme="standard", context=True)   # Rev W joinery
     alt = model.build(riser_scheme="as-drawn")           # what Rev V drew, for contrast
     t_build = time.time() - t
     say(f"[build] {len(pieces)} solids in {t_build:.2f}s "
         f"({sum(1 for p in pieces if p.derived)} derived, not yaml members)")
+    for a in list(model.SCOPE) + ["context"]:
+        n = [p for p in pieces if p.assembly == a]
+        say(f"        {a:10s} {len(n):3d} solids  {sum(p.volume for p in n)/1728:7.2f} cu ft")
+    for mid, parts in model.NOTCHED.items():
+        p = model.by_id(pieces)[mid]
+        say(f"        {mid} is ONE notched solid ({p.volume:.3f} cu in, "
+            f"x {p.bbox[0][0]:g}\u2192{p.bbox[0][1]:g}); yaml rows fused: {', '.join(parts)}")
 
     # ---------------------------------------------------------------- criterion 2
     t = time.time()
@@ -234,6 +241,14 @@ def main():
     for c, pen in sorted(real, key=lambda r: -r[0].volume)[:6]:
         say(f"        · {c}")
 
+    # ------------------------------------------------------- the loft (Rev Y port)
+    t = time.time()
+    llines, findings = loft_report(pieces)
+    w("loft.txt", "\n".join(llines) + "\n")
+    say(f"[loft] bearing areas, slat gaps and clearances in {time.time()-t:.2f}s → spike/loft.txt")
+    for f in findings:
+        say(f"       · {f}")
+
     # ---------------------------------------------------------------- criterion 3
     t = time.time()
     flines = ["fastener ray casts · a screw is a segment from a start point along a direction", ""]
@@ -293,18 +308,20 @@ def main():
 
     # ---------------------------------------------------------------- criterion 4
     t = time.time()
-    export.step(pieces, os.path.join(OUT, "model.step"))
-    export.stl(pieces, os.path.join(OUT, "model.stl"))
+    build_only = [p for p in pieces if p.assembly != "context"]
+    export.step(build_only, os.path.join(OUT, "model.step"), name="loft-bed")
+    export.step(pieces, os.path.join(OUT, "room.step"), name="loft-bed-in-room")
+    export.stl(build_only, os.path.join(OUT, "model.stl"))
     t_exp = time.time() - t
     say(f"[export] model.step {os.path.getsize(os.path.join(OUT,'model.step'))/1024:.0f} kB, "
         f"model.stl {os.path.getsize(os.path.join(OUT,'model.stl'))/1024:.0f} kB in {t_exp:.2f}s")
     # no GUI here, so read the STEP back and check it survived the round trip
     from build123d import import_step
     back = import_step(os.path.join(OUT, "model.step"))
-    v_out = sum(p.volume for p in pieces)
+    v_out = sum(p.volume for p in build_only)
     v_in = sum(s.volume for s in back.solids())
     say(f"         re-imported: {len(back.solids())} solids "
-        f"(wrote {sum(len(p.solid.solids()) for p in pieces)}), "
+        f"(wrote {sum(len(p.solid.solids()) for p in build_only)}), "
         f"volume {v_in:.2f} vs {v_out:.2f} cu in, Δ {abs(v_in - v_out):.4f}")
 
     total = time.time() - t_all
@@ -314,6 +331,110 @@ def main():
     w("REPORT.md", "# spike run log\n\nRegenerate with `python3 -m cad.spike` from the repo root.\n"
                    "Full write-up: `audits/V-kernel-spike.md`.\n\n```\n" + "\n".join(log) + "\n```\n")
     return 0
+
+
+# ---------------------------------------------------------------------- loft
+# What the boxes could not answer about the loft: how much face two members that
+# "bear" actually share, and what the real gaps are. Every number here is measured
+# off the solids; the `expected:` values it is compared with come from the yaml.
+BEARINGS = [
+    # (a, b, axis, what the yaml claims)
+    ("beam#2x10-a", "side_ledger", "x", "hanger — UNSPECIFIED, 'side ledger carries the beam's left end'"),
+    ("beam#2x10-b", "side_ledger", "x", "same connection, outer ply"),
+    ("beam#2x10-a", "hw_top_plate_2", "z", "bearing"),
+    ("beam#2x10-b", "hw_top_plate_2", "z", "bearing"),
+    ("deck_rim", "hw_top_plate_2", "z", "bearing"),
+    ("deck_joist[0]", "rear_ledger", "y", "hanger LUS24"),
+    ("deck_joist[0]", "beam#2x10-a", "y", "hanger — UNSPECIFIED; joists and beam share a bottom at 53.75"),
+    ("deck_joist[8]", "beam#2x10-a", "y", "same"),
+    ("rear_ledger", "side_ledger", "x", "not a listed connection"),
+    ("screen_top_plate", "slat[0]", "z", "bearing — UNSPECIFIED"),
+]
+
+
+def loft_report(pieces):
+    """spike/loft.txt — and a short list of things that want the builder's eye."""
+    P = model.by_id(pieces)
+    exp = dm.d["expected"]
+    out = ["loft + screen · what the kernel can answer that a box cannot", ""]
+    found = []
+
+    out.append("BEARING AREA — how much face two members that 'bear' actually share")
+    for a, b, ax, claim in BEARINGS:
+        area = check.bearing_area(P[a].solid, P[b].solid, ax)
+        out.append(f"  {a:16s} on {b:16s} [{ax}]  {area:8.2f} sq in   ({claim})")
+        if area <= 1e-6:
+            found.append(f"{a} → {b}: NO shared face at all ({claim})")
+    out.append("")
+
+    out.append("SLAT SEATING — every slat's footprint on what is under it")
+    seats = ("beam#2x10-a", "beam#2x10-b", "beam_wrap_face", "side_ledger", "hw_top_plate_2")
+    n_slats = int(dm.SCR["slat_count"])
+    for i in range(n_slats):
+        s_ = P[f"slat[{i}]"]
+        got = {b: check.bearing_area(s_.solid, P[b].solid, "z") for b in seats}
+        got = {b: v for b, v in got.items() if v > 1e-6}
+        txt = ", ".join(f"{b} {v:.2f}" for b, v in got.items()) or "NOTHING"
+        out.append(f"  slat[{i:2d}] x {float(M[f'slat[{i}]'].x[0]):7.3f}→{float(M[f'slat[{i}]'].x[1]):7.3f}   {txt}")
+    # a slat is seated if something STRUCTURAL is under it — the beam, or (slat[0], which
+    # is past the beam's end at x 1.5) the side ledger. The 3/4 poplar wrap is finish and
+    # does not count, which is what caught slat[0] before Rev Z lengthened the ledger.
+    SEATS = ("beam#2x10-a", "beam#2x10-b", "side_ledger")
+    structural = {i for i in range(n_slats)
+                  if any(check.bearing_area(P[f"slat[{i}]"].solid, P[b].solid, "z") > 1e-6
+                         for b in SEATS)}
+    missing = [i for i in range(n_slats) if i not in structural]
+    if missing:
+        found.append(f"slat{missing}: nothing structural underneath — the 3/4 poplar wrap alone")
+    full = 1.5 * (float(M["beam"].y[1]) - float(M["slat[0]"].y[0]))      # a slat fully seated
+    short = [i for i in range(n_slats) if i not in missing
+             and sum(check.bearing_area(P[f"slat[{i}]"].solid, P[b].solid, "z")
+                     for b in SEATS) < full - 0.011]
+    if short:
+        found.append(f"slat{short}: partly past the end of what carries it — less than "
+                     f"the {full:.2f} sq in the others get")
+    out.append("")
+
+    out.append("SLAT GAPS — kernel minimum distance, vs expected slat_clear "
+               f"{exp['slat_clear']} and screen.max_clear {dm.SCR['max_clear']}")
+    gaps = []
+    for i in range(1, n_slats):
+        d_, _, _ = check.clearance(P[f"slat[{i-1}]"].solid, P[f"slat[{i}]"].solid)
+        gaps.append(d_)
+    out.append(f"  {len(gaps)} gaps, min {min(gaps):.4f}\" max {max(gaps):.4f}\"")
+    if max(gaps) > float(dm.SCR["max_clear"]):
+        found.append(f"slat gap {max(gaps):.4f}\" exceeds max_clear {dm.SCR['max_clear']}\"")
+    out.append("")
+
+    out.append("CLEARANCES — true minimum distance between solids")
+    fan_d = min(check.clearance(P["fan"].solid, P[f"slat[{i}]"].solid)[0]
+                for i in range(n_slats))
+    rows = [("fan → nearest slat", fan_d, float(exp["fan_clearance"])),
+            ("mattress top → ceiling", dm.CEILING - P["mattress"].bbox[2][1],
+             float(exp["sitting_headroom"])),
+            ("deck top → ceiling", dm.CEILING - P["deck_ply"].bbox[2][1],
+             float(exp["deck_headroom"])),
+            ("floor → deck joist underside", P["deck_joist[0]"].bbox[2][0],
+             float(exp["clear_under_joists"])),
+            ("floor → wrapped beam underside", P["beam_wrap_underside"].bbox[2][0],
+             float(exp["clear_under_beam"]))]
+    for name, got, want in rows:
+        flag = "" if abs(got - want) <= 0.011 else "   ← differs from expected:"
+        out.append(f"  {name:34s} kernel {got:8.4f}   expected {want:8.4f}{flag}")
+        if flag:
+            found.append(f"{name}: kernel {got:.4f}\", yaml expects {want}")
+    # the bay is between the ledge rail and the beam's INNER face; the poplar wrap is
+    # on the far side of the beam and is not what the mattress meets.
+    d_, _, _ = check.clearance(P["mattress"].solid, P["beam#2x10-a"].solid)
+    out.append(f"  {'mattress → beam inner face (bay slack)':38s} kernel {d_:8.4f}")
+    out.append("")
+    out.append("UNSPECIFIED fasteners the kernel cannot ray-cast until they are chosen:")
+    for c in dm.d["connections"]:
+        f_ = str(c.get("fastener") or "")
+        if "UNSPECIFIED" in f_ and any(k in c["a"] + c["b"]
+                                       for k in ("beam", "slat", "screen", "ledger", "deck", "ledge")):
+            out.append(f"  {c['a']} → {c['b']}: {f_}")
+    return out, found
 
 
 def _top_of(panel, stringer, y):

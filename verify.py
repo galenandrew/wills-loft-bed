@@ -114,11 +114,16 @@ def expand(members):
     return out
 
 
-def resolve(pattern, members):
-    """'deck_joist[*]' → all repeats; plain id → [that member]."""
+def resolve(pattern, members, exclude=()):
+    """'deck_joist[*]' → all repeats; plain id → [that member].
+
+    `exclude` drops named ids from a wildcard, for the one repeat that connects
+    somewhere else: slat[0] is past the beam's end and lands on the side ledger,
+    so it is excepted from `slat[*] → beam` and given its own rule."""
     if pattern.endswith("[*]"):
         stem = pattern[:-3]
-        hits = [m for k, m in members.items() if k.startswith(stem + "[")]
+        hits = [m for k, m in members.items()
+                if k.startswith(stem + "[") and k not in exclude]
         if not hits:
             raise KeyError(pattern)
         return hits
@@ -331,7 +336,8 @@ def wall_plane(name, room):
 
 def check_connection(rep, c, members, stair, room, nook):
     typ = c["type"]
-    a_list = resolve(c["a"], members)
+    skip = c.get("except", [])
+    a_list = resolve(c["a"], members, skip)
     b_key = c["b"]
     through = [members[t] for t in c.get("through", [])]
     fast = c.get("fastener", "")
@@ -353,7 +359,7 @@ def check_connection(rep, c, members, stair, room, nook):
                 rep.ok(f"{label}: touches the {b_key} plane  [{fast}]")
             continue
 
-        b_list = resolve(b_key, members)
+        b_list = resolve(b_key, members, skip)
         for b in b_list:
             lab = f"{a.id} → {b.id}"
             if typ == "bearing":
@@ -456,10 +462,11 @@ def check_clashes(rep, members, connections):
     declared = set()
     for c in connections:
         try:
-            for a in resolve(c["a"], members):
+            skip = c.get("except", [])
+            for a in resolve(c["a"], members, skip):
                 if c["b"].startswith(("wall:", "floor", "ceiling")):
                     continue
-                for b in resolve(c["b"], members):
+                for b in resolve(c["b"], members, skip):
                     declared.add(frozenset((a.id, b.id)))
         except KeyError:
             pass
@@ -568,6 +575,7 @@ def check_stair_and_nook(rep, d, members, stair):
     hb = float(nook["header_bottom"])
     t_panel = float(nook["soffit_panel_thickness"])
     y_break = float(nook["flat_ceiling_to_y"])
+    oy = [float(v) for v in nook["opening_y"]]
     wrap = float(nook.get("wrap", 0))
     face = hb - wrap                       # finished flat-ceiling face
     if wrap:
@@ -614,14 +622,14 @@ def check_stair_and_nook(rep, d, members, stair):
     if abs(y_meet - y_break) > 0.1:
         rep.warn(f"flat/rake break: the stringer-underside soffit reaches the {fr(face)} ceiling at y={fr(y_meet)}, but nook.flat_ceiling_to_y says {fr(y_break)}")
     else:
-        rep.ok(f"flat ceiling {fr(face)} to y={fr(y_meet)}, then the panel rides the stringer undersides to {fr(rake(47))} at y=47")
+        rep.ok(f"flat ceiling {fr(face)} to y={fr(y_meet)}, then the panel rides the stringer undersides to {fr(rake(oy[1]))} at y={fr(oy[1])}")
     if stair.top_run > 0 and stair.y_top > y_meet + TOL:
         rep.fail(f"stringers stop at y={fr(stair.y_top)} but the raked panel needs them from y={fr(y_meet)}")
 
     # every landing member must clear the soffit along its whole y extent
     for m in members.values():
         if m.role == "existing" or m.kind in RAKED or m.x[0] < 107 - TOL: continue
-        if overlap(m.y, [3, 47]) <= TOL or m.z[0] > face + 8: continue
+        if overlap(m.y, oy) <= TOL or m.z[0] > face + 8: continue
         worst = min(m.z[0] - (soffit(y) + (t_panel if y <= y_meet else 0)) for y in (m.y[0], m.y[1]))
         (rep.ok if worst > -TOL else rep.fail)(f"{m.id} bottom {fr(m.z[0])} clears the soffit by {fr(worst)} over y {fr(m.y[0])}→{fr(m.y[1])}")
 

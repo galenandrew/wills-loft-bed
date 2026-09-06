@@ -203,6 +203,7 @@ def half_wall_yz(v, cut=True):
     for k in ("hw_bottom_plate_a", "hw_bottom_plate_b", "hw_king_a", "hw_king_b",
               "hw_top_plate_1", "hw_top_plate_2"): R(v, m(k), "y", "z", "lum")
     for k in ("hw_trimmer_a", "hw_trimmer_b"): R(v, m(k), "y", "z", "lum2")
+    for k in ("hw_jamb_ply_a", "hw_jamb_ply_b"): R(v, m(k), "y", "z", "sheet")
     R(v, m("hw_header"), "y", "z", "lum", HATCH if cut else "")
     R(v, m("hw_rake_nailer"), "y", "z", "lum2")
     # Rev X: the opening is ply-wrapped, and its head follows the rake. The wrap is

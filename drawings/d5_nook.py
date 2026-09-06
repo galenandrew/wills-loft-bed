@@ -15,7 +15,7 @@ def d5a():
     for k in ("hw_sheath_loft_a", "hw_sheath_loft_head", "hw_sheath_loft_b"): R(v, m(k), "y", "z", "sheet")
     R(v, m("hw_end_cap"), "y", "z", "sheet")
     for k in ("hw_header", "hw_king_a", "hw_king_b", "hw_trimmer_a", "hw_trimmer_b",
-              "hw_rake_nailer"): R(v, m(k), "y", "z", "dashfill")
+              "hw_jamb_ply_a", "hw_jamb_ply_b", "hw_rake_nailer"): R(v, m(k), "y", "z", "dashfill")
     # the ply wrap — real members now, so the reveal is drawn, not typed
     for k in ("nk_wrap_bedwall", "nk_wrap_shortwall", "nk_soffit_panel"): R(v, m(k), "y", "z", "fin")
     for k in ("lnd_side_member", "lnd_rim"): R(v, m(k), "y", "z", "dashfill")
@@ -58,7 +58,7 @@ def d5b():
     v.text(119, 10.5, f"flat {fr(CEIL)}", "lab", "middle", dy=4); v.text(119, 18.5, "wafer LED", "labs", "middle", dy=4)
     v.text(119, 33, "raked from here", "labs", "middle", dy=4)
     v.text(104.4, 30, "rake nailer in the wall", "labs", "middle", rot=-90)
-    v.text(118, 4.4, "2×4-flat nailer wall, 2×2 sill", "labs", "middle", dy=4)
+    v.text(118, 4.4, "2×4 studs on edge, 2×4 flat plate", "labs", "middle", dy=4)
     v.text(117, 44.6, "struts to the stringers", "labs", "middle", dy=4)
     v.text(107.75, 40, "stringer A", "labs", "middle", rot=-90); v.text(119, 40, "B", "labs", "middle"); v.text(130.25, 40, "C", "labs", "middle", rot=-90)
     v.dim_v(134, JAMB_Y[0], Y_MEET, f"{fr(Y_MEET-JAMB_Y[0])}", left=False); v.dim_v(134, Y_MEET, JAMB_Y[1], f"{fr(JAMB_Y[1]-Y_MEET)}", left=False)
@@ -66,4 +66,4 @@ def d5b():
     return v.svg("Reflected ceiling plan of the nook, bed wall at the top")
 
 FIGURES = [("d5a", d5a), ("d5b", d5b)]
-CAPTION = f"Rev X. The nook is one ¾-plywood-wrapped tube running from the half-wall's outer face at x {fr(m('nk_soffit_panel').x[0])} straight through to the right wall — no jambs, no separate head trim. Its ceiling is flat at {fr(CEIL)} to y = {fr(Y_MEET)}, where the stringer undersides come down to that line, then rides them to {fr(DER['nook_far_end_height'])} at the far end; the framing plane above it is {fr(CEIL+PANEL)}, the bottom of both the nook header and the landing ledgers, so the panel screws straight to them with nothing to fur. Inside the wall the raked run is carried by <code>hw_rake_nailer</code>, a 2×4 laid flat with its underside on the stringer line, bevelled where it dies into the header. The two sides are nailer walls: 2×4 studs on the flat into 2×2 plates, in line with the trimmers, so the reveal and the nook faces are one plane. No bottom plate crosses the opening — the floor runs through. Power for the wafer light must be in the half-wall before it is sheathed."
+CAPTION = f"Rev X. The nook is one ¾-plywood-wrapped tube running from the half-wall's outer face at x {fr(m('nk_soffit_panel').x[0])} straight through to the right wall — no jambs, no separate head trim. Its ceiling is flat at {fr(CEIL)} to y = {fr(Y_MEET)}, where the stringer undersides come down to that line, then rides them to {fr(DER['nook_far_end_height'])} at the far end; the framing plane above it is {fr(CEIL+PANEL)}, the bottom of both the nook header and the landing ledgers, so the panel screws straight to them with nothing to fur. Inside the wall the raked run is carried by <code>hw_rake_nailer</code>, a 2×4 laid flat with its underside on the stringer line, bevelled where it dies into the header. The two sides are ordinary 2×4 nailer walls — studs on edge, 1½ × 3½, on a 2×4 laid flat and run right up to the bed wall. They are a full 3½ deep because Rev Z added a ½ ply flitch inside each jamb pack (king + ½ ply + trimmer = 3½, the same lay-up as the header), so the trimmer faces and the nook stud faces are one plane and the ¾ wrap crosses the reveal without a step. On the short wall the three struts land at x 107, 118¼ and 129½ — directly under stringers A, B and C. No bottom plate crosses the opening — the floor runs through. Power for the wafer light must be in the half-wall before it is sheathed."

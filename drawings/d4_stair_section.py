@@ -17,7 +17,8 @@ def d4():
     # leaves the whole nk_ family out.
     kernel_cut(v, "x", CUT_X, skip=("nk_*",))
     # half-wall framing, in front of the section cut from this angle — shown as a transparent outline so it doesn't hide the stair
-    for k in ("hw_sheath_stair_a", "hw_sheath_stair_head", "hw_sheath_stair_b", "hw_header", "hw_trimmer_a", "hw_trimmer_b", "hw_king_a", "hw_king_b"):
+    for k in ("hw_sheath_stair_a", "hw_sheath_stair_head", "hw_sheath_stair_b", "hw_header", "hw_trimmer_a", "hw_trimmer_b",
+              "hw_jamb_ply_a", "hw_jamb_ply_b", "hw_king_a", "hw_king_b"):
         R(v, m(k), "y", "z", "dashfill")
     # labels
     v.text(-1, 62, "bed wall", "labw", "middle", rot=-90)

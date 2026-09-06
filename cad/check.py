@@ -14,7 +14,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from itertools import combinations
 
-from build123d import Axis, Vector
+from build123d import Axis, Location, Vector
 from OCP.BRepExtrema import BRepExtrema_DistShapeShape
 
 TOL = 1e-6
@@ -76,6 +76,33 @@ def clearance(a_solid, b_solid):
     d.Perform()
     p1, p2 = d.PointOnShape1(1), d.PointOnShape2(1)
     return d.Value(), (p1.X(), p1.Y(), p1.Z()), (p2.X(), p2.Y(), p2.Z())
+
+
+# --------------------------------------------------------------- bearing area
+AX = {"x": (1, 0, 0), "y": (0, 1, 0), "z": (0, 0, 1)}
+
+
+def bearing_area(a_solid, b_solid, axis, eps=0.01):
+    """How much face two touching solids actually share, in square inches.
+
+    Touching solids boolean to nothing, so this nudges `b` into `a` by `eps` along
+    `axis` and divides the sliver's volume by `eps`. Both directions are tried and
+    the larger taken, so the caller does not have to know which side b sits on.
+    Returns 0.0 when the two only meet on an edge or not at all."""
+    d = Vector(AX[axis])
+    best = 0.0
+    for sign in (1, -1):
+        try:
+            common = a_solid & (Location(d * (eps * sign)) * b_solid)
+        except Exception:
+            continue
+        if common is None:
+            continue
+        try:
+            best = max(best, common.volume / eps)
+        except Exception:
+            pass
+    return best
 
 
 # ------------------------------------------------------------------ ray casts

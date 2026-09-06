@@ -40,7 +40,7 @@
 #   · OPEN: beam left end on the side ledger (1" of 3" backed) and slat 0 — parked
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: Y
+rev: AB
 units: inches
 room:
   x: 131
@@ -118,8 +118,8 @@ stair:
   landing_deck_thickness: 0.75
 nook:
   opening_y:
-  - 3
-  - 47
+  - 3.5
+  - 46.5
   header_bottom: 41.5
   flat_ceiling_to_y: 18.26
   soffit_panel_thickness: 0.75
@@ -162,12 +162,17 @@ members:
   - 1.5
   y:
   - 0
-  - 48
+  - 50
   z:
   - 53.75
   - 63
   role: structural
-  note: '''48 inches out — carries the beam''s left end'' (Drawing 6, structure table).'
+  note: 'Rev Z: 50 out, not Rev T''s 48. At 48 it backed only 1 of the beam''s 3 width and
+    left the outer 2x10 hanging on nothing (the parked beam-left-end FAIL). 50 is flush with
+    the beam''s outer framing face; the open item''s ''50 3/4'' would have run the ledger into
+    beam_wrap_face (y 50 to 50.75), which already spans the full x 0 to 107 and wraps the
+    ledger''s end. Also gives slat[0] its seat: y 49.25 to 50, the same 1.125 sq in every
+    other slat gets on the beam.'
 - id: deck_joist
   stock: 2x4
   x:
@@ -295,11 +300,29 @@ members:
   - 58
   - 65.25
   role: finish
-  note: Starts at x 1.5 — the side ledger occupies x 0→1.5 up to 63. Rips to 7¼ (Rev J).
+  note: 'Rips to 7¼ (Rev J). ONE BOARD, cut 107 long, notched at the window-wall end —
+    this row is its full-depth body and ledge_front_rail_tongue is the 2¼ that survives
+    the notch. Cut list: 1 off 107, notch 1½ (x) × 5 (z) out of the bottom left corner.'
+- id: ledge_front_rail_tongue
+  stock: poplar-3/4
+  x:
+  - 0
+  - 1.5
+  y:
+  - 7.25
+  - 8
+  z:
+  - 63
+  - 65.25
+  role: finish
+  note: 'Rev AB: not a separate piece — the last 1½ of ledge_front_rail, above the notch.
+    Rev J stopped the rail at x 1.5 because the side ledger (x 0→1.5, top 63) is in the
+    way below 63, which left a 1½ gap between the ledge and the window wall. The rail now
+    runs to the wall and is notched over the ledger; the tongue lands on the ledger top.'
 - id: ledge_lid
   stock: poplar-3/4
   x:
-  - 1.5
+  - 0
   - 106.25
   y:
   - 0
@@ -308,7 +331,9 @@ members:
   - 65.25
   - 66
   role: finish
-  note: Hinged lids optional (Rev F); modelled as one continuous cap.
+  note: 'Hinged lids optional (Rev F); modelled as one continuous cap. Rev AB: runs to the
+    window wall at x 0 — it is above the side ledger''s top (63), so no notch, it simply
+    caps the tongue. Stops at 106.25 where ledge_end_cap starts.'
 - id: ledge_end_cap
   stock: poplar-3/4
   x:
@@ -328,26 +353,27 @@ members:
   - 106.25
   y:
   - 0
-  - 3
+  - 3.5
   z:
   - 0
   - 1.5
   role: structural
-  note: 'Rev X: the plate no longer runs the full 50. The opening (y 3→47) is open to the
-    floor so you can walk into the nook. This piece carries hw_king_a and hw_trimmer_a.'
+  note: 'Rev Z: 3.5 long, not 3 — the jamb pack it carries gained a 1/2 ply flitch. The plate
+    still does not run the full 50: the opening (y 3.5→46.5) is open to the floor so you can
+    walk into the nook. Carries hw_king_a, hw_jamb_ply_a and hw_trimmer_a.'
 - id: hw_bottom_plate_b
   stock: 2x4
   x:
   - 102.75
   - 106.25
   y:
-  - 47
+  - 46.5
   - 50
   z:
   - 0
   - 1.5
   role: structural
-  note: 'Rev X: carries hw_trimmer_b and hw_king_b.'
+  note: 'Rev Z: 3.5 long, not 3. Carries hw_trimmer_b, hw_jamb_ply_b and hw_king_b.'
 - id: hw_king_a
   stock: 2x4
   x:
@@ -360,30 +386,65 @@ members:
   - 1.5
   - 50.75
   role: structural
+- id: hw_jamb_ply_a
+  stock: ply-1/2
+  x:
+  - 102.75
+  - 106.25
+  y:
+  - 1.5
+  - 2
+  z:
+  - 1.5
+  - 41.5
+  role: structural
+  note: 'Rev Z: the flitch that makes the jamb pack a full 3.5 deep — 1.5 king + 1/2 ply + 1.5
+    trimmer, the same lay-up as header-2x10-sandwich. It exists so the nook side walls can be
+    ordinary 2x4 studs on edge with their faces flush to the trimmer faces; at the old 3 pack
+    a 3.5 stud stood 1/2 proud of the reveal and broke the one-plane wrap. Glued and nailed
+    inside the pack, so it is captured and the trimmer — not the ply — gives the wrap its
+    nailing face. Stops at the header bottom: above 41.5 the header fills this band.'
 - id: hw_trimmer_a
   stock: 2x4
   x:
   - 102.75
   - 106.25
   y:
-  - 1.5
-  - 3
+  - 2
+  - 3.5
   z:
   - 1.5
   - 41.5
   role: structural
+  note: 'Rev Z: pushed out 1/2 by the flitch behind it. Its face at 3.5 is the opening reveal
+    and the plane the nook bed-wall studs land on.'
 - id: hw_trimmer_b
   stock: 2x4
   x:
   - 102.75
   - 106.25
   y:
-  - 47
+  - 46.5
+  - 48
+  z:
+  - 1.5
+  - 41.5
+  role: structural
+  note: 'Rev Z: pushed in 1/2 by the flitch behind it. Its face at 46.5 is the reveal on the
+    far side, and hw_rake_nailer still dies into it.'
+- id: hw_jamb_ply_b
+  stock: ply-1/2
+  x:
+  - 102.75
+  - 106.25
+  y:
+  - 48
   - 48.5
   z:
   - 1.5
   - 41.5
   role: structural
+  note: 'Rev Z: the far jamb''s flitch — see hw_jamb_ply_a.'
 - id: hw_king_b
   stock: 2x4
   x:
@@ -457,7 +518,7 @@ members:
   - 102.75
   y:
   - 0
-  - 3
+  - 3.5
   z:
   - 0
   - 53.75
@@ -468,10 +529,10 @@ members:
   - 102
   - 102.75
   y:
-  - 3
-  - 47
+  - 3.5
+  - 46.5
   z:
-  - 15.16
+  - 15.61
   - 53.75
   role: sheet
   kind: raked
@@ -488,7 +549,7 @@ members:
   - 102
   - 102.75
   y:
-  - 47
+  - 46.5
   - 50
   z:
   - 0
@@ -501,7 +562,7 @@ members:
   - 107
   y:
   - 0
-  - 3
+  - 3.5
   z:
   - 0
   - 58
@@ -512,10 +573,10 @@ members:
   - 106.25
   - 107
   y:
-  - 3
-  - 47
+  - 3.5
+  - 46.5
   z:
-  - 15.16
+  - 15.61
   - 58
   role: sheet
   kind: raked
@@ -532,7 +593,7 @@ members:
   - 106.25
   - 107
   y:
-  - 47
+  - 46.5
   - 50
   z:
   - 0
@@ -545,9 +606,9 @@ members:
   - 106.25
   y:
   - 18.26
-  - 47
+  - 46.5
   z:
-  - 15.16
+  - 15.61
   - 41.5
   role: structural
   kind: raked
@@ -701,28 +762,29 @@ members:
     stringers are notched 1 1/2 x 3 1/2 to hook over it (they are 7.54 deep there, so 6.04 remains — well over the 3 1/2 throat minimum);
     riser 1 sits in front of it at y 72→72.75 and clears it. Anchorage to the floor still to specify.'
 - id: nk_bedwall_plate
-  stock: 2x2
+  stock: 2x4
   x:
   - 107
   - 131
   y:
-  - 1.5
-  - 3
+  - 0
+  - 3.5
   z:
   - 0
   - 1.5
   role: structural
-  note: 'Rev X: runs parallel to the bed wall instead of the deleted half-wall plate, and is
-    the sill for the nook''s bed-wall side. Stops at x 107 because hw_sheath_stair_a runs to
-    the floor at x 106.25→107; the two plates cannot be one stick.'
+  note: 'Rev Z: a plain 2x4 laid flat — 3.5 wide, 1.5 tall — flush to the bed wall at y 0. Was
+    a 2x2 set back to y 1.5→3, floating clear of the actual wall with the studs lying flat on
+    it. The full 3.5 only fits because hw_jamb_ply_a takes the jamb pack from 3 to 3.5; it
+    ends on the same plane (3.5) as hw_trimmer_a''s face.'
 - id: nk_bedwall_stud
   stock: 2x4
   x:
   - 107
-  - 110.5
+  - 108.5
   y:
-  - 1.5
-  - 3
+  - 0
+  - 3.5
   z:
   - 1.5
   - 40
@@ -730,101 +792,114 @@ members:
   repeat:
     count: 3
     axis: x
-    pitch: 10.25
-  note: 'Rev X: non-bearing nailer wall in line with hw_trimmer_a, so the nook''s bed-wall
-    face is flush with the opening reveal. End studs land flush at x 107 and x 131.'
+    pitch: 11.25
+  note: 'Rev Z: standard stud orientation — 1.5 wide along the wall, 3.5 deep, standing on
+    edge on the flat plate. Was laid flat, 3.5 along the wall and only 1.5 deep. Pitch changed
+    from 10.25 to 11.25 so the three still land flush at x 107 and x 131 on the narrower 1.5
+    face. Non-bearing nailer wall; its face at 3.5 is the reveal plane, in line with
+    hw_trimmer_a.'
 - id: nk_bedwall_cap
-  stock: 2x2
+  stock: 2x4
   x:
   - 107
   - 131
   y:
-  - 1.5
-  - 3
+  - 0
+  - 3.5
   z:
   - 40
   - 41.5
   role: structural
-  note: 'Rev X: flat top plate; its top is the landing-ledger plane, so lnd_side_member lands
-    on it over x 107→108.5 and the soffit panel butts its face.'
+  note: 'Rev Z: a plain 2x4 flat, 3.5 to match the studs. Its top is the landing-ledger plane,
+    so lnd_side_member lands on it over x 107→108.5 and the soffit panel butts its face. Now
+    that the wall is flush to the bed wall it also runs under lnd_ledger_bedwall over the
+    ledger''s full 1.5 depth. BUILD ORDER: lag the ledger to the bed-wall studs first, then
+    build this wall up to it and scribe the cap — the cap must not lift the ledger.'
 - id: nk_shortwall_plate
-  stock: 2x2
+  stock: 2x4
   x:
   - 107
   - 131
   y:
-  - 47
-  - 48.5
+  - 46.5
+  - 50
   z:
   - 0
   - 1.5
   role: structural
-  note: 'Rev X: sill for the nook''s short (far) wall, in line with hw_trimmer_b.'
+  note: 'Rev Z: a plain 2x4 laid flat, 3.5 deep, up from 1.5 (a 2x2). Its face at 46.5 is the
+    reveal plane, in line with hw_trimmer_b, and it grows away from the nook toward y 50 so
+    nothing on the walking side moves. Sill for the nook''s short (far) wall.'
 - id: nk_shortwall_strut
   stock: 2x4
   x:
   - 107
-  - 110.5
+  - 108.5
   y:
-  - 47
-  - 48.5
+  - 46.5
+  - 50
   z:
   - 1.5
-  - 15.16
+  - 15.61
   role: structural
+  repeat:
+    count: 3
+    axis: x
+    pitch: 11.25
+  note: 'Rev Z: standing on edge, 1.5 wide x 3.5 deep, was laid flat 3.5 x 1.5. At pitch 11.25
+    the three struts land at x 107, 118.25 and 129.5 — exactly under stringers A, B and C — so
+    each is a post under its stringer rather than backing floating in a bay, and each can be
+    toe-screwed up into the stringer it meets. Tops still cut to the rake; z is the bbox.'
   kind: raked
   rake:
     profile: stringer_underside
     side: below
-  repeat:
-    count: 3
-    axis: x
-    pitch: 10.25
-  note: 'Rev X: struts from the sill to the stringer undersides, tops cut to the rake, so the
-    short wall''s ply has backing. z is the bbox; the true top comes from `rake`.'
 - id: nk_wrap_bedwall
   stock: ply-3/4
   x:
   - 102
   - 131
   y:
-  - 3
-  - 3.75
+  - 3.5
+  - 4.25
   z:
   - 0
   - 41.5
   role: sheet
   note: 'Rev X: one sheet from the half-wall''s outer face through the reveal and on into the
-    nook. Runs to the framing plane (41.5); the soffit panel butts its face.'
+    nook. Runs to the framing plane (41.5); the soffit panel butts its face. Rev Z: out 1/2
+    with the reveal — it lands on hw_trimmer_a''s face over the half-wall and on the nook
+    studs'' faces beyond, and those are one plane again because of the jamb flitch.'
 - id: nk_wrap_shortwall
   stock: ply-3/4
   x:
   - 102
   - 131
   y:
-  - 46.25
-  - 47
+  - 45.75
+  - 46.5
   z:
   - 0
-  - 15.84
+  - 16.3
   role: sheet
   kind: raked
   rake:
     profile: stringer_underside
     side: below
   note: 'Rev X: the same sheet on the short wall; its top edge is raked and tucks under the
-    stringers. z is the bbox.'
+    stringers. z is the bbox. Rev Z: in 1/2 with the reveal, so the bbox top rises from 15.84
+    to 16.3 — it now meets the stringer undersides half an inch further up the rake.'
 - id: nk_soffit_panel
   stock: ply-3/4
   x:
   - 102
   - 131
   y:
-  - 3.75
-  - 46.25
+  - 4.25
+  - 45.75
   role: sheet
   z:
-  - 15.09
+  - 15.55
   - 41.5
   kind: raked
   rake:
@@ -832,9 +907,10 @@ members:
     side: above
     band: 0.75
   note: 'Rev X: the nook ceiling, promoted from a derived kernel-only piece to a real member.
-    Flat at 40.75 under the landing to y 18.26, then on the stringer undersides to 14.41 at
-    the far end. Runs the full x 102→131 — through the half-wall on hw_rake_nailer, then on
-    the stringers — so the rake reads continuously from the outer face.'
+    Flat at 40.75 under the landing to y 18.26, then on the stringer undersides. Runs the full
+    x 102→131 — through the half-wall on hw_rake_nailer, then on the stringers — so the rake
+    reads continuously from the outer face. Rev Z: 1 shorter in y as the reveal closed in from
+    both sides; its far edge is now 14.86 above the floor, not 14.41.'
 - id: slat
   stock: 2x2
   x:
@@ -967,6 +1043,30 @@ connections:
 - a: hw_header
   b: hw_trimmer_b
   type: bearing
+- a: hw_jamb_ply_a
+  b: hw_bottom_plate_a
+  type: bearing
+  fastener: bears with the trimmer; held by the pack nailing below
+- a: hw_jamb_ply_b
+  b: hw_bottom_plate_b
+  type: bearing
+  fastener: bears with the trimmer; held by the pack nailing below
+- a: hw_trimmer_a
+  b: hw_king_a
+  type: face-screw
+  face: y
+  through:
+  - hw_jamb_ply_a
+  fastener: 16d nails in two rows at 12 in o.c. + construction adhesive on both faces of the
+    ply — this is what makes the pack act as one 3.5 post
+- a: hw_trimmer_b
+  b: hw_king_b
+  type: face-screw
+  face: y
+  through:
+  - hw_jamb_ply_b
+  fastener: 16d nails in two rows at 12 in o.c. + construction adhesive on both faces of the
+    ply — this is what makes the pack act as one 3.5 post
 - a: hw_top_plate_1
   b: hw_header
   type: bearing
@@ -1000,6 +1100,19 @@ connections:
   b: nk_bedwall_stud[*]
   type: bearing
   fastener: 2 x 3 in screws through the cap into each stud
+- a: lnd_ledger_bedwall
+  b: nk_bedwall_cap
+  type: bearing
+  fastener: 3 in screws up through the cap into the ledger at each stud — secondary only, the
+    ledger's own load path is its lags into the bed-wall studs
+- a: lnd_ledger_rightwall
+  b: nk_bedwall_cap
+  type: bearing
+  fastener: 3 in screws up through the cap, at the cap's right-hand end
+- a: lnd_side_member
+  b: nk_bedwall_cap
+  type: bearing
+  fastener: 2 x 3 in screws up through the cap into the side member
 - a: nk_shortwall_strut[*]
   b: nk_shortwall_plate
   type: bearing
@@ -1036,7 +1149,20 @@ connections:
 - a: slat[*]
   b: beam
   type: bearing
+  except:
+  - slat[0]
   fastener: UNSPECIFIED
+- a: ledge_front_rail_tongue
+  b: side_ledger
+  type: bearing
+  fastener: 2 x #8 x 2 screws down through the tongue into the ledger, plugged
+  note: 'Rev AB: the notched end of the front rail lands on the side ledger''s top at 63.'
+- a: slat[0]
+  b: side_ledger
+  type: bearing
+  fastener: UNSPECIFIED
+  note: 'Rev Z: slat[0] (x 0 to 1.5) is past the beam''s end at x 1.5, so it lands on the
+    side ledger, which now runs to y 50. Same 1.5 x 0.75 footprint the others get on the beam.'
 - a: screen_top_plate
   b: slat[*]
   type: bearing
@@ -1134,10 +1260,10 @@ expected:
   landing_headroom: 46.5
   deck_headroom: 38
   nook_opening:
-  - 44
+  - 43
   - 41.5
   nook_light_chase: 3.75
-  nook_far_end_height: 14.41
+  nook_far_end_height: 14.86
   rim_header_overlap: 7.25
   rim_stringer_bearing: 7.01
   slat_clear: 3.3

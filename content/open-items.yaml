@@ -1,11 +1,9 @@
 # Open items (site/open-items.html). tag: PARKED · FIELD · SPECIFY · SEQUENCE · VERIFY · LOCKED. text is HTML.
 items:
-- tag: PARKED
-  text: "<b>Beam left end.</b> Side ledger stops at 48; beam is 47→50 — 1 of 3 backed. Fix: ledger to 50¾ + LUS210-2/HUS210-2 (also gives slat 0 a seat). Builder's call."
 - tag: FIELD
   text: "<b>Studs</b> in the bed wall, window wall and right wall — every ledger and stringer C depend on them. <b>Ceiling joist</b> nearest 50¾ out. <b>Mattress</b> thickness (6 assumed). <b>Room depth</b> — ½ unplaced in the chain. <b>Floor joists</b> under the half-wall plate and the kicker."
 - tag: SPECIFY
-  text: "Beam lamination · deck-ply front-edge blocking at the beam · header-to-king straps (member) · kicker anchorage · half-wall bottom-plate anchorage (two pieces now, y 0→3 and 47→50) · nook nailer-wall sill anchorage · slat-to-beam and slat-to-plate joints · screen top-plate position (47¼→50¾ vs 46½→50 + band)."
+  text: "Beam lamination · deck-ply front-edge blocking at the beam · header-to-king straps (member) · kicker anchorage · half-wall bottom-plate anchorage (two pieces now, y 0→3½ and 46½→50) · nook nailer-wall sill anchorage · beam-to-side-ledger hanger (concealed flange — the ledger is flush at 50, so an outer flange has nothing behind it, as with the landing rim's HUC28) · slat-to-beam and slat-to-plate joints · screen top-plate position (47¼→50¾ vs 46½→50 + band)."
 - tag: SEQUENCE
   text: "Nook power into the half-wall before sheathing; switch on the half-wall face, desk side. Stringer B's screws go in before the landing deck. Risers go on before the treads — each tread butts the face of the riser behind it."
 - tag: VERIFY

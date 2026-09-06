@@ -70,18 +70,26 @@ def prism_yz(pts, x0, x1):
 
 
 # ------------------------------------------------------------------ the scope
-# Three components, as the builder splits them (2026-09-05). The landing is part of
-# the STAIR — it is the top step — not a thing of its own. The nook's *framing* is
-# the half-wall's rough opening and stays with the half-wall; what belongs to the
-# nook is its lining and the two nailer walls that carry it.
-# The platform, screen and room fixtures are still out of scope.
+# Five assemblies, as the builder splits them. The landing is part of the STAIR — it
+# is the top step — not a thing of its own. The nook's *framing* is the half-wall's
+# rough opening and stays with the half-wall; what belongs to the nook is its lining
+# and the two nailer walls that carry it. `loft` is the deck the bed sits on plus the
+# beam and the boxed ledge; `screen` is the guard above the beam.
 SCOPE = {
+    "loft":      ["rear_ledger", "side_ledger",
+                  *[f"ledger_blocking[{i}]" for i in range(8)], "ledger_blocking_last",
+                  *[f"deck_joist[{i}]" for i in range(9)], "deck_rim",
+                  "beam", "deck_ply",
+                  "beam_wrap_face", "beam_wrap_underside",
+                  "ledge_front_rail", "ledge_lid", "ledge_end_cap"],
+    "screen":    ["screen_top_plate", *[f"slat[{i}]" for i in range(23)]],
     "stair":     ["stringer_a", "stringer_b", "stringer_c", "kicker",
                   "lnd_ledger_bedwall", "lnd_ledger_rightwall", "lnd_side_member",
                   "lnd_joist[0]", "lnd_joist[1]", "lnd_rim",
                   "lnd_blocking[0]", "lnd_blocking[1]", "lnd_ply"],
     "half_wall": ["hw_bottom_plate_a", "hw_bottom_plate_b",
                   "hw_king_a", "hw_king_b", "hw_trimmer_a", "hw_trimmer_b",
+                  "hw_jamb_ply_a", "hw_jamb_ply_b",
                   "hw_header", "hw_top_plate_1", "hw_top_plate_2", "hw_rake_nailer",
                   "hw_sheath_loft_a", "hw_sheath_loft_head", "hw_sheath_loft_b",
                   "hw_sheath_stair_a", "hw_sheath_stair_head", "hw_sheath_stair_b",
@@ -93,6 +101,12 @@ SCOPE = {
                   "nk_wrap_bedwall", "nk_wrap_shortwall", "nk_soffit_panel"],
 }
 
+# Context, not the build: the mattress and the three things already in the room. They
+# are what the clearance questions are asked *against* (headroom over the mattress, the
+# fan over the screen), so the kernel needs them — but they are not material to cut and
+# a section sheet must never hatch a dresser. build() leaves them out unless asked.
+CONTEXT = ["desk", "dresser", "fan"]
+
 # A "2x10 sandwich" header is two 2x10s over a 1/2 ply flitch — 1.5 + 0.5 + 1.5 = 3.5,
 # which is what the lumber table gives. The yaml carries it as one 3.5" box; the
 # kernel splits it so a fastener ray can report the depth reached in each ply.
@@ -102,10 +116,34 @@ LAMINATIONS = {
     "2x10x2": [("2x10-a", 1.5), ("2x10-b", 1.5)],
 }
 
+# The inverse of LAMINATIONS: yaml rows that are ONE piece on the bench. The boxed
+# ledge's front rail is a single 107 board notched 1 1/2 (x) x 5 (z) over the side
+# ledger at the window wall; dimensions.yaml has no notch primitive, so it carries the
+# board as the full-depth body plus the tongue left above the notch. Fusing the two
+# boxes gives the L-shaped solid the board actually is — one solid, one volume, and a
+# clash or ray cast sees the notch instead of a square end 1 1/2 short of the wall.
+NOTCHED = {
+    "ledge_front_rail": ["ledge_front_rail_tongue"],
+}
+NOTCH_PARTS = {p for parts in NOTCHED.values() for p in parts}
+
+
+def notched_solid(mid):
+    """One member id plus the yaml rows that are the rest of the same piece, fused."""
+    solid = box(M[mid].x, M[mid].y, M[mid].z)
+    for part in NOTCHED[mid]:
+        p = M[part]
+        solid = solid + box(p.x, p.y, p.z)
+    return solid
+
 
 def _member_pieces(mid, assembly, split_laminations=True):
     m = M[mid]
     stock = m.stock
+    if mid in NOTCHED:
+        rows = ", ".join([mid] + NOTCHED[mid])
+        return [Piece(mid, assembly, notched_solid(mid), stock,
+                      note=f"one notched board; the yaml carries it as {rows}")]
     lam = LAMINATIONS.get(stock) if split_laminations else None
     if not lam:
         return [Piece(mid, assembly, box(m.x, m.y, m.z), stock)]
@@ -208,9 +246,32 @@ def riser_pieces(scheme="standard", x0=None, x1=None):
     return out
 
 
+# --------------------------------------------------------------------- context
+def mattress_piece():
+    """The mattress: not a member, and not in the room either until it is bought.
+    Placed as Drawing 1 draws it — 2 in off the window wall, against the ledge at
+    y = 8, sitting on the finished deck. `mattress.thickness` is still ASSUMED 6."."""
+    mat = dm.d["mattress"]
+    long_, wide = float(mat["size"][1]), float(mat["size"][0])
+    t = float(mat["thickness"])
+    return Piece("mattress", "context",
+                 box((2.0, 2.0 + long_), (8.0, 8.0 + wide), (dm.DECK, dm.DECK + t)),
+                 None, derived=True,
+                 note="thickness ASSUMED 6 in; still a field measurement owed")
+
+
+def context_pieces():
+    out = [Piece(mid, "context", box(M[mid].x, M[mid].y, M[mid].z), M[mid].stock,
+                 note="existing room fixture, not part of the build")
+           for mid in CONTEXT]
+    return out + [mattress_piece()]
+
+
 # ------------------------------------------------------------------- assembly
-def build(riser_scheme="standard", laminations=True):
-    """Every solid in the spike's scope. Returns a list of Piece."""
+def build(riser_scheme="standard", laminations=True, context=False):
+    """Every solid in scope. Returns a list of Piece. `context=True` adds the
+    mattress and the room's existing fixtures, which are measured against but
+    never drawn or cut."""
     pieces = []
     for assembly, ids in SCOPE.items():
         for mid in ids:
@@ -223,7 +284,20 @@ def build(riser_scheme="standard", laminations=True):
             else:
                 pieces.extend(_member_pieces(mid, assembly, laminations))
     pieces += tread_pieces(riser_scheme) + riser_pieces(riser_scheme)
+    _assert_full_coverage()
+    if context:
+        pieces += context_pieces()
     return pieces
+
+
+def _assert_full_coverage():
+    """Every member in dimensions.yaml is either in an assembly, part of a notched
+    piece, or room context. A member added to the yaml and not to SCOPE would
+    otherwise be silently absent from the kernel."""
+    covered = {mid for ids in SCOPE.values() for mid in ids} | NOTCH_PARTS | set(CONTEXT)
+    missing = sorted(set(M) - covered)
+    if missing:
+        raise AssertionError(f"members in dimensions.yaml but not in cad SCOPE: {missing}")
 
 
 def by_id(pieces):
