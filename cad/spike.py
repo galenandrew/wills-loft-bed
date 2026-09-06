@@ -344,14 +344,18 @@ def main():
 # off the solids; the `expected:` values it is compared with come from the yaml.
 BEARINGS = [
     # (a, b, axis, what the yaml claims)
-    ("beam#2x10-a", "side_ledger", "x", "hanger — UNSPECIFIED, 'side ledger carries the beam's left end'"),
-    ("beam#2x10-b", "side_ledger", "x", "same connection, outer ply"),
-    ("beam#2x10-a", "hw_top_plate_2", "z", "bearing"),
-    ("beam#2x10-b", "hw_top_plate_2", "z", "bearing"),
+    # Rev AG: the beam is one notched LVL, and its window end BEARS on the ledger and
+    # the sistered joist instead of butting the ledger's end face.
+    ("beam", "side_ledger", "z", "bearing — the notch sits on the ledger top at 57.25"),
+    ("beam", "deck_joist[0]", "z", "bearing — and on joist 0, sistered to the ledger"),
+    ("beam", "hw_top_plate_2", "z", "bearing"),
     ("deck_rim", "hw_top_plate_2", "z", "bearing"),
     ("deck_joist[0]", "rear_ledger", "y", "hanger LUS24"),
-    ("deck_joist[0]", "beam#2x10-a", "y", "hanger — UNSPECIFIED; joists and beam share a bottom at 53.75"),
-    ("deck_joist[8]", "beam#2x10-a", "y", "same"),
+    ("deck_joist[0]", "side_ledger", "x", "face-screw — the sister that carries half the beam reaction"),
+    ("deck_joist[1]", "beam", "y", "hanger LUS24, 10dx1-1/2 into 1-3/4 of LVL"),
+    ("deck_joist[8]", "beam", "y", "same"),
+    ("deck_ply", "side_ledger", "z", "bearing — glued and screwed, the anti-roll diaphragm"),
+    ("beam_wrap_top", "beam", "z", "the cap the slats stand on"),
     ("rear_ledger", "side_ledger", "x", "not a listed connection"),
     ("screen_top_plate", "slat[0]", "z", "bearing — UNSPECIFIED"),
 ]
@@ -373,7 +377,7 @@ def loft_report(pieces):
     out.append("")
 
     out.append("SLAT SEATING — every slat's footprint on what is under it")
-    seats = ("beam#2x10-a", "beam#2x10-b", "beam_wrap_face", "side_ledger", "hw_top_plate_2")
+    seats = ("beam_wrap_top", "beam", "beam_wrap_face", "side_ledger", "hw_top_plate_2")
     n_slats = int(dm.SCR["slat_count"])
     for i in range(n_slats):
         s_ = P[f"slat[{i}]"]
@@ -381,23 +385,45 @@ def loft_report(pieces):
         got = {b: v for b, v in got.items() if v > 1e-6}
         txt = ", ".join(f"{b} {v:.2f}" for b, v in got.items()) or "NOTHING"
         out.append(f"  slat[{i:2d}] x {float(M[f'slat[{i}]'].x[0]):7.3f}→{float(M[f'slat[{i}]'].x[1]):7.3f}   {txt}")
-    # a slat is seated if something STRUCTURAL is under it — the beam, or (slat[0], which
-    # is past the beam's end at x 1.5) the side ledger. The 3/4 poplar wrap is finish and
-    # does not count, which is what caught slat[0] before Rev Z lengthened the ledger.
-    SEATS = ("beam#2x10-a", "beam#2x10-b", "side_ledger")
-    structural = {i for i in range(n_slats)
-                  if any(check.bearing_area(P[f"slat[{i}]"].solid, P[b].solid, "z") > 1e-6
-                         for b in SEATS)}
-    missing = [i for i in range(n_slats) if i not in structural]
+    # Rev AG: every slat stands on beam_wrap_top and screws THROUGH it into the LVL, so
+    # "seated" is no longer a shared face with the beam — it is whether the screw reaches
+    # wood. Cast it: down the slat's centre from just above the cap, and require it to
+    # cross the cap and then the beam. That is the same question Rev Z asked of slat[0]
+    # (which sat on 3/4 of poplar and nothing else), asked of a detail with a cap in it.
+    cap_t = float(M["beam_wrap_top"].size("z"))
+    # the beam's extents come from the FUSED solid, not the yaml body row — the notched
+    # end (beam_tongue, x 0->3) is part of the same board and carries slat 0.
+    bx = list(P["beam"].bbox[0])
+    missing, part, off = [], [], []
+    for i in range(n_slats):
+        sm = M[f"slat[{i}]"]
+        sx = [float(v) for v in sm.x]
+        lo, hi = max(sx[0], bx[0]), min(sx[1], bx[1])       # the slat's width over the LVL
+        if hi - lo <= 1e-6:
+            missing.append(i)
+            continue
+        if hi - lo < float(sm.size("x")) - 0.011:
+            part.append((i, hi - lo))
+        cx = (lo + hi) / 2                                  # centre the screw on the wood
+        if abs(cx - (sx[0] + sx[1]) / 2) > 1e-6:
+            off.append(i)
+        # in y the slat is half on the LVL and half on the wrap face's top edge (its
+        # outer face is flush with the wrap at 50.75), so the screw goes in the inboard
+        # half — the centre of the slat/beam overlap, not the centre of the slat.
+        sy, by = [float(v) for v in sm.y], list(P["beam"].bbox[1])
+        cy = (max(sy[0], by[0]) + min(sy[1], by[1])) / 2
+        hit = check.ray_cast(check.Fastener(f"slat[{i}] screw", (cx, cy, float(sm.z[0]) + 0.01),
+                                            (0, 0, -1), 3.0), pieces)
+        if sum(h.depth for h in hit if h.piece == "beam") < 3.0 - cap_t - 0.011:
+            missing.append(i)
     if missing:
-        found.append(f"slat{missing}: nothing structural underneath — the 3/4 poplar wrap alone")
-    full = 1.5 * (float(M["beam"].y[1]) - float(M["slat[0]"].y[0]))      # a slat fully seated
-    short = [i for i in range(n_slats) if i not in missing
-             and sum(check.bearing_area(P[f"slat[{i}]"].solid, P[b].solid, "z")
-                     for b in SEATS) < full - 0.011]
-    if short:
-        found.append(f"slat{short}: partly past the end of what carries it — less than "
-                     f"the {full:.2f} sq in the others get")
+        found.append(f"slat{missing}: a screw through the cap never reaches the beam")
+    for i, w in part:
+        found.append(f"slat[{i}]: only {w:.2f} of its 1.50 width is over the LVL "
+                     f"(it overhangs the beam's end onto the stair face) — offset its screw inboard")
+    out.append(f"  seated on {cap_t:.2f} of cap over the LVL; "
+               f"{n_slats - len(missing)} of {n_slats} take a screw into the beam"
+               + (f", {len(off)} of them offset from the slat's own centre" if off else ""))
     out.append("")
 
     out.append("SLAT GAPS — kernel minimum distance, vs expected slat_clear "
@@ -421,7 +447,7 @@ def loft_report(pieces):
              float(exp["deck_headroom"])),
             ("floor → deck joist underside", P["deck_joist[0]"].bbox[2][0],
              float(exp["clear_under_joists"])),
-            ("floor → beam underside", P["beam#2x10-a"].bbox[2][0],
+            ("floor → beam underside", P["beam"].bbox[2][0],
              float(exp["clear_under_beam"]))]
     for name, got, want in rows:
         flag = "" if abs(got - want) <= 0.011 else "   ← differs from expected:"
@@ -430,7 +456,7 @@ def loft_report(pieces):
             found.append(f"{name}: kernel {got:.4f}\", yaml expects {want}")
     # the bay is between the ledge rail and the beam's INNER face; the poplar wrap is
     # on the far side of the beam and is not what the mattress meets.
-    d_, _, _ = check.clearance(P["mattress"].solid, P["beam#2x10-a"].solid)
+    d_, _, _ = check.clearance(P["mattress"].solid, P["beam_wrap_inner"].solid)
     out.append(f"  {'mattress → beam inner face (bay slack)':38s} kernel {d_:8.4f}")
     out.append("")
     out.append("UNSPECIFIED fasteners the kernel cannot ray-cast until they are chosen:")

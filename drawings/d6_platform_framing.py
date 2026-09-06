@@ -9,16 +9,16 @@ def d6():
     v.rect(m("hw_bottom_plate_a").x[0], m("hw_bottom_plate_a").x[1], 0, m("hw_top_plate_1").y[1], "hid")
     for k in ids("deck_joist"): R(v, m(k), "x", "y", "lum2")
     for k in ids("ledger_blocking") + ["ledger_blocking_last"]: R(v, m(k), "x", "y", "blk")
-    for k in ("rear_ledger", "side_ledger", "deck_rim", "beam"): R(v, m(k), "x", "y", "lum")
+    for k in ("rear_ledger", "side_ledger", "deck_rim", "beam", "beam_tongue", "deck_joist_tail"): R(v, m(k), "x", "y", "lum")
     R(v, m("beam_wrap_face"), "x", "y", "fin"); v.line(0, 8, 107, 8, "ghostl")
     v.text(50, 0.75, "2×6 rear ledger — lags into every stud", "labs", "middle", dy=4)
-    v.text(6, 24, f"2×10 side ledger, {fr(m('side_ledger').y[1])} out", "labs", "middle", rot=-90)
-    v.text(50, 24, "2×4 joists @ 12 o.c. · 9 joists · 45½ span", "lab", "middle", dy=4)
+    v.text(6, 24, f"2×4 side ledger, {fr(m('side_ledger').y[1])} out — below the deck", "labs", "middle", rot=-90)
+    v.text(50, 24, f"2×4 joists @ 12 o.c. · {len(ids('deck_joist'))} joists · {fr(DER['deck_joist_span'])} span", "lab", "middle", dy=4)
     v.text(50, 2.25, "", "labs")
-    v.text(50, 48.5, "doubled 2×10 + ¾ wrap — 102 clear span", "lab", "middle", dy=4)
+    v.text(50, 48.5, f"{BEAMSTOCK} + ¾ wrap — {VALS['beam_span']} c/c bearings", "lab", "middle", dy=4)
     v.text(105.5, 24, "2×4 rim at 104¾–106¼", "labs", "middle", rot=-90)
-    v.text(75, 10.5, "boxed ledge above (8)", "labs", "middle", dy=4)
-    v.text(24, 15, "front rail notched 1½ × 5 over this ledger — ledge runs flush to the window wall", "labs", "start", dy=4)
+    v.text(75, 10.5, f"boxed ledge above (8 wide × {fr(m('ledge_lid').z[1]-DECK)} high)", "labs", "middle", dy=4)
+    v.text(20, 15, "beam notched 3 × 3½ over the ledger and joist 0 — its end bears on both", "labs", "start", dy=4)
     v.text(21, 4.5, "2×4 blocking at the ledger — carries the ply's rear edge", "labs", "start", dy=4)
     v.text(54, 55.4, f"¾ ply deck: {fr(DER['deck_ply'][0])} × {fr(DER['deck_ply'][1])} — seams on joist centres, glued & screwed", "labs", "middle", dy=4)
     v.dim_h(0, 107, -4, "107"); v.dim_h(m("deck_joist[0]").x[0], m("deck_joist[1]").x[0], 40, "12 o.c.")
@@ -27,4 +27,4 @@ def d6():
     return v.svg("Platform framing plan, bed wall at the top")
 
 FIGURES = [("d6", d6)]
-CAPTION = "Joists hang off the rear ledger and off the beam's inside face (LUS24 hangers, both ends — they cannot 'land on' a beam that shares their bottom). Nothing bears in the field; the platform is carried by the two walls and the half-wall. Lay the joists out so plywood seams land on centres. <b>Rev Z:</b> the side ledger runs 50 out, not 48, so its face backs the beam's full 3 width — 13⅞ sq in of end bearing per 2×10 ply. It stops at 50 rather than the 50¾ once suggested: the ¾ poplar wrap occupies 50→50¾ across the whole 107 and returns over the ledger's end. The hanger there is still to be chosen — a concealed-flange type, since an outer flange would hang past the ledger end with nothing behind it, the same reason the landing rim uses HUC28s. <b>Rev AB:</b> the boxed ledge now runs flush to the window wall. Its front rail is one 107 board notched 1½ (x) × 5 (z) out of its bottom left corner to clear this ledger, whose top is at 63; the 2¼ tongue left above the notch lands on the ledger top and is screwed down. The lid is above 63 and needs no notch — it simply runs to x 0."
+CAPTION = f"Joists hang off the rear ledger and off the beam's inside face (LUS24 hangers, both ends — they cannot 'land on' a beam that shares their bottom). Nothing bears in the field; the platform is carried by the two walls and the half-wall. Lay the joists out so plywood seams land on centres. <b>Rev AG:</b> the window end is a different joint. The side ledger is a <b>2×4 at deck level</b>, so nothing of it shows above the ply and the ledge's front rail needs no notch — but a 2×4 cannot back the beam's end, so the beam does not butt it. <b>Joist 0 runs on past the beam face to y 50</b>, sistered to the ledger over its whole {fr(m('deck_joist_tail').y[1]-m('deck_joist[0]').y[0])}, and the beam is <b>notched 3 × 3½ out of its bottom left corner and bears on the pair</b> — 3 × 1¾ = 5.25 sq in, ~115 psi against 425 allowable, where before it was end grain against a hanger nobody had chosen. The other eight joists stop at the beam face on LUS24s. Two things follow for the builder: the ledger's screws want a <b>stud within 6 of y 50</b> (or blocking added — the reaction lands 1½–3 off the wall face and a 3½-deep ledger has a short couple to resist it), and the <b>deck ply must be glued and screwed down onto the ledger</b>, because that diaphragm is what stops it rolling."

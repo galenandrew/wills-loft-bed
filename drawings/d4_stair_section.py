@@ -8,7 +8,7 @@ def d4():
     v = View(-4, 76, 0, CEILING + 1, 5.6, ml=130, mr=70, mt=28, mb=44)
     v.rect(-2, 0, 0, CEILING, "wall"); v.line(-2, CEILING, 76, CEILING, "floor"); v.line(-2, 0, 76, 0, "floor")
     v.line(0, DECK, m("beam_wrap_face").y[1], DECK, "dash"); v.text(2, DECK, f"loft deck {fr(DECK)} — beyond the half-wall", "labs", "start", dy=-4)
-    v.rect(m("beam").y[0], m("beam_wrap_face").y[1], DECK, m("beam").z[1], "dashfill"); v.text(52, 60.5, "beam end, beyond", "labs", "start")
+    v.rect(m("beam_wrap_inner").y[0], m("beam_wrap_face").y[1], DECK, m("beam_wrap_top").z[1], "dashfill"); v.text(52, 60.5, "beam end, beyond", "labs", "start")
     # beyond the cut plane — axis-aligned boxes, so a box projection is exact
     R(v, m("lnd_side_member"), "y", "z", "lum2"); R(v, m("lnd_joist[0]"), "y", "z", "dashfill"); R(v, m("lnd_blocking[0]"), "y", "z", "dashfill")
     # ON the cut plane — the kernel decides what stringer B's plane crosses, and gives

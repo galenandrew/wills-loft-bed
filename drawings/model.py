@@ -41,6 +41,12 @@ PANEL = float(nook["soffit_panel_thickness"]); NOOK_Y = [float(a) for a in nook[
 CEILING = float(room["ceiling"]); RX, RY = float(room["x"]), float(room["y"])
 MAT = d["mattress"]; SCR = d["screen"]
 DECK = float(d["expected"]["deck_top"]); LAND = ST.riser_z[ST.n_treads + 1]
+# The mattress bay is a FINISHED dimension: the ledge's front face to the beam's inner
+# wrap, not to the rough LVL. BEAMSTOCK names the beam in prose so no sheet types it.
+BAY = float(M["beam_wrap_inner"].y[0]) - float(M["ledge_front_rail"].y[1])
+BEAM_FIN_TOP = float(M["beam_wrap_top"].z[1])
+_bt, _bd = lumber[M["beam"].stock]
+BEAMSTOCK = f"{fr(_bt)} × {fr(_bd)} LVL"
 def U(y): return ST.underside(y)
 Y_MEET = ST.y_riser_top - (CEIL + PANEL - U(ST.y_riser_top)) / ST.tan
 def soffit(y): return CEIL if y <= Y_MEET else U(y) - PANEL
@@ -263,7 +269,15 @@ VALS.update({
     "panel_top": fr(CEIL + PANEL), "y_meet": fr(Y_MEET), "throat": fr(ST.throat), "riser": f"{ST.R:.3f}", "run": fr(ST.run),
     "angle": f"{math.degrees(ST.angle):.2f}", "n_risers": str(ST.n_risers), "n_treads": str(ST.n_treads),
     "plumb_lo": fr(ST.plumb_cut()[0]), "plumb_hi": fr(ST.plumb_cut()[1]), "top_run": fr(ST.top_run), "tread_t": fr(T),
-    "beam_above_deck": fr(m("beam").z[1] - DECK), "slat_count": str(SCR["slat_count"]),
+    "beam_above_deck": fr(BEAM_FIN_TOP - DECK), "beam_stock": BEAMSTOCK,
+    # centre to centre of the two bearings: 1 1/2 into the 3 seat at the window wall,
+    # 1 3/4 into the 3 1/2 of top plate at the half-wall end.
+    "beam_span": fr((float(M["hw_top_plate_2"].x[1]) + float(M["hw_top_plate_2"].x[0])) / 2
+                    - (float(M["beam_tongue"].x[0]) + float(M["beam_tongue"].x[1])) / 2),
+    "beam_clear_span": fr(float(M["hw_top_plate_2"].x[0]) - float(M["beam_tongue"].x[1])),
+    "bay": fr(BAY), "bay_slack": fr(BAY - float(MAT["size"][0])),
+    "mattress_t": fr(float(MAT["thickness"])), "mattress_top": fr(DECK + float(MAT["thickness"])),
+    "ledge_h": fr(float(M["ledge_lid"].z[1]) - DECK), "slat_count": str(SCR["slat_count"]),
     "stair_fin": fr(Y_FIN), "landing_fin": fr(m("lnd_ply").y[1]), "riser_t": fr(RISER_T),
     "board_w": fr(STAIR_X[1] - STAIR_X[0]), "board_w_skin": fr(STAIR_X[1] - SKIN_X0),
     "skin_y0": fr(SKIN_Y0), "skin_y1": fr(float(SKIN.y[1])), "step_y": fr(STEP_Y),

@@ -105,7 +105,7 @@ def card_open():
 
 def card_revisions():
     rows = json.load(open(os.path.join(CONTENT, "revisions.json")))
-    body = "".join(f'<tr><td class="n"><b>{E(r)}</b></td><td>{t}</td></tr>' for r, t in rows)
+    body = "".join(f'<tr><td class="n"><b>{E(r)}</b></td><td>{fill(t)}</td></tr>' for r, t in rows)
     return (f'<div class="card" id="revisions"><h2>Revisions</h2><p class="cap" style="margin:0 0 10px">Drawing numbers in entries below refer to the numbering in force at the time.</p>'
             f'<table><tr><th>Rev</th><th>Change</th></tr>{body}</table></div>')
 

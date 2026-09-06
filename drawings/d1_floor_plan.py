@@ -10,7 +10,7 @@ def d1():
     v.rect(0, m("beam_wrap_face").x[1], 0, m("beam_wrap_face").y[1], "deck")
     v.rect(0, m("beam_wrap_face").x[1], 0, 8, "ledge")
     v.rect(MAT["size"][1] and 2, 2 + MAT["size"][1], 8, 8 + MAT["size"][0], "matt")
-    R(v, m("beam"), "x", "y", "beamplan"); R(v, m("beam_wrap_face"), "x", "y", "fin")
+    for k in ("beam", "beam_tongue"): R(v, m(k), "x", "y", "beamplan"); R(v, m("beam_wrap_face"), "x", "y", "fin")
     v.rect(m("hw_sheath_loft_a").x[0], SKIRT.x[1], 0, m("hw_end_cap").y[1], "hid")
     # landing + stair
     v.rect(*m("lnd_ply").x, 0, m("lnd_ply").y[1], "landing")  # finished deck, incl. its 1/8 nose
@@ -28,11 +28,11 @@ def d1():
     v.out.append(f'<circle class="ghostl" cx="{v.X(cx):.1f}" cy="{v.Y(cy):.1f}" r="{r*v.s:.1f}" fill="none"/>')
     win = room["window"]; v.line(-1.2, float(win["y"][0]), -1.2, float(win["y"][1]), "window")
     # labels
-    v.text(50, 4, "8w × 8h BOXED LEDGE — full 107, capped at the deck end", "labs", "middle", dy=4)
+    v.text(50, 4, f"8w × {fr(m('ledge_lid').z[1]-DECK)}h BOXED LEDGE — lid runs the full 107, over the stair face at the deck end", "labs", "middle", dy=4)
     v.text(39.5, 27, f"Twin mattress {MAT['size'][0]} × {MAT['size'][1]}", "lab", "middle", dy=4)
-    v.text(39.5, 31.5, f"in a {fr(m('beam').y[0]-8)} bay — 1\" slack", "labs", "middle", dy=4)
-    v.text(92, 27, "landing area", "lab", "middle", dy=4); v.text(92, 31.5, f"30 × {fr(m('beam').y[0]-8)}", "labs", "middle", dy=4)
-    v.text(50, 54.5, "doubled 2×10 upstand beam + ¾ poplar wrap — 107, no posts", "labs", "middle", dy=4)
+    v.text(39.5, 31.5, f"in a {fr(BAY)} bay — {fr(BAY-MAT['size'][0])}\" slack", "labs", "middle", dy=4)
+    v.text(92, 27, "landing area", "lab", "middle", dy=4); v.text(92, 31.5, f"30 × {fr(BAY)}", "labs", "middle", dy=4)
+    v.text(50, 54.5, f"{BEAMSTOCK} upstand beam + ¾ poplar wrap — {fr(m('beam').x[1])} long, no posts", "labs", "middle", dy=4)
     v.text(104.6, 30, "half-wall below", "labs", "middle", rot=-90)
     v.text(119, 12, "LANDING", "lab", "middle", dy=4); v.text(119, 17, f"24 × {fr(m('lnd_ply').y[1])} finished @ {fr(LAND)}", "labs", "middle", dy=4)
     v.text(119, 50, f"{ST.n_treads} treads @ {fr(ST.run)}", "labs", "middle", dy=4)
@@ -58,4 +58,4 @@ def d1():
     return v.svg("Room floor plan, bed wall at the top, window wall to the left")
 
 FIGURES = [("d1", d1)]
-CAPTION = "Facing the bed wall, the window and desk are on your left; the stairs, dresser and entry door on your right. Door swing never reaches below the 150 line. The room-depth chain is ½ short of 186 — one of the field measurements still owed."
+CAPTION = "Facing the bed wall, the window and desk are on your left; the stairs, dresser and entry door on your right. Door swing never reaches below the 150 line. The room-depth chain closes on 186, but only because the door's 4 to the corner is assumed rather than measured — still a field item."

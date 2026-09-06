@@ -80,7 +80,7 @@ SCOPE = {
                   *[f"ledger_blocking[{i}]" for i in range(8)], "ledger_blocking_last",
                   *[f"deck_joist[{i}]" for i in range(9)], "deck_rim",
                   "beam", "deck_ply",
-                  "beam_wrap_face",
+                  "beam_wrap_face", "beam_wrap_inner", "beam_wrap_top",
                   "ledge_front_rail", "ledge_lid"],
     "screen":    ["screen_top_plate", *[f"slat[{i}]" for i in range(23)]],
     "stair":     ["stringer_a", "stringer_b", "stringer_c", "kicker",
@@ -114,7 +114,6 @@ CONTEXT = ["desk", "dresser", "fan"]
 # ASSUMED build-up (the drawings never state the lay-up order); flagged in the report.
 LAMINATIONS = {
     "header-2x10-sandwich": [("2x10-loft", 1.5), ("ply-1/2", 0.5), ("2x10-stair", 1.5)],
-    "2x10x2": [("2x10-a", 1.5), ("2x10-b", 1.5)],
 }
 
 # The inverse of LAMINATIONS: yaml rows that are ONE piece on the bench. The boxed
@@ -131,7 +130,14 @@ LAMINATIONS = {
 # board they are part of. The stair face carries ledge_end_cap and beam_end_cap, so that
 # one board is reported under half_wall even though both ends belong to the loft.
 NOTCHED = {
-    "ledge_front_rail": ["ledge_front_rail_tongue"],
+    # Rev AG: the beam is one 1 3/4 x 14 LVL notched 3 x 3 1/2 out of its bottom left
+    # corner, so its end can sit on the side ledger and the sistered joist beside it;
+    # deck_joist[0] is one 48 1/2 2x4 that runs on under it while the other eight stop
+    # at the beam face. Both are carried as two rows for the same reason the front rail
+    # was — the yaml has no notch primitive.
+    "beam": ["beam_tongue"],
+    "deck_joist[0]": ["deck_joist_tail"],
+    # Rev AG: the front rail's notch is gone with the 2x10 side ledger; it is a plain board.
     # the nook face: a 4 1/4 stile, then one 45 3/4 x 53 3/4 board with the opening in it
     "hw_sheath_loft_head": ["hw_sheath_loft_b"],
     # the stair face: floor-to-ledge-top on the bed-wall side, floor-to-beam-top beyond

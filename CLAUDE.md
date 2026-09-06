@@ -20,7 +20,7 @@ Read `archive/KICKOFF.md` for the original brief (historical; its file names pre
 
 The loop for any change:
 
-1. Change `dimensions.yaml` (member extents, connections, `expected:` values). Read the hook's verify output. Fix until clean, or explain to the user why a FAIL is accepted (Rev Z closed the last two — beam left end and slat 0 — so verify is currently 0 FAIL, 1 WARN: the unplaced ½ in the room-depth chain).
+1. Change `dimensions.yaml` (member extents, connections, `expected:` values). Read the hook's verify output. Fix until clean, or explain to the user why a FAIL is accepted (verify is currently 0 FAIL, 0 WARN).
 2. Read the hook's build report. Look **only** at the figures it names — open `site/figs/<key>.svg`, or screenshot them. Do not read the whole site.
 3. If a label or caption needs to move, edit that sheet's module in `drawings/`; if prose needs to change, edit `content/`. The hook rebuilds.
 4. Bump `rev:` in the yaml and add a row at the top of `content/revisions.json`. One letter per design change; `.1` suffixes for drawing-only cleanups. Update the cut list / materials list to match once they exist.
@@ -44,6 +44,7 @@ The restructure exists so that a change touches a few small files, not one big o
 - Extents are **framing** extents (actual lumber size). Finished faces (wrap, sheathing, ply) are their own members. Cut lists use the framing numbers; layout marks use the finished ones.
 - Repeated members use `repeat:`; ids become `id[0]…`. Wildcards in connections are quoted: `"deck_joist[*]"`.
 - Stringers are `kind: stringer`; their bbox is ignored and the true sloped profile is computed from `stair:`.
+- A row may carry `part_of: <id>` — a notch remnant, one board with its parent on the bench (`beam_tongue`, `deck_joist_tail`). `check_sections` checks it against the stock it was cut from; `NOTCHED` in `cad/model.py` fuses it into one solid.
 - Anything not stated in the drawings and guessed during encoding is marked `ASSUMED` in a `note:`. Resolve these with the user, don't silently keep them.
 - `expected:` holds the values Rev T states. When a change legitimately moves one, update it deliberately — that's the audit trail.
 - View conventions (stated on the index page): plans bed-wall-up, window wall left; x–z views look toward the bed wall; y–z views keep the bed wall on the left, mirrored where needed.
@@ -74,8 +75,7 @@ The user does not want Fable for everything. Guidance:
 
 Assumed in the model until measured; anything depending on them is provisional:
 - Ceiling joist nearest 50¾" from the bed wall (joists run parallel to it) — sets the screen top-plate fixing.
-- Actual mattress thickness (`mattress.thickness`, assumed 6").
-- Stud locations in the bed wall, window wall, and right wall — every ledger and the beam's left-end support depend on them.
+- Stud locations in the bed wall, window wall, and right wall — every ledger depends on them. **The window wall now needs a stud (or added blocking) within ~6" of y 50**: since Rev AG the side ledger is a 2×4, so the beam's end reaction has a 3½" couple to resist instead of 9¼".
 
 ## Files
 

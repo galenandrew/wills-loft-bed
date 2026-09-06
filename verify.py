@@ -83,6 +83,7 @@ class Member:
         self.role = d.get("role", "structural")
         self.kind = d.get("kind")
         self.rake = d.get("rake")
+        self.part_of = d.get("part_of")
         self.note = d.get("note", "")
         self.x, self.y, self.z = (list(map(float, d[k])) for k in "xyz")
 
@@ -319,6 +320,23 @@ def check_sections(rep, members, lumber):
         if d is None:  # sheet
             if abs(sizes[0] - t) > TOL:
                 rep.fail(f"{m.id}: {m.stock} thickness {fr(t)} but thinnest extent is {fr(sizes[0])}")
+            continue
+        if m.part_of:
+            # a notch remnant: the same board as its parent, but one extent is cut
+            # back, so it cannot match the full section. Check what is still true —
+            # the thickness, and that nothing exceeds the stock it came out of.
+            if m.part_of not in members:
+                rep.fail(f"{m.id}: part_of '{m.part_of}' is not a member")
+            elif members[m.part_of].stock != m.stock:
+                rep.fail(f"{m.id}: part of {m.part_of}, which is {members[m.part_of].stock}, "
+                         f"not {m.stock}")
+            elif abs(sizes[0] - t) > TOL:
+                rep.fail(f"{m.id}: part of {m.part_of} but its thickness is {fr(sizes[0])}, not {fr(t)}")
+            elif sizes[1] > d + TOL:
+                rep.fail(f"{m.id}: part of {m.part_of} but its section is {fr(sizes[1])} deep, "
+                         f"more than the {fr(d)} stock it is cut from")
+            else:
+                rep.ok(f"{m.id}: {fr(sizes[1])} of {m.stock} left after the notch, part of {m.part_of}")
             continue
         if m.kind in RAKED:
             # bbox z follows a profile, not the stock; only check thickness
@@ -659,10 +677,16 @@ def check_stair_and_nook(rep, d, members, stair):
 
     # screen
     scr = d["screen"]
-    if any(M[f"slat[{i}]"].z[0] != M["beam"].z[1] for i in range(scr["slat_count"])):
-        rep.fail("slat bottoms are not at the beam top")
+    # Rev AG: the slats stand on the beam's poplar cap, not on the LVL itself, and
+    # screw down through it into the beam — so the finished top is the datum.
+    top = M["beam_wrap_top"].z[1]
+    if any(M[f"slat[{i}]"].z[0] != top for i in range(scr["slat_count"])):
+        rep.fail("slat bottoms are not at the beam's finished top")
+    elif abs(M["beam_wrap_top"].z[0] - M["beam"].z[1]) > TOL:
+        rep.fail("beam_wrap_top does not sit on the beam")
     else:
-        rep.ok(f"slats sit on the beam top at {fr(M['beam'].z[1])}")
+        rep.ok(f"slats sit on the beam's finished top at {fr(top)} "
+               f"({fr(M['beam'].z[1])} framing + {fr(M['beam_wrap_top'].size('z'))} cap)")
     last = M[f"slat[{scr['slat_count']-1}]"]
     (rep.ok if abs(last.x[1] - scr["extent_x"][1]) <= TOL else rep.fail)(
         f"last slat ends at {fr(last.x[1])} (screen extent {fr(float(scr['extent_x'][1]))})")

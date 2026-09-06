@@ -1,36 +1,36 @@
 {
- "rev": "AF",
+ "rev": "AH",
  "yaml": "dimensions.yaml",
  "generated": "2026-09-06",
  "figures": {
   "d1": {
    "sheet": "1",
    "page": "index",
-   "sha": "e3fac6d337d9",
-   "elements": 100
+   "sha": "84edc7e9e04d",
+   "elements": 102
   },
   "d2": {
    "sheet": "2",
    "page": "index",
-   "sha": "69cec5a60dbf",
-   "elements": 82
+   "sha": "bba3465dc53a",
+   "elements": 83
   },
   "d3": {
    "sheet": "3",
    "page": "loft",
-   "sha": "c7326176c704",
-   "elements": 84
+   "sha": "570e83bb640f",
+   "elements": 86
   },
   "d4": {
    "sheet": "4",
    "page": "stairs",
-   "sha": "a00536ce6976",
+   "sha": "5c7d03324501",
    "elements": 98
   },
   "d5a": {
    "sheet": "5",
    "page": "stairs",
-   "sha": "8634195300c8",
+   "sha": "6228a48db86c",
    "elements": 75
   },
   "d5b": {
@@ -42,20 +42,20 @@
   "d6": {
    "sheet": "6",
    "page": "loft",
-   "sha": "127cd7d2fa4e",
-   "elements": 71
+   "sha": "21b3b032cded",
+   "elements": 73
   },
   "d7a": {
    "sheet": "7",
    "page": "loft",
-   "sha": "898682b2ed59",
+   "sha": "42d5de6c5328",
    "elements": 63
   },
   "d7b": {
    "sheet": "7",
    "page": "loft",
-   "sha": "5485bbb6feab",
-   "elements": 76
+   "sha": "183abaa2ece7",
+   "elements": 78
   },
   "d8a": {
    "sheet": "8",
@@ -72,14 +72,14 @@
   "d9": {
    "sheet": "9",
    "page": "stairs",
-   "sha": "5deec2234f17",
+   "sha": "8010d5723364",
    "elements": 76
   }
  },
  "pages": {
-  "index": "02b5a3f95a13",
+  "index": "4ff5d96013db",
   "stairs": "b3664cf208b5",
-  "loft": "b1d2e8ac55fa",
-  "appendix": "39038f64e817"
+  "loft": "f95251b5c375",
+  "appendix": "1b6978b5ac22"
  }
 }
