@@ -1,3 +1,7 @@
+> Paths in this report are as of 2026-09-04. The kernel was adopted and renamed on
+> 2026-09-06: `cad/spike.py` → `cad/__main__.py` (`python3 -m cad`), `spike/` → `cad-out/`,
+> `cad/BRIEF.md` → `archive/CAD-BRIEF.md`, `tools/svgview.py` → `drawings/svgview.py`.
+
 # Rev V — CAD kernel spike
 
 Date: 2026-09-04 · Time-boxed spike per `cad/BRIEF.md`. Inline (no subagents).

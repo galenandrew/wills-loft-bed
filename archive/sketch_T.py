@@ -5,11 +5,13 @@ and the figure functions' literals are pinned to that decision; passing the live
 dimensions.yaml as the second argument mixes current geometry with Rev T numbers
 rather than reproducing anything real."""
 import sys, html, json
-sys.path.insert(0, ".")
+import os
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
 import yaml
 from verify import expand, Stair
 
-d = yaml.safe_load(open(sys.argv[2] if len(sys.argv) > 2 else "archive/dimensions-T.yaml"))
+d = yaml.safe_load(open(sys.argv[2] if len(sys.argv) > 2 else os.path.join(ROOT, "archive", "dimensions-T.yaml")))
 M = expand(d["members"]); d["stair"]["_stringer_depth"] = 11.25
 ST = Stair(d["stair"], 58); T = ST.t
 HB = 41.5; JAMB = 0.75; CEIL = HB - JAMB          # jambed nook head, decided

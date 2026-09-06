@@ -1,3 +1,7 @@
+> Historical. This is the brief the spike was run against; it passed and the kernel was
+> adopted (`audits/V-kernel-spike.md`). Since 2026-09-06 the code lives at `cad/` with
+> `python3 -m cad` as the entry point and `cad-out/` for its outputs. Paths below are as written.
+
 # CAD kernel spike — brief
 
 Date: 2026-09-04. Decided after the Rev V commit. Context in `audits/U-decisions.md` and the memory notes.

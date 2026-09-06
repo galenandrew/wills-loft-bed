@@ -6,7 +6,7 @@ One call returns three layers:
   near    — the same for what sits between the viewer and the plane (Drawing 4
             ghosts the half-wall this way)
 
-Output is in the *inch* (h, v) coordinates tools/svgview.View takes, so the same
+Output is in the *inch* (h, v) coordinates drawings/svgview.View takes, so the same
 View(scale, margins) as the hand-drawn sheet renders it at the same size on the
 same page. Orientation follows the site's stated conventions: plans bed-wall-up
 with the window wall left; y–z views bed-wall-left (mirrored); x–z views
@@ -213,7 +213,7 @@ CUT_CLASS = {"ply-3/4": "cutsheet", "ply-1/2": "cutsheet", "poplar-3/4": "cutfin
 
 
 def to_svg(layers, view, pieces=None, title="", layers_on=("near", "beyond", "cut")):
-    """Render Layers through a tools/svgview.View — same scale, same margins, so it
+    """Render Layers through a drawings/svgview.View — same scale, same margins, so it
     drops onto the sheet the hand-drawn figure came off."""
     stock = {p.id: p.stock for p in (pieces or [])}
     out = []

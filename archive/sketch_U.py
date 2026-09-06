@@ -8,12 +8,14 @@ Rev U restructure that made drawings/ generate strictly from the yaml, so it nev
 got that guarantee. Default to the frozen snapshot; only override for deliberate
 side-by-side comparison, and don't trust the mix if you do."""
 import sys, json
-sys.path.insert(0, ".")
+import os
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
 import yaml
 from verify import expand, Stair
-from svgview import View
+from drawings.svgview import View
 
-d = yaml.safe_load(open(sys.argv[2] if len(sys.argv) > 2 else "archive/dimensions-U.yaml"))
+d = yaml.safe_load(open(sys.argv[2] if len(sys.argv) > 2 else os.path.join(ROOT, "archive", "dimensions-U.yaml")))
 M = expand(d["members"]); d["stair"]["_stringer_depth"] = 11.25
 ST = Stair(d["stair"], 58); T = ST.t
 HB = 41.5; CEIL = HB - float(d["nook"].get("wrap", 0.75)); PANEL = 0.75
