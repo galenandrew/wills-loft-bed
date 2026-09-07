@@ -89,12 +89,14 @@ REV_MARK = re.compile(r"(?=\bRev [A-Z]{1,3}(?:\.\d)?:)")
 HANGER_MODELS = ("LUS24", "HUC28", "A35", "HUC210", "LUS28")
 
 
-def _n(key):
-    """How many members a connection key covers — 'slat[*]' is 23 of them."""
+def _n(key, exc=()):
+    """How many members a connection key covers — 'slat[*]' is 23 of them, less any the
+    row excepts. verify.py honours `except:`; this must too, or the table's Off column
+    and the hanger tally disagree with the model (they did: 22 LUS24, not 21)."""
     if "[*]" not in str(key):
         return 1
     stem = str(key).split("[")[0]
-    return sum(1 for mid in M if mid.split("[")[0] == stem)
+    return sum(1 for mid in M if mid.split("[")[0] == stem and mid not in exc)
 
 
 def _spec_cell(fast):
@@ -115,7 +117,8 @@ def fasteners():
     for c in d["connections"]:
         a, b = str(c.get("a", "")), str(c.get("b", ""))
         fast = c.get("fastener")
-        n = max(_n(a), _n(b))
+        exc = set(c.get("except") or ())
+        n = max(_n(a, exc), _n(b, exc))
         if fast is None or fast == "UNSPECIFIED":
             open_rows += 1
         for h in HANGER_MODELS:

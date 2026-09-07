@@ -43,7 +43,7 @@
 #     cad-out/loft.txt carries both areas.
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AX
+rev: AY
 units: inches
 room:
   x: 131
@@ -346,8 +346,8 @@ members:
     which gives 1 3/4 of bearing to each panel edge - the beam-face blocking is on edge
     because it backs one edge and wants depth for screws; this backs two and wants width.
     The seam exists to save a sheet: the deck is 48 1/4 in y, over a sheet''s 48 width, so
-    without it each of the three pieces takes its own sheet (three sheets, 37% yield, and the
-    47 3/4 offcuts are stranded). Split into two rows of 24 and 24 1/4 it nests on TWO.
+    without a seam each piece takes its own sheet. Exact piece sizes and sheet counts live in
+    tools/materials.py PANEL_SPLITS, not here - this note used to quote a superseded count.
     The seam runs ACROSS the joists, not along one - it cannot land on a joist centre, which
     is why it needs blocking; it is caught where it crosses each joist and unsupported over
     the 10 1/2 between. y 24 puts it under the mattress (y 8 3/4 to 46 3/4), so it is never
@@ -1466,8 +1466,10 @@ connections:
   b: beam
   type: face-screw
   face: y
-  fastener: '2 x 1/4 x 3 structural screws per block, driven from the beam''s OUTBOARD face at
-    y 50 through 1 3/4 of LVL and 1 1/4 into the block. Rev AU: preferred over toe-screwing
+  fastener: '2 x 1/4 x 3 structural screws per block at z 54 1/4 and 56 3/4, driven from the
+    beam''s OUTBOARD face at y 50 through 1 3/4 of LVL and 1 1/4 into the block. Rev AY: the z
+    is stated because beam_wrap_face''s structural rows come through the same face at the same
+    x stations - keep them off each other. Rev AU: preferred over toe-screwing
     from inside the bay because it puts the fastener in shear instead of relying on a toed
     screw, and the y-50 face is open until beam_wrap_face goes on - the heads end up behind
     the wrap. SEQUENCE: before the wrap, and before the deck ply.'
@@ -1490,32 +1492,67 @@ connections:
   b: deck_joist[0]
   type: face-screw
   face: x
-  fastener: 2 x 3 in screws toe-driven at EACH end - into deck_joist[0] here and
-    deck_joist[1] at the far end, which carries no row of its own
+  fastener: 2 x 3 in screws toe-driven into deck_joist[0]
+- a: deck_seam_blocking[0]
+  b: deck_joist[1]
+  type: face-screw
+  face: x
+  fastener: '2 x 3 in screws toe-driven into deck_joist[1]. Rev AY: the far end used to be
+    asserted in the other row''s note and never checked. The block has no bearing shelf - it
+    hangs at z 55.75-57.25 on toe-screws at BOTH ends - so both ends carry, and both are now
+    declared.'
 - a: deck_seam_blocking[1]
   b: deck_joist[1]
   type: face-screw
   face: x
-  fastener: 2 x 3 in screws toe-driven at EACH end - into deck_joist[1] here and
-    deck_joist[2] at the far end, which carries no row of its own
+  fastener: 2 x 3 in screws toe-driven into deck_joist[1]
+- a: deck_seam_blocking[1]
+  b: deck_joist[2]
+  type: face-screw
+  face: x
+  fastener: '2 x 3 in screws toe-driven into deck_joist[2]. Rev AY: the far end used to be
+    asserted in the other row''s note and never checked. The block has no bearing shelf - it
+    hangs at z 55.75-57.25 on toe-screws at BOTH ends - so both ends carry, and both are now
+    declared.'
 - a: deck_seam_blocking[2]
   b: deck_joist[2]
   type: face-screw
   face: x
-  fastener: 2 x 3 in screws toe-driven at EACH end - into deck_joist[2] here and
-    deck_joist[3] at the far end, which carries no row of its own
+  fastener: 2 x 3 in screws toe-driven into deck_joist[2]
+- a: deck_seam_blocking[2]
+  b: deck_joist[3]
+  type: face-screw
+  face: x
+  fastener: '2 x 3 in screws toe-driven into deck_joist[3]. Rev AY: the far end used to be
+    asserted in the other row''s note and never checked. The block has no bearing shelf - it
+    hangs at z 55.75-57.25 on toe-screws at BOTH ends - so both ends carry, and both are now
+    declared.'
 - a: deck_seam_blocking[3]
   b: deck_joist[3]
   type: face-screw
   face: x
-  fastener: 2 x 3 in screws toe-driven at EACH end - into deck_joist[3] here and
-    deck_joist[4] at the far end, which carries no row of its own
+  fastener: 2 x 3 in screws toe-driven into deck_joist[3]
+- a: deck_seam_blocking[3]
+  b: deck_joist[4]
+  type: face-screw
+  face: x
+  fastener: '2 x 3 in screws toe-driven into deck_joist[4]. Rev AY: the far end used to be
+    asserted in the other row''s note and never checked. The block has no bearing shelf - it
+    hangs at z 55.75-57.25 on toe-screws at BOTH ends - so both ends carry, and both are now
+    declared.'
 - a: deck_seam_blocking[4]
   b: deck_joist[4]
   type: face-screw
   face: x
-  fastener: 2 x 3 in screws toe-driven at EACH end - into deck_joist[4] here and
-    deck_joist[5] at the far end, which carries no row of its own
+  fastener: 2 x 3 in screws toe-driven into deck_joist[4]
+- a: deck_seam_blocking[4]
+  b: deck_joist[5]
+  type: face-screw
+  face: x
+  fastener: '2 x 3 in screws toe-driven into deck_joist[5]. Rev AY: the far end used to be
+    asserted in the other row''s note and never checked. The block has no bearing shelf - it
+    hangs at z 55.75-57.25 on toe-screws at BOTH ends - so both ends carry, and both are now
+    declared.'
 - a: deck_ply
   b: deck_seam_blocking[*]
   type: bearing
@@ -1683,6 +1720,10 @@ connections:
   b: floor
   type: floor
   fastener: '3 x #10 x 3 screws into the subfloor'
+- a: kicker
+  b: floor
+  type: floor
+  fastener: UNSPECIFIED
 - a: stringer_a
   b: kicker
   type: bearing
@@ -1751,20 +1792,36 @@ connections:
     of the corner and out of the notch void below z 57.25 at x 0-3. Rev AT: the wrap had no
     connection row at all before this - its fixing was never specified and never checked.'
 - a: beam_wrap_face
+  b: beam_tongue
+  type: face-screw
+  face: y
+  panel: true
+  fastener: 'glue only over x 0 to 3 - no screws within 1 in of the notch corner at x 3, z
+    57.25, which is what the beam row already says. Rev AY: this row exists so the arithmetic
+    covers the whole board. beam_tongue is part_of beam - the SAME LVL - but resolve() does
+    not merge part_of members, so beam_wrap_face -> beam checked only 103 1/4 of the 106 1/4
+    and the 3 the splice exists to protect sat outside every overlap number reported. Found
+    by connection-checker at Rev AX. No physical change: the wood is continuous across x 3
+    above z 57.25, and the tongue has its own verified gravity path onto side_ledger and
+    deck_joist_tail.'
+- a: beam_wrap_face
   b: side_ledger
   type: face-screw
   face: y
   panel: true
-  fastener: '#8 x 2 at 6 in o.c. into the ledger''s y-50 end face, over z 53.75-57.25. Rev AT:
-    part of the notch splice - this is what ties the tongue back to the member it bears on.
-    End-grain withdrawal is poor and irrelevant here: the joint works in shear.'
+  fastener: '#8 x 2-1/2 at 6 in o.c. into the ledger''s y-50 end face, over z 53.75-57.25.
+    Rev AT: part of the notch splice - this is what ties the tongue back to the member it
+    bears on. End-grain withdrawal is poor and irrelevant here: the joint works in shear.
+    Rev AY: 2-1/2 not 2, for 1-3/4 of embedment instead of 1-1/4. This is the anchor side of
+    the whole splice claim and 1-1/4 of dowel action in end grain was thin.'
 - a: beam_wrap_face
   b: deck_joist_tail
   type: face-screw
   face: y
   panel: true
-  fastener: '#8 x 2 at 6 in o.c. into the tail''s y-50 end face, over z 53.75-57.25 - the other
-    half of the notch splice, into the joist sistered to the ledger (Rev AT)'
+  fastener: '#8 x 2-1/2 at 6 in o.c. into the tail''s y-50 end face, over z 53.75-57.25 - the
+    other half of the notch splice, into the joist sistered to the ledger (Rev AT; 2-1/2 since
+    Rev AY, same end-grain reason as the ledger half)'
 - a: beam_wrap_inner
   b: beam
   type: face-screw

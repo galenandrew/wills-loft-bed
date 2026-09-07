@@ -27,7 +27,25 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 from cad.model import build
-from drawings.model import M, ST, d as YAML, fr
+from drawings.model import M, ST, d as YAML, fr, m as _m
+
+
+def _joist_c(i):
+    """Centre of deck_joist[i] in x — the only lines a seam may land on."""
+    return sum(_m(f"deck_joist[{i}]").x) / 2
+
+
+# The deck's layout is DERIVED, not typed. n seam blocks fill the bays between joists
+# 0…n, so the long seam is joist n's centre; the rows split at the blocking's own y
+# centre; the unseamed landing panel is what is left. Same invariant drawings/model.py
+# uses for deck_seam_x / deck_panel_w, so the cut list and the prose cannot disagree —
+# before this they were joined by nothing but discipline, and the seam had already moved
+# twice in three revs.
+_NB = len([k for k in M if k.startswith("deck_seam_blocking[")])
+_SEAM_X = _joist_c(_NB)
+_SEAM_Y = sum(_m("deck_seam_blocking[0]").y) / 2
+_DECK_D = float(_m("deck_ply").y[1]) - float(_m("deck_ply").y[0])
+_DECK_L = float(_m("deck_ply").x[1]) - float(_m("deck_ply").x[0])
 
 # Actual section for every nominal stock key, straight off the yaml's lumber table.
 SECTION = {k: v for k, v in YAML["lumber"].items()}
@@ -68,10 +86,11 @@ PANEL_SPLITS = {
     # the cross seam is shortened from the full 106 1/4 to 62 1/4, dropping the seam
     # blocks from nine to five. 62 1/4 is the furthest in the seam can go: one more joist
     # would need a 56 wide panel and 48 is the sheet width. It costs one sheet against the four-piece version.
-    "deck_ply": ([(62.25, 24.0), (62.25, 24.25), (44.0, 48.25)],
-                 "two rows to x 62 1/4 either side of the y-24 seam, then one full-depth "
-                 "44 x 48 1/4 panel over the landing end; long seam on joist 5's centre, "
-                 "14 3/4 inside the mattress edge"),
+    "deck_ply": ([(_SEAM_X, _SEAM_Y), (_SEAM_X, _DECK_D - _SEAM_Y),
+                  (_DECK_L - _SEAM_X, _DECK_D)],
+                 f"two rows to x {fr(_SEAM_X)} either side of the y-{fr(_SEAM_Y)} seam, then "
+                 f"one full-depth {fr(_DECK_L - _SEAM_X)} x {fr(_DECK_D)} panel over the "
+                 f"landing end; seam on joist {_NB}'s centre — all derived from the blocking"),
     # ceiling: 102 x 50. EVERY seam runs along a joist, at the builder's direction —
     # three pieces, two seams, both on joist centres (38 1/4 and 74 1/4) and so fully
     # backed. That rules out a cross-joist seam and with it the butt joint hanging
@@ -80,7 +99,8 @@ PANEL_SPLITS = {
     # piece fits per sheet: this costs a sheet against the two-row version, and the
     # offcuts are large and go back into the pool. Both seams clear all three downlights
     # (rough-in holes at x 9 7/8-14 1/8 and 59 7/8-66 1/8).
-    "loft_ceiling": ([(38.25, 50.0), (36.0, 50.0), (27.75, 50.0)],
+    "loft_ceiling": ([(_joist_c(3), 50.0), (_joist_c(6) - _joist_c(3), 50.0),
+                      (102.0 - _joist_c(6), 50.0)],
                      "three pieces, seams on the joist centres at 38 1/4 and 74 1/4 — "
                      "every ceiling seam is backed by a joist; clear of all downlights"),
     "beam_wrap_face":   ([(53.5, 14.75), (53.5, 14.75)], "joint on x 53 1/2, over deck_joist[4]"),
@@ -328,12 +348,14 @@ def shelf_sheets(panels):
     return sheets
 
 
-def resolve_count(key):
-    """How many members a connection key covers — 'slat[*]' is 23 of them."""
+def resolve_count(key, exc=()):
+    """How many members a connection key covers, less any the row excepts. verify.py
+    honours `except:` and so must this — otherwise the hardware tally buys a hanger for
+    a joint the model says is not there."""
     if "[*]" not in key:
         return 1
     stem = key.split("[")[0]
-    return sum(1 for mid in M if mid.split("[")[0] == stem)
+    return sum(1 for mid in M if mid.split("[")[0] == stem and mid not in exc)
 
 
 def hardware_rows():
@@ -341,7 +363,8 @@ def hardware_rows():
     for c in YAML["connections"]:
         a, b = str(c.get("a", "")), str(c.get("b", ""))
         fast = c.get("fastener")
-        n = max(resolve_count(a), resolve_count(b))
+        exc = set(c.get("except") or ())
+        n = max(resolve_count(a, exc), resolve_count(b, exc))
         if fast is None:
             text = "NO FASTENER KEY — silent in verify.py, which only reports the rows that say UNSPECIFIED"
         elif fast == "UNSPECIFIED":
@@ -549,18 +572,17 @@ def main():
          "at 83%, with a full-width deck seam and a cross-joist seam in the ceiling. Two "
          "sheets bought better joinery, knowingly."],
         ["CLOSED", "The loft deck IS the finished walking surface (2026-09-07)",
-         "It decides the deck's grade, which is why it matters here. The mattress covers "
-         "y 8 3/4 to 46 3/4 out to about x 77; the rest is walked on and nothing in the "
-         "model covers it. If it is the finished floor it wants a sanded, paintable face "
-         "and sealed edges rather than rated sheathing — and the whole 3 sheets move to "
-         "the paint-grade group. Nesting is indifferent: 3/4 ply comes to the same 10 "
-         "sheets whether it is bought as one pool or split by grade, so this is purely "
-         "about the product and the price, not the quantity."],
+         "The mattress covers y 8 3/4 to 46 3/4 out to about x 77; the rest is walked on "
+         "and nothing in the model covers it, so the deck is the finished floor and takes a "
+         "sanded paintable face rather than rated sheathing. Consequence: there is no hidden "
+         "3/4 ply left in the build, so the two grade groups collapsed to ONE paint-grade "
+         "pool — and the sheet count assumes that. Buying the deck as sheathing again would "
+         "break the nest, not just change the price."],
         ["GRADE", "Every species/grade cell says TBD",
-         "Pending price and availability. Three ply grades are needed and they are "
-         "not interchangeable: structural (deck_ply, the half-wall sheathing), "
-         "paint-grade show faces (beam wrap, ledge rail and lid, treads, risers, "
-         "nook lining), and 1/2 flitches (jamb packs, the header's middle ply)."],
+         "Pending price and availability. TWO ply grades, not three: one 3/4 paint-grade "
+         "pool covering every 3/4 piece including the deck, and 1/2 flitches for the jamb "
+         "packs and the header's middle ply. Framing species/grade and the slat stock are "
+         "also open."],
         ["CLOSED", "Deck-ply front-edge blocking is now in the model (Rev AU)",
          "Nine 2x4 blocks on edge at the beam face — eight at 10 1/2 on a 12 pitch plus "
          "one 5 3/4 at the rim, all from one 8 ft board, and they are counted in the Buy "
