@@ -43,6 +43,7 @@ h2{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink2
 .spec{background:var(--card);padding:11px 13px}.spec dt{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
 .spec dd{margin:0;font-size:16px;font-weight:650;font-variant-numeric:tabular-nums}.spec dd span{font-size:11.5px;font-weight:400;color:var(--ink2);display:block;margin-top:1px}
 figure{margin:0 0 12px;overflow-x:auto}figure svg{display:block;width:100%;height:auto}.cap{color:var(--ink2);font-size:12.5px;margin:10px 2px 0}
+td .cap{display:inline;margin:0;font-size:12px}.miss{color:#a3241c}
 table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;overflow-wrap:break-word}
 th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);font-weight:700}td.n{font-variant-numeric:tabular-nums;white-space:nowrap}tr:last-child td{border-bottom:none}
 ul{margin:0;padding-left:19px}li{margin-bottom:7px}code{font-size:12.5px;background:#f1efe9;padding:1px 4px;border-radius:3px}
@@ -93,6 +94,12 @@ def card_drawing(sheet, svgs):
     body = "".join(f"<figure>{svgs[k]}</figure>" for k, _ in sheet.FIGURES)
     return f'<div class="card" id="d{sheet.NUMBER}"><h2>{sheet.NUMBER} — {E(sheet.TITLE)}</h2>{body}<p class="cap">{sheet.CAPTION}</p></div>'
 
+def card_fasteners():
+    table, note = _sched.fasteners()
+    return (f'<div class="card" id="fasteners"><h2>Fastener schedule</h2>'
+            f'<p class="cap" style="margin:0 0 14px">Every declared connection and what holds it, straight off <code>dimensions.yaml</code> — so the bench never has to open the model or run <code>verify.py</code> to find out. <b>Off</b> is how many joints the row covers. Rationale is in muted type after the spec.</p>'
+            f'{table}<div class="note">{note}</div></div>')
+
 def card_structure():
     c = content("structure.yaml")
     rows = [(fill(r["member"]), fill(r["spec"]), fill(r["check"])) for r in c["rows"]]
@@ -123,7 +130,7 @@ def page_parts(name, svgs):
     if name == "index":
         return [("conventions", "Conventions", card_conventions()), ("locked", "Locked dimensions", card_locked()), dr("2"), dr("1")]
     if name == "appendix":
-        return [("schedule", "Dimension schedule", card_schedule()), ("structure", "Structure & load path", card_structure()), ("revisions", "Revisions", card_revisions())]
+        return [("schedule", "Dimension schedule", card_schedule()), ("structure", "Structure & load path", card_structure()), ("fasteners", "Fastener schedule", card_fasteners()), ("revisions", "Revisions", card_revisions())]
     return [dr(n) for n in PAGE_SHEETS[name]]
 
 def nav(here):

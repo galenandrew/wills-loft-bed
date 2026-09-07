@@ -1,5 +1,6 @@
 """Schedule tables A–E and the 'locked dimensions' cards. Every number here is computed from the model."""
 from .model import *
+import re
 
 def tbl(rows, head, num=(1, 2)):
     """num = column indexes that hold numbers (tabular figures, no wrapping). Prose columns must wrap."""
@@ -76,3 +77,57 @@ def cards():
             ("Half-wall", "5 thick where it shows", "¾ ply + 3½ studs + ¾ skirt · 4¼ below the skirt, where the stair runs against it"), ("Clear below deck", fr(DER["clear_below_deck_x"]), "107 deck less the 5 wall"),
             ("Under-stair nook", f"{fr(JAMB_Y[1]-JAMB_Y[0])} × {fr(CEIL)}", f"finished, ply-wrapped · {fr(DER['nook_far_end_height'])} at the far end")]
     return "".join(f'<div class="spec"><dt>{E(a)}</dt><dd>{E(b)}<span>{E(c)}</span></dd></div>' for a, b, c in rows)
+
+
+# --------------------------------------------------------------- fastener schedule
+# Every connection in dimensions.yaml, with the fastener that was specified for it.
+# Generated, like the dimension schedule: the builder should never have to open the
+# yaml or run verify.py to find out what holds two members together. A row with no
+# `fastener:` key at all is called out here, because verify.py only reports the ones
+# that literally say UNSPECIFIED and those pass silently otherwise.
+REV_MARK = re.compile(r"(?=\bRev [A-Z]{1,3}(?:\.\d)?:)")
+HANGER_MODELS = ("LUS24", "HUC28", "A35", "HUC210", "LUS28")
+
+
+def _n(key):
+    """How many members a connection key covers — 'slat[*]' is 23 of them."""
+    if "[*]" not in str(key):
+        return 1
+    stem = str(key).split("[")[0]
+    return sum(1 for mid in M if mid.split("[")[0] == stem)
+
+
+def _spec_cell(fast):
+    """The spec, then its rationale in muted type — the bench wants the first half."""
+    if fast is None:
+        return '<b class="miss">NOT SPECIFIED</b> — no <code>fastener:</code> key'
+    if fast == "UNSPECIFIED":
+        return '<b class="miss">UNSPECIFIED</b> — declared open'
+    parts = REV_MARK.split(str(fast), maxsplit=1)
+    out = E(parts[0].strip())
+    if len(parts) > 1:
+        out += f' <span class="cap">{E(parts[1].strip())}</span>'
+    return out
+
+
+def fasteners():
+    rows, tally, open_rows = [], {}, 0
+    for c in d["connections"]:
+        a, b = str(c.get("a", "")), str(c.get("b", ""))
+        fast = c.get("fastener")
+        n = max(_n(a), _n(b))
+        if fast is None or fast == "UNSPECIFIED":
+            open_rows += 1
+        for h in HANGER_MODELS:
+            if fast and h in str(fast):
+                mult = re.search(rf"(\d+)\s*[x×]\s*{h}", str(fast))
+                tally[h] = tally.get(h, 0) + n * (int(mult.group(1)) if mult else 1)
+        rows.append((f"{E(a)} &rarr; {E(b)}", str(n), E(c.get("type", "—")), _spec_cell(fast)))
+    head = ["Joint", "Off", "Type", "Fastener"]
+    counts = " · ".join(f"<b>{v} × {k}</b>" for k, v in sorted(tally.items()))
+    note = (f"{len(rows)} connections. Hangers: {counts}. "
+            f"<b>{open_rows} rows have no fastener specified</b> and are flagged in the table; "
+            "everything a screw passes through on its way is checked by "
+            "<code>verify.py</code>, and <code>cad-out/fasteners.txt</code> ray-casts the ones "
+            "the kernel can reach.")
+    return tbl(rows, head, num=(1,)), note
