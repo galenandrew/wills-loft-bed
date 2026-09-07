@@ -1,4 +1,6 @@
 .DS_Store
+# Excel's lock file, created whenever materials-list.xlsx is open.
+~$*
 !.claude
 __pycache__
 .playwright-mcp
