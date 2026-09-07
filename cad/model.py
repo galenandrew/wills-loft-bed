@@ -79,6 +79,7 @@ SCOPE = {
     "loft":      ["rear_ledger", "side_ledger",
                   *[f"deck_joist[{i}]" for i in range(9)], "deck_rim",
                   *[f"deck_blocking[{i}]" for i in range(8)], "deck_blocking_end",
+                  *[f"deck_seam_blocking[{i}]" for i in range(5)],
                   "beam", "deck_ply", "loft_ceiling",
                   "beam_wrap_face", "beam_wrap_inner", "beam_wrap_top",
                   "ledge_cleat", "ledge_cleat_rail",

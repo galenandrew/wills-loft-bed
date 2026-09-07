@@ -56,20 +56,168 @@ SLOPED_AXIS = {"stringer_a", "stringer_b", "stringer_c", "hw_rake_nailer", "nk_s
 # dimension has to run along the sheet's 8 ft length — which caps every piece at
 # 48 in x and means one deck piece per sheet, not two.
 PANEL_SPLITS = {
-    "deck_ply":     ([38.25, 36.0, 32.0], 48.25,
-                     "joints on deck_joist centres x 38 1/4 and 74 1/4"),
-    "loft_ceiling": ([38.25, 36.0, 27.75], 50.0,
-                     "joints on deck_joist centres x 38 1/4 and 74 1/4"),
-    "beam_wrap_face":  ([53.5, 53.5], 14.75, "joint on x 53 1/2, over deck_joist[4]"),
-    "beam_wrap_inner": ([53.125, 53.125], 9.75, "joint on x 53 1/8, the ledge's joint line"),
-    "beam_wrap_top":   ([53.5, 53.5], 3.25, "joint on x 53 1/2, with the face wrap"),
-    "ledge_front_rail": ([53.125, 53.125], 10.25,
+    # deck: 106 1/4 x 48 1/4 — a quarter inch over a sheet's 48 width in y, so that
+    # dimension always has to run along the 96 length.
+    #
+    # Rev AW, at the builder's direction: THREE pieces, chosen for joinery over yield.
+    # Two long rows run x 0 to 62 1/4 with the cross-joist seam between them at y 24,
+    # and one full-depth 44 x 48 1/4 panel covers x 62 1/4 to the landing end with NO seam in
+    # it — that is the stretch you step onto off the stairs, the only part of the deck
+    # walked on rather than slept on. Both seams end up under the mattress (x 2 to 77):
+    # the long one lands on joist 5's centre at 62 1/4 and needs no blocking at all, and
+    # the cross seam is shortened from the full 106 1/4 to 62 1/4, dropping the seam
+    # blocks from nine to five. 62 1/4 is the furthest in the seam can go: one more joist
+    # would need a 56 wide panel and 48 is the sheet width. It costs one sheet against the four-piece version.
+    "deck_ply": ([(62.25, 24.0), (62.25, 24.25), (44.0, 48.25)],
+                 "two rows to x 62 1/4 either side of the y-24 seam, then one full-depth "
+                 "44 x 48 1/4 panel over the landing end; long seam on joist 5's centre, "
+                 "14 3/4 inside the mattress edge"),
+    # ceiling: 102 x 50. EVERY seam runs along a joist, at the builder's direction —
+    # three pieces, two seams, both on joist centres (38 1/4 and 74 1/4) and so fully
+    # backed. That rules out a cross-joist seam and with it the butt joint hanging
+    # between joists that a painted 3/4 ceiling can telegraph through. Since 50 is over
+    # the 48 sheet width, each piece's 50 must run along the 96 and only one ceiling
+    # piece fits per sheet: this costs a sheet against the two-row version, and the
+    # offcuts are large and go back into the pool. Both seams clear all three downlights
+    # (rough-in holes at x 9 7/8-14 1/8 and 59 7/8-66 1/8).
+    "loft_ceiling": ([(38.25, 50.0), (36.0, 50.0), (27.75, 50.0)],
+                     "three pieces, seams on the joist centres at 38 1/4 and 74 1/4 — "
+                     "every ceiling seam is backed by a joist; clear of all downlights"),
+    "beam_wrap_face":   ([(53.5, 14.75), (53.5, 14.75)], "joint on x 53 1/2, over deck_joist[4]"),
+    "beam_wrap_inner":  ([(53.125, 9.75), (53.125, 9.75)], "joint on x 53 1/8, the ledge's joint line"),
+    "beam_wrap_top":    ([(53.5, 3.25), (53.5, 3.25)], "joint on x 53 1/2, with the face wrap"),
+    "ledge_front_rail": ([(53.125, 10.25), (53.125, 10.25)],
                          "joint on x 53 1/8 = centre of ledge_strut[1], backed by ledge_rail_splice"),
-    "ledge_lid":        ([53.125, 53.875], 8.0,
+    "ledge_lid":        ([(53.125, 8.0), (53.875, 8.0)],
                          "joint on x 53 1/8, over ledge_strut[1]; no splice needed"),
 }
 
 HANGERS = ("LUS24", "HUC28", "A35")
+
+# ---------------------------------------------------------------- ply grade groups
+# Pieces of different grades cannot share a sheet, so the nest has to run per group,
+# not on "3/4 ply" as one pool. Grade is a purchasing decision, not a geometric one,
+# so the split lives here rather than in the model. `role:` in the yaml does not carry
+# it — role is sheet/finish/structural, which mixes "is it a panel" with "is it seen".
+#
+# The striking result: almost every 3/4 piece is a SEEN, painted face. Only the deck
+# and the rail splice are hidden. See the TBD tab for the deck-surface question that
+# hangs off this.
+# DECIDED 2026-09-07: the deck IS the finished walking surface, so it is paint-grade
+# like everything else and the set is empty. Kept rather than deleted because the
+# distinction is real and would come back the moment anything hidden gets added.
+HIDDEN: set[str] = set()
+
+
+def grade_group(pid, stock):
+    if stock != "ply-3/4":
+        return stock
+    base = pid.split("[")[0].split("#")[0].split(" ")[0]
+    return "ply-3/4 structural" if base in HIDDEN else "ply-3/4 paint-grade"
+
+
+# ------------------------------------------------------------------------- nesting
+# Guillotine first-fit-decreasing over a free-rectangle list. Not an optimiser — it
+# is deterministic and it never overlaps, which is what a buy count needs. Rotation
+# is allowed everywhere: at 12 in joist spacing and an 11-5/8 stringer pitch, 3/4 ply
+# is far inside its span rating in EITHER direction, so face-grain direction is not
+# structurally binding anywhere in this build. The layout tab reports which pieces
+# came out rotated so an appearance call can override one.
+def nest(pieces, sheet=(SHEET_W, SHEET_L), kerf=KERF):
+    """pieces: [(w, h, label)]. Returns [[(x, y, w, h, label, rotated), ...], ...]."""
+    SW, SL = sheet
+    sheets = []
+    for w, h, label in sorted(pieces, key=lambda p: (-max(p[0], p[1]), -p[0] * p[1])):
+        for sh in sheets:
+            if _place(sh, w, h, label, kerf):
+                break
+        else:
+            sh = dict(free=[(0.0, 0.0, SW, SL)], placed=[])
+            if not _place(sh, w, h, label, kerf):
+                sh["placed"].append((0.0, 0.0, w, h, label, False, True))  # oversize
+            sheets.append(sh)
+    _assert_sane(sheets, sheet)
+    return sheets
+
+
+def _assert_sane(sheets, sheet):
+    """No two pieces may overlap and none may hang off the sheet. This is cheap and
+    it is the one property a cutting diagram absolutely has to have."""
+    SW, SL = sheet
+    for n, sh in enumerate(sheets):
+        ps = [p for p in sh["placed"] if not p[6]]
+        for x, y, w, h, label, _, _ in ps:
+            assert x >= -1e-9 and y >= -1e-9 and x + w <= SW + 1e-9 and y + h <= SL + 1e-9, \
+                f"sheet {n}: {label} runs off the sheet"
+        for i in range(len(ps)):
+            ax, ay, aw, ah = ps[i][:4]
+            for j in range(i + 1, len(ps)):
+                bx, by, bw, bh = ps[j][:4]
+                if ax < bx + bw - 1e-9 and bx < ax + aw - 1e-9 and \
+                   ay < by + bh - 1e-9 and by < ay + ah - 1e-9:
+                    raise AssertionError(f"sheet {n}: {ps[i][4]} overlaps {ps[j][4]}")
+
+
+def _place(sh, w, h, label, kerf):
+    best = None
+    for i, (fx, fy, fw, fh) in enumerate(sh["free"]):
+        for pw, ph, rot in ((w, h, False), (h, w, True)):
+            if pw + kerf <= fw + 1e-9 and ph + kerf <= fh + 1e-9:
+                waste = fw * fh - pw * ph
+                if best is None or waste < best[0]:
+                    best = (waste, i, pw, ph, rot)
+    if best is None:
+        return False
+    _, i, pw, ph, rot = best
+    fx, fy, fw, fh = sh["free"].pop(i)
+    sh["placed"].append((fx, fy, pw, ph, label, rot, False))
+    # guillotine: split the remainder along the shorter leftover axis
+    right = (fx + pw + kerf, fy, fw - pw - kerf, fh)
+    top = (fx, fy + ph + kerf, pw + kerf, fh - ph - kerf)
+    if fw - pw < fh - ph:
+        right = (fx + pw + kerf, fy, fw - pw - kerf, ph + kerf)
+        top = (fx, fy + ph + kerf, fw, fh - ph - kerf)
+    for r in (right, top):
+        if r[2] > 0.5 and r[3] > 0.5:
+            sh["free"].append(r)
+    return True
+
+
+def layout_svg(groups, path):
+    """One page of sheet diagrams. Drawn at 3 px/in with the pieces labelled."""
+    S, PAD, COLS = 3.0, 18, 4
+    W, H = SHEET_W * S, SHEET_L * S
+    cells = [(g, i, sh) for g, shs in groups for i, sh in enumerate(shs)]
+    rows = (len(cells) + COLS - 1) // COLS
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{COLS*(W+PAD)+PAD:.0f}" '
+           f'height="{rows*(H+PAD+26)+PAD:.0f}" font-family="system-ui,sans-serif">',
+           '<rect width="100%" height="100%" fill="#fff"/>']
+    for n, (g, i, sh) in enumerate(cells):
+        ox = PAD + (n % COLS) * (W + PAD)
+        oy = PAD + (n // COLS) * (H + PAD + 26) + 20
+        out.append(f'<text x="{ox}" y="{oy-7}" font-size="11" font-weight="600">'
+                   f'{g} — sheet {i+1}</text>')
+        out.append(f'<rect x="{ox}" y="{oy}" width="{W}" height="{H}" fill="#fafafa" '
+                   f'stroke="#333" stroke-width="1.2"/>')
+        for (x, y, w, h, label, rot, over) in sh["placed"]:
+            px, py, pw, ph = ox + x * S, oy + y * S, w * S, h * S
+            out.append(f'<rect x="{px:.1f}" y="{py:.1f}" width="{pw:.1f}" height="{ph:.1f}" '
+                       f'fill="{"#fde2e0" if over else "#dce9f5"}" stroke="#33506b" stroke-width="0.8"/>')
+            if pw > 26 and ph > 21:
+                out.append(f'<text x="{px+3:.1f}" y="{py+11:.1f}" font-size="7.5">'
+                           f'{label[:26]}{"  ⟳" if rot else ""}</text>')
+                out.append(f'<text x="{px+3:.1f}" y="{py+20:.1f}" font-size="7" fill="#555">'
+                           f'{fr(w)} × {fr(h)}</text>')
+            elif pw > 20 and ph > 7:
+                out.append(f'<text x="{px+2:.1f}" y="{py+ph/2+2.2:.1f}" font-size="6">'
+                           f'{label[:22]} {fr(w)}×{fr(h)}</text>')
+            elif ph > 20 and pw > 7:   # tall and narrow: run the label up the piece
+                out.append(f'<text x="{px+pw/2+2.2:.1f}" y="{py+ph-3:.1f}" font-size="6" '
+                           f'transform="rotate(-90 {px+pw/2+2.2:.1f} {py+ph-3:.1f})">'
+                           f'{label[:22]} {fr(w)}×{fr(h)}</text>')
+    out.append("</svg>")
+    open(path, "w").write("\n".join(out))
+
 
 # Nominal board widths, for naming poplar and any other board bought by the 1xN.
 BOARD_NOMINAL = [(3.5, "1x4"), (5.5, "1x6"), (7.25, "1x8"), (9.25, "1x10"), (11.25, "1x12")]
@@ -288,16 +436,30 @@ def main():
     for r in panels:
         key = r["id"]
         if key in PANEL_SPLITS:
-            lens, cross, why = PANEL_SPLITS[key]
-            for i, L in enumerate(lens):
-                flat.append((L, cross, f"{key} pc{i+1}", r["stock"], why))
+            parts, why = PANEL_SPLITS[key]
+            for i, (L, W) in enumerate(parts):
+                flat.append((L, W, f"{key} pc{i+1}", r["stock"], why))
         else:
             flat.append((r["length"], r["w"], key, r["stock"], r["note"]))
-    for stock in sorted({f[3] for f in flat}):
-        mine = [(L, W, lab) for L, W, lab, s, _ in flat if s == stock]
-        sheets = shelf_sheets(mine)
-        buy.append([stock, "TBD", "4 x 8 sheet", len(sheets), "sheet",
-                    f"{len(mine)} pieces; indicative shelf packing, see the Sheet goods tab"])
+    by_grade = defaultdict(list)
+    for L, W, lab, st, _ in flat:
+        by_grade[grade_group(lab, st)].append((L, W, lab))
+    nests = []
+    for grade in sorted(by_grade):
+        sheets = nest(by_grade[grade])
+        nests.append((grade, sheets))
+        over = sum(1 for sh in sheets for pl in sh["placed"] if pl[6])
+        used = sum(w * h for sh in sheets for (_, _, w, h, _, _, o) in sh["placed"] if not o)
+        total = len(sheets) * SHEET_W * SHEET_L
+        buy.append([grade, "TBD", "4 x 8 sheet", len(sheets), "sheet",
+                    f"{len(by_grade[grade])} pieces nested at {used/total:.0%} of sheet area; "
+                    f"{fr((total - used) / 144)} sq ft offcut"
+                    + ("  ·  SOME PIECES DO NOT FIT A SHEET" if over else "")
+                    + ("  ·  low yield on a single sheet: the longest piece is "
+                       f"{fr(max(max(L, W) for L, W, _ in by_grade[grade]))}, so a 4 x 4 "
+                       "half sheet covers it if the yard cuts one"
+                       if len(sheets) == 1 and used / total < 0.25 else "")
+                    + "  ·  see the Cut layout tab and materials/cut-layout.svg"])
     buy.append(["lvl-2x14", "LVL (1 3/4 x 14)", "10 ft preferred", 1, "board",
                 "the beam is ONE 106 1/4 notched board. Home Depot stocks 14 ft "
                 "(LPLVL14-14) which works with 62 in of waste; a yard 10 ft is the "
@@ -317,11 +479,10 @@ def main():
             src = f"lamination of {r['parent']}"
         note = "" if r["note"] == src else r["note"]
         if r["id"] in PANEL_SPLITS:
-            lens, cross, why = PANEL_SPLITS[r["id"]]
-            note = (f"CUT AS {len(lens)} PIECES: "
-                    + " + ".join(sixteenths(L) for L in lens)
-                    + f", each {sixteenths(cross)} — {why}"
-                    + (f". {note}" if note else ""))
+            parts, why = PANEL_SPLITS[r["id"]]
+            note = (f"CUT AS {len(parts)} PIECES: "
+                    + " + ".join(f"{sixteenths(L)}×{sixteenths(W)}" for L, W in parts)
+                    + f" — {why}" + (f". {note}" if note else ""))
         key = (r["stock"], round(r["length"], 4), round(r["w"], 4), round(r["t"], 4),
                r["assembly"], src, note)
         groups.setdefault(key, []).append(r["id"])
@@ -348,6 +509,20 @@ def main():
           ["Panel", "Stock", "Long", "Short", "From a split?", "Notes / joint"],
           [26, 14, 10, 10, 14, 90])
 
+    # -------------------------------------------------------------- Cut layout
+    ws = wb.create_sheet("Cut layout")
+    lay = []
+    for grade, sheets in nests:
+        for i, sh in enumerate(sheets, 1):
+            for (x, y, w, h, label, rot, over) in sorted(sh["placed"], key=lambda p: (p[1], p[0])):
+                lay.append([grade, i, label, sixteenths(w), sixteenths(h),
+                            sixteenths(x), sixteenths(y),
+                            "rotated" if rot else "", "DOES NOT FIT" if over else ""])
+    write(ws, lay,
+          ["Grade", "Sheet", "Piece", "W", "H", "From edge X", "From edge Y",
+           "Grain", "Flag"], [22, 7, 26, 9, 9, 12, 12, 10, 14])
+    layout_svg(nests, os.path.join(os.path.dirname(OUT), "cut-layout.svg"))
+
     # ---------------------------------------------------------- Hardware
     ws = wb.create_sheet("Hardware")
     hw = [[h, tally[h], "Simpson", ""] for h in HANGERS if tally[h]]
@@ -360,6 +535,27 @@ def main():
     # ---------------------------------------------------------- TBD
     ws = wb.create_sheet("TBD and assumptions")
     tbd = [
+        ["CLOSED", "Deck and ceiling ply layouts, chosen for joinery (Rev AX)",
+         "The deck is THREE pieces: two rows to x 62 1/4 either side of a blocked "
+         "cross-joist seam at y 24, then one full-depth 44 x 48 1/4 panel over the landing "
+         "end with no seam in it — the part walked on rather than slept on. Both seams sit "
+         "under the mattress; the long one lands on joist 5 and needs no blocking. 62 1/4 "
+         "is the furthest in it can go: the next joist would need a 56 wide panel against a "
+         "48 sheet width. The ceiling is three pieces with BOTH seams on joist centres "
+         "(38 1/4, 74 1/4), so every ceiling seam is backed. "
+         "Trimming the deck to a flat 48 was considered and rejected — it changed no sheet "
+         "count and would have left beam_wrap_inner's foot over a 1/4 void. "
+         "COST, stated plainly: these layouts are 9 sheets at 64%. The cheapest nest was 7 "
+         "at 83%, with a full-width deck seam and a cross-joist seam in the ceiling. Two "
+         "sheets bought better joinery, knowingly."],
+        ["CLOSED", "The loft deck IS the finished walking surface (2026-09-07)",
+         "It decides the deck's grade, which is why it matters here. The mattress covers "
+         "y 8 3/4 to 46 3/4 out to about x 77; the rest is walked on and nothing in the "
+         "model covers it. If it is the finished floor it wants a sanded, paintable face "
+         "and sealed edges rather than rated sheathing — and the whole 3 sheets move to "
+         "the paint-grade group. Nesting is indifferent: 3/4 ply comes to the same 10 "
+         "sheets whether it is bought as one pool or split by grade, so this is purely "
+         "about the product and the price, not the quantity."],
         ["GRADE", "Every species/grade cell says TBD",
          "Pending price and availability. Three ply grades are needed and they are "
          "not interchangeable: structural (deck_ply, the half-wall sheathing), "

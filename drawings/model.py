@@ -287,6 +287,14 @@ VALS.update({
     "ledge_h": fr(float(M["ledge_lid"].z[1]) - DECK),
     "ledge_well_w": fr(float(M["ledge_front_rail"].y[0]) - float(M["rear_ledger"].y[1])),
     "ledge_well_h": fr(float(M["ledge_front_rail"].z[1]) - DECK), "slat_count": str(SCR["slat_count"]),
+    # The deck's ply layout: n seam blocks fill the bays between joists 0…n, so the
+    # long seam lands on joist n's centre and the unseamed landing panel is whatever is
+    # left beyond it. Deriving all three off the block count means prose and labels
+    # cannot drift from each other the next time the seam moves — which it has, twice.
+    "deck_seam_blocks": str(len([k for k in M if k.startswith("deck_seam_blocking[")])),
+    "deck_seam_x": fr(sum(m(f"deck_joist[{len([k for k in M if k.startswith('deck_seam_blocking[')])}]").x) / 2),
+    "deck_panel_w": fr(float(m("deck_ply").x[1])
+                       - sum(m(f"deck_joist[{len([k for k in M if k.startswith('deck_seam_blocking[')])}]").x) / 2),
     "stair_fin": fr(Y_FIN), "landing_fin": fr(m("lnd_ply").y[1]), "riser_t": fr(RISER_T),
     "board_w": fr(STAIR_X[1] - STAIR_X[0]), "board_w_skin": fr(STAIR_X[1] - SKIN_X0),
     "skin_y0": fr(SKIN_Y0), "skin_y1": fr(float(SKIN.y[1])), "step_y": fr(STEP_Y),

@@ -10,6 +10,7 @@ def d3():
     R(v, m("rear_ledger"), "y", "z", "lum", HATCH)
     R(v, m("deck_joist[4]"), "y", "z", "lum2")
     R(v, m("deck_blocking[4]"), "y", "z", "lum", HATCH)   # x 51→61½ contains the cut
+    R(v, m("deck_seam_blocking[4]"), "y", "z", "lum", HATCH)  # same bay, so also cut
     R(v, m("deck_ply"), "y", "z", "sheet", HATCH)
     R(v, m("loft_ceiling"), "y", "z", "fin", HATCH)
     for k in ("ledge_cleat", "ledge_cleat_rail"): R(v, m(k), "y", "z", "lum", HATCH)

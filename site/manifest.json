@@ -1,7 +1,7 @@
 {
- "rev": "AU",
+ "rev": "AX",
  "yaml": "dimensions.yaml",
- "generated": "2026-09-06",
+ "generated": "2026-09-07",
  "figures": {
   "d1": {
    "sheet": "1",
@@ -18,8 +18,8 @@
   "d3": {
    "sheet": "3",
    "page": "loft",
-   "sha": "89d3c5781650",
-   "elements": 94
+   "sha": "786324e9b1dd",
+   "elements": 95
   },
   "d4": {
    "sheet": "4",
@@ -42,8 +42,8 @@
   "d6": {
    "sheet": "6",
    "page": "loft",
-   "sha": "823e747d0060",
-   "elements": 73
+   "sha": "d8fd319d02ec",
+   "elements": 79
   },
   "d7a": {
    "sheet": "7",
@@ -80,6 +80,6 @@
   "index": "dfff9f7cad40",
   "stairs": "b3664cf208b5",
   "loft": "037619a9864c",
-  "appendix": "3d0920bc0e8c"
+  "appendix": "8a03725323b5"
  }
 }

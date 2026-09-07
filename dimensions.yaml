@@ -43,7 +43,7 @@
 #     cad-out/loft.txt carries both areas.
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AU
+rev: AX
 units: inches
 room:
   x: 131
@@ -319,6 +319,39 @@ members:
     over the half wall, where the beam is notched down onto hw_top_plate_2, so it is the last
     one to leave open. x 0 to 1 1/2 needs nothing: side_ledger runs the full y 0 to 50 and
     already backs the ply edge there.'
+- id: deck_seam_blocking
+  stock: 2x4
+  x:
+  - 3
+  - 13.5
+  y:
+  - 22.25
+  - 25.75
+  z:
+  - 55.75
+  - 57.25
+  repeat:
+    count: 5
+    axis: x
+    pitch: 12
+  role: structural
+  note: 'Rev AX: FIVE blocks. The deck''s cross-joist seam stops at x 62 1/4, joist 5''s centre,
+    where the layout changes to one full-depth 44 x 48 1/4 panel over the landing end - moved
+    one joist further in than Rev AW''s 74 1/4 so the seam sits 14 3/4 inside the mattress edge
+    at x 77 instead of 2 3/4. 62 1/4 is as far as it can go: the next joist in would need a 56
+    wide panel, and 48 1/4 already has to run along the sheet''s 96, so 48 is the hard limit on
+    its width. The blocked run is x 3 to 61 1/2; everything beyond is either the joist the seam
+    lands on or the unseamed panel. Rev AV: FLAT (3 1/2 in y, 1 1/2 deep) under the deck
+    ply''s seam at y 24,
+    which gives 1 3/4 of bearing to each panel edge - the beam-face blocking is on edge
+    because it backs one edge and wants depth for screws; this backs two and wants width.
+    The seam exists to save a sheet: the deck is 48 1/4 in y, over a sheet''s 48 width, so
+    without it each of the three pieces takes its own sheet (three sheets, 37% yield, and the
+    47 3/4 offcuts are stranded). Split into two rows of 24 and 24 1/4 it nests on TWO.
+    The seam runs ACROSS the joists, not along one - it cannot land on a joist centre, which
+    is why it needs blocking; it is caught where it crosses each joist and unsupported over
+    the 10 1/2 between. y 24 puts it under the mattress (y 8 3/4 to 46 3/4), so it is never
+    seen. x 0 to 1 1/2 needs none: side_ledger runs the full y 0 to 50 and backs it there.'
 - id: deck_ply
   stock: ply-3/4
   x:
@@ -1453,6 +1486,41 @@ connections:
   b: deck_blocking_end
   type: bearing
   fastener: 'construction adhesive + #8 x 1-5/8 at 6 in o.c., as deck_blocking'
+- a: deck_seam_blocking[0]
+  b: deck_joist[0]
+  type: face-screw
+  face: x
+  fastener: 2 x 3 in screws toe-driven at EACH end - into deck_joist[0] here and
+    deck_joist[1] at the far end, which carries no row of its own
+- a: deck_seam_blocking[1]
+  b: deck_joist[1]
+  type: face-screw
+  face: x
+  fastener: 2 x 3 in screws toe-driven at EACH end - into deck_joist[1] here and
+    deck_joist[2] at the far end, which carries no row of its own
+- a: deck_seam_blocking[2]
+  b: deck_joist[2]
+  type: face-screw
+  face: x
+  fastener: 2 x 3 in screws toe-driven at EACH end - into deck_joist[2] here and
+    deck_joist[3] at the far end, which carries no row of its own
+- a: deck_seam_blocking[3]
+  b: deck_joist[3]
+  type: face-screw
+  face: x
+  fastener: 2 x 3 in screws toe-driven at EACH end - into deck_joist[3] here and
+    deck_joist[4] at the far end, which carries no row of its own
+- a: deck_seam_blocking[4]
+  b: deck_joist[4]
+  type: face-screw
+  face: x
+  fastener: 2 x 3 in screws toe-driven at EACH end - into deck_joist[4] here and
+    deck_joist[5] at the far end, which carries no row of its own
+- a: deck_ply
+  b: deck_seam_blocking[*]
+  type: bearing
+  fastener: 'construction adhesive + #8 x 1-5/8 at 6 in o.c. through BOTH panel edges - the
+    seam is a butt joint in the deck diaphragm and both sides land on this block (Rev AV)'
 - a: deck_ply
   b: side_ledger
   type: bearing

@@ -6,10 +6,10 @@ Full write-up: `audits/V-kernel-spike.md`.
 
 ```
 cad kernel · build123d 0.11.1 · OCP 7.9.3.1.1 · python 3.13.12
-dimensions.yaml rev AU · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
+dimensions.yaml rev AX · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
 
-[build] 118 solids (12 derived, not yaml members)
-        loft        35 solids    10.56 cu ft
+[build] 123 solids (12 derived, not yaml members)
+        loft        40 solids    10.72 cu ft
         screen      24 solids     1.10 cu ft
         stair       26 solids     3.67 cu ft
         half_wall   18 solids     3.14 cu ft
@@ -27,6 +27,6 @@ dimensions.yaml rev AU · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.1
 [fasteners] 8 rays → cad-out/fasteners.txt
 [section] cut+HLR → cad-out/d4-kernel.svg, cad-out/d8b-kernel.svg
           worst cut-edge deviation vs d4.svg: 0.0048" on stringer_b (1/16" = 0.0625)
-[export] model.step 2147 kB, model.stl 80 kB
-         re-imported: 114 solids (wrote 114), volume 34955.94 vs 34955.94 cu in, Δ 0.0000
+[export] model.step 2232 kB, model.stl 83 kB
+         re-imported: 119 solids (wrote 119), volume 35231.57 vs 35231.57 cu in, Δ 0.0000
 ```
