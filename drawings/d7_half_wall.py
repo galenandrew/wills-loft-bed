@@ -58,7 +58,10 @@ def d7b():
     for k in ("beam_wrap_face", "beam_wrap_inner", "beam_wrap_top"): R(v, m(k), "y", "z", "fin")
     for k in ("lnd_side_member", "lnd_rim", "lnd_ply"): R(v, m(k), "y", "z", "dashfill")
     v.poly([p for p in stringer_pts() if p[0] <= 27.01], "dashfill")
-    for y in (m("hw_king_a").y[1], m("hw_king_b").y[0]): v.out.append(f'<circle class="strap" cx="{v.X(y):.1f}" cy="{v.Y(46):.1f}" r="{1.6*v.s:.1f}"/>')
+    # Rev BA.1: the two red strap markers at the header-to-king joints are GONE. Rev AS
+    # scrapped the straps — the joint is closed by sheathing on both faces plus the two
+    # continuous top plates — and Open Items has said so since, while this sheet went on
+    # drawing them and telling the builder to fit them. Found by connection-checker at BA.
     v.text(25, 47.4, f"2×10 + ½ ply + 2×10 = 3½ wide × {fr(m('hw_header').size('z'))} deep, full stock · {fr(m('hw_header').size('y'))} long · bears {fr(m('hw_trimmer_a').y[1] - m('hw_header').y[0])} each end", "labs", "middle", dy=4)
     v.text(25, 45.4, "sized by connection depth, not load (~140 psi)", "labs", "middle", dy=4)
     v.text(25, 55.4, "double top plate — deck rim bears here", "labs", "middle", dy=4)
@@ -67,7 +70,7 @@ def d7b():
     v.text(31, 26, "rake nailer — dies straight onto stringer A", "labs", "middle")
     v.text(0.75, 25, "king", "labs", "middle", rot=-90); v.text(2.75, 25, "½ ply + trimmer", "labs", "middle", rot=-90); v.text(3.9, 25, "ply wrap", "labs", "middle", rot=-90)
     v.text(5, 39.4, "landing beyond — side member, rim, deck (dashed)", "labs", "start"); v.text(27, 34.5, "stringer A beyond", "labs", "start")
-    v.text(4, 49.6, "strap both header-to-king joints", "labb", "start")
+    v.text(4, 49.6, "header-to-king: no straps — sheathed both faces + 2 top plates over", "labs", "start")
     v.text(46, m("beam_wrap_top").z[1] - 3.7, "beam end — bypasses the opening", "labk", "end")
     v.dim_v(-3, 0, m("hw_top_plate_2").z[1], f"{fr(m('hw_top_plate_2').z[1])} to top plate"); v.dim_v(20, 0, CEIL, f"{fr(CEIL)} finished head", left=True)
     v.dim_v(52.5, 0, m("beam_wrap_top").z[1], f"{fr(m('beam_wrap_top').z[1])} beam top, finished", left=False)
@@ -75,4 +78,4 @@ def d7b():
     return v.svg("Half-wall section at x = 104.5, bed wall on the left")
 
 FIGURES = [("d7a", d7a), ("d7b", d7b)]
-CAPTION = f"Plan detail is a horizontal section at {fr(CUT_Z)} — deliberately low, because the opening head is raked and only below {fr(DER['nook_far_end_height'])} is the opening its full {fr(NOOK_Y[1]-NOOK_Y[0])} rough width across the whole span. Rotated so the bed wall is on the left and the stair side up. The opening removes both faces: what remains is two posts and a sandwich header — a portal frame, not a shear wall. The beam's reaction bypasses it (lands on the far stud pack); the landing box ties the top plate across to the right wall. Glue the deck ply and strap both header-to-king joints. <b>Rev AE:</b> the stair side of the wall is not sheathed below the stair. Stringer A lands on the framing at x {fr(m('stringer_a').x[0])}, the landing box with it, and both bottom plates run on through into the nook as single boards; what is left of the stair face is <code>hw_sheath_stair</code>, a skirt above the stringers&#8217; top line. At this cut the wall is therefore {fr(m('hw_king_a').x[1] - m('hw_sheath_loft_a').x[0])} thick, not 5."
+CAPTION = f"Plan detail is a horizontal section at {fr(CUT_Z)} — deliberately low, because the opening head is raked and only below {fr(DER['nook_far_end_height'])} is the opening its full {fr(NOOK_Y[1]-NOOK_Y[0])} rough width across the whole span. Rotated so the bed wall is on the left and the stair side up. The opening removes both faces: what remains is two posts and a sandwich header — a portal frame, not a shear wall. The beam's reaction bypasses it (lands on the far stud pack); the landing box ties the top plate across to the right wall. Glue the deck ply. <b>The header-to-king joints are NOT strapped</b> (Rev AS): the wall is sheathed across both of them &#8212; <code>hw_sheath_stair</code> on the stair face and the one-piece nook face on the loft face &#8212; and the two continuous top plates bear over the header and both kings. Rev AZ took the loft face to &#189; and the builder accepted it: the joint carries gravity into the trimmers, whose bearing is checked, so the sheathing is a racking and continuity gusset rather than a tension tie. <b>Rev AE:</b> the stair side of the wall is not sheathed below the stair. Stringer A lands on the framing at x {fr(m('stringer_a').x[0])}, the landing box with it, and both bottom plates run on through into the nook as single boards; what is left of the stair face is <code>hw_sheath_stair</code>, a skirt above the stringers&#8217; top line. At this cut the wall is therefore {fr(m('hw_king_a').x[1] - m('hw_sheath_loft_a').x[0])} thick, not 5."

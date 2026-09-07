@@ -1,5 +1,5 @@
 {
- "rev": "BA",
+ "rev": "BA.1",
  "yaml": "dimensions.yaml",
  "generated": "2026-09-07",
  "figures": {
@@ -54,8 +54,8 @@
   "d7b": {
    "sheet": "7",
    "page": "loft",
-   "sha": "99fafa3d81d6",
-   "elements": 78
+   "sha": "4275c5bf5fbb",
+   "elements": 76
   },
   "d8a": {
    "sheet": "8",
@@ -79,7 +79,7 @@
  "pages": {
   "index": "0093a5b149cb",
   "stairs": "72ee7d4c0d8f",
-  "loft": "103a9d69f127",
-  "appendix": "4420603969ec"
+  "loft": "683d365366f0",
+  "appendix": "2fa7141e5a81"
  }
 }
