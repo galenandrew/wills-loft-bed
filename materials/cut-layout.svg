@@ -2,133 +2,133 @@
 <rect width="100%" height="100%" fill="#fff"/>
 <text x="18.0" y="31.0" font-size="11" font-weight="600">ply-1/2 — sheet 1</text>
 <rect x="18.0" y="38.0" width="144.0" height="288.0" fill="#fafafa" stroke="#333" stroke-width="1.2"/>
-<rect x="18.0" y="38.0" width="141.0" height="27.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="21.0" y="49.0" font-size="7.5">hw_header#ply-1/2</text>
-<text x="21.0" y="58.0" font-size="7" fill="#555">47 × 9¼</text>
-<rect x="18.0" y="66.1" width="120.0" height="10.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="20.0" y="73.6" font-size="6">hw_jamb_ply_a 40×3½</text>
-<rect x="18.0" y="77.0" width="120.0" height="10.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="20.0" y="84.5" font-size="6">hw_jamb_ply_b 40×3½</text>
-<text x="180.0" y="31.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 1</text>
+<rect x="18.0" y="38.0" width="137.2" height="161.2" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="21.0" y="49.0" font-size="7.5">hw_sheath_loft_head  ⟳</text>
+<text x="21.0" y="58.0" font-size="7" fill="#555">45¾ × 53¾</text>
+<rect x="18.0" y="199.6" width="141.0" height="27.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="21.0" y="210.6" font-size="7.5">hw_header#ply-1/2</text>
+<text x="21.0" y="219.6" font-size="7" fill="#555">47 × 9¼</text>
+<rect x="18.0" y="227.8" width="120.0" height="10.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="20.0" y="235.2" font-size="6">hw_jamb_ply_a 40×3½</text>
+<rect x="18.0" y="238.6" width="120.0" height="10.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="20.0" y="246.1" font-size="6">hw_jamb_ply_b 40×3½</text>
+<rect x="18.0" y="249.5" width="84.8" height="48.2" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="21.0" y="260.5" font-size="7.5">nk_wrap_shortwall</text>
+<text x="21.0" y="269.5" font-size="7" fill="#555">28¼ × 16.07</text>
+<text x="180.0" y="31.0" font-size="11" font-weight="600">ply-1/2 — sheet 2</text>
 <rect x="180.0" y="38.0" width="144.0" height="288.0" fill="#fafafa" stroke="#333" stroke-width="1.2"/>
-<rect x="180.0" y="38.0" width="72.8" height="186.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="183.0" y="49.0" font-size="7.5">deck_ply pc2  ⟳</text>
-<text x="183.0" y="58.0" font-size="7" fill="#555">24¼ × 62¼</text>
-<rect x="253.1" y="38.0" width="24.0" height="161.6" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="255.1" y="121.0" font-size="6">ledge_lid pc2 8×53 7/8</text>
-<rect x="277.5" y="38.0" width="12.8" height="161.2" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="286.1" y="196.2" font-size="6" transform="rotate(-90 286.1 196.2)">hw_sheath_loft_a 4¼×53¾</text>
-<rect x="290.6" y="38.0" width="9.8" height="160.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="297.7" y="195.5" font-size="6" transform="rotate(-90 297.7 195.5)">beam_wrap_top pc1 3¼×53½</text>
-<rect x="300.8" y="38.0" width="9.8" height="160.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="307.8" y="195.5" font-size="6" transform="rotate(-90 307.8 195.5)">beam_wrap_top pc2 3¼×53½</text>
-<rect x="180.0" y="225.1" width="124.5" height="84.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="183.0" y="236.1" font-size="7.5">nk_wrap_bedwall</text>
-<text x="183.0" y="245.1" font-size="7" fill="#555">41½ × 28¼</text>
-<rect x="290.6" y="198.9" width="30.0" height="21.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="293.6" y="209.9" font-size="7.5">ledge_rail_splice</text>
-<text x="293.6" y="218.9" font-size="7" fill="#555">10 × 7¼</text>
-<text x="342.0" y="31.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 2</text>
+<rect x="180.0" y="38.0" width="12.8" height="161.2" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="188.6" y="196.2" font-size="6" transform="rotate(-90 188.6 196.2)">hw_sheath_loft_a 4¼×53¾</text>
+<rect x="193.1" y="38.0" width="43.5" height="160.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="196.1" y="49.0" font-size="7.5">beam_wrap_face pc1  ⟳</text>
+<text x="196.1" y="58.0" font-size="7" fill="#555">14½ × 53½</text>
+<rect x="237.0" y="38.0" width="43.5" height="160.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="240.0" y="49.0" font-size="7.5">beam_wrap_face pc2  ⟳</text>
+<text x="240.0" y="58.0" font-size="7" fill="#555">14½ × 53½</text>
+<rect x="280.9" y="38.0" width="8.2" height="160.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="287.2" y="195.5" font-size="6" transform="rotate(-90 287.2 195.5)">beam_wrap_top pc1 2¾×53½</text>
+<rect x="289.5" y="38.0" width="8.2" height="160.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="295.8" y="195.5" font-size="6" transform="rotate(-90 295.8 195.5)">beam_wrap_top pc2 2¾×53½</text>
+<rect x="298.1" y="38.0" width="14.2" height="159.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="307.4" y="194.8" font-size="6" transform="rotate(-90 307.4 194.8)">hw_end_cap 4¾×53¼</text>
+<rect x="193.1" y="198.9" width="113.9" height="84.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="196.1" y="209.9" font-size="7.5">nk_soffit_rake</text>
+<text x="196.1" y="218.9" font-size="7" fill="#555">37.97 × 28¼</text>
+<text x="342.0" y="31.0" font-size="11" font-weight="600">ply-1/2 — sheet 3</text>
 <rect x="342.0" y="38.0" width="144.0" height="288.0" fill="#fafafa" stroke="#333" stroke-width="1.2"/>
-<rect x="342.0" y="38.0" width="72.0" height="186.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="345.0" y="49.0" font-size="7.5">deck_ply pc1  ⟳</text>
-<text x="345.0" y="58.0" font-size="7" fill="#555">24 × 62¼</text>
-<rect x="414.4" y="38.0" width="44.2" height="160.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="417.4" y="49.0" font-size="7.5">beam_wrap_face pc1  ⟳</text>
-<text x="417.4" y="58.0" font-size="7" fill="#555">14¾ × 53½</text>
-<rect x="459.0" y="38.0" width="24.0" height="159.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="461.0" y="119.9" font-size="6">ledge_lid pc1 8×53 1/8</text>
-<rect x="342.0" y="225.1" width="113.4" height="84.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="345.0" y="236.1" font-size="7.5">nk_soffit_rake</text>
-<text x="345.0" y="245.1" font-size="7" fill="#555">37.8 × 28¼</text>
-<rect x="455.8" y="225.1" width="27.4" height="76.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="458.8" y="236.1" font-size="7.5">tread[1]  ⟳</text>
-<text x="458.8" y="245.1" font-size="7" fill="#555">9 1/8 × 25½</text>
-<text x="504.0" y="31.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 3</text>
+<rect x="342.0" y="38.0" width="29.2" height="159.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="345.0" y="49.0" font-size="7.5">beam_wrap_inner pc1  ⟳</text>
+<text x="345.0" y="58.0" font-size="7" fill="#555">9¾ × 53 1/8</text>
+<rect x="371.6" y="38.0" width="29.2" height="159.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="374.6" y="49.0" font-size="7.5">beam_wrap_inner pc2  ⟳</text>
+<text x="374.6" y="58.0" font-size="7" fill="#555">9¾ × 53 1/8</text>
+<rect x="401.2" y="38.0" width="84.0" height="150.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="404.2" y="49.0" font-size="7.5">loft_ceiling pc3</text>
+<text x="404.2" y="58.0" font-size="7" fill="#555">28 × 50</text>
+<rect x="342.0" y="197.8" width="84.8" height="42.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="345.0" y="208.8" font-size="7.5">nk_soffit_flat</text>
+<text x="345.0" y="217.8" font-size="7" fill="#555">28¼ × 14.01</text>
+<rect x="342.0" y="240.2" width="72.0" height="66.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="345.0" y="251.2" font-size="7.5">stringer_a_skin</text>
+<text x="345.0" y="260.2" font-size="7" fill="#555">24 × 22</text>
+<text x="504.0" y="31.0" font-size="11" font-weight="600">ply-1/2 — sheet 4</text>
 <rect x="504.0" y="38.0" width="144.0" height="288.0" fill="#fafafa" stroke="#333" stroke-width="1.2"/>
-<rect x="504.0" y="38.0" width="137.2" height="161.2" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="507.0" y="49.0" font-size="7.5">hw_sheath_loft_head  ⟳</text>
-<text x="507.0" y="58.0" font-size="7" fill="#555">45¾ × 53¾</text>
-<rect x="504.0" y="199.6" width="84.8" height="48.9" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="507.0" y="210.6" font-size="7.5">nk_wrap_shortwall</text>
-<text x="507.0" y="219.6" font-size="7" fill="#555">28¼ × 16.3</text>
-<rect x="504.0" y="248.9" width="84.8" height="42.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="507.0" y="259.9" font-size="7.5">nk_soffit_flat</text>
-<text x="507.0" y="268.9" font-size="7" fill="#555">28¼ × 14.01</text>
-<rect x="504.0" y="291.3" width="76.5" height="27.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="507.0" y="302.3" font-size="7.5">tread[2]</text>
-<text x="507.0" y="311.3" font-size="7" fill="#555">25½ × 9 1/8</text>
-<rect x="589.1" y="248.9" width="27.4" height="76.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="592.1" y="259.9" font-size="7.5">tread[3]  ⟳</text>
-<text x="592.1" y="268.9" font-size="7" fill="#555">9 1/8 × 25½</text>
-<rect x="616.9" y="248.9" width="24.8" height="76.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="618.9" y="289.4" font-size="6">riser[2] 8¼×25½</text>
-<text x="18.0" y="363.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 4</text>
+<rect x="504.0" y="38.0" width="114.8" height="150.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="507.0" y="49.0" font-size="7.5">loft_ceiling pc1</text>
+<text x="507.0" y="58.0" font-size="7" fill="#555">38¼ × 50</text>
+<text x="18.0" y="363.0" font-size="11" font-weight="600">ply-1/2 — sheet 5</text>
 <rect x="18.0" y="370.0" width="144.0" height="288.0" fill="#fafafa" stroke="#333" stroke-width="1.2"/>
-<rect x="18.0" y="370.0" width="44.2" height="160.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="21.0" y="381.0" font-size="7.5">beam_wrap_face pc2  ⟳</text>
-<text x="21.0" y="390.0" font-size="7" fill="#555">14¾ × 53½</text>
-<rect x="62.6" y="370.0" width="30.8" height="159.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="65.6" y="381.0" font-size="7.5">ledge_front_rail pc1  ⟳</text>
-<text x="65.6" y="390.0" font-size="7" fill="#555">10¼ × 53 1/8</text>
-<rect x="93.8" y="370.0" width="30.8" height="159.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="96.8" y="381.0" font-size="7.5">ledge_front_rail pc2  ⟳</text>
-<text x="96.8" y="390.0" font-size="7" fill="#555">10¼ × 53 1/8</text>
-<rect x="124.9" y="370.0" width="29.2" height="159.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="127.9" y="381.0" font-size="7.5">beam_wrap_inner pc1  ⟳</text>
-<text x="127.9" y="390.0" font-size="7" fill="#555">9¾ × 53 1/8</text>
-<rect x="18.0" y="530.9" width="83.6" height="72.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="21.0" y="541.9" font-size="7.5">lnd_ply</text>
-<text x="21.0" y="550.9" font-size="7" fill="#555">27 7/8 × 24</text>
-<rect x="18.0" y="603.2" width="76.5" height="24.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="21.0" y="614.2" font-size="7.5">riser[3]</text>
-<text x="21.0" y="623.2" font-size="7" fill="#555">25½ × 8¼</text>
-<rect x="18.0" y="628.4" width="76.5" height="22.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="21.0" y="639.4" font-size="7.5">riser[1]</text>
-<text x="21.0" y="648.4" font-size="7" fill="#555">25½ × 7½</text>
-<rect x="102.0" y="530.9" width="27.4" height="72.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="105.0" y="541.9" font-size="7.5">tread[4]  ⟳</text>
-<text x="105.0" y="550.9" font-size="7" fill="#555">9 1/8 × 24</text>
-<rect x="129.8" y="530.9" width="27.4" height="72.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="132.8" y="541.9" font-size="7.5">tread[5]  ⟳</text>
-<text x="132.8" y="550.9" font-size="7" fill="#555">9 1/8 × 24</text>
-<text x="180.0" y="363.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 5</text>
+<rect x="18.0" y="370.0" width="108.0" height="150.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="21.0" y="381.0" font-size="7.5">loft_ceiling pc2</text>
+<text x="21.0" y="390.0" font-size="7" fill="#555">36 × 50</text>
+<text x="180.0" y="363.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 1</text>
 <rect x="180.0" y="370.0" width="144.0" height="288.0" fill="#fafafa" stroke="#333" stroke-width="1.2"/>
-<rect x="180.0" y="370.0" width="29.2" height="159.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="183.0" y="381.0" font-size="7.5">beam_wrap_inner pc2  ⟳</text>
-<text x="183.0" y="390.0" font-size="7" fill="#555">9¾ × 53 1/8</text>
-<rect x="209.6" y="370.0" width="108.0" height="150.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="212.6" y="381.0" font-size="7.5">loft_ceiling pc2</text>
-<text x="212.6" y="390.0" font-size="7" fill="#555">36 × 50</text>
-<rect x="180.0" y="529.8" width="72.0" height="66.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="183.0" y="540.8" font-size="7.5">stringer_a_skin</text>
-<text x="183.0" y="549.8" font-size="7" fill="#555">24 × 22</text>
-<rect x="180.0" y="596.1" width="72.0" height="24.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="183.0" y="607.1" font-size="7.5">riser[4]</text>
-<text x="183.0" y="616.1" font-size="7" fill="#555">24 × 8¼</text>
-<rect x="180.0" y="621.2" width="72.0" height="24.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="183.0" y="632.2" font-size="7.5">riser[5]</text>
-<text x="183.0" y="641.2" font-size="7" fill="#555">24 × 8¼</text>
-<rect x="252.4" y="529.8" width="24.8" height="72.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="254.4" y="568.0" font-size="6">riser[6] 8¼×24</text>
-<text x="342.0" y="363.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 6</text>
+<rect x="180.0" y="370.0" width="72.8" height="186.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="183.0" y="381.0" font-size="7.5">deck_ply pc2  ⟳</text>
+<text x="183.0" y="390.0" font-size="7" fill="#555">24¼ × 62¼</text>
+<rect x="253.1" y="370.0" width="24.0" height="161.6" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="255.1" y="453.0" font-size="6">ledge_lid pc2 8×53 7/8</text>
+<rect x="277.5" y="370.0" width="30.8" height="159.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="280.5" y="381.0" font-size="7.5">ledge_front_rail pc1  ⟳</text>
+<text x="280.5" y="390.0" font-size="7" fill="#555">10¼ × 53 1/8</text>
+<rect x="180.0" y="557.1" width="124.5" height="84.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="183.0" y="568.1" font-size="7.5">nk_wrap_bedwall</text>
+<text x="183.0" y="577.1" font-size="7" fill="#555">41½ × 28¼</text>
+<rect x="277.5" y="529.8" width="30.0" height="21.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="280.5" y="540.8" font-size="7.5">ledge_rail_splice</text>
+<text x="280.5" y="549.8" font-size="7" fill="#555">10 × 7¼</text>
+<text x="342.0" y="363.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 2</text>
 <rect x="342.0" y="370.0" width="144.0" height="288.0" fill="#fafafa" stroke="#333" stroke-width="1.2"/>
-<rect x="342.0" y="370.0" width="132.8" height="150.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="345.0" y="381.0" font-size="7.5">hw_sheath_stair  ⟳</text>
-<text x="345.0" y="390.0" font-size="7" fill="#555">44¼ × 50</text>
-<text x="504.0" y="363.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 7</text>
+<rect x="342.0" y="370.0" width="72.0" height="186.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="345.0" y="381.0" font-size="7.5">deck_ply pc1  ⟳</text>
+<text x="345.0" y="390.0" font-size="7" fill="#555">24 × 62¼</text>
+<rect x="414.4" y="370.0" width="30.8" height="159.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="417.4" y="381.0" font-size="7.5">ledge_front_rail pc2  ⟳</text>
+<text x="417.4" y="390.0" font-size="7" fill="#555">10¼ × 53 1/8</text>
+<rect x="445.5" y="370.0" width="24.0" height="159.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="447.5" y="451.9" font-size="6">ledge_lid pc1 8×53 1/8</text>
+<rect x="342.0" y="557.1" width="83.6" height="72.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="345.0" y="568.1" font-size="7.5">lnd_ply</text>
+<text x="345.0" y="577.1" font-size="7" fill="#555">27 7/8 × 24</text>
+<rect x="342.0" y="629.5" width="75.8" height="27.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="345.0" y="640.5" font-size="7.5">tread[1]</text>
+<text x="345.0" y="649.5" font-size="7" fill="#555">25¼ × 9 1/8</text>
+<rect x="426.0" y="557.1" width="27.4" height="75.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="429.0" y="568.1" font-size="7.5">tread[2]  ⟳</text>
+<text x="429.0" y="577.1" font-size="7" fill="#555">9 1/8 × 25¼</text>
+<rect x="453.8" y="557.1" width="27.4" height="75.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="456.8" y="568.1" font-size="7.5">tread[3]  ⟳</text>
+<text x="456.8" y="577.1" font-size="7" fill="#555">9 1/8 × 25¼</text>
+<text x="504.0" y="363.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 3</text>
 <rect x="504.0" y="370.0" width="144.0" height="288.0" fill="#fafafa" stroke="#333" stroke-width="1.2"/>
-<rect x="504.0" y="370.0" width="114.8" height="150.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="507.0" y="381.0" font-size="7.5">loft_ceiling pc1</text>
-<text x="507.0" y="390.0" font-size="7" fill="#555">38¼ × 50</text>
-<text x="18.0" y="695.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 8</text>
+<rect x="504.0" y="370.0" width="132.8" height="150.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="507.0" y="381.0" font-size="7.5">hw_sheath_stair  ⟳</text>
+<text x="507.0" y="390.0" font-size="7" fill="#555">44¼ × 50</text>
+<rect x="504.0" y="520.4" width="75.8" height="24.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="507.0" y="531.4" font-size="7.5">riser[2]</text>
+<text x="507.0" y="540.4" font-size="7" fill="#555">25¼ × 8¼</text>
+<rect x="504.0" y="545.5" width="75.8" height="24.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="507.0" y="556.5" font-size="7.5">riser[3]</text>
+<text x="507.0" y="565.5" font-size="7" fill="#555">25¼ × 8¼</text>
+<rect x="504.0" y="570.6" width="75.8" height="22.5" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="507.0" y="581.6" font-size="7.5">riser[1]</text>
+<text x="507.0" y="590.6" font-size="7" fill="#555">25¼ × 7½</text>
+<rect x="504.0" y="593.5" width="72.0" height="27.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="507.0" y="604.5" font-size="7.5">tread[4]</text>
+<text x="507.0" y="613.5" font-size="7" fill="#555">24 × 9 1/8</text>
+<rect x="504.0" y="621.2" width="72.0" height="27.4" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="507.0" y="632.2" font-size="7.5">tread[5]</text>
+<text x="507.0" y="641.2" font-size="7" fill="#555">24 × 9 1/8</text>
+<rect x="580.1" y="570.6" width="24.8" height="72.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="582.1" y="608.8" font-size="6">riser[4] 8¼×24</text>
+<rect x="605.2" y="570.6" width="24.8" height="72.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="607.2" y="608.8" font-size="6">riser[5] 8¼×24</text>
+<text x="18.0" y="695.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 4</text>
 <rect x="18.0" y="702.0" width="144.0" height="288.0" fill="#fafafa" stroke="#333" stroke-width="1.2"/>
-<rect x="18.0" y="702.0" width="83.2" height="150.0" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="21.0" y="713.0" font-size="7.5">loft_ceiling pc3</text>
-<text x="21.0" y="722.0" font-size="7" fill="#555">27¾ × 50</text>
-<text x="180.0" y="695.0" font-size="11" font-weight="600">ply-3/4 paint-grade — sheet 9</text>
-<rect x="180.0" y="702.0" width="144.0" height="288.0" fill="#fafafa" stroke="#333" stroke-width="1.2"/>
-<rect x="180.0" y="702.0" width="132.0" height="144.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
-<text x="183.0" y="713.0" font-size="7.5">deck_ply pc3</text>
-<text x="183.0" y="722.0" font-size="7" fill="#555">44 × 48¼</text>
+<rect x="18.0" y="702.0" width="132.0" height="144.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="21.0" y="713.0" font-size="7.5">deck_ply pc3</text>
+<text x="21.0" y="722.0" font-size="7" fill="#555">44 × 48¼</text>
+<rect x="18.0" y="847.1" width="72.0" height="24.8" fill="#dce9f5" stroke="#33506b" stroke-width="0.8"/>
+<text x="21.0" y="858.1" font-size="7.5">riser[6]</text>
+<text x="21.0" y="867.1" font-size="7" fill="#555">24 × 8¼</text>
 </svg>

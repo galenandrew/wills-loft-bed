@@ -44,7 +44,7 @@ def d1():
     v.text(104.6, 30, "half-wall below", "labs", "middle", rot=-90)
     v.text(119, 12, "LANDING", "lab", "middle", dy=4); v.text(119, 17, f"24 × {fr(m('lnd_ply').y[1])} finished @ {fr(LAND)}", "labs", "middle", dy=4)
     v.text(119, 50, f"{ST.n_treads} treads @ {fr(ST.run)}", "labs", "middle", dy=4)
-    v.text(RX, 78, "¾ ply skin on stringer A closes the understair cavity", "labs", "end", dy=4)
+    v.text(RX, 78, f"{fr(m('stringer_a_skin').size('x'))} ply skin on stringer A closes the understair cavity", "labs", "end", dy=4)
     v.text(RX, 82, f"boards lap it {fr(STAIR_X[1] - SKIN_X0)} — board 3 notched {fr(STAIR_X[0]-SKIN_X0)} × {fr(STEP_Y - tread_y_board(3)[0])}", "labs", "end", dy=4)
     v.text(12, 60.5, "desk 24 × 55", "labs", "middle", dy=4)
     v.text(123, 126, "dresser 16 × 48", "labs", "middle", rot=-90)

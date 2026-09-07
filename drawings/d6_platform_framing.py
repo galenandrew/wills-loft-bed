@@ -15,7 +15,7 @@ def d6():
     v.text(50, 0.75, "2×4 rear ledger — lags into every stud", "labs", "middle", dy=4)
     v.text(6, 24, f"2×4 side ledger, {fr(m('side_ledger').y[1])} out — below the deck", "labs", "middle", rot=-90)
     v.text(50, 14, f"2×4 joists @ 12 o.c. · {len(ids('deck_joist'))} joists · {fr(DER['deck_joist_span'])} span", "lab", "middle", dy=4)
-    v.text(50, 48.5, f"{BEAMSTOCK} + ¾ wrap — {VALS['beam_span']} c/c bearings", "lab", "middle", dy=4)
+    v.text(50, 48.5, f"{BEAMSTOCK} + {fr(m('beam_wrap_top').size('z'))} wrap — {VALS['beam_span']} c/c bearings", "lab", "middle", dy=4)
     v.text(105.5, 24, "2×4 rim at 104¾–106¼", "labs", "middle", rot=-90)
     v.text(75, 10.5, f"boxed ledge above (8 wide × {fr(m('ledge_lid').z[1]-DECK)} high)", "labs", "middle", dy=4)
     v.text(20, 15, "beam notched 3 × 3½ over the ledger and joist 0 — its end bears on both", "labs", "start", dy=4)

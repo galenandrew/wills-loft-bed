@@ -6,20 +6,20 @@ Full write-up: `audits/V-kernel-spike.md`.
 
 ```
 cad kernel · build123d 0.11.1 · OCP 7.9.3.1.1 · python 3.13.12
-dimensions.yaml rev AY · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
+dimensions.yaml rev BA · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
 
 [build] 123 solids (12 derived, not yaml members)
-        loft        40 solids    10.72 cu ft
-        screen      24 solids     1.10 cu ft
-        stair       26 solids     3.67 cu ft
-        half_wall   18 solids     3.14 cu ft
-        nook        11 solids     1.75 cu ft
+        loft        40 solids     9.54 cu ft
+        screen      24 solids     1.11 cu ft
+        stair       26 solids     3.62 cu ft
+        half_wall   18 solids     2.91 cu ft
+        nook        11 solids     1.52 cu ft
         context      4 solids    52.67 cu ft
         beam is ONE notched solid (2584.750 cu in, x 0→106.25); yaml rows fused: beam_tongue
         deck_joist[0] is ONE notched solid (254.625 cu in, x 1.5→3); yaml rows fused: deck_joist_tail
-        hw_sheath_loft_head is ONE notched solid (835.719 cu in, x 102→102.75); yaml rows fused: hw_sheath_loft_b
-        hw_sheath_stair is ONE notched solid (686.531 cu in, x 106.25→107); yaml rows fused: ledge_end_cap, beam_end_cap
-        hw_end_cap is ONE notched solid (171.750 cu in, x 102→107); yaml rows fused: hw_end_cap_foot
+        hw_sheath_loft_head is ONE notched solid (549.998 cu in, x 102.25→102.75); yaml rows fused: hw_sheath_loft_b
+        hw_sheath_stair is ONE notched solid (684.703 cu in, x 106.25→107); yaml rows fused: ledge_end_cap, beam_end_cap
+        hw_end_cap is ONE notched solid (111.469 cu in, x 102.25→107); yaml rows fused: hw_end_cap_foot
 [clash] 0 real interferences, 3 coincident faces → cad-out/clash.txt
         underside ray cast vs Stair.underside(): worst Δ 0.00000"
 [loft] bearing areas, slat gaps and clearances → cad-out/loft.txt
@@ -27,6 +27,6 @@ dimensions.yaml rev AY · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.1
 [fasteners] 8 rays → cad-out/fasteners.txt
 [section] cut+HLR → cad-out/d4-kernel.svg, cad-out/d8b-kernel.svg
           worst cut-edge deviation vs d4.svg: 0.0048" on stringer_b (1/16" = 0.0625)
-[export] model.step 2232 kB, model.stl 83 kB
-         re-imported: 119 solids (wrote 119), volume 35231.57 vs 35231.57 cu in, Δ 0.0000
+[export] model.step 2233 kB, model.stl 83 kB
+         re-imported: 119 solids (wrote 119), volume 32301.55 vs 32301.55 cu in, Δ 0.0000
 ```

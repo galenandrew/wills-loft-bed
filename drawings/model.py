@@ -35,8 +35,9 @@ d["stair"]["_stringer_depth"] = lumber[d["stair"]["stringer_stock"]][1]
 ST = Stair(d["stair"], float(d["expected"]["deck_top"])); T = ST.t
 DER = compute_derived(d, M, ST, room)
 REV = str(d["rev"])
-nook = d["nook"]; HB = float(nook["header_bottom"]); JAMB = float(nook.get("wrap", 0)); CEIL = HB - JAMB
+nook = d["nook"]; HB = float(nook["header_bottom"])
 PANEL = float(nook["soffit_panel_thickness"]); NOOK_Y = [float(a) for a in nook["opening_y"]]
+CEIL = HB - PANEL                      # finished flat ceiling = header bottom less the panel
 CEILING = float(room["ceiling"]); RX, RY = float(room["x"]), float(room["y"])
 MAT = d["mattress"]; SCR = d["screen"]
 DECK = float(d["expected"]["deck_top"]); LAND = ST.riser_z[ST.n_treads + 1]
@@ -71,7 +72,10 @@ HATCH = 'fill="url(#hatch)"'
 E = html.escape
 
 # finished-opening jambs (derived, not members)
-JAMB_Y = [NOOK_Y[0] + JAMB, NOOK_Y[1] - JAMB]
+# Rev AZ: the finished opening comes off the two lining members' own faces, not off a
+# single `nook.wrap` thickness applied symmetrically. The bed-wall lining is 3/4 and the
+# short-wall lining is 1/2, so the two returns differ and one number cannot say both.
+JAMB_Y = [float(M["nk_wrap_bedwall"].y[1]), float(M["nk_wrap_shortwall"].y[0])]
 
 # --------------------------------------------------------------------------- kernel sections
 # A sheet that wants a TRUE section asks the plane what it cuts, instead of listing
@@ -137,7 +141,9 @@ def cut_class(pid):
     """Default cut styling: framing lumber hatched, sheet goods and finish plain.
     A sheet can override any of it via kernel_cut(cls=...)."""
     stock = _piece_stock().get(pid)
-    return ("fin", "") if stock in ("ply-3/4", "ply-1/2", "poplar-3/4") else ("lum", HATCH)
+    # Sheet goods draw plain; solid stock draws hatched when cut — including poplar-2x4,
+    # which is a paint-grade board at a framing section, not a panel.
+    return ("fin", "") if stock in ("ply-3/4", "ply-1/2") else ("lum", HATCH)
 
 def kernel_cut(v, axis, at, skip=(), cls=None, extra=None, order=("lum", "fin")):
     """Draw the model's true section on `axis = at` into View v.
@@ -349,7 +355,14 @@ VALS.update({
     "joist0_len": frp(M["deck_joist[0]"].size("y") + M["deck_joist_tail"].size("y")),
     "joist_oc": frp(_oc("deck_joist", 1, 2)),
     "hw_fin_w": frp(STAIR_X[0] - float(M["hw_sheath_loft_a"].x[0])),
-    "hw_stair_fin": frp(STAIR_X[0] - float(M["hw_bottom_plate_a"].x[0])),
+    # The nook face's big board is hw_sheath_loft_head + hw_sheath_loft_b as ONE board, so
+    # its width spans both. Rev AZ: it used to be quoted as hw_sheath_loft_b.y0, which was
+    # the same number only while the two met on the finished jamb line at 45¾ — the short
+    # wall's ½ lining moved that seam to 46 without moving the board.
+    "nook_face_board_w": frp(float(M["hw_sheath_loft_b"].y[1]) - float(M["hw_sheath_loft_head"].y[0])),
+    # The wall's thickness BELOW the stair skirt, where the stair side is bare framing:
+    # the loft sheathing plus the studs, no skirt. Rev AZ: 4, was 4¼.
+    "hw_below_skirt": frp(float(M["hw_king_a"].x[1]) - float(M["hw_sheath_loft_a"].x[0])),
     "slat_oc": f"{_oc('slat', 0, SCR['slat_count'] - 1):.3g}",
     "slat_clear2": f"{DER['slat_clear']:.2f}",
     "m": _Members(),

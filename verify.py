@@ -252,7 +252,10 @@ def rake_profile(name, stair, nook):
         return z, [b for y in ys for b in (y - eps, y + eps)]
     if name == "soffit":
         panel = float(nook["soffit_panel_thickness"])
-        face = float(nook["header_bottom"]) - float(nook.get("wrap", 0))
+        # Rev AZ: the finished flat ceiling is the header bottom less the CEILING PANEL.
+        # This used to read nook["wrap"], which was the same number only while the nook
+        # lining and the ceiling panel were both 3/4. They are not any more.
+        face = float(nook["header_bottom"]) - panel
         y_meet = stair.y_riser_top - (face + panel - stair.underside(stair.y_riser_top)) / stair.tan
         return (lambda y: face if y <= y_meet else stair.underside(y) - panel), [y_meet]
     raise KeyError(f"unknown rake profile {name!r}")
@@ -573,8 +576,8 @@ def check_derived(rep, d, members, stair, room):
     got["nook_opening"] = [oy[1] - oy[0], float(nook["header_bottom"])]
     got["nook_light_chase"] = M["lnd_joist[0]"].z[0] - float(nook["header_bottom"])
     got["loft_light_chase"] = M["deck_joist[0]"].z[1] - M["loft_ceiling"].z[1]
-    wrap = float(nook.get("wrap", 0)); panel = float(nook["soffit_panel_thickness"])
-    got["nook_far_end_height"] = stair.underside(oy[1]) - panel if wrap else float(nook["header_bottom"]) - (oy[1] - float(nook["flat_ceiling_to_y"])) * stair.tan
+    panel = float(nook["soffit_panel_thickness"])
+    got["nook_far_end_height"] = stair.underside(oy[1]) - panel if panel else float(nook["header_bottom"]) - (oy[1] - float(nook["flat_ceiling_to_y"])) * stair.tan
     got["rim_header_overlap"] = overlap(M["lnd_rim"].z, M["hw_header"].z)
     got["rim_stringer_bearing"] = overlap(M["lnd_rim"].z, stair.plumb_cut())
     ex = scr["extent_x"]
@@ -631,10 +634,9 @@ def check_stair_and_nook(rep, d, members, stair):
     t_panel = float(nook["soffit_panel_thickness"])
     y_break = float(nook["flat_ceiling_to_y"])
     oy = [float(v) for v in nook["opening_y"]]
-    wrap = float(nook.get("wrap", 0))
-    face = hb - wrap                       # finished flat-ceiling face
-    if wrap:
-        rep.info(f"nook ply wrap {fr(wrap)} → finished flat ceiling at {fr(face)}, framing plane at {fr(face + t_panel)}")
+    face = hb - t_panel                    # finished flat-ceiling face
+    if t_panel:
+        rep.info(f"nook soffit panel {fr(t_panel)} → finished flat ceiling at {fr(face)}, framing plane at {fr(face + t_panel)}")
 
     # landing top must equal riser 6
     want = stair.riser_z[stair.n_treads + 1]

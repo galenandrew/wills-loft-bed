@@ -18,25 +18,31 @@ def d7a():
     for k in ("hw_jamb_ply_a", "hw_jamb_ply_b"): R(v, m(k), "y", "x", "sheet")
     for k in ("hw_sheath_loft_a", "hw_sheath_loft_b"): R(v, m(k), "y", "x", "sheet")
     # Rev AE: nothing on the stair side at this height. The face there is a skirt above the
-    # stringers (its lowest edge is z 24 at the wall's end), so at z 12 the wall is 4¼ —
-    # ¾ ply + 3½ of framing — and stringer A itself is the next thing outboard of it.
+    # stringers (its lowest edge is z 24 at the wall's end), so at z 12 the wall is the
+    # loft sheathing plus 3½ of framing — and stringer A itself is the next thing outboard
+    # of it. Rev AZ: that sheathing is ½, so this height is 4, not 4¼.
     R(v, m("hw_end_cap_foot"), "y", "x", "fin")
     y_str = ST.y_riser_top + (ST.underside(ST.y_riser_top) - CUT_Z) / ST.tan       # 50.4
     v.rect(y_str, 52, *m("stringer_a").x, "lum2", HATCH)
     R(v, m("stringer_a_skin"), "y", "x", "fin")
-    # the ¾ ply wrap on both reveals — clipped to the wall, since both sheets run on
-    # into the nook to x 131. Both exist at this height; the short wall's tops out at 16.3.
+    # the ply wrap on both reveals — clipped to the wall, since both sheets run on
+    # into the nook to x 131. Both exist at this height; the short wall's tops out on the
+    # stringer underside. Rev AZ: the two are no longer the same thickness — ¾ on the bed
+    # wall, ½ on the short wall — so the two jamb returns differ and JAMB_Y reads each face.
     # Rev AD: drawn from the member's own start (102.75), so this section shows the lap —
     # the face panel in front of the wrap's end, not butted to it.
     for k in ("nk_wrap_bedwall", "nk_wrap_shortwall"): v.rect(*m(k).y, m(k).x[0], 107, "fin")
     v.rect(m("beam").y[0], m("beam").y[1], m("beam").x[0] and 102.75, m("beam").x[1], "dashfill")
-    v.text(25, 104.5, f"{fr(JAMB_Y[1]-JAMB_Y[0])} FINISHED OPENING — wall removed, both faces · ¾ ply wrap", "lab", "middle", dy=4)
+    v.text(25, 104.5, f"{fr(JAMB_Y[1]-JAMB_Y[0])} FINISHED OPENING — wall removed, both faces · {fr(m('nk_wrap_bedwall').size('y'))} wrap this jamb, {fr(m('nk_wrap_shortwall').size('y'))} the other", "lab", "middle", dy=4)
     v.text(25, 103.3, "header above carries the deck rim and the landing rim", "labs", "middle", dy=4)
-    v.text(25, 105.84, "nook face laps the wrap · no sheathing on the stair side here — the 5 is above the skirt only", "labs", "middle", dy=4)
+    v.text(25, 105.84, f"nook face laps the wrap · no sheathing on the stair side here — the {VALS['hw_fin_w']} is above the skirt only", "labs", "middle", dy=4)
     v.text(1.75, 107.4, "king + ½ ply + trimmer", "labs", "middle", dy=-3); v.text(48.25, 107.4, "trimmer + ½ ply + king", "labs", "middle", dy=-3); v.text(48.5, 109.0, "beam end above — bears here", "labk", "middle", dy=-3)
     v.text(25, 106.9, "stair side — bare framing below the skirt", "labs", "middle", dy=-3)
     v.text(51.8, 100.9, "stringer A + its skin enter the cut here", "labk", "end", dy=-3); v.text(25, 101.6, "loft side", "labs", "middle", dy=13)
-    v.dim_v(51.5, 102.75, 106.25, "3½", left=False); v.dim_v(51.5, 102, 102.75, "¾", left=False); v.dim_v(53.3, 102, 106.25, "4¼ here", left=False)
+    _sh = m("hw_sheath_loft_a")
+    v.dim_v(51.5, 102.75, 106.25, fr(m("hw_king_a").size("x")), left=False)
+    v.dim_v(51.5, _sh.x[0], _sh.x[1], fr(_sh.size("x")), left=False)
+    v.dim_v(53.3, _sh.x[0], 106.25, f"{fr(106.25 - float(_sh.x[0]))} here", left=False)
     v.dim_h(NOOK_Y[0], NOOK_Y[1], 108.4, f"{fr(NOOK_Y[1]-NOOK_Y[0])} rough"); v.dim_h(JAMB_Y[0], JAMB_Y[1], 100.1, f"{fr(JAMB_Y[1]-JAMB_Y[0])} finished", above=False)
     v.dim_h(0, m("hw_end_cap").y[1], 98.7, f"{fr(m('hw_end_cap').y[1])} — full platform depth", above=False)
     return v.svg(f"Half-wall plan detail, horizontal section at {fr(CUT_Z)} inches, rotated so the bed wall is on the left and the stair side up")

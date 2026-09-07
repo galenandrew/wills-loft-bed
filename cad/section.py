@@ -209,7 +209,7 @@ text{font:10px ui-sans-serif,system-ui,sans-serif;fill:#333}
 .ttl{font-size:11px;fill:#111}
 """
 
-CUT_CLASS = {"ply-3/4": "cutsheet", "ply-1/2": "cutsheet", "poplar-3/4": "cutfin"}
+CUT_CLASS = {"ply-3/4": "cutsheet", "ply-1/2": "cutsheet"}   # Rev BA: poplar-3/4 has no members
 
 
 def to_svg(layers, view, pieces=None, title="", layers_on=("near", "beyond", "cut")):

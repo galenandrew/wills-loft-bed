@@ -38,19 +38,19 @@ SLAT SEATING — every slat's footprint on what is under it
   slat[20] x  95.910→ 97.410   beam_wrap_top 2.25
   slat[21] x 100.705→102.205   beam_wrap_top 2.25
   slat[22] x 105.501→107.001   beam_wrap_top 2.25
-  seated on 0.75 of cap over the LVL; 23 of 23 take a screw into the beam, 1 of them offset from the slat's own centre
+  seated on 0.50 of cap over the LVL; 23 of 23 take a screw into the beam, 1 of them offset from the slat's own centre
 
 SLAT GAPS — kernel minimum distance, vs expected slat_clear 3.3 and screen.max_clear 3.5
   22 gaps, min 3.2955" max 3.2955"
 
 CLEARANCES — true minimum distance between solids
-  fan → platform face (horizontal)   kernel  15.2500   expected  15.2500
+  fan → platform face (horizontal)   kernel  15.5000   expected  15.5000
   mattress top → ceiling             kernel  30.0000   expected  30.0000
   deck top → ceiling                 kernel  38.0000   expected  38.0000
-  floor → loft ceiling underside     kernel  53.0000   expected  53.0000
-  floor → loft ceiling underside (beam) kernel  53.0000   expected  53.0000
+  floor → loft ceiling underside     kernel  53.2500   expected  53.2500
+  floor → loft ceiling underside (beam) kernel  53.2500   expected  53.2500
   fan → nearest slat (true 3D)           kernel  16.1561
-  mattress → beam inner face (bay slack) kernel   0.7500
+  mattress → beam inner face (bay slack) kernel   0.8750
 
 UNSPECIFIED fasteners the kernel cannot ray-cast until they are chosen:
   screen_top_plate → slat[*]: construction adhesive + 1 x #8 x 2-1/2 angled up through the slat into the plate, driven from the loft side, countersunk and filled; 2 x 1-1/2 16ga pins each slat to hold it while the adhesive cures. Rev AS: was UNSPECIFIED. 16ga alone was proposed and is not enough - the structure table calls this screen the GUARD for a 58 deck, and the ceiling note says a 200 lb lean at its top overloads the slat bases. One real screw per slat at each end (the base already has #8 x 3 into the LVL) makes the top a positive connection; the pins are for assembly, not for load.

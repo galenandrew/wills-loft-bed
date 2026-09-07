@@ -43,7 +43,7 @@
 #     cad-out/loft.txt carries both areas.
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AY
+rev: BA
 units: inches
 room:
   x: 131
@@ -113,9 +113,16 @@ lumber:
   ply-1/2:
   - 0.5
   - null
-  poplar-3/4:
-  - 0.75
-  - null
+  # Rev BA: paint-grade SOLID stock at the 2x4 section - 1 1/2 x 3 1/2 actual, the same
+  # section as an SPF 2x4, but knot-free and stable enough to paint. Poplar 8/4 S4S is the
+  # first choice; clear/select pine at the same section is an acceptable substitute. It
+  # exists for exactly one member, screen_top_plate, which is a STRUCTURAL member that
+  # happens to be fully in view. `poplar-3/4` is gone - Rev AZ moved its last two members
+  # (hw_end_cap and its foot) to 1/2 ply, and a stock key nothing uses invites someone to
+  # think 3/4 poplar is still in the build.
+  poplar-2x4:
+  - 1.5
+  - 3.5
 stair:
   # Rev Y: the riser is an INPUT now, not 58/7. Six equal risers carry the stair to
   # the landing; the seventh (landing → loft deck) is set by the framing stack above
@@ -141,14 +148,19 @@ nook:
   - 46.5
   header_bottom: 41.5
   flat_ceiling_to_y: 18.26
-  soffit_panel_thickness: 0.75
+  soffit_panel_thickness: 0.5
   light: 6-inch recessed — fixture depth not stated; chase is ~4 inches
-  wrap: 0.75
   note: 'Rev X: header_bottom is now the landing-ledger bottom (lnd_ledger_bedwall.z[0]),
-    so the soffit runs flush from under the landing out through the opening. `wrap` is the
-    3/4 ply lining thickness — Rev U''s poplar jambs are gone; the nook is one ply-wrapped
-    tube from x 102.75 to the right wall (x 131). Rev AD: the tube starts 3/4 back from the
-    half-wall''s outer face, not on it — the face is its own panel and laps the tube''s end.'
+    so the soffit runs flush from under the landing out through the opening. Rev U''s poplar
+    jambs are gone; the nook is one ply-wrapped tube from x 102.75 to the right wall (x 131).
+    Rev AD: the tube starts 3/4 back from the half-wall''s outer face, not on it — the face is
+    its own panel and laps the tube''s end. Rev AZ: the `wrap:` KEY IS GONE. It was one number
+    doing two jobs — it set the finished flat-ceiling face (header_bottom − wrap) and, via
+    drawings JAMB_Y, the finished opening — and the two are no longer one number: the ceiling
+    panel is 1/2, the bed-wall lining is still 3/4 and the short-wall lining is 1/2. The
+    ceiling face now comes off soffit_panel_thickness, which is what that arithmetic always
+    meant, and JAMB_Y is read straight off the two lining members'' own faces. Both were
+    identical at 3/4 and would have quietly produced a wrong opening here.'
 loft_lighting:
   desk:
     fixture: 4-inch slim canless LED
@@ -181,7 +193,7 @@ screen:
   extent_x:
   - 0
   - 107
-  slat_bottom: 68.5
+  slat_bottom: 68.25
   slat_top: 94.5
   max_clear: 3.5
 members:
@@ -433,31 +445,36 @@ members:
     are going in anyway. It also gives slat[0] a real seat -
     the beam runs to x 0 now, so slat 0 is no longer a special case.'
 - id: beam_wrap_face
-  stock: ply-3/4
+  stock: ply-1/2
   x:
   - 0
   - 107
   y:
   - 50
-  - 50.75
+  - 50.5
   z:
-  - 53
+  - 53.25
   - 67.75
   role: finish
   note: 'Rev AG: 14 3/4 tall, was 10. Its top is the LVL''s top; beam_wrap_top laps over it,
-    so no end grain shows on the top edge. Rev AQ: SPECIFY resolved - 3/4 paint-grade ply, not
-    poplar. At 14 3/4 x 107 no poplar board is that size anyway, and it is the most-seen face
+    so no end grain shows on the top edge. Rev AQ: SPECIFY resolved - paint-grade ply, not
+    poplar. At 107 long no poplar board is that size anyway, and it is the most-seen face
     on the bed and it is painted, so ply was always the likely answer; 107 still exceeds one
     4x8 sheet, so it is at least two pieces with a filled, sanded vertical butt joint - the
     corner at beam_end_cap (x 106.25-107) is a butt/lap, not a miter, matching how that member
-    already dies into this one.'
+    already dies into this one. Rev AZ: 1/2 ply, not 3/4. Its finished face comes in to 50.5
+    and its bottom edge rises to 53.25 to meet the thinner loft_ceiling, so it is 14 1/2 tall,
+    was 14 3/4. THE NOTCH SPLICE IS UNCHANGED IN KIND but thinner: it still straddles the
+    re-entrant corner in the plane of any split and works in shear, and its screws now take
+    1 1/2 of embedment in the LVL instead of 1 1/4 - see the connection rows, which were
+    re-stated for the thinner panel rather than left to drift.'
 - id: beam_wrap_inner
-  stock: ply-3/4
+  stock: ply-1/2
   x:
   - 0
   - 106.25
   y:
-  - 47.5
+  - 47.75
   - 48.25
   z:
   - 58
@@ -465,48 +482,57 @@ members:
   role: finish
   note: 'Rev AG: NEW. The bed side of the beam is 9 3/4 of bare LVL above the deck now, so it
     is wrapped to match the face. It sits ON the deck ply and butts its edge - the ply runs
-    to the rough beam at 48.25 - which puts the finished bay at 8 to 47.5 = 39 1/2 for a 38
-    mattress, 1/2 more slack than Rev T had. Rev AQ: ply, following beam_wrap_face.'
+    to the rough beam at 48.25 - which puts the finished bay at 8 to 47.75 = 39 3/4 for a 38
+    mattress. Rev AQ: ply, following beam_wrap_face. Rev AZ: 1/2 ply, following it again; the
+    bay gains the 1/4 the panel gave up, so the slack is 1 3/4 (was 1 1/2, and 1 in Rev T).'
 - id: beam_wrap_top
-  stock: ply-3/4
+  stock: ply-1/2
   x:
   - 0
   - 107
   y:
-  - 47.5
-  - 50.75
+  - 47.75
+  - 50.5
   z:
   - 67.75
-  - 68.5
+  - 68.25
   role: finish
-  note: 'Rev AG: NEW. A 3 1/4 cap over the LVL and both wrap faces, lapping their top edges.
-    The slats stand on it (y 49.25 to 50.75, so the full 1 1/2 x 1 1/2 foot is on the cap)
-    and screw through it into the LVL, which is the first time that fastener has been real
-    rather than UNSPECIFIED. Rev AQ: ply, following beam_wrap_face.'
+  note: 'Rev AG: NEW. A cap over the LVL and both wrap faces, lapping their top edges.
+    The slats stand on it and screw through it into the LVL, which is the first time that
+    fastener has been real rather than UNSPECIFIED. Rev AQ: ply, following beam_wrap_face.
+    Rev AZ: 1/2 ply, following it again - 2 3/4 wide now (was 3 1/4), because both wrap faces
+    came in 1/4, and its top drops from 68.5 to 68.25. That top is the slats'' seat, so every
+    slat gets 1/4 LONGER to keep screen.slat_top at 94.5.'
 - id: loft_ceiling
-  stock: ply-3/4
+  stock: ply-1/2
   x:
   - 0
-  - 102
+  - 102.25
   y:
   - 0
   - 50
   z:
-  - 53
+  - 53.25
   - 53.75
   role: finish
   note: 'Rev AP: NEW. A finished ceiling under the whole loft platform, from the bed wall to
     beam_wrap_face, closing the joist bays that were bare framing. This is what
     beam_wrap_underside used to do for the 3 under the beam alone before Rev AG deleted it
     ("no reason anyone could point to" for the beam to have less clearance than the joists,
-    see revisions.json) — generalised to the full 50 x 102 rather than a narrow strip.
-    Stops at 102, the half-wall''s loft face (hw_sheath_loft_a''s near face), same line the
+    see revisions.json) — generalised to the full width rather than a narrow strip.
+    Stops at the half-wall''s loft face (hw_sheath_loft_a''s near face), same line the
     deleted member used; the half-wall''s own framing and hw_end_cap close the rest. Screwed
     up from below into rear_ledger, side_ledger, deck_joist and beam bottoms, all flush at
-    53.75 (see clear_under_joists / clear_under_beam, now 53 finished instead of bare
-    framing). SPECIFY: 102 x 50 fits no single sheet good in either dimension, so this is at
+    53.75 (see clear_under_joists / clear_under_beam, finished instead of bare
+    framing). SPECIFY: it fits no single sheet good in either dimension, so this is at
     least two pieces with a seam — land it on a joist bay line for backing; the builder''s
-    call, same as beam_wrap_face.'
+    call, same as beam_wrap_face. Rev AZ: 1/2 ply, not 3/4. Two consequences, both small and
+    both in the right direction: the finished ceiling drops 1/4 to 53 1/4, so headroom under
+    the loft GAINS 1/4; and the panel LENGTHENS 1/4 to 102 1/4, because the half-wall''s loft
+    sheathing went to 1/2 with it and its face moved in. It is the largest painted panel in
+    the build and the one whose weight is held overhead by screws in withdrawal, so it is the
+    single best place the thinner stock pays for itself. It is still the SECOND notch restraint
+    (see beam_tongue): that claim is about where it is screwed, not how thick it is.'
 - id: ledge_front_rail
   stock: ply-3/4
   x:
@@ -639,7 +665,8 @@ members:
     3.5 cu ft. Rev AH: it runs the FULL 107, wall to finished face - the butt with
     ledge_end_cap is reversed, so the lid laps the skirt''s top edge instead of dying into
     its face. Bears on that edge over 3/4 x 8. One ply edge fewer to fill, and the joint at
-    the stair end is now a poplar-to-poplar line in the same plane as the front rail''s.'
+    the stair end is now a ply-to-ply line in the same plane as the front rail''s. (Rev BA:
+    said poplar-to-poplar, left over from before Rev AS made both boards paint-grade ply.)'
 - id: ledge_end_cap
   stock: ply-3/4
   x:
@@ -816,40 +843,48 @@ members:
   - 53.75
   role: structural
 - id: hw_end_cap
-  stock: poplar-3/4
+  stock: ply-1/2
   x:
-  - 102
+  - 102.25
   - 107
   y:
   - 50
-  - 50.75
+  - 50.5
   z:
   - 24
-  - 53
+  - 53.25
   role: finish
-  note: 'ASSUMED - Rev T never says what closes the wall''s end at y 50-50.75 below the wrap.
-    Rev AE: one board with hw_end_cap_foot, notched. Stringer A now runs past the wall''s end
-    at 106.25-107.75 with its skin at 105.5-106.25, so below the stringer''s top edge - z 24 at
-    this y, tread 3''s cut - the cap can only be 3 1/2 wide; above it, it returns the full 5.
-    Cut it as one 5 x 53 board with a 1 1/2 x 24 corner taken out, and let the skin butt the
-    cut edge at 105.5.'
+  note: 'ASSUMED - Rev T never says what closes the wall''s end at y 50 below the wrap.
+    Rev AE: one board with hw_end_cap_foot, notched. Stringer A runs past the wall''s end
+    at 106.25-107.75 with its skin outboard of it, so below the stringer''s top edge - z 24 at
+    this y, tread 3''s cut - the cap can only be 3 1/2 wide; above it, it returns the wall''s
+    full finished thickness. Rev AZ: 1/2 PAINT-GRADE PLY, not 3/4 poplar - it is a painted
+    return between two painted ply faces, so poplar was buying nothing, and it now nests with
+    the rest of the 1/2 stock instead of being the only reason to buy a board. Three numbers
+    move with it: it is 4 3/4 wide, not 5, because the wall''s loft face went to 1/2; its top
+    goes to 53.25 to meet the raised bottom edge of beam_wrap_face; and its face at 50.5 is the
+    beam''s new finished plane, which is also where the treads step (drawings STEP_Y reads this
+    row). Cut it as one 4 3/4 x 53 1/4 board with a 1 1/4 x 24 corner taken out, and let the
+    skin butt the cut edge at 105.75.'
 - id: hw_end_cap_foot
-  stock: poplar-3/4
+  stock: ply-1/2
   x:
-  - 102
-  - 105.5
+  - 102.25
+  - 105.75
   y:
   - 50
-  - 50.75
+  - 50.5
   z:
   - 0
   - 24
   role: finish
-  note: 'Rev AE: not a separate part - the narrow lower half of hw_end_cap, beside stringer A.'
+  note: 'Rev AE: not a separate part - the narrow lower half of hw_end_cap, beside stringer A.
+    Rev AZ: still exactly 3 1/2 wide - both of its edges moved in 1/4 together, the wall''s loft
+    face and the skin''s outer face.'
 - id: hw_sheath_loft_a
-  stock: ply-3/4
+  stock: ply-1/2
   x:
-  - 102
+  - 102.25
   - 102.75
   y:
   - 0
@@ -861,22 +896,23 @@ members:
   note: 'Rev AD: the nook face is TWO pieces, not three, and the wrap no longer shows on it.
     This is the narrow one — a full-height stile in the bed-wall corner, 4 1/4 x 53 3/4. It
     now runs past the reveal (3.5) to the finished jamb line (4.25), lapping the end of
-    nk_wrap_bedwall, which stops at 102.75 behind it. Piece 2 is hw_sheath_loft_head +
+    nk_wrap_bedwall, which stops at 102.75 behind it. Rev AZ: 1/2 ply - the piece is the same
+    4 1/4 x 53 3/4, but the whole loft face of the wall moved in to 102.25 with it. Piece 2 is hw_sheath_loft_head +
     hw_sheath_loft_b, one board. The seam between them is on y 4.25 — the same line as the
     opening jamb below it — so it reads as that line carried up, and it is backed by the wrap
     end below 41.5 and by the header above. One seam, not three, is what the 4x8 sheet costs:
     the whole face is 50 x 53 3/4 and neither dimension fits a 48 sheet. (Rev AE: the STAIR
     face is one piece now — see hw_sheath_stair.)'
 - id: hw_sheath_loft_head
-  stock: ply-3/4
+  stock: ply-1/2
   x:
-  - 102
+  - 102.25
   - 102.75
   y:
   - 4.25
-  - 45.75
+  - 46
   z:
-  - 15.55
+  - 15.57
   - 53.75
   role: sheet
   kind: raked
@@ -890,22 +926,27 @@ members:
     then the stringer undersides less the panel) instead of the framing line 3/4 above it.
     That is what lets the one panel cover the ends of all three lining sheets: nk_wrap_bedwall,
     nk_wrap_shortwall and the two nook soffit panels all stop at 102.75 behind it. z is the bbox; the
-    true edge comes from `rake`.'
+    true edge comes from `rake`. Rev AZ: 1/2 ply. The BOARD is unchanged at 45 3/4 x 53 3/4 (it is
+    still y 4.25 to 50 with hw_sheath_loft_b) but the OPENING CUT inside it moves on two edges,
+    because the linings it follows got thinner and the bed-wall lining did not: the far jamb goes
+    from 45.75 to 46 (nk_wrap_shortwall is 1/2 now), the near jamb stays on 4.25 (nk_wrap_bedwall
+    is still 3/4), and the raked head rides 1/4 higher because the soffit panel is 1/2. The
+    opening is therefore 41 3/4 wide, not 41 1/2, and its two jamb returns differ by 1/4.'
 - id: hw_sheath_loft_b
-  stock: ply-3/4
+  stock: ply-1/2
   x:
-  - 102
+  - 102.25
   - 102.75
   y:
-  - 45.75
+  - 46
   - 50
   z:
   - 0
   - 53.75
   role: sheet
   note: 'Rev AD: not a separate piece — the full-height far end of the same board as
-    hw_sheath_loft_head, below its raked edge. Out 3/4 to the finished jamb line so it laps
-    the end of nk_wrap_shortwall. Its outer end at y 50 meets hw_end_cap''s return, so the
+    hw_sheath_loft_head, below its raked edge. Out to the finished jamb line so it laps
+    the end of nk_wrap_shortwall - 1/2 since Rev AZ, so the line is 46, not 45.75. Its outer end at y 50 meets hw_end_cap''s return, so the
     corner you walk round has no joint in it.'
 - id: hw_sheath_stair
   stock: ply-3/4
@@ -943,7 +984,7 @@ members:
   - 106.25
   - 107
   y:
-  - 47.5
+  - 47.75
   - 50
   z:
   - 58
@@ -953,9 +994,13 @@ members:
     at 58 and the beam ran to 63, so the end grain faced the landing. It is the top of the
     stair face, not a separate part to fit: with hw_sheath_stair it is one board. Sits on the
     beam''s end (x 106.25) and dies into beam_wrap_face, which already runs to 107. Rev AG:
-    9 3/4 tall, was 5, and its inboard edge is 47.5 - the finished face of beam_wrap_inner -
+    9 3/4 tall, was 5, and its inboard edge is the finished face of beam_wrap_inner -
     so it caps the LVL and the inner wrap together and beam_wrap_top has backing under its
-    whole width out to x 107.'
+    whole width out to x 107. Rev AZ: that face moved to 47.75 with the 1/2 inner wrap, so
+    this edge followed it. The cap itself stays 3/4 - it is part of the hw_sheath_stair board,
+    which stays 3/4 - so it is 2 1/4 wide now, was 2 1/2. Left at 47.5 it would have stood a
+    quarter inch proud of the wrap it is supposed to die flush into, at the one corner of the
+    beam you see from the landing.'
 - id: hw_rake_nailer
   stock: 2x4
   x:
@@ -1114,9 +1159,9 @@ members:
     wide: the treads and risers stop at 107 and butt hw_sheath_stair, which fills 106.25→107
     above the stringers.'
 - id: stringer_a_skin
-  stock: ply-3/4
+  stock: ply-1/2
   x:
-  - 105.5
+  - 105.75
   - 106.25
   y:
   - 50
@@ -1125,17 +1170,21 @@ members:
   - 0
   - 24
   role: finish
-  note: 'Rev AC: closes the understair cavity on the room side - 3/4 ply on stringer A''s outer
+  note: 'Rev AC: closes the understair cavity on the room side - ply on stringer A''s outer
     face, its true outline the stringer''s stepped face carried down to the floor
     (drawings.skin_pts), because below the stringer underside the cavity is open to the room as
-    well. z is the bbox. Rev AE: it followed stringer A out 3/4, to 105.5-106.25, and it now
+    well. z is the bbox. Rev AE: it followed stringer A out, and it now
     starts at y 50 rather than 50.75 - it fills the corner taken out of hw_end_cap and butts
-    that cut edge at 105.5, so the wall''s end return and the skin close the corner between
-    them. Its face is 1 1/2 back from the half-wall''s finished stair face at 107 (was 3/4), so
-    the boards that pass it are 25 1/2 where the boards uphill of the wall''s end are 24; the
-    step still falls exactly on the end cap''s face at y 50.75, and tread 3, which straddles
-    it, is notched 1 1/2 x 5 (was 3/4 x 5). CUT-LIST: one stepped panel out of 22 x 24, scribed
-    off the stringer in place.'
+    that cut edge, so the wall''s end return and the skin close the corner between
+    them. Its face is set back from the half-wall''s finished stair face at 107, so
+    the boards that pass it are wider than the boards uphill of the wall''s end (24); the
+    step still falls exactly on the end cap''s face, and tread 3 straddles it and is notched.
+    Rev AZ: 1/2 ply, so the face is at 105.75 - 1 1/4 back from 107, was 1 1/2. The lapping
+    boards are 25 1/4 (was 25 1/2) and tread 3''s notch is 1 1/4 x 4 3/4 (was 1 1/2 x 5; the
+    5 also shortened because the end cap face, which is where the board steps, came in 1/4).
+    All of that is DERIVED - drawings/model.py reads this row and hw_end_cap for SKIN_X0 and
+    STEP_Y - so the treads and risers followed on their own. CUT-LIST: one stepped panel out
+    of 22 x 24, scribed off the stringer in place.'
 - id: stringer_a_skin_cleat
   stock: 2x4
   x:
@@ -1260,31 +1309,47 @@ members:
     nook. Runs to the framing plane (41.5); the soffit panel butts its face. Rev Z: out 1/2
     with the reveal — it lands on hw_trimmer_a''s face over the half-wall and on the nook
     studs'' faces beyond, and those are one plane again because of the jamb flitch. Rev AD:
-    starts at 102.75, not 102 — recessed 3/4 so the one-piece nook face laps its end instead
+    starts at 102.75, not 102 — recessed so the one-piece nook face laps its end instead
     of butting it. Cut 28 1/4 long, was 29. Its FACE (4.25) is unmoved, so the finished
-    opening and everything inside the nook are exactly as they were.'
+    opening and everything inside the nook are exactly as they were. Rev AZ/BA: STAYS 3/4
+    while nk_wrap_shortwall goes to 1/2, and the reason is a use, not a finish. This is the
+    TALL wall of the nook — full height 0 to 41.5, where the short wall tops out under the
+    stringers around 16 — so it is the one anyone would hang shelves on, and the builder
+    wants the stronger substrate there for that. 3/4 ply takes a screw on its own almost
+    anywhere on the sheet; 1/2 does not. That is what makes the nook opening asymmetric
+    (finished 4.25 to 46, two jamb returns 1/4 apart) and the asymmetry is accepted for it.
+    NOW-OR-NEVER if the shelves might be heavy or high: add blocking between the
+    nk_bedwall_stud bays BEFORE this sheet goes on. The 3/4 covers ordinary shelf loads
+    anywhere on the face without it, but a real bracket into solid backing is a decision
+    that has to be made while the studs are still open. See open-items.'
 - id: nk_wrap_shortwall
-  stock: ply-3/4
+  stock: ply-1/2
   x:
   - 102.75
   - 131
   y:
-  - 45.75
+  - 46
   - 46.5
   z:
   - 0
-  - 16.3
+  - 16.07
   role: sheet
   kind: raked
   rake:
     profile: stringer_underside
     side: below
   note: 'Rev X: the same sheet on the short wall; its top edge is raked and tucks under the
-    stringers. z is the bbox. Rev Z: in 1/2 with the reveal, so the bbox top rises from 15.84
-    to 16.3 — it now meets the stringer undersides half an inch further up the rake. Rev AD:
-    recessed to 102.75 with the other two lining sheets; 28 1/4 long, was 29.'
+    stringers. z is the bbox. Rev Z: in 1/2 with the reveal, so the bbox top rose from 15.84
+    to 16.3 — it met the stringer undersides half an inch further up the rake. Rev AD:
+    recessed to 102.75 with the other two lining sheets; 28 1/4 long, was 29. Rev AZ: 1/2 ply.
+    It bears on the same stud faces at 46.5, so it is the FACE that moves: out to 46, and the
+    bbox top drops back to 16.07 (a quarter inch downhill on a 8.25/9 rake is 0.23). THE NOOK
+    OPENING IS NOW ASYMMETRIC — nk_wrap_bedwall stays 3/4 at the builder''s direction, so the
+    finished opening is 4.25 to 46 = 41 3/4 with a 3/4 return on one jamb and 1/2 on the other.
+    That difference is only visible where the two returns meet the head, and it is the price of
+    keeping 3/4 on the bed-wall side; say so rather than leave it to be found on site.'
 - id: nk_soffit_flat
-  stock: ply-3/4
+  stock: ply-1/2
   x:
   - 102.75
   - 131
@@ -1292,39 +1357,46 @@ members:
   - 4.25
   - 18.26
   z:
-  - 40.75
+  - 41
   - 41.5
   role: sheet
   note: 'Rev AE: the flat half of the nook ceiling, its own board — 28 1/4 x 14. It was one
     piece with the raked half (nk_soffit_panel), which meant a sheet with a 42.5 degree kink
     along it: buildable only as a scored-and-folded panel or a lie. The break is at y 18.26,
     where the stringer undersides come down to the ceiling plane. Under the landing box its
-    face is the 40.75 finished ceiling and its top butts the landing framing at 41.5.'
+    face is the finished ceiling and its top butts the landing framing at 41.5. Rev AZ: 1/2 ply.
+    Its TOP stays on 41.5 — it is packed up under the landing framing, which cannot move — so
+    the finished nook ceiling RISES 1/4 to 41, and the break at y 18.26 is unchanged because
+    face + panel is still 41.5. The nook gains a quarter inch of head.'
 - id: nk_soffit_rake
-  stock: ply-3/4
+  stock: ply-1/2
   x:
   - 102.75
   - 131
   y:
   - 18.26
-  - 45.75
+  - 46
   role: sheet
   z:
-  - 15.55
+  - 15.57
   - 41.5
   kind: raked
   rake:
     profile: soffit
     side: above
-    band: 0.75
-  note: 'Rev AE: the raked half of the nook ceiling — 28 1/4 x 37 3/8 on the slope, on the
+    band: 0.5
+  note: 'Rev AE: the raked half of the nook ceiling, on the
     stringer undersides. Its uphill edge is cut plumb at y 18.26 and butts nk_soffit_flat''s
     plumb edge: at the break both faces are on 40.75, so the butt is flush and full-thickness
     and the ceiling reads as one plane turning a corner. (A true 3/4 recess behind the flat
     panel would feather this edge to nothing — the two faces are coplanar at the break.) Rev
     X: it runs the full x 102.75→131 — through the half-wall on hw_rake_nailer, then on the
     stringers — so the rake reads continuously from the outer face. Rev Z: its far edge is
-    14.86 above the floor. Rev AD: recessed to 102.75 so the nook face laps its end.'
+    14.86 above the floor. Rev AD: recessed to 102.75 so the nook face laps its end. Rev AZ:
+    1/2 ply, so `band` is 0.5 and the whole raked face drops 1/4 lower against the stringers —
+    the far end height goes 14.86 to 15.11. Its downhill edge follows nk_wrap_shortwall out to
+    y 46. Still flush and full-thickness at the y-18.26 butt: both halves went to 1/2 together,
+    so the two faces are still coplanar at the break.'
 - id: slat
   stock: 2x2
   x:
@@ -1334,7 +1406,7 @@ members:
   - 48.375
   - 49.875
   z:
-  - 68.5
+  - 68.25
   - 94.5
   role: structural
   repeat:
@@ -1342,27 +1414,45 @@ members:
     axis: x
     pitch: 4.7955
   note: 'Rev AN: CENTRED on the beam, y 48.375 to 49.875. The centre line is 49.125, which is
-    both the LVL''s centre (48.25 to 50) and the finished beam''s (47.5 to 50.75) - the two
-    wrap faces are 3/4 each, so the two readings are the same line. This replaces Rev T''s
-    ''faces flush with wrap'', which had the outer face on 50.75 and was only ever an ASSUMED
-    reading of that phrase. The look changes deliberately: the screen was one plane with the
-    beam face, and is now a grille set 7/8 back from it on both sides, with a shadow line each
-    side. It also puts every slat screw dead centre in the LVL instead of half in the poplar
-    wrap. Rev AG: they start at 68.5 on beam_wrap_top, not 63 - 26 long, was 31 1/2 - and all
-    23 are identical. slat[0] is no longer a special case: the beam runs to x 0 under it.'
+    both the LVL''s centre (48.25 to 50) and the finished beam''s (47.75 to 50.5) - the two
+    wrap faces are the same thickness as each other, so the two readings are the same line
+    whatever that thickness is. This replaces Rev T''s ''faces flush with wrap'', which had the
+    outer face on 50.75 and was only ever an ASSUMED reading of that phrase. The look changes
+    deliberately: the screen was one plane with the beam face, and is now a grille set back
+    from it on both sides, with a shadow line each side. It also puts every slat screw dead
+    centre in the LVL instead of half in the wrap. Rev AG: they start on beam_wrap_top, not at
+    63, and all 23 are identical. slat[0] is no longer a special case: the beam runs to x 0
+    under it. Rev AZ: the cap is 1/2 ply, so the seat drops to 68.25 and every slat is 26 1/4
+    long, was 26. The setback each side is now 5/8, was 7/8.'
 - id: screen_top_plate
-  stock: 2x4
+  stock: poplar-2x4
   x:
   - 0
   - 107
   y:
-  - 47.25
-  - 50.75
+  - 47
+  - 50.5
   z:
   - 94.5
   - 96
   role: structural
-  note: 'Rev AS: DECIDED - the plate stays at 47 1/4 to 50 3/4, the text reading, and the
+  note: 'Rev BA: PAINT-GRADE SOLID STOCK, not an SPF 2x4. Nothing about its job changed - it
+    is still structural, still the screen''s top restraint, still 1 1/2 x 3 1/2 - but it is
+    fully in view: 3 1/2 of underside and 1 1/2 of edge on each side, the full 107, at eye
+    level from the loft and from the room. A framing 2x4''s knots, crown and mill glaze are
+    not what you want under paint on the one member that reads as the head of the screen.
+    Buy poplar 8/4 S4S, or clear/select pine at the same section; 107 long needs a 10 ft
+    board either way, and it is ONE board with no joint - do not splice it, the slats read
+    against its bottom edge for the full length. This is the only member in the build in this
+    stock. THE SLATS ARE THE SAME QUESTION and are still open: 23 exposed painted 2x2s in the
+    same assembly, currently the generic 2x2 key and listed TBD in open-items. Decide them
+    with this, and in the same species, or the screen will be two woods under one colour.
+    Rev AZ: the band moved 1/4 with the wrap, to 47 to 50 1/2, so its outer face is still
+    the beam''s finished plane at 50 1/2 and the slats are still set back the same 5/8 top and
+    bottom. This is the SAME reading as Rev AS - the plate registers off the wrap face, and the
+    wrap face moved - not a reopening of it; the 47 1/4 to 50 3/4 numbers below are that reading
+    at the old 3/4 wrap. Nothing in the ceiling gates it: see the access argument below.
+    Rev AS: DECIDED - the plate stays on the text reading, and the
     Drawing 3 alternative (46 1/2 to 50 with a 3/4 poplar band) is off the table. What settled it
     is not geometry but access: there is attic space over this ceiling, so blocking can be added
     between joists wherever the plate lands, and the plate no longer has to be positioned to find
@@ -1700,7 +1790,7 @@ connections:
   b: stringer_a
   type: face-screw
   face: x
-  fastener: construction adhesive + 1-1/2 x 16ga finish nails at 8 in o.c. into the stringer's outer face (3/4 penetration)
+  fastener: construction adhesive + 1-1/2 x 16ga finish nails at 8 in o.c. into the stringer's outer face (1 in penetration through the 1/2 skin; was 3/4 through 3/4)
 - a: stringer_a_skin_cleat
   b: stringer_a_skin
   type: face-screw
@@ -1739,8 +1829,8 @@ connections:
   face: z
   panel: true
   fastener: 'construction adhesive + #8 x 2 at 8 in o.c. up into each joist''s 1-1/2 bottom
-    edge - 3/4 of ply then 1-1/4 into 3-1/2 of joist. Rev AT: the panel had NO connection row
-    of any kind before this.'
+    edge - 1/2 of ply then 1-1/2 into 3-1/2 of joist (Rev AZ: 1/2 ply, so the same screw takes
+    1/4 MORE embedment). Rev AT: the panel had NO connection row of any kind before this.'
 - a: loft_ceiling
   b: rear_ledger
   type: face-screw
@@ -1783,8 +1873,9 @@ connections:
   type: face-screw
   face: y
   panel: true
-  fastener: 'construction adhesive + #8 x 2 at 12 in o.c. in two rows into the LVL - 3/4 of ply
-    then 1-1/4 into 1-3/4 of beam. Rev AT: OVER x 0 TO 27 THIS IS STRUCTURAL, not a finish
+  fastener: 'construction adhesive + #8 x 2 at 12 in o.c. in two rows into the LVL - 1/2 of ply
+    then 1-1/2 into 1-3/4 of beam (Rev AZ: the splice screws GAINED 1/4 of embedment on the
+    thinner panel; nothing about the splice got weaker). Rev AT: OVER x 0 TO 27 THIS IS STRUCTURAL, not a finish
     fixing: tighten to 6 in o.c. in two rows and glue the full contact area. This panel is the
     notch reinforcement (see beam_tongue) - it straddles the re-entrant corner at x 3, z 57.25
     and runs the full length past the shoulder, so it carries across the corner in shear what
@@ -1812,7 +1903,7 @@ connections:
   fastener: '#8 x 2-1/2 at 6 in o.c. into the ledger''s y-50 end face, over z 53.75-57.25.
     Rev AT: part of the notch splice - this is what ties the tongue back to the member it
     bears on. End-grain withdrawal is poor and irrelevant here: the joint works in shear.
-    Rev AY: 2-1/2 not 2, for 1-3/4 of embedment instead of 1-1/4. This is the anchor side of
+    Rev AY: 2-1/2 not 2, for 1-3/4 of embedment instead of 1-1/4; Rev AZ makes it 2 on the 1/2 wrap. This is the anchor side of
     the whole splice claim and 1-1/4 of dowel action in end grain was thin.'
 - a: beam_wrap_face
   b: deck_joist_tail
@@ -1841,14 +1932,14 @@ connections:
   type: bearing
   except:
   - slat[22]
-  fastener: '1 x #8 x 3 through the cap into the LVL — 3/4 of cap, 2-1/4 into the beam.
+  fastener: '1 x #8 x 3 through the cap into the LVL — 1/2 of cap since Rev AZ, 2-1/2 into the beam.
     Rev AG settles what Rev T left open. slat[22] is the one exception - see below.'
 - a: slat[22]
   b: beam_wrap_top
   type: bearing
   fastener: '1 x #8 x 3, OFFSET INBOARD. slat[22] runs x 105.5 to 107 and the LVL ends at
     106.25, so only 3/4 of its 1-1/2 width has beam under the cap - the rest is over
-    beam_end_cap, 3/4 ply. A centred screw lands half in ply. Found by the kernel ray cast.'
+    beam_end_cap, which is still 3/4 ply. A centred screw lands half in ply. Found by the kernel ray cast.'
 - a: ledge_cleat
   b: wall:bed
   type: wall
@@ -1864,8 +1955,10 @@ connections:
   type: face-screw
   face: y
   fastener: 'adhesive + 2 pocket screws from inside the well, angled out of the strut into the
-    back of the rail. Pocket, not toe: a toe screw into 3/4 of poplar from behind breaks out
-    the face, and a screw through the rail''s face lands in the strut''s end grain.'
+    back of the rail. Pocket, not toe: a toe screw into the 3/4 rail from behind breaks out
+    the face, and a screw through the rail''s face lands in the strut''s end grain. (Rev BA:
+    said "3/4 of poplar"; the rail has been 3/4 paint-grade ply since Rev AS. Same detail,
+    same reason - a ply face breaks out at least as readily.)'
 - a: ledge_lid
   b: ledge_strut[*]
   type: bearing
@@ -1996,10 +2089,10 @@ expected:
   deck_top: 58
   platform_finished:
   - 107
-  - 50.75
-  clear_below_deck_x: 102
-  clear_under_joists: 53
-  clear_under_beam: 53
+  - 50.5
+  clear_below_deck_x: 102.25
+  clear_under_joists: 53.25
+  clear_under_beam: 53.25
   deck_joist_span: 46.75
   deck_ply:
   - 106.25
@@ -2018,17 +2111,18 @@ expected:
   - 41.5
   nook_light_chase: 3.75
   loft_light_chase: 3.5
-  nook_far_end_height: 14.86
+  nook_far_end_height: 15.11
   rim_header_overlap: 7.25
   rim_stringer_bearing: 7.01
   slat_clear: 3.3
   stair_projection: 72
   # HORIZONTAL reach distance, measured from the platform's FINISHED front face
-  # (beam_wrap_face at y 50.75) to the fan disc - not from the slats. Since Rev AN
+  # (beam_wrap_face at y 50.5) to the fan disc - not from the slats. Since Rev AN
   # the slats are centred on the beam and their outer face is 49.875, so the screen
-  # is 16.125 off the fan; 50.75 is the nearer surface and so the governing one.
-  fan_clearance: 15.25
+  # is 16.125 off the fan; 50.5 is the nearer surface and so the governing one.
+  # Rev AZ: the 1/2 wrap moved that face in 1/4, so the reach GREW to 15.5.
+  fan_clearance: 15.5
   room_depth_chain: 186
   screen_top_plate_band:
-  - 47.25
-  - 50.75
+  - 47
+  - 50.5

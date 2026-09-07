@@ -46,6 +46,12 @@ _SEAM_X = _joist_c(_NB)
 _SEAM_Y = sum(_m("deck_seam_blocking[0]").y) / 2
 _DECK_D = float(_m("deck_ply").y[1]) - float(_m("deck_ply").y[0])
 _DECK_L = float(_m("deck_ply").x[1]) - float(_m("deck_ply").x[0])
+_CEIL_D = _m("loft_ceiling").size("y")
+_CEIL_L = _m("loft_ceiling").size("x")
+
+
+def _sz(mid, axis):
+    return _m(mid).size(axis)
 
 # Actual section for every nominal stock key, straight off the yaml's lumber table.
 SECTION = {k: v for k, v in YAML["lumber"].items()}
@@ -99,13 +105,19 @@ PANEL_SPLITS = {
     # piece fits per sheet: this costs a sheet against the two-row version, and the
     # offcuts are large and go back into the pool. Both seams clear all three downlights
     # (rough-in holes at x 9 7/8-14 1/8 and 59 7/8-66 1/8).
-    "loft_ceiling": ([(_joist_c(3), 50.0), (_joist_c(6) - _joist_c(3), 50.0),
-                      (102.0 - _joist_c(6), 50.0)],
-                     "three pieces, seams on the joist centres at 38 1/4 and 74 1/4 — "
-                     "every ceiling seam is backed by a joist; clear of all downlights"),
-    "beam_wrap_face":   ([(53.5, 14.75), (53.5, 14.75)], "joint on x 53 1/2, over deck_joist[4]"),
-    "beam_wrap_inner":  ([(53.125, 9.75), (53.125, 9.75)], "joint on x 53 1/8, the ledge's joint line"),
-    "beam_wrap_top":    ([(53.5, 3.25), (53.5, 3.25)], "joint on x 53 1/2, with the face wrap"),
+    "loft_ceiling": ([(_joist_c(3), _CEIL_D), (_joist_c(6) - _joist_c(3), _CEIL_D),
+                      (_CEIL_L - _joist_c(6), _CEIL_D)],
+                     f"three pieces, seams on the joist centres at {fr(_joist_c(3))} and "
+                     f"{fr(_joist_c(6))} — every ceiling seam is backed by a joist; clear of "
+                     f"all downlights. Rev AZ: 1/2 ply, and {fr(_CEIL_L)} long not 102 — the "
+                     "half-wall's loft face went to 1/2 with it, so the last piece grew 1/4"),
+    # Rev AZ: the three beam-wrap panels are 1/2 ply now, and two of the three changed size
+    # with it (the face lost 1/4 of height to the thinner ceiling, the cap lost 1/2 of width
+    # to the two thinner faces). Their cross dimensions are read off the members so a future
+    # thickness change cannot leave a typed number behind.
+    "beam_wrap_face":   ([(53.5, _sz("beam_wrap_face", "z"))] * 2, "joint on x 53 1/2, over deck_joist[4]"),
+    "beam_wrap_inner":  ([(53.125, _sz("beam_wrap_inner", "z"))] * 2, "joint on x 53 1/8, the ledge's joint line"),
+    "beam_wrap_top":    ([(53.5, _sz("beam_wrap_top", "y"))] * 2, "joint on x 53 1/2, with the face wrap"),
     "ledge_front_rail": ([(53.125, 10.25), (53.125, 10.25)],
                          "joint on x 53 1/8 = centre of ledge_strut[1], backed by ledge_rail_splice"),
     "ledge_lid":        ([(53.125, 8.0), (53.875, 8.0)],
@@ -126,6 +138,13 @@ HANGERS = ("LUS24", "HUC28", "A35")
 # DECIDED 2026-09-07: the deck IS the finished walking surface, so it is paint-grade
 # like everything else and the set is empty. Kept rather than deleted because the
 # distinction is real and would come back the moment anything hidden gets added.
+#
+# Rev AZ: 1/2 ply is ONE pool, deliberately. It now holds both the paint-grade faces that
+# moved down from 3/4 and the two structural flitches (hw_jamb_ply_a/b, and the header's
+# middle ply, which is a lamination of the header rather than a panel) — at the builder's
+# direction, so the jambs come out of the same sheet as the faces instead of being the only
+# reason to buy a board. Paint-grade is the better of the two grades, so nothing is
+# under-specified by mixing them; if that ever reverses, split it here the way HIDDEN does.
 HIDDEN: set[str] = set()
 
 
@@ -441,10 +460,19 @@ def main():
             longest = max(r["length"] for r in rs)
             note = (f"{len(rs)} pieces total, longest {sixteenths(longest)}"
                     + ("  ·  LONGEST PIECE NEEDS A 10 FT BOARD" if longest > 96 else ""))
-            if stock == "poplar-3/4":
+            if stock.startswith("poplar"):
                 widest = max(r["w"] for r in rs)
-                nominal = next((n for w, n in BOARD_NOMINAL if widest <= w), "wider than 1x12")
-                note += f"  ·  buy as {nominal} S4S ({sixteenths(widest)} wide needed)"
+                # BOARD_NOMINAL names 1xN boards, which are 3/4 — it says nothing useful about
+                # a 2x-section board. Rev BA: poplar-2x4 is one member, screen_top_plate, at a
+                # section no 1xN comes in, and it is 107 long with no joint allowed, so the
+                # board LENGTH is the binding constraint rather than the yield.
+                if SECTION[stock][0] > 1.0:
+                    note += (f"  ·  buy as poplar 8/4 S4S dressed to "
+                             f"{sixteenths(SECTION[stock][0])} x {sixteenths(widest)}, or "
+                             f"clear/select pine at that section — ONE board, no splice")
+                else:
+                    nominal = next((n for w, n in BOARD_NOMINAL if widest <= w), "wider than 1x12")
+                    note += f"  ·  buy as {nominal} S4S ({sixteenths(widest)} wide needed)"
             if stock == "2x2" and size > 96:
                 note += ("  ·  these two are ledge_cleat and ledge_cleat_rail; per the user "
                          "they can be RIPPED from one 10 ft 2x4 instead")
