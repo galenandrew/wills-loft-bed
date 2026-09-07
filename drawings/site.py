@@ -49,6 +49,20 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3
 ul{margin:0;padding-left:19px}li{margin-bottom:7px}code{font-size:12.5px;background:#f1efe9;padding:1px 4px;border-radius:3px}
 .note{border-left:3px solid var(--red);background:#fdf4f2;padding:11px 14px;border-radius:0 6px 6px 0;font-size:13px;margin-top:14px}.note b{color:var(--red)}
 .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:1.5px 7px;border-radius:4px;vertical-align:1px}.t-open{background:#fdf1e3;color:var(--amber)}.t-lock{background:#e8f0e9;color:var(--green)}.t-chk{background:#fbe9e7;color:var(--red)}
+.ck{margin-bottom:16px}.ck:last-of-type{margin-bottom:6px}
+.ck h3{font-size:12.5px;font-weight:400;color:var(--ink3);margin:0 0 7px;display:flex;gap:9px;align-items:baseline}
+ul.todo{list-style:none;padding-left:2px;font-size:13.5px}
+ul.todo li{margin-bottom:6px;padding-left:24px;position:relative;line-height:1.45}
+ul.todo li::before{content:"";position:absolute;left:0;top:2px;width:12px;height:12px;border:1.5px solid var(--ink3);border-radius:3px;background:var(--bg)}
+ul.todo li b{font-weight:600}.why{color:var(--ink2);font-weight:400;font-size:12.5px;display:block;margin-top:1px}
+details.done{margin-top:-2px}
+details.done summary{cursor:pointer;font-size:12.5px;color:var(--ink2);display:flex;gap:9px;align-items:baseline}
+details.done summary::-webkit-details-marker{display:none}
+details.done summary{list-style:none}
+details.done summary::before{content:"▸";color:var(--ink3);font-size:11px;line-height:1.4}
+details.done[open] summary::before{content:"▾"}details.done ul{margin-top:11px;font-size:12.5px;color:var(--ink2)}
+.sum{margin:-2px 0 0;font-size:12px;color:var(--ink3)}
+@media print{details.done{display:none}}
 h2.section{font-size:15px;text-transform:none;letter-spacing:0;color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:6px;margin:30px 0 16px}"""
 CSS_SVG = """svg text{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11.5px;fill:var(--ink)}
 .lab{font-weight:650;font-size:12px}.labs{font-size:10.5px;fill:var(--ink2)}.labk{font-weight:650;font-size:11.5px;fill:var(--pencil)}.labb{font-weight:650;font-size:11px;fill:var(--red)}.labw{font-size:10.5px;fill:var(--ghost)}
@@ -105,10 +119,36 @@ def card_structure():
     rows = [(fill(r["member"]), fill(r["spec"]), fill(r["check"])) for r in c["rows"]]
     return f'<div class="card" id="structure"><h2>Structure &amp; load path</h2>{tbl(rows, ["Member", "Spec", "Check"], num=())}<div class="note">{fill(c["ceiling_note"])}</div></div>'
 
-def card_open():
-    items = content("open-items.yaml")["items"]
-    li = "".join(f'<li><span class="tag {"t-lock" if i["tag"] == "LOCKED" else "t-chk"}">{E(i["tag"])}</span> {fill(i["text"])}</li>' for i in items)
-    return f'<div class="card" id="open"><h2>Open items</h2><ul>{li}</ul></div>'
+def cards_open():
+    """The Open Items page: [(anchor, label, html)], one card per group plus the
+    decision record and the one-line summary. A checklist, not an essay — one line
+    per item with the muted `why` after it. Its own page since Rev BA.2; it used to
+    sit at the top of all four, which is how it grew into six paragraphs nobody read."""
+    c = content("open-items.yaml")
+    anchor = lambda tag: "open-" + re.sub(r"[^a-z]", "", tag.lower())
+    out = []
+    for g in c["groups"]:
+        li = "".join('<li><b>' + fill(i["do"]) + "</b>"
+                     + (f'<span class="why">{fill(i["why"])}</span>' if i.get("why") else "")
+                     + "</li>" for i in g["items"])
+        out.append((anchor(g["tag"]), g["tag"].capitalize(),
+                    f'<div class="card" id="{anchor(g["tag"])}">'
+                    f'<h2>{E(g["tag"])} — {len(g["items"])} left</h2>'
+                    f'<p class="cap" style="margin:-4px 0 12px">{fill(g["lead"])}</p>'
+                    f'<ul class="todo">{li}</ul></div>'))
+    done = "".join(f"<li>{fill(x)}</li>" for x in c["closed"])
+    out.append(("open-closed", "Closed",
+                f'<div class="card" id="open-closed"><h2>Closed — {len(c["closed"])} decisions</h2>'
+                f'<details class="done"><summary><span class="tag t-lock">DECIDED</span> '
+                f'Open only to check that something is not being reopened by accident</summary>'
+                f'<ul>{done}</ul></details></div>'))
+    out.append(("open-summary", "The design in one line",
+                f'<div class="card" id="open-summary"><h2>The design in one line</h2>'
+                f'<p class="cap sum">{fill(c["summary"])}</p></div>'))
+    return out
+
+def open_count():
+    return sum(len(g["items"]) for g in content("open-items.yaml")["groups"])
 
 def card_revisions():
     rows = json.load(open(os.path.join(CONTENT, "revisions.json")))
@@ -118,8 +158,8 @@ def card_revisions():
 
 # --------------------------------------------------------------------------- pages
 # Four scrolling pages, so views of the same assembly sit together. Drawing numbers are unchanged.
-PAGES = [("index", "Overview"), ("stairs", "Stairs & Nook"), ("loft", "Loft Bed"), ("appendix", "Appendix")]
-PAGE_SHEETS = {"index": ["1", "2"], "stairs": ["4", "5", "8", "9"], "loft": ["3", "6", "7"], "appendix": []}
+PAGES = [("index", "Overview"), ("stairs", "Stairs & Nook"), ("loft", "Loft Bed"), ("open", "Open Items"), ("appendix", "Appendix")]
+PAGE_SHEETS = {"index": ["1", "2"], "stairs": ["4", "5", "8", "9"], "loft": ["3", "6", "7"], "open": [], "appendix": []}
 assert sorted(n for v in PAGE_SHEETS.values() for n in v) == sorted(s.NUMBER for s in SHEETS), "every sheet must be on exactly one page"
 
 def sheet(n): return next(s for s in SHEETS if s.NUMBER == n)
@@ -129,6 +169,8 @@ def page_parts(name, svgs):
     dr = lambda n: (f"d{n}", f"{n} {sheet(n).TITLE}", card_drawing(sheet(n), svgs))
     if name == "index":
         return [("conventions", "Conventions", card_conventions()), ("locked", "Locked dimensions", card_locked()), dr("2"), dr("1")]
+    if name == "open":
+        return cards_open()
     if name == "appendix":
         return [("schedule", "Dimension schedule", card_schedule()), ("structure", "Structure & load path", card_structure()), ("fasteners", "Fastener schedule", card_fasteners()), ("revisions", "Revisions", card_revisions())]
     return [dr(n) for n in PAGE_SHEETS[name]]
@@ -148,7 +190,7 @@ def html_page(title, body, here, today, inline_css=False):
     css = f"<style>{CSS}</style>" if inline_css else '<link rel="stylesheet" href="style.css">'
     return (f'<!DOCTYPE html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">\n'
             f'<title>{E(title)}</title>\n{css}</head><body><div class="wrap">\n'
-            f'<header><h1>Lofted Bed — Working Drawings</h1>\n{meta_line(today)}</header>\n{card_open()}\n{nav(here) if here else ""}'
+            f'<header><h1>Lofted Bed — Working Drawings</h1>\n{meta_line(today)}</header>\n{nav(here) if here else ""}'
             f'{body}\n</div>{KEYS_JS if here else ""}</body></html>\n')
 
 def contents_row(parts):

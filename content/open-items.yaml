@@ -1,14 +1,76 @@
-# Open items (site/open-items.html). tag: PARKED · FIELD · SPECIFY · SEQUENCE · VERIFY · LOCKED. text is HTML.
-items:
-- tag: FIELD
-  text: "<b>Studs</b> in the bed wall, window wall and right wall — every ledger and stringer C depend on them. <b>Ceiling joist</b> nearest {m:screen_top_plate.y1} out. <b>Mattress</b> thickness — MEASURED 2026-09-06, 8 mattress + 2 topper = 10; sitting headroom is 28, not 32. <b>Room depth</b> — the chain now closes on 186 only because the door's <b>4 to the corner is assumed, not measured</b> (it was 3½, which left ½ unplaced). Confirm both: door casing to the closet-wall corner, and the room's overall depth. Nothing built depends on it — the ½ lands in the stair-to-dresser gap either way. <b>Floor joists</b> under the half-wall plate and the kicker."
+# Open items (rendered at the top of every page by drawings/site.py:card_open).
+#
+# A CHECKLIST, not an essay. One line per thing that is actually left to do.
+#   do:   the action, imperative, one line. This is what the builder reads.
+#   why:  at most one sentence of consequence, shown muted. Optional — omit it
+#         if the action stands on its own. If it needs a paragraph it is not an
+#         open item, it is a decision: put it in `closed:` or in revisions.json.
+# Groups render in the order below. text is HTML; {m:...} reads the model.
+groups:
+
+- tag: MEASURE
+  lead: Field measurements still owed. Anything depending on one is provisional.
+  items:
+  - do: "Stud locations — bed wall, window wall, right wall."
+    why: "Every ledger fixing and stringer C depend on them. The <b>window wall needs a stud (or added blocking) within ~6&Prime; of y 50</b> for the beam's end reaction."
+  - do: "Ceiling joist nearest {m:screen_top_plate.y1} from the bed wall."
+    why: "Decides whether the screen top plate screws to a joist or wants blocking first. Does not gate the design — the plate is fixed and the attic is accessible."
+  - do: "Floor joists under the half-wall bottom plates and under the kicker."
+  - do: "Room depth: door casing to the closet-wall corner, and the overall 186."
+    why: "The 4&Prime; to the corner is <b>assumed, not measured</b>. Nothing built depends on it — the &frac12; lands in the stair-to-dresser gap either way."
+
 - tag: SPECIFY
-  text: "<b>Grades</b> — framing species/grade, the ply grades — <b>ONE pool per thickness</b>, at the builder's direction. Rev AZ moved about 93 sq ft of painted face from ¾ to ½, so the buy is now <b>4 sheets of ¾ paint-grade + 5 of ½ paint-grade</b> where it was 9 of ¾ + 1 of ½ — one sheet fewer overall, and five of them a thinner, cheaper, lighter sheet. Both pools are paint-grade: the deck moved into the ¾ pool at Rev AV (it is the finished walking surface), and the two structural jamb flitches plus the header's middle ply share the ½ pool rather than being the only reason to buy a board. Paint-grade is the better grade of the two, so nothing is under-specified by the mixing. <b>Buying the deck as rated sheathing instead would break the ¾ nest</b>, which assumes a single ¾ pool — reopen that deliberately or not at all. <b>Framing species/grade and the SLAT stock are still TBD</b> pending price and availability. <b>Rev BA sharpens the slat question:</b> <code>screen_top_plate</code> is now paint-grade solid stock ({m:screen_top_plate.size.y} × {m:screen_top_plate.size.z} poplar 8/4 S4S or clear/select pine) because it is structural and fully in view — and the {slat_count} slats are the same assembly, the same paint, and still the generic 2×2 key. <b>Decide the slats in the same species as the plate</b>, or the screen is two woods under one colour. · <b>kicker anchorage — the weakest chain in the model.</b> The stair's whole horizontal thrust runs stringers → notch hooked over the kicker → kicker → floor, and <b>both of those last two interfaces are unfastened</b>: the three <code>stringer → kicker</code> rows are bearing with no fastener at all, and until Rev AY <code>kicker → floor</code> was not even a row, so verify printed no line for it and it appeared in no schedule. It is declared and UNSPECIFIED now. Specify the floor anchorage, and consider toe-screwing the stringers to the kicker so the hook is not the only thing resisting thrust. Depends on locating the floor joists under it. · bottom-plate anchorage (still two boards, y 0→3½ and 46½→50, but each now runs the full 28¼ from the half wall through the nook)."
-- tag: SEQUENCE
-  text: "Nook power into the half-wall before sheathing; switch on the half-wall face, desk side. <b>Loft ceiling lights (loft_lighting, new) need their wiring run before loft_ceiling goes up</b> — the {m:loft_ceiling.size.z} ply screws straight to the joist bottoms with no chase left to fish through afterward. Position and switch location are ASSUMED and not yet confirmed. <b>Both loft-ceiling seams run along joist centres</b>, so every ceiling seam is backed, and both clear all three downlights — the cut layout in <code>materials/</code> carries the positions. An earlier scheme put a seam across the joists and it would have run straight through the 6″ walkway light. The fixture positions are still ASSUMED: <b>confirm all three before the ceiling is cut</b> — it is cut once. <b>The nook lining goes in before the nook face</b> — the face laps the ends of all three lining sheets, so a face panel fitted first has to come off again. <b>The stair-side skirt goes on last</b> (Rev AE): it lands on top of the landing box and the stringers, so it cannot be fitted until they are, and the treads and risers butt it. <b>Both bottom plates run through the half wall into the nook</b> — set them out and fix them as one board each, before the jamb packs. Stringer B's screws go in before the landing deck. <b>Both families of deck blocking go in before the deck ply</b> and are unreachable after it — now-or-never, and they are fixed differently. <code>deck_blocking</code> (on edge, at the beam face) is screwed from the beam's <b>OUTBOARD face at y 50</b>, so it also has to precede <code>beam_wrap_face</code> closing that face. <code>deck_seam_blocking</code> (flat, under the y-24 ply seam) is <b>toe-screwed into the joists at both ends</b> — there is no face to drive it from. Same trip as the wrap's own structural fixing over x 0–27. Risers go on before the treads — each tread butts the face of the riser behind it. <b>Shelf blocking in the nook's bed wall</b> (Rev BA): <code>nk_wrap_bedwall</code> stays {m:nk_wrap_bedwall.size.y} ply specifically because it is the nook's TALL wall ({m:nk_wrap_bedwall.z0}–{m:nk_wrap_bedwall.z1}) and the one shelves would go on — {m:nk_wrap_bedwall.size.y} takes a screw anywhere on the sheet, {m:nk_wrap_shortwall.size.y} would not. If the shelves might be heavy or high, <b>blocking between the <code>nk_bedwall_stud</code> bays is now-or-never</b>: it has to go in before this sheet does. Ordinary shelf loads need none of it."
-- tag: LOCKED
-  text: "<b>Rev AS closes four items.</b> <b>Header-to-king straps: scrapped.</b> (<b>Rev BA.1:</b> Drawing 7 was still drawing the strap markers and telling the builder to fit them, eight revs after this decision — removed. And Rev AZ took the loft face of that sheathing from ¾ to ½, which moves the premise of the sentence below; <b>the builder has accepted it without a calculation</b>, on the grounds that the joint carries gravity into the trimmers, whose bearing is checked, so the sheathing here is a racking and continuity gusset rather than a tension tie. Recorded so it is not reopened by accident.)  The half wall is sheathed on BOTH faces across the header-to-king joint (<code>hw_sheath_stair</code> z 24→58 and <code>hw_sheath_loft_head</code> z {m:hw_sheath_loft_head.z0}→{m:hw_sheath_loft_head.z1} both lap the header at z 41½–50¾ and run onto both kings at y 0–1½ and 48½–50), and two continuous top plates bear over the header and both kings. Nailed to header and kings, that is a stiffer tie than a strap — so nail the sheathing to both, and the strap is genuinely redundant. <b>Slat-to-plate joint: specified</b> — adhesive + one #8 × 2½ angled into the plate per slat, 16ga pins for assembly only. This screen is the guard for the bed, so the top is a structural joint, not trim. <b>Screen top-plate position: 47¼→50¾</b>, decided — attic access means blocking can be added wherever it lands. <b>Right-wall and bed-wall ledger fixings: ¼ × 4 and ⅜ × 4</b>, sized off 1½ of ledger + ⅝ of board. <b>Rev AU adds the deck-ply front-edge blocking</b> — nine 2×4 blocks on edge at the beam face (eight at 10½, one 5¾ at the rim), one 8 ft board. It closes the last gap in the diaphragm: the joists hang off the beam, so the deck had no fastening to it at all."
+  lead: Chosen by the builder; the model carries a placeholder until then.
+  items:
+  - do: "<b>Kicker anchorage to the floor.</b>"
+    why: "The weakest chain in the model — the stair's whole horizontal thrust runs stringers &rarr; notch hooked over the kicker &rarr; kicker &rarr; floor. Declared and UNSPECIFIED since Rev AY. Needs the floor joists located first."
+  - do: "Whether to toe-screw the stringers to the kicker."
+    why: "The three <code>stringer &rarr; kicker</code> rows are bearing with <b>no fastener at all</b>, so the hook is currently the only thing resisting thrust."
+  - do: "Bottom-plate anchorage to the floor — <code>hw_bottom_plate_a</code> / <code>_b</code>."
+    why: "Two boards, y 0&ndash;3&frac12; and 46&frac12;&ndash;50, each running the full 28&frac14; from the half wall through the nook."
+  - do: "Framing species and grade."
+  - do: "Slat stock — <b>match <code>screen_top_plate</code></b> ({m:screen_top_plate.size.y} &times; {m:screen_top_plate.size.z} poplar 8/4 S4S or clear/select pine)."
+    why: "The {slat_count} slats and the plate are one assembly under one colour; different species there is two woods under one paint."
+  - do: "Ply grade for the two paint-grade pools (&frac34; and &frac12;)."
+    why: "One pool per thickness, both paint-grade — 4 sheets of &frac34; + 5 of &frac12;. <b>Buying the deck as rated sheathing would break the &frac34; nest</b>, which assumes a single pool: reopen that deliberately or not at all."
+
+- tag: NOW-OR-NEVER
+  lead: Each of these gets much harder, or impossible, after the step that follows it.
+  items:
+  - do: "Nook power into the half-wall — <b>before sheathing</b>."
+    why: "Switch on the half-wall face, desk side."
+  - do: "Loft ceiling light wiring — <b>before <code>loft_ceiling</code></b>."
+    why: "The {m:loft_ceiling.size.z} ply screws straight to the joist bottoms; there is no chase to fish through afterward."
+  - do: "Confirm all three loft-light positions — <b>before the ceiling ply is cut</b>."
+    why: "Positions and switch location are ASSUMED. Both ceiling seams run on joist centres and clear all three fixtures, but the sheet is cut once."
+  - do: "Shelf blocking between the <code>nk_bedwall_stud</code> bays — <b>before <code>nk_wrap_bedwall</code></b>."
+    why: "Only if the nook shelves might be heavy or high. That sheet stays {m:nk_wrap_bedwall.size.y} ply ({m:nk_wrap_bedwall.z0}&ndash;{m:nk_wrap_bedwall.z1}, the tall wall) so it takes a screw anywhere; {m:nk_wrap_shortwall.size.y} would not."
+  - do: "<code>deck_blocking</code> — <b>before <code>beam_wrap_face</code></b>."
+    why: "Screwed from the beam's OUTBOARD face at y 50, so the wrap cannot close that face first. Same trip as the wrap's own structural fixing over x 0&ndash;27."
+  - do: "<code>deck_seam_blocking</code> — <b>before the deck ply</b>."
+    why: "Toe-screwed into the joists at both ends; there is no face to drive it from, and it is unreachable once the ply is down."
+  - do: "Set out and fix both bottom plates as one board each — <b>before the jamb packs</b>."
+  - do: "Nook lining — <b>before the nook face</b>."
+    why: "The face laps the ends of all three lining sheets."
+  - do: "Stringer B's screws — <b>before the landing deck</b>."
+  - do: "Risers — <b>before the treads</b>. Stair-side skirt — <b>last of all</b>."
+    why: "Each tread butts the face of the riser behind it. The skirt lands on top of the landing box and the stringers, and the treads and risers butt it."
+
 - tag: VERIFY
-  text: "Lay out and cut one stringer, measure the actual throat and plumb cut, then cut the other two. <b>Do not step 8¼ off seven times</b> — that lands at 57¾, ¼ short of the deck; the seventh riser is 8½."
-- tag: LOCKED
-  text: "Deck {deck} · platform {m:beam_wrap_face.size.x} × {m:beam_wrap_face.y1} · 8 × {ledge_h} boxed ledge · {bay} bay · single {beam_stock} upstand beam wrapped on face, bed side and top · post-free · half-wall at the stair end · full-height slat screen · 6 @ 8¼ to the landing + 8½ landing→deck / 9 run · 27 landing at 49½ (27⅞ finished) · {tread_t} ply treads over {riser_t} risers, riser in front of the plumb cut and the tread butted to its face · stringers 9 under the landing, notched over the kicker · landing box all 2×8 · nook ply-wrapped x 102¾→131 behind a two-piece face, head raked with the stringers, flat ceiling {nook_fin_h} flush with the landing-ledger bottoms · stair carriage on the half-wall framing at 106¼, finished treads still 24 behind a skirt · header full 9¼ stock."
+  lead: Cut once you have checked, not before.
+  items:
+  - do: "Lay out and cut <b>one</b> stringer, measure the real throat and plumb cut, then cut the other two."
+  - do: "<b>Do not step 8&frac14; off seven times</b> — that lands at 57&frac34;, &frac14; short of the deck. The seventh riser is 8&frac12;."
+
+# Decided. Kept so they are not reopened by accident, collapsed so they are not read daily.
+closed:
+- "<b>Header-to-king straps: scrapped</b> (Rev AS). The half wall is sheathed on BOTH faces across the joint — <code>hw_sheath_stair</code> z 24&ndash;58 and <code>hw_sheath_loft_head</code> z {m:hw_sheath_loft_head.z0}&ndash;{m:hw_sheath_loft_head.z1} both lap the header at z 41&frac12;&ndash;50&frac34; and run onto both kings at y 0&ndash;1&frac12; and 48&frac12;&ndash;50 — and two continuous top plates bear over the header and both kings. Nailed to header and kings that is a stiffer tie than a strap. <b>Rev AZ took the loft face of that sheathing &frac34; &rarr; &frac12;</b>; accepted without a calculation, on the grounds that the joint carries gravity into the trimmers, whose bearing is checked, so the sheathing here is a racking and continuity gusset rather than a tension tie. Rev BA.1 removed the strap markers Drawing 7 was still showing eight revs later."
+- "<b>Slat-to-plate joint: specified.</b> Adhesive + one #8 &times; 2&frac12; angled into the plate per slat; 16ga pins for assembly only. The screen is the guard for the bed, so the top is a structural joint, not trim."
+- "<b>Screen top-plate position: y {m:screen_top_plate.y0}&ndash;{m:screen_top_plate.y1}</b> (Rev AS). Attic access means blocking can be added wherever the joist lands."
+- "<b>Ledger fixings: &frac14; &times; 4 (right wall) and &frac38; &times; 4 (bed wall)</b>, sized off 1&frac12; of ledger + &frac58; of board."
+- "<b>Deck-ply front-edge blocking added</b> (Rev AU): nine 2&times;4 blocks on edge at the beam face — eight at 10&frac12; on a 12 pitch plus one 5&frac34; at the rim, one 8 ft board. It closes the last gap in the diaphragm; the joists hang off the beam, so the deck had no fastening to it at all."
+- "<b>Mattress measured</b> 2026-09-06: 8 mattress + 2 topper = 10. Sitting headroom is <b>28, not 32</b>."
+- "<b>Ply pools settled</b> (Rev AZ): about 93 sq ft of painted face moved &frac34; &rarr; &frac12;, so the buy is 4 sheets of &frac34; + 5 of &frac12; where it was 9 + 1 — one sheet fewer, five of them thinner and cheaper. Both pools paint-grade: the deck joined the &frac34; pool at Rev AV (it is the finished walking surface) and the two structural jamb flitches plus the header's middle ply share the &frac12; pool."
+
+# The design in one line, for the top of the sheet.
+summary: "Deck {deck} &middot; platform {m:beam_wrap_face.size.x} &times; {m:beam_wrap_face.y1} &middot; 8 &times; {ledge_h} boxed ledge &middot; {bay} bay &middot; single {beam_stock} upstand beam wrapped on face, bed side and top &middot; post-free &middot; half-wall at the stair end &middot; full-height slat screen &middot; 6 @ 8&frac14; to the landing + 8&frac12; landing&rarr;deck / 9 run &middot; 27 landing at 49&frac12; (27&frac78; finished) &middot; {tread_t} ply treads over {riser_t} risers, riser in front of the plumb cut and the tread butted to its face &middot; stringers 9 under the landing, notched over the kicker &middot; landing box all 2&times;8 &middot; nook ply-wrapped x 102&frac34;&ndash;131 behind a two-piece face, head raked with the stringers, flat ceiling {nook_fin_h} flush with the landing-ledger bottoms &middot; stair carriage on the half-wall framing at 106&frac14;, finished treads still 24 behind a skirt &middot; header full 9&frac14; stock."

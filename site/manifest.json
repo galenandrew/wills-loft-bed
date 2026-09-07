@@ -1,5 +1,5 @@
 {
- "rev": "BA.1",
+ "rev": "BA.2",
  "yaml": "dimensions.yaml",
  "generated": "2026-09-07",
  "figures": {
@@ -79,7 +79,8 @@
  "pages": {
   "index": "0093a5b149cb",
   "stairs": "72ee7d4c0d8f",
-  "loft": "683d365366f0",
-  "appendix": "2fa7141e5a81"
+  "loft": "bd4a4ac8e3f3",
+  "open": "e57e4fff1eff",
+  "appendix": "23a9c3f15e76"
  }
 }

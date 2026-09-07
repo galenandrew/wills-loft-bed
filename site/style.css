@@ -25,6 +25,20 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3
 ul{margin:0;padding-left:19px}li{margin-bottom:7px}code{font-size:12.5px;background:#f1efe9;padding:1px 4px;border-radius:3px}
 .note{border-left:3px solid var(--red);background:#fdf4f2;padding:11px 14px;border-radius:0 6px 6px 0;font-size:13px;margin-top:14px}.note b{color:var(--red)}
 .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:1.5px 7px;border-radius:4px;vertical-align:1px}.t-open{background:#fdf1e3;color:var(--amber)}.t-lock{background:#e8f0e9;color:var(--green)}.t-chk{background:#fbe9e7;color:var(--red)}
+.ck{margin-bottom:16px}.ck:last-of-type{margin-bottom:6px}
+.ck h3{font-size:12.5px;font-weight:400;color:var(--ink3);margin:0 0 7px;display:flex;gap:9px;align-items:baseline}
+ul.todo{list-style:none;padding-left:2px;font-size:13.5px}
+ul.todo li{margin-bottom:6px;padding-left:24px;position:relative;line-height:1.45}
+ul.todo li::before{content:"";position:absolute;left:0;top:2px;width:12px;height:12px;border:1.5px solid var(--ink3);border-radius:3px;background:var(--bg)}
+ul.todo li b{font-weight:600}.why{color:var(--ink2);font-weight:400;font-size:12.5px;display:block;margin-top:1px}
+details.done{margin-top:-2px}
+details.done summary{cursor:pointer;font-size:12.5px;color:var(--ink2);display:flex;gap:9px;align-items:baseline}
+details.done summary::-webkit-details-marker{display:none}
+details.done summary{list-style:none}
+details.done summary::before{content:"▸";color:var(--ink3);font-size:11px;line-height:1.4}
+details.done[open] summary::before{content:"▾"}details.done ul{margin-top:11px;font-size:12.5px;color:var(--ink2)}
+.sum{margin:-2px 0 0;font-size:12px;color:var(--ink3)}
+@media print{details.done{display:none}}
 h2.section{font-size:15px;text-transform:none;letter-spacing:0;color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:6px;margin:30px 0 16px}
 svg text{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11.5px;fill:var(--ink)}
 .lab{font-weight:650;font-size:12px}.labs{font-size:10.5px;fill:var(--ink2)}.labk{font-weight:650;font-size:11.5px;fill:var(--pencil)}.labb{font-weight:650;font-size:11px;fill:var(--red)}.labw{font-size:10.5px;fill:var(--ghost)}
