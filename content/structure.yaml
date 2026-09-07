@@ -13,7 +13,7 @@ rows:
   check: "~372 psi · joists hang from the beam's face, they do not bear on it · joist 0 is the exception: it is one {joist0_len} board running {m:deck_joist_tail.size.y} past the beam face and is sistered to the side ledger, and the beam bears on IT"
 - member: "Deck"
   spec: "¾ ply, glued + screwed"
-  check: "Required — the diaphragm in place of posts · it is glued and screwed to both ledgers but has NO fastening to the beam at all: front-edge blocking still to add"
+  check: "Required — the diaphragm in place of posts · glued and screwed to both ledgers, and since Rev AU to a 2×4 block on edge in every bay at the beam face, which is its only continuous fixing toward the beam: the joists <i>hang</i> off the beam, so before that the diaphragm standing in for posts had no connection to it at all"
 - member: "Rear ledger"
   spec: "2×4, {m:rear_ledger.size.x}, {m:rear_ledger.z0}→{m:rear_ledger.z1} — at deck level, matching the side ledger"
   check: "~110 lb per stud · lags into every stud · deck ply runs over it to the bed wall"

@@ -1,4 +1,4 @@
-kernel interference check · 109 solids
+kernel interference check · 118 solids
 verify.py reports 0 volume clashes (it skips every `kind: stringer` member and knows nothing about treads/risers, which are not members).
 
 REAL INTERFERENCE — Rev W joinery, riser scheme 'standard': 0

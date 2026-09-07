@@ -365,11 +365,12 @@ def main():
          "not interchangeable: structural (deck_ply, the half-wall sheathing), "
          "paint-grade show faces (beam wrap, ledge rail and lid, treads, risers, "
          "nook lining), and 1/2 flitches (jamb packs, the header's middle ply)."],
-        ["MEMBER", "Deck-ply front-edge blocking at the beam — NOT in this takeoff",
-         "Recommended and still open. The joists hang off the beam's face on LUS24s, "
-         "so the deck ply's front edge lands at the LVL over eight 10 1/2 gaps and the "
-         "deck — the anti-roll diaphragm — has no fastening to the beam at all. "
-         "Eight 2x4 blocks on edge: one 8 ft board, 16 screws."],
+        ["CLOSED", "Deck-ply front-edge blocking is now in the model (Rev AU)",
+         "Nine 2x4 blocks on edge at the beam face — eight at 10 1/2 on a 12 pitch plus "
+         "one 5 3/4 at the rim, all from one 8 ft board, and they are counted in the Buy "
+         "list and the Cut list. Fixed with 2 x 1/4 x 3 per block driven from the beam's "
+         "OUTBOARD face before beam_wrap_face closes it, then the ply glued and screwed "
+         "down onto them at 6 in o.c. SEQUENCE: before the deck ply."],
         ["CLOSED", "The beam notch needs no separate ply cheek (Rev AT)",
          "It is beam_wrap_face, which already spans the corner on the clear outboard "
          "face: adhesive + #8 x 2 at 6 in o.c. over x 0-27, into the tongue above z 57 1/4 "

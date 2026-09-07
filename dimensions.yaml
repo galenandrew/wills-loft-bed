@@ -43,7 +43,7 @@
 #     cad-out/loft.txt carries both areas.
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AT
+rev: AU
 units: inches
 room:
   x: 131
@@ -277,6 +277,48 @@ members:
   - 53.75
   - 57.25
   role: structural
+- id: deck_blocking
+  stock: 2x4
+  x:
+  - 3
+  - 13.5
+  y:
+  - 46.75
+  - 48.25
+  z:
+  - 53.75
+  - 57.25
+  repeat:
+    count: 8
+    axis: x
+    pitch: 12
+  role: structural
+  note: 'Rev AU: NEW. On edge between the joist ends at the beam''s face, filling all eight
+    10 1/2 gaps (x 3-13 1/2, then every 12). The joists HANG off the beam on LUS24s, so
+    without these the deck ply''s front edge lands at the LVL with nothing under it and
+    nothing fastening it - the deck is the anti-roll diaphragm that stands in for posts, and
+    it was glued and screwed to both ledgers and connected to the beam at zero points. These
+    give the edge a continuous nailer into the LVL and close the diaphragm. Full joist depth
+    (3 1/2) so a screw down through the ply catches 1 1/2 of solid edge, and 1 1/2 thick in y
+    so it reaches back from the beam face into the bay. One 8 ft board covers all nine
+    blocks. NOW OR NEVER: they go in before the deck ply.'
+- id: deck_blocking_end
+  stock: 2x4
+  x:
+  - 99
+  - 104.75
+  y:
+  - 46.75
+  - 48.25
+  z:
+  - 53.75
+  - 57.25
+  role: structural
+  note: 'Rev AU: the ninth block. The last bay is not 10 1/2 - it runs from joist 8 (x 97 1/2
+    to 99) to deck_rim at 104 3/4, so it is 5 3/4 and cannot ride the repeat. It is the bay
+    over the half wall, where the beam is notched down onto hw_top_plate_2, so it is the last
+    one to leave open. x 0 to 1 1/2 needs nothing: side_ledger runs the full y 0 to 50 and
+    already backs the ply edge there.'
 - id: deck_ply
   stock: ply-3/4
   x:
@@ -1387,6 +1429,30 @@ connections:
   fastener: '1/4 x 3 structural screws, two rows at 8 in o.c. over the whole 46-3/4 sister,
     with 4 in the last 12 — this is the path that takes joist[0]''s half of the beam
     reaction into the wall'
+- a: deck_blocking[*]
+  b: beam
+  type: face-screw
+  face: y
+  fastener: '2 x 1/4 x 3 structural screws per block, driven from the beam''s OUTBOARD face at
+    y 50 through 1 3/4 of LVL and 1 1/4 into the block. Rev AU: preferred over toe-screwing
+    from inside the bay because it puts the fastener in shear instead of relying on a toed
+    screw, and the y-50 face is open until beam_wrap_face goes on - the heads end up behind
+    the wrap. SEQUENCE: before the wrap, and before the deck ply.'
+- a: deck_blocking_end
+  b: beam
+  type: face-screw
+  face: y
+  fastener: 2 x 1/4 x 3 structural screws from the beam's outboard face, as deck_blocking
+- a: deck_ply
+  b: deck_blocking[*]
+  type: bearing
+  fastener: 'construction adhesive + #8 x 1-5/8 at 6 in o.c. along the front edge - the point
+    of the blocking. This is the deck diaphragm''s only continuous connection toward the beam
+    (Rev AU)'
+- a: deck_ply
+  b: deck_blocking_end
+  type: bearing
+  fastener: 'construction adhesive + #8 x 1-5/8 at 6 in o.c., as deck_blocking'
 - a: deck_ply
   b: side_ledger
   type: bearing
