@@ -337,36 +337,6 @@ def pack(lengths):
     return boards, oversize
 
 
-def shelf_sheets(panels):
-    """Indicative sheet count by shelf packing: sort by long edge, lay each panel
-    on a shelf across the sheet's 48 width. Not a nesting optimiser — it exists so
-    the buy list has a defensible number, and the Sheet goods tab says so."""
-    sheets = []
-    for L, W, label in sorted(panels, key=lambda p: -max(p[0], p[1])):
-        long_, short = max(L, W), min(L, W)
-        if long_ > SHEET_L or short > SHEET_W:
-            sheets.append(dict(shelves=[dict(depth=short, run=long_, items=[label])],
-                               over=True))
-            continue
-        for s in sheets:
-            if s.get("over"):
-                continue
-            for sh in s["shelves"]:
-                if short <= sh["depth"] and sh["run"] + long_ <= SHEET_L:
-                    sh["run"] += long_
-                    sh["items"].append(label)
-                    break
-            else:
-                if sum(sh["depth"] for sh in s["shelves"]) + short <= SHEET_W:
-                    s["shelves"].append(dict(depth=short, run=long_, items=[label]))
-                else:
-                    continue
-            break
-        else:
-            sheets.append(dict(shelves=[dict(depth=short, run=long_, items=[label])]))
-    return sheets
-
-
 def resolve_count(key, exc=()):
     """How many members a connection key covers, less any the row excepts. verify.py
     honours `except:` and so must this — otherwise the hardware tally buys a hanger for
@@ -641,11 +611,18 @@ def main():
          "change the 0 WARN baseline, so it is your call. (Counted from the model, not "
          "typed: an earlier hand count said 8.)"],
         ["SPECIFY", "kicker anchorage", ""],
-        ["METHOD", "Sheet counts are shelf-packed, not nested",
-         "The Sheet goods tab lists every panel with its real size. Buy the counts as a "
-         "floor, not a ceiling, and lay out the deck and the loft ceiling on paper first: "
-         "both are OVER 48 in y (48 1/4 and 50), so that dimension has to run along the "
-         "sheet's 8 ft length and each takes one sheet per piece."],
+        ["METHOD", "Sheet counts are a real nest, with kerf",
+         "Every piece is placed by a guillotine first-fit-decreasing nest that reserves "
+         "1/8 on every cut, so the Cut layout tab and materials/cut-layout.svg are a "
+         "layout you can mark out, not an indicative count — the diagrams draw each piece "
+         "at its finished size with the kerf as the gap between them, and no two pieces "
+         "overlap or run off a sheet (asserted at build time). Rotation is allowed and the "
+         "layout flags which pieces came out turned, so an appearance call can override "
+         "one. TWO CAVEATS. There is no factory-edge trim allowance: the first piece sits "
+         "in the corner, so the layout assumes two usable edges — kerf IS reserved against "
+         "the far edge, which is roughly the 1/8 back. And the deck and the loft ceiling "
+         "are OVER 48 in y (48 1/4 and 50), so that dimension has to run along the sheet's "
+         "8 ft length and each takes one sheet per piece."],
         ["METHOD", "Cut lengths are FRAMING extents",
          "Finished faces are their own parts. No waste allowance is added anywhere; "
          "the board counts include a 1/8 kerf per cut and nothing else."],
