@@ -6,7 +6,7 @@ Full write-up: `audits/V-kernel-spike.md`.
 
 ```
 cad kernel · build123d 0.11.1 · OCP 7.9.3.1.1 · python 3.13.12
-dimensions.yaml rev AR.1 · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
+dimensions.yaml rev AR.2 · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
 
 [build] 108 solids (12 derived, not yaml members)
         loft        25 solids    10.26 cu ft
@@ -14,7 +14,7 @@ dimensions.yaml rev AR.1 · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5
         stair       26 solids     3.67 cu ft
         half_wall   18 solids     3.14 cu ft
         nook        11 solids     1.75 cu ft
-        context      4 solids    53.03 cu ft
+        context      4 solids    52.67 cu ft
         beam is ONE notched solid (2584.750 cu in, x 0→106.25); yaml rows fused: beam_tongue
         deck_joist[0] is ONE notched solid (254.625 cu in, x 1.5→3); yaml rows fused: deck_joist_tail
         hw_sheath_loft_head is ONE notched solid (835.719 cu in, x 102→102.75); yaml rows fused: hw_sheath_loft_b

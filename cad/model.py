@@ -21,7 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from build123d import Box, Plane, Polygon, Pos, extrude  # noqa: E402
+from build123d import Box, Cylinder, Plane, Polygon, Pos, extrude  # noqa: E402
 
 import drawings.model as dm  # noqa: E402  (loads the yaml once; gives M, ST, DER, stringer_pts)
 
@@ -305,6 +305,19 @@ def riser_pieces(scheme="standard", x0=None, x1=None):
 
 
 # --------------------------------------------------------------------- context
+def fan_piece():
+    """The ceiling fan: yaml carries it as a bbox (its note gives the true disc,
+    centre and radius, matching Drawing 1's circle) because members are boxes —
+    the kernel draws the actual disc instead of that box's rectangle."""
+    fan = M["fan"]
+    x0, x1 = fan.x; y0, y1 = fan.y; z0, z1 = fan.z
+    cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+    r = (x1 - x0) / 2
+    return Piece("fan", "context",
+                 Pos(cx, cy, (z0 + z1) / 2) * Cylinder(r, z1 - z0),
+                 fan.stock, note="existing room fixture, not part of the build")
+
+
 def mattress_piece():
     """The mattress: not a member, and not in the room either until it is bought.
     Placed as Drawing 1 draws it — 2 in off the window wall, centered in the bay
@@ -322,8 +335,8 @@ def mattress_piece():
 def context_pieces():
     out = [Piece(mid, "context", box(M[mid].x, M[mid].y, M[mid].z), M[mid].stock,
                  note="existing room fixture, not part of the build")
-           for mid in CONTEXT]
-    return out + [mattress_piece()]
+           for mid in CONTEXT if mid != "fan"]
+    return out + [fan_piece(), mattress_piece()]
 
 
 # ------------------------------------------------------------------- assembly
