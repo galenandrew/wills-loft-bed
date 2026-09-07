@@ -53,5 +53,4 @@ CLEARANCES — true minimum distance between solids
   mattress → beam inner face (bay slack) kernel   0.7500
 
 UNSPECIFIED fasteners the kernel cannot ray-cast until they are chosen:
-  lnd_ledger_rightwall → wall:right: UNSPECIFIED
-  screen_top_plate → slat[*]: UNSPECIFIED
+  screen_top_plate → slat[*]: construction adhesive + 1 x #8 x 2-1/2 angled up through the slat into the plate, driven from the loft side, countersunk and filled; 2 x 1-1/2 16ga pins each slat to hold it while the adhesive cures. Rev AS: was UNSPECIFIED. 16ga alone was proposed and is not enough - the structure table calls this screen the GUARD for a 58 deck, and the ceiling note says a 200 lb lean at its top overloads the slat bases. One real screw per slat at each end (the base already has #8 x 3 into the LVL) makes the top a positive connection; the pins are for assembly, not for load.

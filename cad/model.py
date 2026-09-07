@@ -82,7 +82,7 @@ SCOPE = {
                   "beam_wrap_face", "beam_wrap_inner", "beam_wrap_top",
                   "ledge_cleat", "ledge_cleat_rail",
                   *[f"ledge_strut[{i}]" for i in range(3)],
-                  "ledge_front_rail", "ledge_lid"],
+                  "ledge_front_rail", "ledge_rail_splice", "ledge_lid"],
     "screen":    ["screen_top_plate", *[f"slat[{i}]" for i in range(23)]],
     "stair":     ["stringer_a", "stringer_b", "stringer_c", "kicker",
                   "lnd_ledger_bedwall", "lnd_ledger_rightwall", "lnd_side_member",
