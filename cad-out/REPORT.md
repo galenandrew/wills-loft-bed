@@ -6,7 +6,7 @@ Full write-up: `audits/V-kernel-spike.md`.
 
 ```
 cad kernel · build123d 0.11.1 · OCP 7.9.3.1.1 · python 3.13.12
-dimensions.yaml rev AS · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
+dimensions.yaml rev AT · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5.168
 
 [build] 109 solids (12 derived, not yaml members)
         loft        26 solids    10.29 cu ft

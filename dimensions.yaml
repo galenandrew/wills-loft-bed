@@ -43,7 +43,7 @@
 #     cad-out/loft.txt carries both areas.
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: AS
+rev: AT
 units: inches
 room:
   x: 131
@@ -336,8 +336,26 @@ members:
     side_ledger and deck_joist_tail at 57.25 and running to the window wall. The notch is
     3 1/2 deep on a 14 beam: exactly the d/4 the code allows for a sawn end notch, and the
     NDS notch-shear formula gives about 1,960 lb against a reaction near 600. LVL makers
-    formally prohibit bottom notches, so glue and screw a 3/4 ply cheek over it on the
-    inboard face, running about 24 past the shoulder. It also gives slat[0] a real seat -
+    formally prohibit bottom notches - a condition of their published capacities, which assume
+    an intact tension edge, not a strength finding about this beam: 14 is set by the mattress
+    top, so the section is roughly 7x over-strength in bending (370 psi vs 2600) and the notch
+    check has 3x margin. Rev AT: the reinforcement is beam_wrap_face, NOT a separate cheek.
+    Rev AG had prescribed a 3/4 ply cheek on the INBOARD face running 24 past the shoulder,
+    which cannot be built there - deck_ply fills y to 48.25 at z 57.25-58 straight across the
+    corner, and deck_joist[1] and [2] run out to 48.25 within that 24. The outboard face is
+    clear and already carries 3/4 ply from z 53 to the beam top over the full length, and it
+    lands on exactly the right members: above 57.25 it screws into the tongue, below it into
+    the y-50 end faces of side_ledger and deck_joist_tail, the two members the tongue bears
+    on. That is a better splice than an inboard cheek, in the same plane as any split the
+    corner could start, and it costs a fastener schedule rather than a part. loft_ceiling is
+    the SECOND restraint and it was nearly missed: it is screwed to the bottom edge of the very
+    piece a split would separate (the beam''s bottom 3 1/2 beyond x 3, whose underside is the
+    z 53.75 line) and to side_ledger and deck_joist_tail on the other side of x 3, so it ties
+    that piece to members that cannot move, in the direction it would drop. Secondary to the
+    wrap - withdrawal from a 1 3/4 laminated edge rather than shear in the plane of the split -
+    but real, and between the two the notch is covered from both faces it can move relative to. A metal strap was
+    considered and is not needed: it would do the same job in the same plane as screws that
+    are going in anyway. It also gives slat[0] a real seat -
     the beam runs to x 0 now, so slat 0 is no longer a special case.'
 - id: beam_wrap_face
   stock: ply-3/4
@@ -1540,6 +1558,87 @@ connections:
 - a: stringer_c
   b: kicker
   type: bearing
+- a: loft_ceiling
+  b: deck_joist[*]
+  type: face-screw
+  face: z
+  panel: true
+  fastener: 'construction adhesive + #8 x 2 at 8 in o.c. up into each joist''s 1-1/2 bottom
+    edge - 3/4 of ply then 1-1/4 into 3-1/2 of joist. Rev AT: the panel had NO connection row
+    of any kind before this.'
+- a: loft_ceiling
+  b: rear_ledger
+  type: face-screw
+  face: z
+  panel: true
+  fastener: 'construction adhesive + #8 x 2 at 8 in o.c. into the ledger''s bottom edge'
+- a: loft_ceiling
+  b: side_ledger
+  type: face-screw
+  face: z
+  panel: true
+  fastener: 'construction adhesive + #8 x 2 at 6 in o.c. into the ledger''s bottom edge over
+    the whole 50. Rev AT: tighter than the 8 in field spacing because this is the anchored
+    side of the notch tie - see the beam row below.'
+- a: loft_ceiling
+  b: deck_joist_tail
+  type: face-screw
+  face: z
+  panel: true
+  fastener: 'construction adhesive + 2 x #8 x 2 into the tail''s 1-3/4 of bottom edge, the
+    other anchored side of the notch tie (Rev AT)'
+- a: loft_ceiling
+  b: beam
+  type: face-screw
+  face: z
+  panel: true
+  fastener: 'construction adhesive + #8 x 2 at 6 in o.c. into the beam''s bottom edge over
+    x 3 to 27, then 12 in o.c. beyond. Rev AT: this is the SECOND notch restraint, and it acts
+    in the direction the notch would actually fail. A split from the corner at x 3, z 57.25
+    runs in +x along the grain, and the piece it separates is the beam''s bottom 3-1/2 beyond
+    x 3 - whose bottom face is this z 53.75 line. The same sheet is screwed to side_ledger and
+    deck_joist_tail on the other side of x 3, both solidly bearing, so it is a continuous tie
+    holding that piece up against members that cannot move. It is SECONDARY to beam_wrap_face,
+    which is in the plane of the split and works in shear; this works in screw withdrawal from
+    a 1-3/4 landing that is the LVL''s LAMINATED EDGE - screws there cross glue lines, so use
+    the stated spacing, do not over-torque, and do not treat this as the primary. Both go on
+    late, so neither is present while the loft is being framed.'
+- a: beam_wrap_face
+  b: beam
+  type: face-screw
+  face: y
+  panel: true
+  fastener: 'construction adhesive + #8 x 2 at 12 in o.c. in two rows into the LVL - 3/4 of ply
+    then 1-1/4 into 1-3/4 of beam. Rev AT: OVER x 0 TO 27 THIS IS STRUCTURAL, not a finish
+    fixing: tighten to 6 in o.c. in two rows and glue the full contact area. This panel is the
+    notch reinforcement (see beam_tongue) - it straddles the re-entrant corner at x 3, z 57.25
+    and runs the full length past the shoulder, so it carries across the corner in shear what
+    the LVL would otherwise carry in cross-grain tension. Keep every screw at least 1 in clear
+    of the corner and out of the notch void below z 57.25 at x 0-3. Rev AT: the wrap had no
+    connection row at all before this - its fixing was never specified and never checked.'
+- a: beam_wrap_face
+  b: side_ledger
+  type: face-screw
+  face: y
+  panel: true
+  fastener: '#8 x 2 at 6 in o.c. into the ledger''s y-50 end face, over z 53.75-57.25. Rev AT:
+    part of the notch splice - this is what ties the tongue back to the member it bears on.
+    End-grain withdrawal is poor and irrelevant here: the joint works in shear.'
+- a: beam_wrap_face
+  b: deck_joist_tail
+  type: face-screw
+  face: y
+  panel: true
+  fastener: '#8 x 2 at 6 in o.c. into the tail''s y-50 end face, over z 53.75-57.25 - the other
+    half of the notch splice, into the joist sistered to the ledger (Rev AT)'
+- a: beam_wrap_inner
+  b: beam
+  type: face-screw
+  face: y
+  panel: true
+  fastener: 'construction adhesive + #8 x 2 at 12 in o.c. into the LVL. Rev AT: finish fixing
+    only - this panel starts at z 58, 3/4 above the notch corner, so it does no structural work
+    and is not part of the splice. It had no connection row either.'
 - a: beam_wrap_top
   b: beam
   type: bearing

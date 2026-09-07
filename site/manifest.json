@@ -1,5 +1,5 @@
 {
- "rev": "AS",
+ "rev": "AT",
  "yaml": "dimensions.yaml",
  "generated": "2026-09-06",
  "figures": {
@@ -80,6 +80,6 @@
   "index": "dfff9f7cad40",
   "stairs": "b3664cf208b5",
   "loft": "ca809db2d3f7",
-  "appendix": "2d220a4e8a12"
+  "appendix": "c826a931ef4e"
  }
 }

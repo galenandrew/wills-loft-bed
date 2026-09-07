@@ -465,26 +465,41 @@ def check_connection(rep, c, members, stair, room, nook):
                 else:
                     msgs.append(f"{ax} {fr(ov)}")
             # a hanger seat / screwed face must be backed across a's full width;
-            # engagement along a's depth (z) is graded
+            # engagement along a's depth (z) is graded.
+            #
+            # `panel: true` opts a connection out of BOTH of those, and only those:
+            # the face still has to touch and both other axes still have to overlap.
+            # It is for a sheet fastened to one of several members behind it — a
+            # 107 x 14 3/4 wrap screwed to the beam, then to the ledger end, then to
+            # the joist tail. Demanding that each of those back the panel's full
+            # width is asking the wrong question, the same way it is for a stringer
+            # fastened locally along its run (RAKED, below). It is opt-in per
+            # connection rather than by member kind so every use is visible in the
+            # yaml and reviewable; it is NOT a way to quiet a real gap.
             extra = ""
+            is_panel = bool(c.get("panel"))
             if typ in ("hanger", "face-screw") and not bad:
                 width_ax = [ax for ax in others if ax != "z"][0]
                 w_ov, w_ext = ovs[width_ax]
                 width = w_ext[1] - w_ext[0]
                 # a stringer is fastened locally along its run; its full length need not be backed
                 if w_ov < width - TOL and a.kind not in RAKED:
-                    bad = True
-                    extra += f" · only {fr(w_ov)} of a's {fr(width)} width is backed by b"
+                    if is_panel:
+                        extra += f" · panel: {fr(w_ov)} of its {fr(width)} width backed here"
+                    else:
+                        bad = True
+                        extra += f" · only {fr(w_ov)} of a's {fr(width)} width is backed by b"
                 if "z" in ovs and a.kind not in RAKED:
                     eng, z_ext = ovs["z"]
                     depth = z_ext[1] - z_ext[0]
                     if depth > 0 and eng < depth - TOL:
                         pct = eng / depth
                         extra += f" · engages {fr(eng)} of a's {fr(depth)} depth ({pct:.0%})"
-                        if pct < 0.5:
-                            bad = True
-                        else:
-                            marginal = True
+                        if not is_panel:
+                            if pct < 0.5:
+                                bad = True
+                            else:
+                                marginal = True
             if through:
                 extra += f" · fasteners pass through {fr(thru)} of {', '.join(t.id for t in through)} first"
             line = f"{lab}: " + ", ".join(msgs) + extra + f"  [{fast}]"

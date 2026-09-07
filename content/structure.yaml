@@ -7,7 +7,7 @@
 rows:
 - member: "Front beam"
   spec: "Single {beam_stock} ({beam_actual} actual), {beam_span} c/c bearings ({beam_clear_span} clear), notched {m:beam_tongue.size.x} × {beam_notch_depth} at the window end"
-  check: "~370 psi vs ~2600 allowable · deflection ≈ L/7000 · depth is set by the mattress, not by load · notch shear ≈1,960 lb vs ≈600 · d/b = {beam_db}, and the slat screen at {slat_oc} centres holds its top edge in line"
+  check: "~370 psi vs ~2600 allowable · deflection ≈ L/7000 · depth is set by the mattress, not by load · notch shear ≈1,960 lb vs ≈600, restrained on BOTH faces it could move relative to: <code>beam_wrap_face</code> in the plane of the split (6 o.c. over x 0–27, into the tongue above z 57¼ and the ledger and joist-tail end faces below it) and <code>loft_ceiling</code> under it (6 o.c. over x 3–27), screwed to the bottom edge of the very piece a split would drop and to the ledger and joist tail beyond it · d/b = {beam_db}, and the slat screen at {slat_oc} centres holds its top edge in line"
 - member: "Joists"
   spec: "2×4 @ {joist_oc} o.c., {deck_joist_span} span, LUS24 both ends"
   check: "~372 psi · joists hang from the beam's face, they do not bear on it · joist 0 is the exception: it is one {joist0_len} board running {m:deck_joist_tail.size.y} past the beam face and is sistered to the side ledger, and the beam bears on IT"

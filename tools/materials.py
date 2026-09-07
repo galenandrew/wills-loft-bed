@@ -248,6 +248,8 @@ def main():
     lumber = [r for r in rows if not r["stock"].startswith("ply")]
     panels = [r for r in rows if r["stock"].startswith("ply")]
     hw_rows, tally = hardware_rows()
+    silent = [f"{c['a']} -> {c.get('b','')}" for c in YAML["connections"]
+              if c.get("fastener") is None]
     wb = Workbook()
 
     # ---------------------------------------------------------- Buy list
@@ -368,11 +370,12 @@ def main():
          "so the deck ply's front edge lands at the LVL over eight 10 1/2 gaps and the "
          "deck — the anti-roll diaphragm — has no fastening to the beam at all. "
          "Eight 2x4 blocks on edge: one 8 ft board, 16 screws."],
-        ["MEMBER", "The beam notch's 3/4 ply cheek — NOT in this takeoff",
-         "beam_tongue's note prescribes it (LVL makers prohibit bottom notches) but it "
-         "is not a member, so it is in no drawing, no clash check and no takeoff. "
-         "Roughly 14 x 27 of 3/4 ply on the inboard face. Where it lands (y 47 1/2-48 1/4) "
-         "the deck ply is already at z 57 1/4-58 — encode it and resolve that first."],
+        ["CLOSED", "The beam notch needs no separate ply cheek (Rev AT)",
+         "It is beam_wrap_face, which already spans the corner on the clear outboard "
+         "face: adhesive + #8 x 2 at 6 in o.c. over x 0-27, into the tongue above z 57 1/4 "
+         "and into the ledger and joist-tail end faces below it. Nothing extra to buy — but "
+         "the wrap's fixing over that first 27 in is STRUCTURAL, not finish, and its screws "
+         "must stay 1 in clear of the corner and out of the notch void below z 57 1/4."],
         ["FIELD", "Stud locations: bed wall, window wall, right wall",
          "Every ledger fixing count on the Hardware tab assumes 16 in o.c. The window "
          "wall needs a stud (or added blocking) within ~6 in of y 50 for the beam's end "
@@ -383,14 +386,13 @@ def main():
          "joist or block first."],
         ["FIELD", "Floor joists under the half-wall plate and the kicker", ""],
         ["SPECIFY", "hw_bottom_plate_a / _b to floor", "Left TBD by the user 2026-09-06."],
-        ["CHECKER", "8 connections carry NO fastener key at all",
+        ["CHECKER", f"{len(silent)} connections carry NO fastener key at all",
          "Filter the Hardware tab for 'NO FASTENER KEY'. verify.py only reports a row "
-         "that literally says UNSPECIFIED, so these eight pass silently: beam and "
-         "deck_rim onto hw_top_plate_2, hw_header to both trimmers, hw_top_plate_1 to "
-         "the header and both kings, and all three stringers to the kicker. Most are "
-         "ordinary nailing, but the kicker is already an open anchorage item. Worth "
-         "making verify.py WARN on a missing key — it would change the 0 WARN baseline, "
-         "so it is your call."],
+         "that literally says UNSPECIFIED, so these pass silently: "
+         + "; ".join(silent) + ". Most are ordinary nailing, but the kicker is already an "
+         "open anchorage item. Worth making verify.py WARN on a missing key — it would "
+         "change the 0 WARN baseline, so it is your call. (Counted from the model, not "
+         "typed: an earlier hand count said 8.)"],
         ["SPECIFY", "kicker anchorage", ""],
         ["METHOD", "Sheet counts are shelf-packed, not nested",
          "The Sheet goods tab lists every panel with its real size. Buy the counts as a "
