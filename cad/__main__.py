@@ -321,13 +321,15 @@ def main():
     export.step(pieces, os.path.join(OUT, "room.step"), name="loft-bed-in-room")
     export.stl(build_only, os.path.join(OUT, "model.stl"))
     t_exp = time.time() - t
-    say(f"[export] model.step {os.path.getsize(os.path.join(OUT,'model.step'))/1024:.0f} kB, "
-        f"model.stl {os.path.getsize(os.path.join(OUT,'model.stl'))/1024:.0f} kB in {t_exp:.2f}s")
+    say(f"[export] model.step {os.path.getsize(os.path.join(OUT,'model.step'))/1024:.0f} kB (inches), "
+        f"model.stl {os.path.getsize(os.path.join(OUT,'model.stl'))/1024:.0f} kB (mm) in {t_exp:.2f}s")
     # no GUI here, so read the STEP back and check it survived the round trip
     from build123d import import_step
     back = import_step(os.path.join(OUT, "model.step"))
     v_out = sum(p.volume for p in build_only)
-    v_in = sum(s.volume for s in back.solids())
+    # the STEP is written in inches; import_step converts it into OCCT's millimetre
+    # space, so divide back out to compare cubic inches with cubic inches
+    v_in = sum(s.volume for s in back.solids()) / export.MM_PER_INCH ** 3
     say(f"         re-imported: {len(back.solids())} solids "
         f"(wrote {sum(len(p.solid.solids()) for p in build_only)}), "
         f"volume {v_in:.2f} vs {v_out:.2f} cu in, Δ {abs(v_in - v_out):.4f}")

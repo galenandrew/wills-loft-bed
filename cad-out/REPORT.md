@@ -27,6 +27,6 @@ dimensions.yaml rev BA.1 · stair: 6 risers @ 8.2500 + 8.5000, run 9.0, throat 5
 [fasteners] 8 rays → cad-out/fasteners.txt
 [section] cut+HLR → cad-out/d4-kernel.svg, cad-out/d8b-kernel.svg
           worst cut-edge deviation vs d4.svg: 0.0048" on stringer_b (1/16" = 0.0625)
-[export] model.step 2233 kB, model.stl 83 kB
+[export] model.step 2255 kB (inches), model.stl 83 kB (mm)
          re-imported: 119 solids (wrote 119), volume 32301.55 vs 32301.55 cu in, Δ 0.0000
 ```
