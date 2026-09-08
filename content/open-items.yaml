@@ -21,12 +21,6 @@ groups:
   items:
   - do: "Framing species and grade."
 
-- tag: VERIFY
-  lead: Cut once you have checked, not before.
-  items:
-  - do: "Lay out and cut <b>one</b> stringer, measure the real throat and plumb cut, then cut the other two."
-  - do: "<b>Do not step 8&frac14; off seven times</b> — that lands at 57&frac34;, &frac14; short of the deck. The seventh riser is 8&frac12;."
-
 # Decided. Kept so they are not reopened by accident, collapsed so they are not read daily.
 closed:
 - "<b>Header-to-king straps: scrapped</b> (Rev AS). The half wall is sheathed on BOTH faces across the joint — <code>hw_sheath_stair</code> z 24&ndash;58 and <code>hw_sheath_loft_head</code> z {m:hw_sheath_loft_head.z0}&ndash;{m:hw_sheath_loft_head.z1} both lap the header at z 41&frac12;&ndash;50&frac34; and run onto both kings at y 0&ndash;1&frac12; and 48&frac12;&ndash;50 — and two continuous top plates bear over the header and both kings. Nailed to header and kings that is a stiffer tie than a strap. <b>Rev AZ took the loft face of that sheathing &frac34; &rarr; &frac12;</b>; accepted without a calculation, on the grounds that the joint carries gravity into the trimmers, whose bearing is checked, so the sheathing here is a racking and continuity gusset rather than a tension tie. Rev BA.1 removed the strap markers Drawing 7 was still showing eight revs later."
