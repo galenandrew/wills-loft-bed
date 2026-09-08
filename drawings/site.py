@@ -119,6 +119,15 @@ def card_structure():
     rows = [(fill(r["member"]), fill(r["spec"]), fill(r["check"])) for r in c["rows"]]
     return f'<div class="card" id="structure"><h2>Structure &amp; load path</h2>{tbl(rows, ["Member", "Spec", "Check"], num=())}<div class="note">{fill(c["ceiling_note"])}</div></div>'
 
+def card_sequencing():
+    c = content("sequencing.yaml")
+    li = "".join('<li><b>' + fill(i["do"]) + "</b>"
+                 + (f'<span class="why">{fill(i["why"])}</span>' if i.get("why") else "")
+                 + "</li>" for i in c["items"])
+    return (f'<div class="card" id="sequencing"><h2>Build sequencing notes</h2>'
+            f'<p class="cap" style="margin:-4px 0 12px">{fill(c["lead"])}</p>'
+            f'<ul>{li}</ul></div>')
+
 def cards_open():
     """The Open Items page: [(anchor, label, html)], one card per group plus the
     decision record and the one-line summary. A checklist, not an essay — one line
@@ -172,7 +181,7 @@ def page_parts(name, svgs):
     if name == "open":
         return cards_open()
     if name == "appendix":
-        return [("schedule", "Dimension schedule", card_schedule()), ("structure", "Structure & load path", card_structure()), ("fasteners", "Fastener schedule", card_fasteners()), ("revisions", "Revisions", card_revisions())]
+        return [("schedule", "Dimension schedule", card_schedule()), ("structure", "Structure & load path", card_structure()), ("sequencing", "Build sequencing notes", card_sequencing()), ("fasteners", "Fastener schedule", card_fasteners()), ("revisions", "Revisions", card_revisions())]
     return [dr(n) for n in PAGE_SHEETS[name]]
 
 def nav(here):

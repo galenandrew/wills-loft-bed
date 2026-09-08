@@ -1,0 +1,26 @@
+# Build sequencing notes (rendered in the Appendix by drawings/site.py:card_sequencing).
+#
+# Moved out of Open Items at the user's request (Rev BB): these are not open
+# decisions or measurements — the design already answers all of them. They are
+# a reminder of ORDER: each gets much harder, or impossible, once the step
+# named in `do:` has happened. Same one-line format as open-items.yaml.
+lead: Each of these gets much harder, or impossible, after the step that follows it. Not open items — the design already answers them; this is order, not decisions.
+items:
+- do: "Nook power into the half-wall — <b>before sheathing</b>."
+  why: "Switch on the half-wall face, desk side."
+- do: "Loft ceiling light wiring — <b>before <code>loft_ceiling</code></b>."
+  why: "The {m:loft_ceiling.size.z} ply screws straight to the joist bottoms; there is no chase to fish through afterward."
+- do: "Confirm all three loft-light positions — <b>before the ceiling ply is cut</b>."
+  why: "Positions and switch location are ASSUMED. Both ceiling seams run on joist centres and clear all three fixtures, but the sheet is cut once."
+- do: "Shelf blocking between the <code>nk_bedwall_stud</code> bays — <b>before <code>nk_wrap_bedwall</code></b>."
+  why: "Only if the nook shelves might be heavy or high. That sheet stays {m:nk_wrap_bedwall.size.y} ply ({m:nk_wrap_bedwall.z0}&ndash;{m:nk_wrap_bedwall.z1}, the tall wall) so it takes a screw anywhere; {m:nk_wrap_shortwall.size.y} would not."
+- do: "<code>deck_blocking</code> — <b>before <code>beam_wrap_face</code></b>."
+  why: "Screwed from the beam's OUTBOARD face at y 50, so the wrap cannot close that face first. Same trip as the wrap's own structural fixing over x 0&ndash;27."
+- do: "<code>deck_seam_blocking</code> — <b>before the deck ply</b>."
+  why: "Toe-screwed into the joists at both ends; there is no face to drive it from, and it is unreachable once the ply is down."
+- do: "Set out and fix both bottom plates as one board each — <b>before the jamb packs</b>."
+- do: "Nook lining — <b>before the nook face</b>."
+  why: "The face laps the ends of all three lining sheets."
+- do: "Stringer B's screws — <b>before the landing deck</b>."
+- do: "Risers — <b>before the treads</b>. Stair-side skirt — <b>last of all</b>."
+  why: "Each tread butts the face of the riser behind it. The skirt lands on top of the landing box and the stringers, and the treads and risers butt it."

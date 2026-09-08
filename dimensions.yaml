@@ -43,7 +43,7 @@
 #     cad-out/loft.txt carries both areas.
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: BA.2
+rev: BB
 units: inches
 room:
   x: 131
@@ -116,13 +116,20 @@ lumber:
   # Rev BA: paint-grade SOLID stock at the 2x4 section - 1 1/2 x 3 1/2 actual, the same
   # section as an SPF 2x4, but knot-free and stable enough to paint. Poplar 8/4 S4S is the
   # first choice; clear/select pine at the same section is an acceptable substitute. It
-  # exists for exactly one member, screen_top_plate, which is a STRUCTURAL member that
-  # happens to be fully in view. `poplar-3/4` is gone - Rev AZ moved its last two members
-  # (hw_end_cap and its foot) to 1/2 ply, and a stock key nothing uses invites someone to
-  # think 3/4 poplar is still in the build.
+  # exists for screen_top_plate, a STRUCTURAL member that happens to be fully in view.
+  # `poplar-3/4` is gone - Rev AZ moved its last two members (hw_end_cap and its foot) to
+  # 1/2 ply, and a stock key nothing uses invites someone to think 3/4 poplar is still in
+  # the build.
   poplar-2x4:
   - 1.5
   - 3.5
+  # Rev BB: the slats' answer to the same question as screen_top_plate, in the same species
+  # - same actual section as a framing 2x2, 1 1/2 x 1 1/2. Source 1 1/2 x 1 1/2 S4S poplar
+  # or clear/select pine directly if it can be found; otherwise buy the 1 1/2 x 3 1/2 stock
+  # (the same board as screen_top_plate) and rip/sand it down.
+  poplar-2x2:
+  - 1.5
+  - 1.5
 stair:
   # Rev Y: the riser is an INPUT now, not 58/7. Six equal risers carry the stair to
   # the landing; the seventh (landing → loft deck) is set by the framing stack above
@@ -1225,7 +1232,8 @@ members:
   role: structural
   note: 'Rev AE: 24 3/4 long, out to 106.25 with stringer A. Rev W: position FIXED at y 68.5→72, downhill face flush with the stringers'' bottom plumb cut. The
     stringers are notched 1 1/2 x 3 1/2 to hook over it (they are 7.54 deep there, so 6.04 remains — well over the 3 1/2 throat minimum);
-    riser 1 sits in front of it at y 72→72.75 and clears it. Anchorage to the floor still to specify.'
+    riser 1 sits in front of it at y 72→72.75 and clears it. Rev BB: floor anchorage specified (screws into the
+    subfloor, joist location not required) and the three stringers toe-screwed to it — see connections.'
 - id: nk_bedwall_stud
   stock: 2x4
   x:
@@ -1398,7 +1406,7 @@ members:
     y 46. Still flush and full-thickness at the y-18.26 butt: both halves went to 1/2 together,
     so the two faces are still coplanar at the break.'
 - id: slat
-  stock: 2x2
+  stock: poplar-2x2
   x:
   - 0
   - 1.5
@@ -1423,7 +1431,12 @@ members:
     centre in the LVL instead of half in the wrap. Rev AG: they start on beam_wrap_top, not at
     63, and all 23 are identical. slat[0] is no longer a special case: the beam runs to x 0
     under it. Rev AZ: the cap is 1/2 ply, so the seat drops to 68.25 and every slat is 26 1/4
-    long, was 26. The setback each side is now 5/8, was 7/8.'
+    long, was 26. The setback each side is now 5/8, was 7/8. Rev BB: SPECIFY resolved -
+    stock key poplar-2x2, matching screen_top_plate''s species (poplar 8/4 S4S, or
+    clear/select pine). Same section as a framing 2x2, 1 1/2 x 1 1/2 actual, so no extent
+    changed. Source 1 1/2 x 1 1/2 S4S directly if available; otherwise buy the 1 1/2 x 3 1/2
+    stock (screen_top_plate''s board) and rip/sand each slat down. Builder''s call, so the
+    screen is one wood under one paint, not two.'
 - id: screen_top_plate
   stock: poplar-2x4
   x:
@@ -1444,9 +1457,9 @@ members:
     Buy poplar 8/4 S4S, or clear/select pine at the same section; 107 long needs a 10 ft
     board either way, and it is ONE board with no joint - do not splice it, the slats read
     against its bottom edge for the full length. This is the only member in the build in this
-    stock. THE SLATS ARE THE SAME QUESTION and are still open: 23 exposed painted 2x2s in the
-    same assembly, currently the generic 2x2 key and listed TBD in open-items. Decide them
-    with this, and in the same species, or the screen will be two woods under one colour.
+    stock. THE SLATS WERE THE SAME QUESTION: 23 exposed painted 2x2s in the same assembly.
+    Rev BB decided them the same way, stock key poplar-2x2 - same species, so the screen is
+    one wood under one colour, not two.
     Rev AZ: the band moved 1/4 with the wrap, to 47 to 50 1/2, so its outer face is still
     the beam''s finished plane at 50 1/2 and the slats are still set back the same 5/8 top and
     bottom. This is the SAME reading as Rev AS - the plate registers off the wrap face, and the
@@ -1732,11 +1745,15 @@ connections:
 - a: hw_bottom_plate_a
   b: floor
   type: floor
-  fastener: UNSPECIFIED
+  fastener: '6 x #10 x 3 in screws into the subfloor at roughly 6 in o.c. across the 28
+    1/4 run. Rev BB: same builder''s call as the kicker — into the plywood regardless
+    of joist location, since the half-wall framing this plate carries is already tied
+    into the bed wall and window wall.'
 - a: hw_bottom_plate_b
   b: floor
   type: floor
-  fastener: UNSPECIFIED
+  fastener: '6 x #10 x 3 in screws into the subfloor at roughly 6 in o.c. across the 28
+    1/4 run. Rev BB: same builder''s call as hw_bottom_plate_a.'
 - a: nk_bedwall_stud[*]
   b: hw_bottom_plate_a
   type: bearing
@@ -1813,16 +1830,23 @@ connections:
 - a: kicker
   b: floor
   type: floor
-  fastener: UNSPECIFIED
+  fastener: '5 x #10 x 3 in screws into the subfloor, roughly 6 in o.c. across the 24 3/4
+    run. Floor joist location not measured and not required here: the builder''s call
+    (Rev BB) is to fasten straight into the plywood subfloor regardless of where the
+    joists fall, since the framing is tied into all three walls in several other places
+    and does not depend on this fixing to stay put.'
 - a: stringer_a
   b: kicker
   type: bearing
+  fastener: 2 x 3 in screws toe-driven into the kicker
 - a: stringer_b
   b: kicker
   type: bearing
+  fastener: 2 x 3 in screws toe-driven into the kicker
 - a: stringer_c
   b: kicker
   type: bearing
+  fastener: 2 x 3 in screws toe-driven into the kicker
 - a: loft_ceiling
   b: deck_joist[*]
   type: face-screw
