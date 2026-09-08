@@ -16,3 +16,6 @@ cad-out/*
 !cad-out/section.txt
 !cad-out/model.stl
 .kernel-cache
+
+# playwright-mcp screenshots and page dumps — review artefacts, never inputs
+.playwright-mcp/

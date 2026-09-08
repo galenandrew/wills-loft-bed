@@ -1,0 +1,81 @@
+
+*{box-sizing:border-box}
+body{margin:0;background:#fbfaf7;color:#23231f;font:14px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 22px 80px}
+header{border-bottom:2px solid #23231f;padding-bottom:13px;margin-bottom:18px}
+h1{font-size:21px;margin:0 0 4px}
+.meta{color:#5f5d56;font-size:12.5px;display:flex;gap:15px;flex-wrap:wrap;align-items:center}
+.rev{background:#23231f;color:#fff;padding:2px 9px;border-radius:99px;font-weight:700;font-size:11.5px;letter-spacing:.04em}
+nav.tabs{position:sticky;top:0;z-index:20;background:#fbfaf7;display:flex;gap:6px;padding:9px 0;margin:-4px 0 18px;border-bottom:1px solid #e0ddd4}
+nav.tabs a{color:#5f5d56;text-decoration:none;padding:7px 13px;border-radius:6px;font-size:13.5px;font-weight:600}
+nav.tabs a:hover{background:#f1efe9;color:#23231f}
+nav.tabs a.here{background:#23231f;color:#fff}
+.dwg{background:#ffffff;border:1px solid #e0ddd4;border-radius:10px;padding:16px 18px 14px;margin-bottom:22px}
+.dwg h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#5f5d56;margin:0 0 10px;font-weight:700}
+.dwg h2 b{color:#23231f;font-size:14px;text-transform:none;letter-spacing:0}
+.cap{color:#5f5d56;font-size:12.5px;margin:12px 2px 0;max-width:82ch}
+.tools{display:flex;flex-wrap:wrap;gap:14px;align-items:center;border:1px solid #e0ddd4;
+  border-radius:8px;padding:8px 10px;margin-bottom:12px;background:#fcfbf9}
+.grp{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.grp>span.gl{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#8a877e;margin-right:2px}
+.chip{font:inherit;font-size:12px;line-height:1;border:1px solid #e0ddd4;background:#fff;color:#5f5d56;
+  border-radius:99px;padding:5px 10px;cursor:pointer;user-select:none}
+.chip:hover{border-color:#8a877e}
+.chip[aria-pressed="true"]{background:#23231f;border-color:#23231f;color:#fff}
+.chip.rst{border-style:dashed}
+figure{margin:0;overflow-x:auto}
+
+.dwg svg{display:block;width:100%;height:auto;font-family:ui-sans-serif,system-ui,sans-serif}
+.pc{stroke-linejoin:round}
+.pc polygon,.pc path{vector-effect:non-scaling-stroke}
+[data-l="framing"] .fill{fill:#e7d8b8;stroke:#6f5930;stroke-width:1}
+[data-l="finish"] .fill{fill:#ccd8de;stroke:#4f6874;stroke-width:1}
+[data-l="context"] .fill{fill:#efedea;stroke:#9d988e;stroke-width:.9;stroke-dasharray:4 3}
+.pc .sil{fill:none;stroke:#23231f;stroke-width:1.2}
+[data-l="context"] .sil{stroke:#9d988e;stroke-width:.9;stroke-dasharray:4 3}
+.pc .cut{stroke:#23231f;stroke-width:1.6;fill:#e7d8b8}
+[data-l="finish"] .cut{fill:#ccd8de}[data-l="context"] .cut{fill:#efedea}
+.pc .hatch{fill:url(#hatch);stroke:none;pointer-events:none}
+.pc .ghost{fill:none;stroke:#b06a3b;stroke-width:.9;stroke-dasharray:5 3}
+.mode-ghost .fill,.mode-ghost .sil,.mode-ghost .hatch{display:none}
+.mode-outline .fill,.mode-outline .hatch{display:none}
+.mode-outline .sil{stroke:#5f5d56;stroke-width:.9;stroke-dasharray:6 4}
+.mode-flat .hatch{display:none}
+.wall{fill:#3b352c;stroke:none}
+.walledge{stroke:#3b352c;stroke-width:2;fill:none}
+.floorline{stroke:#3b352c;stroke-width:2.5;fill:none}
+.ceilline{stroke:#5f5d56;stroke-width:1.2;fill:none;stroke-dasharray:none}
+.gridline{stroke:#e0ddd4;stroke-width:.7;fill:none}
+.elec{fill:none;stroke:#c0392b;stroke-width:1.6}
+.elecf{fill:#fdeceb;stroke:#c0392b;stroke-width:1.4}
+.lay-dims line{stroke:#1f4e9c;stroke-width:.9}
+.lay-dims text{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;fill:#1f4e9c}
+.lay-dims marker path{fill:#1f4e9c}
+.lay-labels text{font-size:11px;fill:#23231f}
+.lay-labels .sm{font-size:10px;fill:#5f5d56}
+.lay-labels .lead{stroke:#8a877e;stroke-width:.8;fill:none}
+.lay-labels .wallname{font-size:10px;fill:#cfc9bd;letter-spacing:.06em}
+.hatchline{stroke:#6f5930;stroke-width:.55}
+
+@media print{
+  nav.tabs,.tools,header .meta{display:none}
+  body{background:#fff}
+  .dwg{border:none;padding:0;break-inside:avoid;page-break-after:always;margin:0 0 8px}
+  .wrap{max-width:none;padding:0}
+}
+
+.off-c-loft [data-c="loft"]{display:none}
+.off-c-screen [data-c="screen"]{display:none}
+.off-c-stair [data-c="stair"]{display:none}
+.off-c-half_wall [data-c="half_wall"]{display:none}
+.off-c-nook [data-c="nook"]{display:none}
+.off-c-mattress [data-c="mattress"]{display:none}
+.off-c-desk [data-c="desk"]{display:none}
+.off-c-dresser [data-c="dresser"]{display:none}
+.off-c-fan [data-c="fan"]{display:none}
+.off-l-framing [data-l="framing"]{display:none}
+.off-l-finish [data-l="finish"]{display:none}
+.off-l-electrical [data-l="electrical"]{display:none}
+.off-l-context [data-l="context"]{display:none}
+.off-labels .lay-labels{display:none}
+.off-dims .lay-dims{display:none}
