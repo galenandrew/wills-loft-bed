@@ -90,17 +90,19 @@ LAYERS = ["framing", "finish", "electrical"]
 LAYER_LABEL = {"framing": "Framing", "finish": "Finish", "electrical": "Electrical"}
 
 # `finish` is what you see when the job is done; `framing` is everything it is
-# applied to. Two calls worth stating: deck_ply and lnd_ply are FINISH, because on
+# applied to. Calls worth stating: deck_ply and lnd_ply are FINISH, because on
 # a plan they hide every joist under them and the switch a builder reaches for is
 # "take the floor off" — their structural job as a diaphragm is in the caption and
 # the fastener schedule, not in this switch. The jamb flitches stay framing (they
-# are inside the wall), and so do the screen's slats, which ARE the screen rather
-# than a skin on it.
+# are inside the wall). The screen — top plate and all 23 slats — is FINISH: it
+# reads as the room's visible surface, not rough structure, so the whole component
+# switches together under Finish rather than splitting its one framing member out.
 FINISH = (
     "loft_ceiling", "beam_wrap_", "ledge_lid", "ledge_front_rail", "deck_ply",
     "lnd_ply", "stringer_a_skin", "tread[", "riser[",
     "hw_sheath_", "hw_end_cap",
     "nk_wrap_", "nk_soffit_",
+    "screen_top_plate", "slat[",
 )
 
 
