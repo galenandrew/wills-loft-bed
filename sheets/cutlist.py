@@ -46,7 +46,7 @@ def _piece(x, y, w, h, label, rot, over, fs):
     That is the whole point of the lightbox — more detail, not more pixels."""
     f, s = (OVER_F, OVER_S) if over else (FILL, STROKE)
     out = [f'<rect x="{x:.3f}" y="{y:.3f}" width="{w:.3f}" height="{h:.3f}" '
-           f'fill="{f}" stroke="{s}" stroke-width=".35"/>']
+           f'fill="{f}" stroke="{s}" stroke-width="{0.14*fs:.3f}"/>']
     name = E(label) + (" \u27f3" if rot else "")
     size = f"{fr(w)} \u00d7 {fr(h)}"
     pad = 0.48 * fs
