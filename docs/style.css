@@ -165,8 +165,8 @@ details.done ul{margin-top:11px;font-size:12.5px;color:#5f5d56}
 .off-c-desk [data-c="desk"]{display:none}
 .off-c-dresser [data-c="dresser"]{display:none}
 .off-c-fan [data-c="fan"]{display:none}
-.off-l-framing [data-l="framing"]{display:none}
 .off-l-finish [data-l="finish"]{display:none}
+.off-l-framing [data-l="framing"]{display:none}
 .off-l-electrical [data-l="electrical"]{display:none}
 .off-l-context [data-l="context"]{display:none}
 .off-labels .lay-labels{display:none}

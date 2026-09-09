@@ -86,7 +86,7 @@ def label_component(name):
 
 
 # ---------------------------------------------------------------------- layers
-LAYERS = ["framing", "finish", "electrical"]
+LAYERS = ["finish", "framing", "electrical"]
 LAYER_LABEL = {"framing": "Framing", "finish": "Finish", "electrical": "Electrical"}
 
 # `finish` is what you see when the job is done; `framing` is everything it is
