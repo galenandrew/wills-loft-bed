@@ -96,7 +96,7 @@ kbd{{font:11px ui-monospace,Menlo,monospace;border:1px solid {LINE};border-radiu
   border-radius:8px;padding:8px 10px;margin-bottom:12px;background:#fcfbf9}}
 .trow{{display:flex;flex-wrap:wrap;gap:14px;align-items:center}}
 .grp{{display:flex;gap:5px;align-items:center;flex-wrap:wrap}}
-.grp>span.gl{{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:{INK3};margin-right:2px}}
+.grp>span.gl{{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:{INK3};margin-right:2px;display:inline-block;min-width:76px}}
 .chip{{font:inherit;font-size:12px;line-height:1;border:1px solid {LINE};background:#fff;color:{INK2};
   border-radius:99px;padding:5px 10px;cursor:pointer;user-select:none}}
 .chip:hover{{border-color:{INK3}}}
@@ -311,23 +311,25 @@ def hide_rules():
 def toolbar(fig):
     def chip(cls, label):
         return f'<button class="chip" type="button" data-cls="{cls}">{E(label)}</button>'
-    # Components get a row to themselves — there are ten of them and they are what
-    # a reader reaches for; Layers and Annotation are short and share the next row.
-    top = ""
+    # One row per axis: what is drawn, what kind of thing it is, and what is
+    # written about it. Each row's label sits at its head, so the three read as a
+    # list rather than as a wall of chips.
+    def row(label, chips):
+        return (f'<div class="trow"><div class="grp"><span class="gl">{label}</span>'
+                + "".join(chips) + "</div></div>")
+
+    rows = []
     if fig.components:
-        top = ('<div class="trow"><div class="grp"><span class="gl">Components</span>'
-               + "".join(chip(f"off-c-{c}", tx.LABEL[c]) for c in fig.components)
-               + "</div></div>")
-    groups = []
+        rows.append(row("Components",
+                        [chip(f"off-c-{c}", tx.LABEL[c]) for c in fig.components]))
     if len(fig.layers) > 1 or (fig.layers and fig.layers[0] != "context"):
-        groups.append('<div class="grp"><span class="gl">Layers</span>'
-                      + "".join(chip(f"off-l-{l}", tx.LAYER_LABEL.get(l, l.title()))
-                                for l in fig.layers if l != "context") + "</div>")
-    groups.append('<div class="grp"><span class="gl">Annotation</span>'
-                  + chip("off-labels", "Labels") + chip("off-dims", "Dimensions")
-                  + '<button class="chip rst" type="button">Reset</button></div>')
-    return ('<div class="tools">' + top + '<div class="trow">'
-            + "".join(groups) + "</div></div>")
+        rows.append(row("Layers",
+                        [chip(f"off-l-{l}", tx.LAYER_LABEL.get(l, l.title()))
+                         for l in fig.layers if l != "context"]))
+    rows.append(row("Annotation",
+                    [chip("off-labels", "Labels"), chip("off-dims", "Dimensions"),
+                     '<button class="chip rst" type="button">Reset</button>']))
+    return '<div class="tools">' + "".join(rows) + "</div>"
 
 
 def figure_card(sheet, fig):

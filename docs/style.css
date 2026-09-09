@@ -28,7 +28,7 @@ kbd{font:11px ui-monospace,Menlo,monospace;border:1px solid #e0ddd4;border-radiu
   border-radius:8px;padding:8px 10px;margin-bottom:12px;background:#fcfbf9}
 .trow{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
 .grp{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
-.grp>span.gl{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#8a877e;margin-right:2px}
+.grp>span.gl{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#8a877e;margin-right:2px;display:inline-block;min-width:76px}
 .chip{font:inherit;font-size:12px;line-height:1;border:1px solid #e0ddd4;background:#fff;color:#5f5d56;
   border-radius:99px;padding:5px 10px;cursor:pointer;user-select:none}
 .chip:hover{border-color:#8a877e}
