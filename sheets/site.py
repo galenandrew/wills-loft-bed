@@ -34,10 +34,10 @@ PAGES = [
     ("halfwall",  "Half wall",     ["s7_half_wall", "s12_panel_layout"]),
     ("loft",      "Loft & screen", ["s8_loft_section", "s9_loft_framing",
                                     "s10_beam_end", "s11_ledge_detail"]),
-    ("open",      "Open items",    REF),
     ("cutlist",   "Cut list",      REF),
     ("schedule",  "Schedule",      REF),
     ("fasteners", "Fasteners",     REF),
+    ("open",      "Open items",    REF),
     ("appendix",  "Appendix",      REF),
     ("revisions", "Revisions",     REF),
 ]

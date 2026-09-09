@@ -43,7 +43,7 @@
 #     cad-out/loft.txt carries both areas.
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: BC.1
+rev: BD
 units: inches
 room:
   x: 131
@@ -181,7 +181,7 @@ loft_lighting:
     count: 1
     x: 63
     y: 25
-  note: 'NEW. Three lights recessed into loft_ceiling, same shallow-cavity problem as the
+  note: 'Three lights recessed into loft_ceiling, same shallow-cavity problem as the
     nook light: loft_light_chase is only the joist depth (3.5, ceiling top to deck ply).
     Slim canless fixtures, which can intersect a joist (unlike a can housing), so
     positions are true geometric centres, not joist-bay centres. The two 4in over the
@@ -190,10 +190,9 @@ loft_lighting:
     quarter points of loft_ceiling''s 0-50 run. The 6in walkway light sits at the true
     midpoint, x 63, between the desk''s inner edge (x 24) and the half-wall''s loft face
     (x 102, clear_below_deck_x) - which happens to fall on deck_joist[5] (61.5-63); fine
-    for a slim canless fixture, but worth a field check that the specific fixture chosen
-    can actually straddle a joist before cutting the hole. ASSUMED — confirm fixture
-    choice, exact position and switch location with the user before wiring; see
-    open-items.'
+    for a slim canless fixture, and CONFIRMED by the builder (2026-09-09): low-profile
+    canless wafers, 1/2 clearance in the 3.5 chase, so all three sit clear of the joists
+    they cross. Position and switch location as encoded above.'
 electrical:
   note: 'Rev BC. The devices the room needs, placed on the members they mount to.
     loft_lighting (above) stays where it is because Drawing 1 of the Rev U set reads

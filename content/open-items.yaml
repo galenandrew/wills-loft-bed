@@ -16,15 +16,10 @@ groups:
   - do: "Ceiling joist nearest {m:screen_top_plate.y1} from the bed wall."
     why: "Decides whether the screen top plate screws to a joist or wants blocking first. Does not gate the design — the plate is fixed and the attic is accessible."
 
-- tag: SPECIFY
-  lead: Chosen by the builder; the model carries a placeholder until then.
-  items:
-  - do: "Framing species and grade."
-  - do: "Light fixtures: confirm the four canless wafers before cutting any hole."
-    why: "All four sit in chases shallower than a can housing &mdash; {nook_light_chase} above the nook soffit, {loft_light_chase} above the loft ceiling &mdash; and three of the loft ones cross a joist, which a wafer can straddle and a can cannot."
-
 # Decided. Kept so they are not reopened by accident, collapsed so they are not read daily.
 closed:
+- "<b>Framing species and grade: builder to source locally, not specified further.</b>"
+- "<b>Light fixtures: confirmed.</b> Low-profile canless wafers, {nook_light_chase} above the nook soffit and {loft_light_chase} above the loft ceiling, all four leaving 1/2 clearance in their chase &mdash; three of the loft ones cross a joist, which a wafer can straddle and a can cannot."
 - "<b>Header-to-king straps: scrapped</b> (Rev AS). The half wall is sheathed on BOTH faces across the joint — <code>hw_sheath_stair</code> z 24&ndash;58 and <code>hw_sheath_loft_head</code> z {m:hw_sheath_loft_head.z0}&ndash;{m:hw_sheath_loft_head.z1} both lap the header at z 41&frac12;&ndash;50&frac34; and run onto both kings at y 0&ndash;1&frac12; and 48&frac12;&ndash;50 — and two continuous top plates bear over the header and both kings. Nailed to header and kings that is a stiffer tie than a strap. <b>Rev AZ took the loft face of that sheathing &frac34; &rarr; &frac12;</b>; accepted without a calculation, on the grounds that the joint carries gravity into the trimmers, whose bearing is checked, so the sheathing here is a racking and continuity gusset rather than a tension tie. Rev BA.1 removed the strap markers Drawing 7 was still showing eight revs later."
 - "<b>Slat-to-plate joint: specified.</b> Adhesive + one #8 &times; 2&frac12; angled into the plate per slat; 16ga pins for assembly only. The screen is the guard for the bed, so the top is a structural joint, not trim."
 - "<b>Screen top-plate position: y {m:screen_top_plate.y0}&ndash;{m:screen_top_plate.y1}</b> (Rev AS). Attic access means blocking can be added wherever the joist lands."
