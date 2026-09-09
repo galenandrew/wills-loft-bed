@@ -8,7 +8,7 @@ from .s4_stair_section import SPEC
 NUMBER, TITLE, PAGE = "6", "Tread & riser detail", "stairs"
 
 MODES = {"mattress": "off", "desk": "off", "dresser": "off", "fan": "off",
-         "loft": "off", "half_wall": "off", "nook": "off"}
+         "loft": "off", "ledge": "off", "half_wall": "off", "nook": "off"}
 
 STEP = 3          # the step drawn — any of them; they are identical
 
@@ -31,11 +31,12 @@ def detail():
     cv.dim_v(ST.riser_z[STEP - 1], z, "left", 1, f"{fr(ST.R)} rise")
     cv.dim_h(riser_y(STEP)[0], riser_y(STEP)[1], "top", 0, fr(RISER_T))
     # --- labels
-    cv.text(y0 + 2.5, z + 1.6, "tread — ¾ ply, taped edge, painted", "sm", anchor="start")
-    cv.text(y1 + 1.2, z - ST.R / 2, "riser, in front of the plumb cut", "sm",
+    cv.text(y0 + 2.5, z + 1.6, "tread — ¾ ply, taped edge, painted", "sm", anchor="start",
+            of="stair")
+    cv.text(y1 + 1.2, z - ST.R / 2, "riser, in front of the plumb cut", "sm", of="stair",
             anchor="start")
-    cv.text(y0 - 1.4, z - ST.R + 1.4, "stringer", "sm", anchor="start")
-    cv.text(y1 + 1.2, z - T - 1.2, f"{fr(NOSE)} nose past the riser face", "sm", anchor="start")
+    cv.text(y0 - 1.4, z - ST.R + 1.4, "stringer", "sm", anchor="start", of="stringer_b")
+    cv.text(y1 + 1.2, z - T - 1.2, f"{fr(NOSE)} nose past the riser face", "sm", anchor="start", of="stair")
     fig.svg = cv.svg(f"Tread and riser joint at step {STEP}")
     return fig
 

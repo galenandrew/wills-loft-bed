@@ -12,7 +12,7 @@ NUMBER, TITLE, PAGE = "12", "Half wall — loft face panel layout", "halfwall"
 CUT_X = 102.24
 SPEC = ViewSpec("hw_face", direction=(1, 0, 0), cut=("x", CUT_X))
 
-MODES = {"framing": "outline", "stair": "off", "loft": "off"}
+MODES = {"framing": "outline", "stair": "off", "loft": "off", "ledge": "off"}
 
 
 def face():
@@ -31,9 +31,9 @@ def face():
     cv.dim_h(*JAMB_Y, "top", 0, f"{fr(JAMB_Y[1] - JAMB_Y[0])} finished opening")
     cv.dim_v(0, float(a.z[1]), "left", 0, f"{fr(a.size('z'))} tall")
     cv.dim_v(0, CEIL, "right", 0, f"{fr(CEIL)} opening")
-    cv.text(2.1, 30, "stile", "sm", rot=-90)
-    cv.text(30, 48, "head runs unbroken round the opening", "sm")
-    cv.text(25, 20, "NOOK OPENING", "")
+    cv.text(2.1, 30, "stile", "sm", rot=-90, of="hw_sheath_loft_a")
+    cv.text(30, 48, "head runs unbroken round the opening", "sm", of="hw_sheath_loft_head")
+    cv.text(25, 20, "NOOK OPENING", "", of="half_wall")
     fig.svg = cv.svg("The half wall's loft face, seen square on")
     return fig
 

@@ -30,13 +30,13 @@ def framing():
     cv.dim_v(0, Y_FIN, "right", 0, f"{fr(Y_FIN)} finished")
     cv.dim_v(*NOOK_Y, "right", 1, f"{fr(NOOK_Y[1] - NOOK_Y[0])} rough opening")
     # --- labels
-    cv.text(119, 8, "LANDING BOX", "")
-    cv.text(119, 12, "2×8 rim · ledgers · 2×4 joists", "sm")
-    cv.text(107.8, 45, "stringer A", "sm", rot=-90)
-    cv.text(119.4, 45, "stringer B", "sm", rot=-90)
-    cv.text(130.4, 45, "stringer C", "sm", rot=-90)
-    cv.text(119, ST.y_bottom + 2.6, "kicker", "sm")
-    cv.text(104.5, 60, "half wall", "sm", rot=-90)
+    cv.text(119, 8, "LANDING BOX", "", of="stair")
+    cv.text(119, 12, "2×8 rim · ledgers · 2×4 joists", "sm", of="stair")
+    cv.text(107.8, 45, "stringer A", "sm", rot=-90, of="stringer_a")
+    cv.text(119.4, 45, "stringer B", "sm", rot=-90, of="stringer_b")
+    cv.text(130.4, 45, "stringer C", "sm", rot=-90, of="stringer_c")
+    cv.text(119, ST.y_bottom + 2.6, "kicker", "sm", of="kicker")
+    cv.text(104.5, 60, "half wall", "sm", rot=-90, of="half_wall")
     fig.svg = cv.svg("Stair and landing framing plan, bed wall at the top")
     return fig
 

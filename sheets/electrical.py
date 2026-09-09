@@ -111,11 +111,15 @@ SHORT = {"light": "light", "outlet": "outlet", "switch": "switch"}
 
 
 def _label(cv, dev, h, v, count=1, below=False):
-    """One short name, clear of the symbol. Anything longer belongs in the caption."""
+    """One short name, clear of the symbol. Anything longer belongs in the caption.
+
+    It carries the symbol's own data-c/data-l, so the word goes off with the thing
+    it names — switch the ledge off and its outlets take their labels with them."""
     name = dev.get("label") or SHORT[dev["kind"]]
     if count > 1:
         name = f"{count} × {name}"
     y = cv.Y(v) + (GLYPH + 11 if below else -GLYPH - 4)
     cv.labels.append(
-        f'<text class="sm elect" x="{cv.X(h):.1f}" y="{y:.1f}" '
+        f'<text class="sm elect" data-c="{tx.component_of_member(dev["host"])}" '
+        f'data-l="electrical" x="{cv.X(h):.1f}" y="{y:.1f}" '
         f'text-anchor="middle">{E(name)}</text>')

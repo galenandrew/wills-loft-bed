@@ -38,11 +38,11 @@ def front():
     cv.dim_v(LAND, CEILING, "right", 1, f"{fr(CEILING - LAND)} ceiling to landing")
     cv.dim_v(0, LAND, "right", 1, f"{fr(LAND)} landing")
     # --- labels
-    cv.text(53, BEAM_FIN_TOP - 4, f"{BEAMSTOCK} beam + wrap", "", dy=-4)
-    cv.text(53, (BEAM_FIN_TOP + CEILING) / 2, f"{SCR['slat_count']} slats @ {fr(DER['slat_clear'])} clear", "sm")
-    cv.text(53, float(m("loft_ceiling").z[0]) - 6, f"loft ceiling {fr(float(m('loft_ceiling').z[0]))}", "sm")
-    cv.text(119, 12, "stair beyond", "sm")
-    cv.text(104.6, 20, "half wall", "sm", rot=-90)
+    cv.text(53, BEAM_FIN_TOP - 4, f"{BEAMSTOCK} beam + wrap", "", dy=-4, of="beam")
+    cv.text(53, (BEAM_FIN_TOP + CEILING) / 2, f"{SCR['slat_count']} slats @ {fr(DER['slat_clear'])} clear", "sm", of="screen")
+    cv.text(53, float(m("loft_ceiling").z[0]) - 6, f"loft ceiling {fr(float(m('loft_ceiling').z[0]))}", "sm", of="loft_ceiling")
+    cv.text(119, 12, "stair beyond", "sm", of="stair")
+    cv.text(104.6, 20, "half wall", "sm", rot=-90, of="half_wall")
     fig.svg = cv.svg("Front elevation, looking toward the bed wall")
     return fig
 

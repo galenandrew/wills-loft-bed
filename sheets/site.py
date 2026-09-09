@@ -92,8 +92,9 @@ kbd{{font:11px ui-monospace,Menlo,monospace;border:1px solid {LINE};border-radiu
 .dwg h2{{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:{INK2};margin:0 0 10px;font-weight:700}}
 .dwg h2 b{{color:{INK};font-size:14px;text-transform:none;letter-spacing:0}}
 .cap{{color:{INK2};font-size:12.5px;margin:12px 2px 0;max-width:82ch}}
-.tools{{display:flex;flex-wrap:wrap;gap:14px;align-items:center;border:1px solid {LINE};
+.tools{{display:flex;flex-direction:column;gap:8px;border:1px solid {LINE};
   border-radius:8px;padding:8px 10px;margin-bottom:12px;background:#fcfbf9}}
+.trow{{display:flex;flex-wrap:wrap;gap:14px;align-items:center}}
 .grp{{display:flex;gap:5px;align-items:center;flex-wrap:wrap}}
 .grp>span.gl{{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:{INK3};margin-right:2px}}
 .chip{{font:inherit;font-size:12px;line-height:1;border:1px solid {LINE};background:#fff;color:{INK2};
@@ -310,10 +311,14 @@ def hide_rules():
 def toolbar(fig):
     def chip(cls, label):
         return f'<button class="chip" type="button" data-cls="{cls}">{E(label)}</button>'
-    groups = []
+    # Components get a row to themselves — there are ten of them and they are what
+    # a reader reaches for; Layers and Annotation are short and share the next row.
+    top = ""
     if fig.components:
-        groups.append('<div class="grp"><span class="gl">Components</span>'
-                      + "".join(chip(f"off-c-{c}", tx.LABEL[c]) for c in fig.components) + "</div>")
+        top = ('<div class="trow"><div class="grp"><span class="gl">Components</span>'
+               + "".join(chip(f"off-c-{c}", tx.LABEL[c]) for c in fig.components)
+               + "</div></div>")
+    groups = []
     if len(fig.layers) > 1 or (fig.layers and fig.layers[0] != "context"):
         groups.append('<div class="grp"><span class="gl">Layers</span>'
                       + "".join(chip(f"off-l-{l}", tx.LAYER_LABEL.get(l, l.title()))
@@ -321,7 +326,8 @@ def toolbar(fig):
     groups.append('<div class="grp"><span class="gl">Annotation</span>'
                   + chip("off-labels", "Labels") + chip("off-dims", "Dimensions")
                   + '<button class="chip rst" type="button">Reset</button></div>')
-    return '<div class="tools">' + "".join(groups) + "</div>"
+    return ('<div class="tools">' + top + '<div class="trow">'
+            + "".join(groups) + "</div></div>")
 
 
 def figure_card(sheet, fig):

@@ -23,6 +23,8 @@ import html
 
 from drawings.model import CEILING, RX, RY, fr
 
+from . import taxonomy as tx
+
 ROOM = {"x": (0.0, RX), "y": (0.0, RY), "z": (0.0, CEILING)}
 WALL_NAME = {("x", 0): "window wall", ("x", 1): "right wall",
              ("y", 0): "bed wall", ("y", 1): "closet wall",
@@ -93,22 +95,22 @@ class Canvas:
         (h0, v0), (h1, v1) = self.p3(*a), self.p3(*b)
         self.line(h0, v0, h1, v1, cls, bucket)
 
-    def tag(self, at, s, dh=0.0, dv=0.0, cls="", anchor="middle"):
+    def tag(self, at, s, dh=0.0, dv=0.0, cls="", anchor="middle", of=None):
         """Label a real 3D point, with the text parked (dh, dv) inches away from it
         and a leader back to it. Offsets are in view inches, so a label sits the
         same distance off the drawing whatever the sheet's scale."""
         h, v = self.p3(*at)
-        self.labels.append(f'<polyline class="lead" points="{self.pt(h, v)} '
+        self.labels.append(f'<polyline class="lead"{self._of(of)} points="{self.pt(h, v)} '
                            f'{self.pt(h + dh, v + dv)}"/>')
-        self.text(h + dh, v + dv, s, cls, anchor, dy=3.5)
+        self.text(h + dh, v + dv, s, cls, anchor, dy=3.5, of=of)
 
-    def text3(self, at, s, cls="", anchor="middle", dx=0, dy=0, to=None):
+    def text3(self, at, s, cls="", anchor="middle", dx=0, dy=0, to=None, of=None):
         h, v = self.p3(*at)
         if to:
             th, tv = self.p3(*to)
-            self.labels.append(f'<polyline class="lead" points="{self.pt(th, tv)} '
+            self.labels.append(f'<polyline class="lead"{self._of(of)} points="{self.pt(th, tv)} '
                                f'{self.pt(h, v)}"/>')
-        self.text(h, v, s, cls, anchor, dx=dx, dy=dy)
+        self.text(h, v, s, cls, anchor, dx=dx, dy=dy, of=of)
 
     # -------------------------------------------------------------- output
     def add(self, s, bucket=None):
@@ -212,18 +214,25 @@ class Canvas:
             (self.dim_h if side in ("top", "bottom") else self.dim_v)(a, b, side, level, lab)
 
     # ------------------------------------------------------------- labels
-    def text(self, h, v, s, cls="", anchor="middle", dx=0, dy=0, rot=None):
+    def _of(self, of):
+        """`of=` names the thing a label is about — a component, or the member it
+        points at. It becomes the same data-c a solid carries, so the component
+        switch takes the label off with the thing it names. Labels that describe
+        the room or the whole assembly pass nothing and always show."""
+        return f' data-c="{tx.label_component(of)}"' if of else ""
+
+    def text(self, h, v, s, cls="", anchor="middle", dx=0, dy=0, rot=None, of=None):
         x, y = self.X(h) + dx, self.Y(v) + dy
         t = f' transform="rotate({rot} {x:.1f} {y:.1f})"' if rot else ""
-        self.labels.append(f'<text class="{cls}" x="{x:.1f}" y="{y:.1f}"'
+        self.labels.append(f'<text class="{cls}"{self._of(of)} x="{x:.1f}" y="{y:.1f}"'
                            f' text-anchor="{anchor}"{t}>{E(s)}</text>')
 
-    def note(self, h, v, s, to=None, cls="sm", anchor="middle", dy=0):
+    def note(self, h, v, s, to=None, cls="sm", anchor="middle", dy=0, of=None):
         """A label with an optional leader to the thing it names."""
         if to:
-            self.labels.append(f'<polyline class="lead" points="{self.pt(*to)} '
+            self.labels.append(f'<polyline class="lead"{self._of(of)} points="{self.pt(*to)} '
                                f'{self.pt(h, v)}"/>')
-        self.text(h, v, s, cls, anchor, dy=dy)
+        self.text(h, v, s, cls, anchor, dy=dy, of=of)
 
     # --------------------------------------------------------------- svg
     def _place_vtext(self):

@@ -3,7 +3,8 @@
 The kernel already groups solids into the five assemblies a builder splits the job
 into. This adds the two axes the drawings toggle on:
 
-  COMPONENT   the thing you are building or working around — the five assemblies,
+  COMPONENT   the thing you are building or working around — the five assemblies
+              (with the boxed ledge split off the loft, see LEDGE below),
               plus the mattress and the three fixtures already in the room, each
               on its own switch so a sheet can show the dresser beside the stair
               without dragging the desk and the fan in with it.
@@ -21,19 +22,29 @@ from cad.scope import CONTEXT, NOTCHED, SCOPE   # plain data: no build123d, no 3
 CONTEXT_COMPONENTS = {"desk": "desk", "dresser": "dresser", "fan": "fan",
                       "mattress": "mattress"}
 
-COMPONENTS = ["loft", "screen", "stair", "half_wall", "nook",
+COMPONENTS = ["loft", "ledge", "screen", "stair", "half_wall", "nook",
               "mattress", "desk", "dresser", "fan"]
 
-LABEL = {"loft": "Loft", "screen": "Screen", "stair": "Stair + landing",
-         "half_wall": "Half wall", "nook": "Nook", "mattress": "Mattress",
-         "desk": "Desk", "dresser": "Dresser", "fan": "Ceiling fan"}
+LABEL = {"loft": "Loft", "ledge": "Boxed ledge", "screen": "Screen",
+         "stair": "Stair + landing", "half_wall": "Half wall", "nook": "Nook",
+         "mattress": "Mattress", "desk": "Desk", "dresser": "Dresser",
+         "fan": "Ceiling fan"}
 
-BUILT = ["loft", "screen", "stair", "half_wall", "nook"]      # what gets cut
+BUILT = ["loft", "ledge", "screen", "stair", "half_wall", "nook"]   # what gets cut
+
+# The boxed ledge is built with the loft and the kernel keeps it in that assembly,
+# but on a drawing it is the one thing a reader wants off on its own — it stands
+# above the deck and hides the beam and the deck edge behind it. Component is a
+# drawing concern, so the split lives here.
+LEDGE = ("ledge_cleat", "ledge_strut", "ledge_front_rail", "ledge_rail_splice",
+         "ledge_lid")
 
 
 def component(piece):
     if piece.assembly == "context":
         return CONTEXT_COMPONENTS[piece.id]
+    if piece.id.split("#")[0].startswith(LEDGE):
+        return "ledge"
     return piece.assembly
 
 
@@ -50,7 +61,28 @@ def component_of_member(mid):
     base = mid.split("#")[0]
     if base in CONTEXT_COMPONENTS:
         return CONTEXT_COMPONENTS[base]
+    if base.startswith(LEDGE):
+        return "ledge"
     return ASSEMBLY_OF.get(base, "loft")
+
+
+MEMBERS = set(ASSEMBLY_OF) | set(CONTEXT_COMPONENTS)
+
+
+def label_component(name):
+    """The component a LABEL belongs to — what a sheet's `of=` resolves to.
+
+    Takes a component name, or the id of the member the label names, so a sheet
+    can write `of="ledge_lid"` and not have to know which switch that is. An
+    unknown name raises: a typo must not quietly park a label on the loft, which
+    is what `component_of_member`'s default would do."""
+    if name in COMPONENTS:
+        return name
+    base = name.split("#")[0]
+    if base in MEMBERS or base.startswith(LEDGE):
+        return component_of_member(name)
+    raise KeyError(f"sheets.taxonomy: of={name!r} is neither a component nor a "
+                   f"member id — a label must name something switchable")
 
 
 # ---------------------------------------------------------------------- layers
@@ -65,7 +97,7 @@ LAYER_LABEL = {"framing": "Framing", "finish": "Finish", "electrical": "Electric
 # are inside the wall), and so do the screen's slats, which ARE the screen rather
 # than a skin on it.
 FINISH = (
-    "loft_ceiling", "beam_wrap_", "ledge_lid", "deck_ply",
+    "loft_ceiling", "beam_wrap_", "ledge_lid", "ledge_front_rail", "deck_ply",
     "lnd_ply", "stringer_a_skin", "tread[", "riser[",
     "hw_sheath_", "hw_end_cap",
     "nk_wrap_", "nk_soffit_",

@@ -29,13 +29,14 @@ def framing():
     cv.dim_v(float(m("rear_ledger").y[1]), float(m("beam").y[0]), "left", 0,
              f"{fr(DER['deck_joist_span'])} span")
     # --- labels
-    cv.text(52, 0.8, "2×4 rear ledger — lags into every stud", "sm")
-    cv.text(52, 20, f"2×4 joists @ {VALS['joist_oc']} o.c. · {len(ids('deck_joist'))} joists", "sm")
-    cv.text(52, 49.2, f"{BEAMSTOCK} upstand beam — {VALS['beam_span']} c/c bearings", "sm")
-    cv.text(52, 44, "2×4 blocking on edge at the beam", "sm")
-    cv.text(6, 26, "2×4 side ledger", "sm", rot=-90)
-    cv.text(105.6, 26, "2×4 rim", "sm", rot=-90)
-    cv.text(52, 4.4, "boxed ledge over", "sm")
+    cv.text(52, 0.8, "2×4 rear ledger — lags into every stud", "sm", of="rear_ledger")
+    cv.text(52, 20, f"2×4 joists @ {VALS['joist_oc']} o.c. · {len(ids('deck_joist'))} joists", "sm",
+            of="deck_joist[0]")
+    cv.text(52, 49.2, f"{BEAMSTOCK} upstand beam — {VALS['beam_span']} c/c bearings", "sm", of="beam")
+    cv.text(52, 44, "2×4 blocking on edge at the beam", "sm", of="deck_blocking[0]")
+    cv.text(6, 26, "2×4 side ledger", "sm", rot=-90, of="side_ledger")
+    cv.text(105.6, 26, "2×4 rim", "sm", rot=-90, of="deck_rim")
+    cv.text(52, 4.4, "boxed ledge over", "sm", of="ledge")
     fig.svg = cv.svg("Loft framing plan, bed wall at the top")
     return fig
 

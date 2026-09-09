@@ -24,8 +24,9 @@ kbd{font:11px ui-monospace,Menlo,monospace;border:1px solid #e0ddd4;border-radiu
 .dwg h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#5f5d56;margin:0 0 10px;font-weight:700}
 .dwg h2 b{color:#23231f;font-size:14px;text-transform:none;letter-spacing:0}
 .cap{color:#5f5d56;font-size:12.5px;margin:12px 2px 0;max-width:82ch}
-.tools{display:flex;flex-wrap:wrap;gap:14px;align-items:center;border:1px solid #e0ddd4;
+.tools{display:flex;flex-direction:column;gap:8px;border:1px solid #e0ddd4;
   border-radius:8px;padding:8px 10px;margin-bottom:12px;background:#fcfbf9}
+.trow{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
 .grp{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
 .grp>span.gl{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#8a877e;margin-right:2px}
 .chip{font:inherit;font-size:12px;line-height:1;border:1px solid #e0ddd4;background:#fff;color:#5f5d56;
@@ -155,6 +156,7 @@ details.done ul{margin-top:11px;font-size:12.5px;color:#5f5d56}
 }
 
 .off-c-loft [data-c="loft"]{display:none}
+.off-c-ledge [data-c="ledge"]{display:none}
 .off-c-screen [data-c="screen"]{display:none}
 .off-c-stair [data-c="stair"]{display:none}
 .off-c-half_wall [data-c="half_wall"]{display:none}

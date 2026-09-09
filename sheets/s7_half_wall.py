@@ -38,11 +38,11 @@ def elevation():
     cv.dim_v(float(tp.z[1]), DECK, "right", 0, f"{fr(DECK - float(tp.z[1]))} to deck")
     cv.dim_v(0, float(tp.z[1]), "right", 1, f"{fr(float(tp.z[1]))} top plate")
     # --- labels
-    cv.text(25, float(hd.z[0]) + 4.6, "2×10 sandwich header", "sm")
-    cv.text(25, float(tp.z[1]) + 2.4, "two 2×4 top plates", "sm")
-    cv.text(25, CEIL - 4, "NOOK OPENING", "")
-    cv.text(60, 24, "stair beyond (dashed)", "sm")
-    cv.text(2.5, DECK + 12, "loft edge, cut on this plane", "sm", anchor="start")
+    cv.text(25, float(hd.z[0]) + 4.6, "2×10 sandwich header", "sm", of="hw_header")
+    cv.text(25, float(tp.z[1]) + 2.4, "two 2×4 top plates", "sm", of="hw_top_plate_1")
+    cv.text(25, CEIL - 4, "NOOK OPENING", "", of="half_wall")
+    cv.text(60, 24, "stair beyond (dashed)", "sm", of="stair")
+    cv.text(2.5, DECK + 12, "loft edge, cut on this plane", "sm", anchor="start", of="loft")
     fig.svg = cv.svg("Half-wall framing elevation with the loft edge cut")
     return fig
 

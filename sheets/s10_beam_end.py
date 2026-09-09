@@ -38,9 +38,9 @@ def plan():
              f"{fr(float(bm.x[0]) - float(sl.x[0]))} notch — ledger + joist 0")
     cv.dim_v(float(bm.y[0]), float(bm.y[1]), "right", 0,
              f"{fr(bm.size('y'))} beam over joist 0's tail")
-    cv.text(9, 42.4, "beam ends here — the notch is beyond this plane", "sm")
-    cv.text(0.85, 44, "side ledger", "sm", rot=-90)
-    cv.text(2.35, 44, "joist 0", "sm", rot=-90)
+    cv.text(9, 42.4, "beam ends here — the notch is beyond this plane", "sm", of="beam")
+    cv.text(0.85, 44, "side ledger", "sm", rot=-90, of="side_ledger")
+    cv.text(2.35, 44, "joist 0", "sm", rot=-90, of="deck_joist[0]")
     fig.svg = cv.svg(f"Plan cut at z {fr(CUT_Z)} through the beam's notch")
     return fig
 
@@ -58,9 +58,9 @@ def sect():
     cv.dim_v(float(bm.z[0]), BEAM_FIN_TOP, "left", 1, f"{fr(BEAM_FIN_TOP - float(bm.z[0]))} beam + cap")
     cv.dim_h(float(tg.x[0]), float(tg.x[1]), "bottom", 0, f"{fr(tg.size('x'))} bearing")
     cv.dim_v(float(bm.z[0]), DECK, "right", 0, f"deck {fr(DECK)}")
-    cv.text(11, float(sl.z[1]) + 4, "beam tongue over the seat", "sm")
-    cv.text(0.75, 55.5, "ledger", "sm", rot=-90)
-    cv.text(2.25, 55.5, "joist 0", "sm", rot=-90)
+    cv.text(11, float(sl.z[1]) + 4, "beam tongue over the seat", "sm", of="beam")
+    cv.text(0.75, 55.5, "ledger", "sm", rot=-90, of="side_ledger")
+    cv.text(2.25, 55.5, "joist 0", "sm", rot=-90, of="deck_joist[0]")
     fig.svg = cv.svg(f"Section at y {fr(CUT_Y)} through the beam's seat")
     return fig
 

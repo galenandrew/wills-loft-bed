@@ -22,7 +22,7 @@ def section():
     fig = compose(cv, recs, MODES, "stair_sec",
                   "Section through stringer B, bed wall on the left",
                   title="Section through stringer B",
-                  start_off=("off-c-loft",), spec=SPEC,
+                  start_off=("off-c-loft", "off-c-ledge"), spec=SPEC,
                   electrical=["nk_light"])
     # --- dims
     cv.dim_h(0, ST.y_top, "bottom", 0, fr(ST.y_top))
@@ -34,12 +34,12 @@ def section():
     cv.dim_v(LAND, CEILING, "left", 1, f"{fr(DER['landing_headroom'])} headroom")
     cv.dim_v(0, CEIL, "right", 0, f"{fr(CEIL)} nook")
     # --- labels
-    cv.text(ST.y_top - 4, LAND + 5, "LANDING", "")
+    cv.text(ST.y_top - 4, LAND + 5, "LANDING", "", of="stair")
     cv.text(14, 62, f"{ST.n_treads + 1} risers @ {fr(ST.R)}, then {fr(ST.R_top)} onto the deck", "sm",
-            anchor="start")
-    cv.text(11, CEIL / 2, "NOOK", "")
-    cv.text(60, 30, "stringer B", "sm", rot=-53)
-    cv.text(ST.y_bottom + 3, 3.5, "kicker", "sm", anchor="start")
+            anchor="start", of="stair")
+    cv.text(11, CEIL / 2, "NOOK", "", of="nook")
+    cv.text(60, 30, "stringer B", "sm", rot=-53, of="stringer_b")
+    cv.text(ST.y_bottom + 3, 3.5, "kicker", "sm", anchor="start", of="kicker")
     fig.svg = cv.svg("Section through stringer B, bed wall on the left")
     return fig
 

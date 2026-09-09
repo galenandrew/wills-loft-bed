@@ -35,13 +35,13 @@ def iso():
                   start_off=("off-c-desk", "off-c-dresser"))
     # Labels are parked clear of the model and led back to a real point on the
     # member they name — offsets are in view inches, so they hold at any scale.
-    cv.tag((15.5, 50, 84), "SCREEN", -20, 6, anchor="end")
-    cv.tag((90, 4, 69), "BOXED LEDGE", 10, 8, anchor="start")
-    cv.tag((25, 35, 53.5), "LOFT DECK", -14, -12, anchor="end")
-    cv.tag((104.5, 50, 32), "HALF WALL", -16, -6, anchor="end")
-    cv.tag((131, 45, 20), "STAIR", 14, -10, anchor="start")
-    cv.tag((131, 8, 49.5), "LANDING", 14, 6, anchor="start")
-    cv.tag((131, 12, 14), "NOOK", 14, -22, anchor="start")
+    cv.tag((15.5, 50, 84), "SCREEN", -20, 6, anchor="end", of="screen")
+    cv.tag((90, 4, 69), "BOXED LEDGE", 10, 8, anchor="start", of="ledge")
+    cv.tag((25, 35, 53.5), "LOFT DECK", -14, -12, anchor="end", of="loft")
+    cv.tag((104.5, 50, 32), "HALF WALL", -16, -6, anchor="end", of="half_wall")
+    cv.tag((131, 45, 20), "STAIR", 14, -10, anchor="start", of="stair")
+    cv.tag((131, 8, 49.5), "LANDING", 14, 6, anchor="start", of="stair")
+    cv.tag((131, 12, 14), "NOOK", 14, -22, anchor="start", of="nook")
     fig.svg = cv.svg("Isometric view of the whole build from the doorway")
     return fig
 

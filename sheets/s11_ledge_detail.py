@@ -26,13 +26,15 @@ def detail():
              f"{fr(float(rail.y[0]) - float(m('rear_ledger').y[1]))} well")
     cv.dim_v(DECK, float(lid.z[1]), "left", 0, f"{fr(float(lid.z[1]) - DECK)} high")
     cv.dim_v(DECK, DECK + float(MAT["thickness"]), "right", 0, "mattress")
-    cv.text(6.5, float(lid.z[1]) + 1.4, "¾ ply lid", "sm", anchor="start")
-    cv.text(8.2, float(m("ledge_cleat_rail").z[0]) - 1.8, "2×2 cleats carry the lid", "sm",
+    cv.text(6.5, float(lid.z[1]) + 1.4, "¾ ply lid", "sm", anchor="start", of="ledge_lid")
+    cv.text(8.2, float(m("ledge_cleat_rail").z[0]) - 1.8, "2×2 cleats carry the lid", "sm", of="ledge_cleat",
             anchor="start")
-    cv.note(11.5, 66.5, "front rail", to=(7.6, 64), cls="sm", anchor="start")
+    cv.note(11.5, 66.5, "front rail", to=(7.6, 64), cls="sm", anchor="start",
+            of="ledge_front_rail")
     # both outlets are at the same y and z, so this section shows them on top of
     # each other — the plan is where their x positions read
-    cv.text(1.2, 72.2, "outlets — one at each end of the lid", "sm", anchor="start")
+    cv.text(1.2, 72.2, "outlets — one at each end of the lid", "sm", anchor="start",
+            of="ledge_lid")
     fig.svg = cv.svg("Boxed ledge section, bed wall on the left")
     return fig
 

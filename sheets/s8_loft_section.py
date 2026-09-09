@@ -43,10 +43,10 @@ def section():
     # under it (electrical_labels="below"), and the finished ceiling reads for
     # itself here — it is the line the light is set into
     cv.text(30, (float(m("deck_joist[4]").z[0]) + float(m("deck_joist[4]").z[1])) / 2 - 0.5,
-            f"2×4 joists @ 12 o.c. · {fr(DER['deck_joist_span'])} span", "sm")
-    cv.text(44, BEAM_FIN_TOP + 3, f"{BEAMSTOCK} + wrap", "sm", anchor="end")
-    cv.text(44, 84, f"{SCR['slat_count']} slats, all on this plane", "sm", anchor="end")
-    cv.text(9.5, float(lid.z[1]) + 3, "boxed ledge", "sm", anchor="start")
+            f"2×4 joists @ 12 o.c. · {fr(DER['deck_joist_span'])} span", "sm", of="deck_joist[4]")
+    cv.text(44, BEAM_FIN_TOP + 3, f"{BEAMSTOCK} + wrap", "sm", anchor="end", of="beam")
+    cv.text(44, 84, f"{SCR['slat_count']} slats, all on this plane", "sm", anchor="end", of="screen")
+    cv.text(9.5, float(lid.z[1]) + 3, "boxed ledge", "sm", anchor="start", of="ledge")
     cv.text(26, 26, "open below — the floor stays clear for standalone furniture", "sm")
     fig.svg = cv.svg("Loft cross section between joists, bed wall on the left")
     return fig
