@@ -3,7 +3,7 @@
 #   dimensions.yaml / verify.py            → verify.py; FAIL/WARN lines go back to the model (exit 2)
 #   those + drawings/ content/ cad/*.py    → build.py; the one-line change report is injected as context
 #   (cad/*.py is in drawings/model.py's KERNEL_INPUTS: editing it can move Drawing 4.)
-#   those + sheets/*.py                    → build2.py, which renders site-v2/ off the kernel
+#   those + sheets/*.py                    → build2.py, which renders docs/ off the kernel
 # Runs from the project directory (Claude Code's cwd for hooks).
 f=$(jq -r '.tool_input.file_path // empty')
 [ -z "$f" ] && exit 0

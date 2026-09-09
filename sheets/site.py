@@ -1,4 +1,4 @@
-"""sheets.site — assemble site-v2/: pages of figures, each with its own switch board.
+"""sheets.site — assemble docs/: pages of figures, each with its own switch board.
 
 The toolbar is generated from what each figure actually drew, so it cannot list a
 component the drawing does not contain, or miss one it does. Switching is pure
@@ -23,7 +23,7 @@ from . import taxonomy as tx
 from .style import BG, CARD, DIM, INK, INK2, INK3, LINE, svg_css
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(ROOT, "site-v2")
+OUT = os.path.join(ROOT, "docs")
 
 # A page is either drawings (a list of sheet modules) or reference (REF).
 REF = "reference"
@@ -400,7 +400,7 @@ def check_ids(slug, html):
     dupes = sorted({i for i in ids if ids.count(i) > 1})
     if dupes:
         raise AssertionError(
-            f"site-v2/{slug}.html: duplicate element ids {dupes} — an svg def is "
+            f"docs/{slug}.html: duplicate element ids {dupes} — an svg def is "
             f"shadowing another figure's; give it a per-canvas id")
 
 

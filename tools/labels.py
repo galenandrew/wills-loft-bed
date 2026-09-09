@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""tools/labels.py — find labels that sit on top of each other in site-v2.
+"""tools/labels.py — find labels that sit on top of each other in docs/.
 
 Text placement is the one thing in the v2 set that is still authored by hand, so
 it is the one thing that can collide. This reads the built pages, boxes every
@@ -73,7 +73,7 @@ def overlaps(bs, minimum):
 
 
 def figures():
-    for path in sorted(glob.glob(os.path.join(ROOT, "site-v2", "*.html"))):
+    for path in sorted(glob.glob(os.path.join(ROOT, "docs", "*.html"))):
         page = os.path.basename(path)[:-5]
         html = open(path).read()
         for chunk in html.split('data-fig="')[1:]:
