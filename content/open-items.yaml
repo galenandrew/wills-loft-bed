@@ -16,6 +16,12 @@ groups:
   - do: "Ceiling joist nearest {m:screen_top_plate.y1} from the bed wall."
     why: "Decides whether the screen top plate screws to a joist or wants blocking first. Does not gate the design — the plate is fixed and the attic is accessible."
 
+- tag: BUY
+  lead: Materials to source before cutting.
+  items:
+  - do: "Source the beam LVL and the rest of the build materials."
+    why: "The beam is ONE 106&frac14; notched board (1&frac34; &times; 14 LVL). A 10 ft yard length is the clean buy; Home Depot's stocked 14 ft (LPLVL14-14) works but leaves 62 in of waste — do not cut it to two pieces either way."
+
 # Decided. Kept so they are not reopened by accident, collapsed so they are not read daily.
 closed:
 - "<b>Framing species and grade: builder to source locally, not specified further.</b>"
