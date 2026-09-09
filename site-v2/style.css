@@ -73,6 +73,40 @@ details.done[open] summary::before{content:"▾"}
 details.done ul{margin-top:11px;font-size:12.5px;color:#5f5d56}
 .sum{margin:-2px 0 0;font-size:12.5px;color:#5f5d56;max-width:none}
 
+/* --- cut list page: the nest tiles, the lightbox, and the wide takeoff tables --- */
+.nesth{font-size:12.5px;font-weight:700;color:#23231f;margin:20px 0 8px}
+.nesth:first-of-type{margin-top:4px}
+.nestgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(186px,1fr));
+  gap:15px;margin-bottom:6px}
+.nestcell{display:block;width:100%;padding:0;border:0;background:none;font:inherit;
+  color:inherit;text-align:left;cursor:zoom-in}
+.nestcell>svg{display:block;width:100%;height:auto;border-radius:5px;
+  font-family:ui-sans-serif,system-ui,sans-serif;fill:#23231f}
+.nestcell:hover>svg{outline:2px solid #1f4e9c;outline-offset:2px}
+.nestcell:focus-visible>svg{outline:2px solid #1f4e9c;outline-offset:2px}
+.nestcap{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;
+  color:#5f5d56;margin-top:6px}
+.nestcap b{color:#23231f;font-weight:700;font-variant-numeric:tabular-nums}
+.lb{position:fixed;inset:0;z-index:60;background:rgba(28,26,22,.95);
+  display:flex;align-items:center;justify-content:center;gap:8px;padding:52px 12px 16px}
+.lb[hidden]{display:none}
+.lbbar{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:14px;
+  padding:11px 14px;color:#fff;font-size:13px}
+.lbcap{font-weight:650}
+.lbn{color:#bfb9ad;font-size:12px;flex:1;font-variant-numeric:tabular-nums}
+.lbbtn{font:inherit;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);
+  border-radius:7px;cursor:pointer;line-height:1;padding:9px 13px}
+.lbbtn:hover{background:rgba(255,255,255,.2)}
+.lbbtn:disabled{opacity:.28;cursor:default}
+.lbx{font-size:19px;padding:5px 12px}
+.lbnav{font-size:21px;flex:0 0 auto}
+.lbstage{flex:1;height:100%;display:flex;align-items:center;justify-content:center;min-width:0}
+.lbstage svg{max-height:100%;max-width:100%;width:auto;height:100%;
+  font-family:ui-sans-serif,system-ui,sans-serif;fill:#23231f;
+  background:#ffffff;border-radius:6px}
+.scroll{overflow-x:auto}
+#cutlist td,#layout td,#buy td{font-size:12.5px}
+
 .dwg svg{display:block;width:100%;height:auto;font-family:ui-sans-serif,system-ui,sans-serif}
 .pc{stroke-linejoin:round}
 .pc polygon,.pc path{vector-effect:non-scaling-stroke}
@@ -113,6 +147,9 @@ details.done ul{margin-top:11px;font-size:12.5px;color:#5f5d56}
   body{background:#fff}
   .dwg{border:none;padding:0;break-inside:avoid;page-break-after:always;margin:0 0 8px}
   .card{border:none;padding:0;break-inside:avoid}
+  .nestgrid{grid-template-columns:repeat(4,1fr);break-inside:avoid}
+  .nestcell{cursor:default}
+  .lb{display:none!important}
   details.done{display:none}
   .wrap{max-width:none;padding:0}
 }

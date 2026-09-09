@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fasteners · Rev BC</title><link rel="stylesheet" href="style.css"></head><body><div class="wrap"><header><h1>Loft bed · Fasteners</h1><div class="meta"><span class="rev">REV BC</span><span>131 × 186 room · 96 ceiling · deck 58 AFF</span><span>generated 2026-09-08 from dimensions.yaml</span></div></header><nav class="tabs" aria-label="pages" data-prev="schedule" data-next="appendix"><a class="arrow prev" href="schedule.html" aria-label="Prev page: Schedule" title="Schedule">←</a><a href="index.html">Overview</a><a href="stairs.html">Stairs &amp; nook</a><a href="halfwall.html">Half wall</a><a href="loft.html">Loft &amp; screen</a><a href="open.html">Open items</a><a href="schedule.html">Schedule</a><a href="fasteners.html" class="here" aria-current="page">Fasteners</a><a href="appendix.html">Appendix</a><a href="revisions.html">Revisions</a><span class="sp"></span><a class="arrow next" href="appendix.html" aria-label="Next page: Appendix" title="Appendix">→</a></nav><div class="card" id="fasteners"><h2>Fastener schedule</h2><p class="cap" style="margin:0 0 14px">Every declared connection and what holds it, straight off <code>dimensions.yaml</code> — so the bench never has to open the model or run <code>verify.py</code> to find out. <b>Off</b> is how many joints the row covers. Rationale is in muted type after the spec.</p><table><tr><th>Joint</th><th>Off</th><th>Type</th><th>Fastener</th></tr>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loft Bed Design - Fasteners</title><link rel="stylesheet" href="style.css"></head><body><div class="wrap"><header><h1>Loft Bed Design • Fasteners</h1><div class="meta"><span class="rev">REV BC.1</span><span>131 × 186 room · 96 ceiling · deck 58 AFF</span><span>generated 2026-09-09 from dimensions.yaml</span></div></header><nav class="tabs" aria-label="pages" data-prev="schedule" data-next="appendix"><a class="arrow prev" href="schedule.html" aria-label="Prev page: Schedule" title="Schedule">←</a><a href="index.html">Overview</a><a href="stairs.html">Stairs &amp; nook</a><a href="halfwall.html">Half wall</a><a href="loft.html">Loft &amp; screen</a><a href="open.html">Open items</a><a href="cutlist.html">Cut list</a><a href="schedule.html">Schedule</a><a href="fasteners.html" class="here" aria-current="page">Fasteners</a><a href="appendix.html">Appendix</a><a href="revisions.html">Revisions</a><span class="sp"></span><a class="arrow next" href="appendix.html" aria-label="Next page: Appendix" title="Appendix">→</a></nav><div class="card" id="fasteners"><h2>Fastener schedule</h2><p class="cap" style="margin:0 0 14px">Every declared connection and what holds it, straight off <code>dimensions.yaml</code> — so the bench never has to open the model or run <code>verify.py</code> to find out. <b>Off</b> is how many joints the row covers. Rationale is in muted type after the spec.</p><table><tr><th>Joint</th><th>Off</th><th>Type</th><th>Fastener</th></tr>
 <tr><td class="">deck_joist[*] &rarr; rear_ledger</td><td class="n">9</td><td class="">hanger</td><td class="">LUS24</td></tr>
 <tr><td class="">deck_joist[*] &rarr; beam</td><td class="n">8</td><td class="">hanger</td><td class="">LUS24 with 10dx1-1/2 into the beam — 1-1/2 of nail in 1-3/4 of LVL, the thickness the hanger tables are written for. Rev AG settles what Rev T left open; joist[0] is excepted because it runs past the beam face to y 50 and is carried by the side ledger.</td></tr>
 <tr><td class="">beam_tongue &rarr; side_ledger</td><td class="n">1</td><td class="">bearing</td><td class="">bears on the ledger top at 57.25 over 1-1/2 x 1-3/4. Pinned with 2 x 1/4 x 6 structural screws driven UP from below, through the ledger&#x27;s 3-1/2 into 2-1/2 of LVL — set the ledger and joist 0 first, drop the beam on, then screw from the open bay under the deck. NOT from above, the way this row read before the Rev AG connection audit, a 4 in screw from the beam&#x27;s top face at 67.75 dies at 63.75 and never leaves the beam.</td></tr>
@@ -132,6 +132,57 @@
   });
 })();
 
+// The sheet nest, enlarged. Each tile is its own <svg>, so the lightbox shows the
+// tile's own node cloned rather than a second rendering of it — the enlarged sheet
+// IS the thumbnail, and there is nothing to keep in step.
+(function(){
+  var lb = document.getElementById('lb');
+  if (!lb) return;
+  var cells = [].slice.call(document.querySelectorAll('.nestcell'));
+  var stage = lb.querySelector('.lbstage'), cap = lb.querySelector('.lbcap'),
+      num = lb.querySelector('.lbn'),
+      prev = lb.querySelector('.lbprev'), next = lb.querySelector('.lbnext');
+  var at = -1, opener = null;
+  function show(i){
+    if (i < 0 || i >= cells.length) return;
+    at = i;
+    stage.replaceChildren(cells[i].querySelector('.nestbig svg').cloneNode(true));
+    cap.textContent = cells[i].dataset.cap;
+    num.textContent = (i + 1) + ' of ' + cells.length;
+    prev.disabled = i === 0;
+    next.disabled = i === cells.length - 1;
+  }
+  function open(i){
+    opener = cells[i];
+    lb.hidden = false;
+    show(i);
+    next.disabled ? (prev.disabled ? lb.querySelector('.lbx') : prev).focus() : next.focus();
+  }
+  function close(){
+    lb.hidden = true;
+    stage.replaceChildren();
+    if (opener) opener.focus();
+  }
+  cells.forEach(function(c, i){ c.addEventListener('click', function(){ open(i); }); });
+  prev.addEventListener('click', function(){ show(at - 1); });
+  next.addEventListener('click', function(){ show(at + 1); });
+  lb.querySelector('.lbx').addEventListener('click', close);
+  // Clicking the backdrop closes; clicking the sheet itself does not.
+  lb.addEventListener('click', function(e){ if (e.target === lb || e.target === stage) close(); });
+  document.addEventListener('keydown', function(e){
+    if (lb.hidden || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); show(at - 1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); show(at + 1); }
+    else if (e.key === 'Tab') {  // keep focus inside the dialog while it is open
+      var f = [].slice.call(lb.querySelectorAll('button:not(:disabled)'));
+      var i = f.indexOf(document.activeElement) + (e.shiftKey ? -1 : 1);
+      e.preventDefault();
+      f[(i + f.length) % f.length].focus();
+    }
+  });
+})();
+
 // ← / → switch pages, the same keys the Rev U set uses. The destinations come
 // off the <nav>, so the keys and the arrow buttons cannot drift apart.
 (function(){
@@ -140,6 +191,9 @@
   document.addEventListener('keydown', function(e){
     if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
     if (e.target.closest('input,textarea,select,[contenteditable]')) return;
+    // While the lightbox is up the arrows step through sheets, not pages.
+    var lb = document.getElementById('lb');
+    if (lb && !lb.hidden) return;
     var t = e.key === 'ArrowLeft' ? n.dataset.prev
           : e.key === 'ArrowRight' ? n.dataset.next : '';
     if (t) { e.preventDefault(); location.href = t + '.html'; }

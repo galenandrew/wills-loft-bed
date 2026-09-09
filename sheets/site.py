@@ -18,6 +18,7 @@ from drawings.model import REV, RX, RY, CEILING, DECK, fr, E
 from drawings.site import (card_fasteners, card_locked, card_revisions,
                            card_schedule, card_sequencing, card_structure,
                            cards_open)
+from . import cutlist
 from . import taxonomy as tx
 from .style import BG, CARD, DIM, INK, INK2, INK3, LINE, svg_css
 
@@ -34,6 +35,7 @@ PAGES = [
     ("loft",      "Loft & screen", ["s8_loft_section", "s9_loft_framing",
                                     "s10_beam_end", "s11_ledge_detail"]),
     ("open",      "Open items",    REF),
+    ("cutlist",   "Cut list",      REF),
     ("schedule",  "Schedule",      REF),
     ("fasteners", "Fasteners",     REF),
     ("appendix",  "Appendix",      REF),
@@ -52,6 +54,8 @@ def reference_cards(slug):
     """The pages that are prose and tables rather than drawings."""
     if slug == "open":
         return [h for a, _l, h in cards_open() if a != "open-summary"]
+    if slug == "cutlist":
+        return cutlist.cards()
     if slug == "schedule":
         return [card_locked(), card_schedule()]
     if slug == "fasteners":
@@ -136,12 +140,49 @@ details.done summary::before{{content:"▸";color:{INK3};font-size:11px;line-hei
 details.done[open] summary::before{{content:"▾"}}
 details.done ul{{margin-top:11px;font-size:12.5px;color:{INK2}}}
 .sum{{margin:-2px 0 0;font-size:12.5px;color:{INK2};max-width:none}}
+
+/* --- cut list page: the nest tiles, the lightbox, and the wide takeoff tables --- */
+.nesth{{font-size:12.5px;font-weight:700;color:{INK};margin:20px 0 8px}}
+.nesth:first-of-type{{margin-top:4px}}
+.nestgrid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(186px,1fr));
+  gap:15px;margin-bottom:6px}}
+.nestcell{{display:block;width:100%;padding:0;border:0;background:none;font:inherit;
+  color:inherit;text-align:left;cursor:zoom-in}}
+.nestcell>svg{{display:block;width:100%;height:auto;border-radius:5px;
+  font-family:ui-sans-serif,system-ui,sans-serif;fill:{INK}}}
+.nestcell:hover>svg{{outline:2px solid {DIM};outline-offset:2px}}
+.nestcell:focus-visible>svg{{outline:2px solid {DIM};outline-offset:2px}}
+.nestcap{{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;
+  color:{INK2};margin-top:6px}}
+.nestcap b{{color:{INK};font-weight:700;font-variant-numeric:tabular-nums}}
+.lb{{position:fixed;inset:0;z-index:60;background:rgba(28,26,22,.95);
+  display:flex;align-items:center;justify-content:center;gap:8px;padding:52px 12px 16px}}
+.lb[hidden]{{display:none}}
+.lbbar{{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:14px;
+  padding:11px 14px;color:#fff;font-size:13px}}
+.lbcap{{font-weight:650}}
+.lbn{{color:#bfb9ad;font-size:12px;flex:1;font-variant-numeric:tabular-nums}}
+.lbbtn{{font:inherit;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);
+  border-radius:7px;cursor:pointer;line-height:1;padding:9px 13px}}
+.lbbtn:hover{{background:rgba(255,255,255,.2)}}
+.lbbtn:disabled{{opacity:.28;cursor:default}}
+.lbx{{font-size:19px;padding:5px 12px}}
+.lbnav{{font-size:21px;flex:0 0 auto}}
+.lbstage{{flex:1;height:100%;display:flex;align-items:center;justify-content:center;min-width:0}}
+.lbstage svg{{max-height:100%;max-width:100%;width:auto;height:100%;
+  font-family:ui-sans-serif,system-ui,sans-serif;fill:{INK};
+  background:{CARD};border-radius:6px}}
+.scroll{{overflow-x:auto}}
+#cutlist td,#layout td,#buy td{{font-size:12.5px}}
 {svg_css()}
 @media print{{
   nav.tabs,.tools,header .meta,.pn{{display:none}}
   body{{background:#fff}}
   .dwg{{border:none;padding:0;break-inside:avoid;page-break-after:always;margin:0 0 8px}}
   .card{{border:none;padding:0;break-inside:avoid}}
+  .nestgrid{{grid-template-columns:repeat(4,1fr);break-inside:avoid}}
+  .nestcell{{cursor:default}}
+  .lb{{display:none!important}}
   details.done{{display:none}}
   .wrap{{max-width:none;padding:0}}
 }}
@@ -183,6 +224,57 @@ JS = """
   });
 })();
 
+// The sheet nest, enlarged. Each tile is its own <svg>, so the lightbox shows the
+// tile's own node cloned rather than a second rendering of it — the enlarged sheet
+// IS the thumbnail, and there is nothing to keep in step.
+(function(){
+  var lb = document.getElementById('lb');
+  if (!lb) return;
+  var cells = [].slice.call(document.querySelectorAll('.nestcell'));
+  var stage = lb.querySelector('.lbstage'), cap = lb.querySelector('.lbcap'),
+      num = lb.querySelector('.lbn'),
+      prev = lb.querySelector('.lbprev'), next = lb.querySelector('.lbnext');
+  var at = -1, opener = null;
+  function show(i){
+    if (i < 0 || i >= cells.length) return;
+    at = i;
+    stage.replaceChildren(cells[i].querySelector('.nestbig svg').cloneNode(true));
+    cap.textContent = cells[i].dataset.cap;
+    num.textContent = (i + 1) + ' of ' + cells.length;
+    prev.disabled = i === 0;
+    next.disabled = i === cells.length - 1;
+  }
+  function open(i){
+    opener = cells[i];
+    lb.hidden = false;
+    show(i);
+    next.disabled ? (prev.disabled ? lb.querySelector('.lbx') : prev).focus() : next.focus();
+  }
+  function close(){
+    lb.hidden = true;
+    stage.replaceChildren();
+    if (opener) opener.focus();
+  }
+  cells.forEach(function(c, i){ c.addEventListener('click', function(){ open(i); }); });
+  prev.addEventListener('click', function(){ show(at - 1); });
+  next.addEventListener('click', function(){ show(at + 1); });
+  lb.querySelector('.lbx').addEventListener('click', close);
+  // Clicking the backdrop closes; clicking the sheet itself does not.
+  lb.addEventListener('click', function(e){ if (e.target === lb || e.target === stage) close(); });
+  document.addEventListener('keydown', function(e){
+    if (lb.hidden || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); show(at - 1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); show(at + 1); }
+    else if (e.key === 'Tab') {  // keep focus inside the dialog while it is open
+      var f = [].slice.call(lb.querySelectorAll('button:not(:disabled)'));
+      var i = f.indexOf(document.activeElement) + (e.shiftKey ? -1 : 1);
+      e.preventDefault();
+      f[(i + f.length) % f.length].focus();
+    }
+  });
+})();
+
 // ← / → switch pages, the same keys the Rev U set uses. The destinations come
 // off the <nav>, so the keys and the arrow buttons cannot drift apart.
 (function(){
@@ -191,6 +283,9 @@ JS = """
   document.addEventListener('keydown', function(e){
     if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
     if (e.target.closest('input,textarea,select,[contenteditable]')) return;
+    // While the lightbox is up the arrows step through sheets, not pages.
+    var lb = document.getElementById('lb');
+    if (lb && !lb.hidden) return;
     var t = e.key === 'ArrowLeft' ? n.dataset.prev
           : e.key === 'ArrowRight' ? n.dataset.next : '';
     if (t) { e.preventDefault(); location.href = t + '.html'; }
@@ -283,9 +378,9 @@ def prev_next(slug):
 def page(slug, title, cards, today):
     return (f'<!doctype html><html lang="en"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
-            f'<title>{E(title)} · Rev {E(REV)}</title>'
+            f'<title>Loft Bed Design - {E(title)}</title>'
             f'<link rel="stylesheet" href="style.css"></head><body><div class="wrap">'
-            f'<header><h1>Loft bed · {E(title)}</h1><div class="meta">'
+            f'<header><h1>Loft Bed Design • {E(title)}</h1><div class="meta">'
             f'<span class="rev">REV {E(REV)}</span>'
             f'<span>{fr(RX)} × {fr(RY)} room · {fr(CEILING)} ceiling · deck {fr(DECK)} AFF</span>'
             f'<span>generated {today} from dimensions.yaml</span></div></header>'

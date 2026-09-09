@@ -44,7 +44,8 @@ def draw(cv, spec, ids=None, labels=True, bucket=None):
 
     `ids` names the devices this sheet wants; without it, everything in frame is
     drawn — which is right for a plan and wrong for a section that would otherwise
-    show a switch standing behind the reader."""
+    show a switch standing behind the reader. `labels` is True, False, or "below"
+    where the space over the symbol belongs to something else."""
     out = bucket if bucket is not None else cv.geom
     view_axis = _axis_of(spec.direction)
     added = set()
@@ -68,7 +69,7 @@ def draw(cv, spec, ids=None, labels=True, bucket=None):
             added.add((tx.component_of_member(d["host"]), "electrical"))
         out.append(_symbol(cv, dev, h, v, face_on))
         if labels:
-            _label(cv, dev, h, v, len(devs))
+            _label(cv, dev, h, v, len(devs), below=(labels == "below"))
     return added
 
 
@@ -109,11 +110,12 @@ def _switch(cv, dev, x, y, face_on):
 SHORT = {"light": "light", "outlet": "outlet", "switch": "switch"}
 
 
-def _label(cv, dev, h, v, count=1):
-    """One short name, offset off the symbol. Anything longer belongs in the caption."""
+def _label(cv, dev, h, v, count=1, below=False):
+    """One short name, clear of the symbol. Anything longer belongs in the caption."""
     name = dev.get("label") or SHORT[dev["kind"]]
     if count > 1:
         name = f"{count} × {name}"
+    y = cv.Y(v) + (GLYPH + 11 if below else -GLYPH - 4)
     cv.labels.append(
-        f'<text class="sm elect" x="{cv.X(h):.1f}" y="{cv.Y(v) - GLYPH - 4:.1f}" '
+        f'<text class="sm elect" x="{cv.X(h):.1f}" y="{y:.1f}" '
         f'text-anchor="middle">{E(name)}</text>')

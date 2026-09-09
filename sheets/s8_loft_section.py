@@ -24,7 +24,8 @@ def section():
     fig = compose(cv, recs, MODES, "loft_sec",
                   "Loft cross section cut between joists, bed wall on the left",
                   title=f"Cross section at x {fr(CUT_X)}, between joists", spec=SPEC,
-                  electrical=["ledge_outlet_window", "loft_walkway_light"])
+                  electrical=["ledge_outlet_window", "loft_walkway_light"],
+                  electrical_labels="below")
     lid, rail = m("ledge_lid"), m("ledge_front_rail")
     # --- dims
     cv.dim_v(0, DECK, "left", 0, f"{fr(DECK)} deck")
@@ -38,8 +39,11 @@ def section():
     cv.dim_h(0, float(m("beam_wrap_face").y[1]), "bottom", 1,
              f"{fr(float(m('beam_wrap_face').y[1]))} platform")
     # --- labels
-    cv.text(30, DECK - 5.4, f"2×4 joists @ 12 o.c. · {fr(DER['deck_joist_span'])} span", "sm")
-    cv.text(26, float(m("loft_ceiling").z[0]) - 3.4, "½ finished ceiling under", "sm")
+    # the joists get the space over the light symbol; the light's own name goes
+    # under it (electrical_labels="below"), and the finished ceiling reads for
+    # itself here — it is the line the light is set into
+    cv.text(30, (float(m("deck_joist[4]").z[0]) + float(m("deck_joist[4]").z[1])) / 2 - 0.5,
+            f"2×4 joists @ 12 o.c. · {fr(DER['deck_joist_span'])} span", "sm")
     cv.text(44, BEAM_FIN_TOP + 3, f"{BEAMSTOCK} + wrap", "sm", anchor="end")
     cv.text(44, 84, f"{SCR['slat_count']} slats, all on this plane", "sm", anchor="end")
     cv.text(9.5, float(lid.z[1]) + 3, "boxed ledge", "sm", anchor="start")
