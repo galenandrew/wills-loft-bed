@@ -15,7 +15,7 @@ Layer is a DRAWING concern, not a structural one, so it lives here rather than i
 dimensions.yaml — but it is stated per member and asserted complete, so a member
 added to the yaml cannot quietly land in the wrong layer or in none.
 """
-from cad.model import SCOPE, CONTEXT
+from cad.scope import CONTEXT, NOTCHED, SCOPE   # plain data: no build123d, no 3 s import
 
 # ------------------------------------------------------------------ components
 CONTEXT_COMPONENTS = {"desk": "desk", "dresser": "dresser", "fan": "fan",
@@ -35,6 +35,22 @@ def component(piece):
     if piece.assembly == "context":
         return CONTEXT_COMPONENTS[piece.id]
     return piece.assembly
+
+
+ASSEMBLY_OF = {mid: a for a, ids in SCOPE.items() for mid in ids}
+# a row that is part of another board belongs to that board's assembly
+ASSEMBLY_OF.update({part: ASSEMBLY_OF[parent]
+                    for parent, parts in NOTCHED.items() for part in parts
+                    if parent in ASSEMBLY_OF})
+
+
+def component_of_member(mid):
+    """The component a yaml member id belongs to — for the things that are not
+    solids (an outlet, a switch) and have to be switched with their host."""
+    base = mid.split("#")[0]
+    if base in CONTEXT_COMPONENTS:
+        return CONTEXT_COMPONENTS[base]
+    return ASSEMBLY_OF.get(base, "loft")
 
 
 # ---------------------------------------------------------------------- layers

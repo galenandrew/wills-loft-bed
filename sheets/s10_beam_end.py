@@ -31,7 +31,7 @@ def plan():
     cv.reserve(right=110)
     fig = compose(cv, recs, MODES, "beam_end_plan",
                   f"Plan cut at z {fr(CUT_Z)}, in the beam's notch",
-                  title=f"Plan cut at z {fr(CUT_Z)} — inside the notch")
+                  title=f"Plan cut at z {fr(CUT_Z)} — inside the notch", electrical=False)
     sl, j0, bm = m("side_ledger"), m("deck_joist[0]"), m("beam")
     cv.dim_h(*sl.x, "top", 0, f"{fr(sl.size('x'))} ledger")
     cv.dim_h(float(sl.x[0]), float(bm.x[0]), "top", 1,
@@ -52,7 +52,7 @@ def sect():
     cv.reserve(right=90)
     fig = compose(cv, recs, MODES, "beam_end_sec",
                   f"Section at y {fr(CUT_Y)}, looking toward the bed wall",
-                  title=f"Section at y {fr(CUT_Y)} — the seat")
+                  title=f"Section at y {fr(CUT_Y)} — the seat", electrical=False)
     sl, bm, tg = m("side_ledger"), m("beam"), m("beam_tongue")
     cv.dim_v(*sl.z, "left", 0, f"{fr(sl.size('z'))} seat")
     cv.dim_v(float(bm.z[0]), BEAM_FIN_TOP, "left", 1, f"{fr(BEAM_FIN_TOP - float(bm.z[0]))} beam + cap")
@@ -66,10 +66,13 @@ def sect():
 
 
 FIGURES = [("beam_end_plan", plan), ("beam_end_sec", sect)]
-CAPTION = (f"The beam is one {VALS['beam_stock']} notched {VALS['beam_notch_depth']} × 3½ out of its bottom left corner, so its "
+NOTCH_X = float(m("beam").x[0]) - float(m("side_ledger").x[0])   # 3, along the beam
+NOTCH_Z = float(m("beam_tongue").z[0]) - float(m("beam").z[0])   # 3½, up its end
+
+CAPTION = (f"The beam is one {VALS['beam_stock']} notched {fr(NOTCH_X)} × {fr(NOTCH_Z)} out of its bottom left corner, so its "
            f"end sits on the 2×4 side ledger <i>and</i> on joist 0 sistered beside it — "
            f"{VALS['beam_seat_area']} sq in of seat, about 115 psi against 425 allowable. A 2×4 ledger cannot "
            "back the beam's end on its own, which is why the joint is a notch and a sistered "
            "joist rather than a butt into a hanger. <b>Field item:</b> the window wall wants a stud "
-           "(or added blocking) within about 6 of y 50 — the reaction lands 1½–3 off the wall face "
-           "and a 3½-deep ledger has a short couple to resist it.")
+           "(or added blocking) within about 6 of y {} — the reaction lands 1½–3 off the wall face "
+           "and a 3½-deep ledger has a short couple to resist it.").format(fr(float(m("deck_joist_tail").y[1])))

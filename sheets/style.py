@@ -44,7 +44,7 @@ def svg_css():
 [data-l="context"] .sil{{stroke:{cx_s};stroke-width:.9;stroke-dasharray:4 3}}
 .pc .cut{{stroke:{INK};stroke-width:1.6;fill:{fr_f}}}
 [data-l="finish"] .cut{{fill:{fi_f}}}[data-l="context"] .cut{{fill:{cx_f}}}
-.pc .hatch{{fill:url(#hatch);stroke:none;pointer-events:none}}
+.pc .hatch{{stroke:none;pointer-events:none}}   /* fill is per-canvas, set on the element */
 .pc .ghost{{fill:none;stroke:{GHOST};stroke-width:.9;stroke-dasharray:5 3}}
 .mode-ghost .fill,.mode-ghost .sil,.mode-ghost .hatch{{display:none}}
 .mode-outline .fill,.mode-outline .hatch{{display:none}}
@@ -57,7 +57,10 @@ def svg_css():
 .gridline{{stroke:{LINE};stroke-width:.7;fill:none}}
 .elec{{fill:none;stroke:{PALETTE["electric"][1]};stroke-width:1.6}}
 .elecf{{fill:{PALETTE["electric"][0]};stroke:{PALETTE["electric"][1]};stroke-width:1.4}}
+.elecs{{font-size:10px;font-weight:700;fill:{PALETTE["electric"][1]};stroke:none}}
+.lay-labels .elect{{fill:{PALETTE["electric"][1]}}}
 .lay-dims line{{stroke:{DIM};stroke-width:.9}}
+.lay-dims .dimlead{{stroke:{DIM};stroke-width:.5;opacity:.55;fill:none}}
 .lay-dims text{{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;fill:{DIM}}}
 .lay-dims marker path{{fill:{DIM}}}
 .lay-labels text{{font-size:11px;fill:{INK}}}

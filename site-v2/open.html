@@ -1,0 +1,50 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Open items · Rev BC</title><link rel="stylesheet" href="style.css"></head><body><div class="wrap"><header><h1>Loft bed · Open items</h1><div class="meta"><span class="rev">REV BC</span><span>131 × 186 room · 96 ceiling · deck 58 AFF</span><span>generated 2026-09-08 from dimensions.yaml</span></div></header><nav class="tabs" aria-label="pages" data-prev="loft" data-next="schedule"><a class="arrow prev" href="loft.html" aria-label="Prev page: Loft &amp; screen" title="Loft &amp; screen">←</a><a href="index.html">Overview</a><a href="stairs.html">Stairs &amp; nook</a><a href="halfwall.html">Half wall</a><a href="loft.html">Loft &amp; screen</a><a href="open.html" class="here" aria-current="page">Open items</a><a href="schedule.html">Schedule</a><a href="fasteners.html">Fasteners</a><a href="appendix.html">Appendix</a><a href="revisions.html">Revisions</a><span class="sp"></span><a class="arrow next" href="schedule.html" aria-label="Next page: Schedule" title="Schedule">→</a></nav><div class="card" id="open-measure"><h2>MEASURE — 2 left</h2><p class="cap" style="margin:-4px 0 12px">Field measurements still owed. Anything depending on one is provisional.</p><ul class="todo"><li><b>Window-wall stud (or blocking) at 50 from the bed-wall corner — one point, not a full stud survey.</b><span class="why">Measure 50 in along the window wall from the bed-wall corner; confirm a stud lands within about 6&Prime; either way, or add blocking. Needed for the beam's end reaction since the side ledger dropped to a 2x4 (Rev AG).</span></li><li><b>Ceiling joist nearest 50½ from the bed wall.</b><span class="why">Decides whether the screen top plate screws to a joist or wants blocking first. Does not gate the design — the plate is fixed and the attic is accessible.</span></li></ul></div><div class="card" id="open-specify"><h2>SPECIFY — 2 left</h2><p class="cap" style="margin:-4px 0 12px">Chosen by the builder; the model carries a placeholder until then.</p><ul class="todo"><li><b>Framing species and grade.</b></li><li><b>Light fixtures: confirm the four canless wafers before cutting any hole.</b><span class="why">All four sit in chases shallower than a can housing &mdash; 3¾ above the nook soffit, 3½ above the loft ceiling &mdash; and three of the loft ones cross a joist, which a wafer can straddle and a can cannot.</span></li></ul></div><div class="card" id="open-closed"><h2>Closed — 14 decisions</h2><details class="done"><summary><span class="tag t-lock">DECIDED</span> Open only to check that something is not being reopened by accident</summary><ul><li><b>Header-to-king straps: scrapped</b> (Rev AS). The half wall is sheathed on BOTH faces across the joint — <code>hw_sheath_stair</code> z 24&ndash;58 and <code>hw_sheath_loft_head</code> z 15.57&ndash;53¾ both lap the header at z 41&frac12;&ndash;50&frac34; and run onto both kings at y 0&ndash;1&frac12; and 48&frac12;&ndash;50 — and two continuous top plates bear over the header and both kings. Nailed to header and kings that is a stiffer tie than a strap. <b>Rev AZ took the loft face of that sheathing &frac34; &rarr; &frac12;</b>; accepted without a calculation, on the grounds that the joint carries gravity into the trimmers, whose bearing is checked, so the sheathing here is a racking and continuity gusset rather than a tension tie. Rev BA.1 removed the strap markers Drawing 7 was still showing eight revs later.</li><li><b>Slat-to-plate joint: specified.</b> Adhesive + one #8 &times; 2&frac12; angled into the plate per slat; 16ga pins for assembly only. The screen is the guard for the bed, so the top is a structural joint, not trim.</li><li><b>Screen top-plate position: y 47&ndash;50½</b> (Rev AS). Attic access means blocking can be added wherever the joist lands.</li><li><b>Ledger fixings: &frac14; &times; 4 (right wall) and &frac38; &times; 4 (bed wall)</b>, sized off 1&frac12; of ledger + &frac58; of board.</li><li><b>Deck-ply front-edge blocking added</b> (Rev AU): nine 2&times;4 blocks on edge at the beam face — eight at 10&frac12; on a 12 pitch plus one 5&frac34; at the rim, one 8 ft board. It closes the last gap in the diaphragm; the joists hang off the beam, so the deck had no fastening to it at all.</li><li><b>Mattress measured</b> 2026-09-06: 8 mattress + 2 topper = 10. Sitting headroom is <b>28, not 32</b>.</li><li><b>Ply pools settled</b> (Rev AZ): about 93 sq ft of painted face moved &frac34; &rarr; &frac12;, so the buy is 4 sheets of &frac34; + 5 of &frac12; where it was 9 + 1 — one sheet fewer, five of them thinner and cheaper. Both pools paint-grade: the deck joined the &frac34; pool at Rev AV (it is the finished walking surface) and the two structural jamb flitches plus the header's middle ply share the &frac12; pool.</li><li><b>Ply grade: builder to source, not specified further.</b> Both pools (&frac34; and &frac12;), including the deck, are paint-grade — the builder will identify and price whatever paint-grade sheet stock is available locally rather than name a species or panel type here.</li><li><b>Room depth: not being field-measured.</b> Kept at the assumed 186 — nothing built depends on it, and the &frac12; either way lands in the stair-to-dresser gap.</li><li><b>Floor joists: not being located.</b> The kicker and both half-wall bottom plates (<code>hw_bottom_plate_a</code> / <code>_b</code>) anchor straight into the plywood subfloor regardless of where the joists fall — builder's call, since the framing is already tied into all three walls in several places and does not depend on floor-joist-precise anchorage to stay put.</li><li><b>Kicker anchorage to the floor: specified</b> (Rev BB). 5 &times; #10 &times; 3 in screws into the subfloor, ~6 in o.c. across the 24&frac34; run — see Floor joists, above, for why joist location doesn't matter here.</li><li><b>Stringers toe-screwed to the kicker: yes</b> (Rev BB). 2 &times; 3 in screws toe-driven into the kicker per stringer, on top of the existing notch-and-hook bearing.</li><li><b>Bottom-plate anchorage to the floor: specified</b> (Rev BB). <code>hw_bottom_plate_a</code> / <code>_b</code>, 6 &times; #10 &times; 3 in screws into the subfloor each, same builder's call as the kicker.</li><li><b>Slat stock: poplar-2x2, matching <code>screen_top_plate</code></b> (Rev BB) — same species, poplar 8/4 S4S or clear/select pine. Source 1&frac12; &times; 1&frac12; S4S directly if it can be found locally; otherwise buy the 1&frac12; &times; 3&frac12; stock (the top plate's board) and rip/sand each slat down. Extents unchanged — this was a material choice, not a resize.</li></ul></details></div><div class="pn"><a href="loft.html">← Loft &amp; screen</a><span class="hint"><kbd>←</kbd> <kbd>→</kbd> switch pages</span><a href="schedule.html">Schedule →</a></div></div><script>
+(function(){
+  function apply(fig, st){
+    fig.className = 'dwg' + (st.length ? ' ' + st.join(' ') : '');
+  }
+  document.querySelectorAll('.dwg[data-fig]').forEach(function(fig){
+    // The stored state is keyed by the figure AND by its defaults, so a sheet
+    // whose default switches change starts fresh instead of restoring a state
+    // that no longer means anything.
+    var key = 'dwg2:' + fig.dataset.fig + ':' + (fig.dataset.off || '');
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(key)); } catch(e) {}
+    var state = saved || JSON.parse(fig.dataset.off || '[]');
+    apply(fig, state);
+    function sync(){
+      fig.querySelectorAll('.chip[data-cls]').forEach(function(b){
+        b.setAttribute('aria-pressed', state.indexOf(b.dataset.cls) < 0 ? 'true' : 'false');
+      });
+      apply(fig, state);
+      try { localStorage.setItem(key, JSON.stringify(state)); } catch(e) {}
+    }
+    fig.querySelectorAll('.chip[data-cls]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var c = b.dataset.cls, i = state.indexOf(c);
+        if (i < 0) state.push(c); else state.splice(i, 1);
+        sync();
+      });
+    });
+    var rst = fig.querySelector('.chip.rst');
+    if (rst) rst.addEventListener('click', function(){
+      state = JSON.parse(fig.dataset.off || '[]'); sync();
+    });
+    sync();
+  });
+})();
+
+// ← / → switch pages, the same keys the Rev U set uses. The destinations come
+// off the <nav>, so the keys and the arrow buttons cannot drift apart.
+(function(){
+  var n = document.querySelector('nav.tabs');
+  if (!n) return;
+  document.addEventListener('keydown', function(e){
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (e.target.closest('input,textarea,select,[contenteditable]')) return;
+    var t = e.key === 'ArrowLeft' ? n.dataset.prev
+          : e.key === 'ArrowRight' ? n.dataset.next : '';
+    if (t) { e.preventDefault(); location.href = t + '.html'; }
+  });
+})();
+</script></body></html>

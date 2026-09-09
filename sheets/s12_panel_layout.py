@@ -1,7 +1,7 @@
 """Sheet 12 — The half wall's loft face: two boards, one seam, one sawn opening."""
 from drawings.model import CEILING, JAMB_Y, CEIL, fr, m
 from .canvas import Canvas
-from .geometry import ViewSpec, view
+from .geometry import ViewSpec, projector, view
 from .render import only
 from .sheet import compose
 
@@ -17,11 +17,12 @@ MODES = {"framing": "outline", "stair": "off", "loft": "off"}
 
 def face():
     recs = only(view(SPEC), components=("half_wall", "nook"))
-    cv = Canvas("y", "z", -4, 56, -4, 58, 9.4)
+    cv = Canvas("y", "z", -4, 56, -4, 58, 9.4, proj=projector(SPEC))
     cv.shell(ceiling=False)
     fig = compose(cv, recs, MODES, "hw_face",
                   "The half wall's loft face seen square on",
-                  title="Loft face — panel layout")
+                  title="Loft face — panel layout", spec=SPEC,
+                  electrical=["sw_half_wall", "nk_light"])
     a, b = m("hw_sheath_loft_a"), m("hw_sheath_loft_b")
     hd = m("hw_sheath_loft_head")
     cv.dim_h(*a.y, "bottom", 0, f"{fr(a.size('y'))} stile")
@@ -43,4 +44,6 @@ CAPTION = ("The face a person walks past, and the one panel layout worth drawing
            "sawn out of it, running unbroken round the head and out to the corner. One seam, on "
            f"y {fr(JAMB_Y[0])} — the same line as the jamb below it. Two boards and not one only because "
            "neither dimension fits a 48 sheet; a 5×5 panel would make it one. The lining behind "
-           "is recessed, so the face laps its ends and no end grain shows.")
+           "is recessed, so the face laps its ends and no end grain shows. The switch box lands "
+           "in this board, not in a stud — behind the head panel there is open cavity, so it is "
+           "an old-work box clamped to the ½.")

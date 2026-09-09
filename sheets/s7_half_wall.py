@@ -1,7 +1,8 @@
 """Sheet 7 — Half wall framing, with the loft edge cut and the stair beyond."""
 from drawings.model import CEILING, DECK, DER, NOOK_Y, ST, CEIL, fr, m
 from .canvas import Canvas
-from .geometry import ViewSpec, view
+from .electrical import DEVICES
+from .geometry import ViewSpec, projector, view
 from .sheet import compose
 
 NUMBER, TITLE, PAGE = "7", "Half wall — framing elevation", "halfwall"
@@ -15,14 +16,18 @@ SPEC = ViewSpec("hw_frame", direction=(1, 0, 0), cut=("x", CUT_X), near=True)
 MODES = {"stair": "outline", "mattress": "off", "desk": "off", "dresser": "off",
          "fan": "off"}
 
+SWITCH_Y, SWITCH_Z = next((dev["at"][1], dev["at"][2])
+                          for dev in DEVICES if dev["id"] == "sw_half_wall")
+
 
 def elevation():
     recs = view(SPEC)
-    cv = Canvas("y", "z", -5, 78, -4, CEILING + 4, 6.2)
+    cv = Canvas("y", "z", -5, 78, -4, CEILING + 4, 6.2, proj=projector(SPEC))
     cv.shell()
     fig = compose(cv, recs, MODES, "hw_frame",
                   "Half-wall framing elevation, bed wall on the left, stair beyond",
-                  title="Half-wall framing, with the loft edge cut")
+                  title="Half-wall framing, with the loft edge cut", spec=SPEC,
+                  electrical=["sw_half_wall", "nk_light"])
     hd, tp = m("hw_header"), m("hw_top_plate_2")
     # --- dims
     cv.dim_h(*NOOK_Y, "bottom", 0, f"{fr(NOOK_Y[1] - NOOK_Y[0])} rough opening")
@@ -49,4 +54,8 @@ CAPTION = (f"Cut at x {fr(CUT_X)} — inside the stud cavity, so the loft face s
            "The beam's reaction bypasses it onto the far stud pack, and the landing box ties the "
            "top plate across to the right wall. The loft's own edge — beam, rim, ledger, deck — is "
            "cut on the same plane at the top left. The stair beyond is dashed; switch it off if it "
-           "is in the way.")
+           "is in the way. <b>Both switches are one stacked rocker in a single-gang box</b>, at "
+           f"y {fr(SWITCH_Y)} and {fr(SWITCH_Z)} AFF — behind the panel above the raked head, in the open "
+           "cavity between the rake nailer and the header, so no framing is cut for it and there "
+           "is room above the box to bring the cable in. Wire the drop before either face is "
+           "sheathed.")

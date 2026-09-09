@@ -65,14 +65,29 @@ def present(recs, drawn, modes, cv=None):
 
 
 def compose(cv, recs, modes, key, aria, title="", shade=False, hatch=True,
-            note="", extra_defs="", start_off=()):
+            note="", extra_defs="", start_off=(), spec=None, electrical=None,
+            electrical_labels=True):
     """Draw, then wrap the result up as a Fig with its own switch list.
 
     `start_off` names chips that begin switched off — "off-l-finish" on a framing
     plan, say. The reader can switch them back on; nothing is missing from the
-    file, only from the first look at it."""
+    file, only from the first look at it.
+
+    `electrical` is a list of device ids, or None for every device that lands in
+    frame, or False for none. Symbols go on last, over the geometry, and bring
+    their own component and layer chips with them."""
     drawn = render.draw(cv, recs, modes, shade=shade, hatch=hatch)
     comps, lays, off = present(recs, drawn, modes, cv)
+    if electrical is not False and spec is not None and cv.proj is not None:
+        from . import electrical as elec
+        for comp, layer in elec.draw(cv, spec, ids=electrical,
+                                     labels=electrical_labels):
+            if comp not in comps:
+                comps.append(comp)
+            if layer not in lays:
+                lays.append(layer)
+        comps = [c for c in tx.COMPONENTS if c in comps]
+        lays = [l for l in tx.LAYERS if l in lays]
     return Fig(key, cv.svg(aria, extra_defs), title, comps, lays,
                sorted(set(off) | set(start_off)), note)
 

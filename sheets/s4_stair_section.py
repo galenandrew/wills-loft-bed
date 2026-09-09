@@ -2,7 +2,7 @@
 from drawings.model import (CEILING, DER, LAND, ST, T, Y_FIN, CEIL, JAMB_Y, fr, m,
                             tread_y_board)
 from .canvas import Canvas
-from .geometry import ViewSpec, view
+from .geometry import ViewSpec, projector, view
 from .sheet import compose
 
 NUMBER, TITLE, PAGE = "4", "Stair · landing · nook — section", "stairs"
@@ -17,12 +17,13 @@ MODES = {"mattress": "off", "desk": "off", "dresser": "off", "fan": "off"}
 
 def section():
     recs = view(SPEC)
-    cv = Canvas("y", "z", -5, 78, -4, CEILING + 4, 6.2)
+    cv = Canvas("y", "z", -5, 78, -4, CEILING + 4, 6.2, proj=projector(SPEC))
     cv.shell()
     fig = compose(cv, recs, MODES, "stair_sec",
                   "Section through stringer B, bed wall on the left",
                   title="Section through stringer B",
-                  start_off=("off-c-loft",))
+                  start_off=("off-c-loft",), spec=SPEC,
+                  electrical=["nk_light"])
     # --- dims
     cv.dim_h(0, ST.y_top, "bottom", 0, fr(ST.y_top))
     cv.dim_h(ST.y_top, ST.y_riser_top, "bottom", 0, f"{fr(ST.top_run)} top run")
@@ -50,4 +51,6 @@ CAPTION = (f"Cut through stringer B. Each stringer runs {fr(ST.top_run)} on unde
            f"the last step onto the deck is {fr(ST.R_top)}, because it is the framing stack over the nook "
            f"header rather than a stair riser — do not step {fr(ST.R)} off {ST.n_risers} times. "
            "The half wall is in front of this plane and draws dashed. Switch the "
-           "<b>Loft</b> on to see where the deck lands relative to the landing.")
+           "<b>Loft</b> on to see where the deck lands relative to the landing. The nook light "
+           f"sits in the flat part of that ceiling at {fr(CEIL)}, with {fr(DER['nook_light_chase'])} of chase above the "
+           "panel before the landing joists — a canless wafer, not a can.")

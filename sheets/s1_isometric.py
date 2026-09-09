@@ -31,7 +31,7 @@ def iso():
         cv.line3(a, b, "gridline")
     fig = compose(cv, recs, MODES, "iso",
                   "Isometric view of the whole build from the doorway",
-                  title="Isometric overview — from the doorway", shade=True,
+                  title="Isometric overview — from the doorway", shade=True, spec=SPEC,
                   start_off=("off-c-desk", "off-c-dresser"))
     # Labels are parked clear of the model and led back to a real point on the
     # member they name — offsets are in view inches, so they hold at any scale.

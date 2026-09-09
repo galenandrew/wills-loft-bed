@@ -101,7 +101,9 @@ def _cut_group(cv, r, mode, hatch):
     # Framing lumber reads hatched where the saw would expose it; sheet goods draw
     # plain, the convention the old set used and the one a builder expects.
     if hatch and mode != "flat" and r["layer"] == "framing":
-        body += f'<path class="hatch" d="{d}" fill-rule="evenodd"/>'
+        # the pattern id is per canvas (see sheets/canvas.py), so the fill is named
+        # here rather than in a stylesheet rule that could only ever name one
+        body += f'<path class="hatch" d="{d}" fill="{cv.hatch}" fill-rule="evenodd"/>'
     return _open(r, mode) + body + "</g>"
 
 

@@ -29,7 +29,14 @@ WALL_NAME = {("x", 0): "window wall", ("x", 1): "right wall",
              ("z", 0): "floor", ("z", 1): "ceiling"}
 
 GUT_BASE, GUT_PITCH = 15.0, 24.0     # px to the first dim run, then per level
+# Every figure on a page is a separate <svg> in ONE document, so their <defs> ids
+# share a namespace: `url(#box)` resolves to the FIRST clipPath in the document,
+# whatever svg it belongs to. That silently clipped seven figures to another
+# figure's frame. Ids are numbered per canvas instead. Deterministic, because the
+# build renders figures in a fixed order.
+_UID = [0]
 CHAR = 6.1                            # dim text width estimate, monospace 10.5px
+MIN_LABEL_GAP = 13.0                  # px between two labels in the same column
 E = html.escape
 
 
@@ -40,10 +47,14 @@ class Canvas:
         self.proj = proj                     # (x, y, z) → (h, v), for 3D helpers
         self.h0, self.h1, self.v0, self.v1 = h0, h1, v0, v1
         self.s, self.vdown, self.hflip = scale, vdown, hflip
+        _UID[0] += 1
+        self.uid = _UID[0]
+        self.hatch = f"url(#hatch{self.uid})"     # render.py fills with this
         self.geom, self.dims, self.labels, self.over = [], [], [], []
         self._gut = {"left": 0, "right": 0, "top": 0, "bottom": 0}
         self._wide = {"left": 0.0, "right": 0.0}
         self._res = {"left": 0.0, "right": 0.0, "top": 0.0, "bottom": 0.0}
+        self._vtext = []                     # (side, y, label) — placed in svg()
 
     def reserve(self, **px):
         """Keep clear space outside the drawing box for labels that sit there —
@@ -167,32 +178,36 @@ class Canvas:
         ty = y - 4 if side == "top" else y - 4
         self.dims.append(
             f'<g><line x1="{x0:.1f}" y1="{y:.1f}" x2="{x1:.1f}" y2="{y:.1f}"'
-            f' marker-start="url(#da)" marker-end="url(#db)"/>'
+            f' marker-start="url(#da{self.uid})" marker-end="url(#db{self.uid})"/>'
             + (f'<line x1="{x0:.1f}" y1="{y - 4:.1f}" x2="{x0:.1f}" y2="{y + 4:.1f}"/>'
                f'<line x1="{x1:.1f}" y1="{y - 4:.1f}" x2="{x1:.1f}" y2="{y + 4:.1f}"/>' if tick else "")
             + f'<text x="{(x0 + x1) / 2:.1f}" y="{ty:.1f}" text-anchor="middle">{E(t)}</text></g>')
 
     def dim_v(self, a, b, side, level, label=None, tick=True):
-        """A run measured up the page, parked in the left or right gutter."""
+        """A run measured up the page, parked in the left or right gutter.
+
+        The line goes at this run's own level; the TEXT is held back and placed in
+        svg(), in one column beyond the outermost level used on that side. A label
+        on an inner run would otherwise be written straight across the outer runs'
+        lines — which is what happens on any drawing that stacks two runs whose
+        midpoints are close, as the front elevation's ceiling-to-deck and
+        ceiling-to-landing are."""
         x = self._off(side, level)
         y0, y1 = sorted((self.Y(a), self.Y(b)))
         t = label if label is not None else fr(abs(b - a))
-        anchor, tx = ("end", x - 6) if side == "left" else ("start", x + 6)
-        # reserve to the far edge of THIS run's text, not just its width — a label
-        # on the outer level starts further out and used to run off the sheet
-        reach = (GUT_BASE + level * GUT_PITCH) + 6 + len(t) * CHAR + 4
-        self._wide[side] = max(self._wide[side], reach)
         self.dims.append(
             f'<g><line x1="{x:.1f}" y1="{y0:.1f}" x2="{x:.1f}" y2="{y1:.1f}"'
-            f' marker-start="url(#da)" marker-end="url(#db)"/>'
+            f' marker-start="url(#da{self.uid})" marker-end="url(#db{self.uid})"/>'
             + (f'<line x1="{x - 4:.1f}" y1="{y0:.1f}" x2="{x + 4:.1f}" y2="{y0:.1f}"/>'
                f'<line x1="{x - 4:.1f}" y1="{y1:.1f}" x2="{x + 4:.1f}" y2="{y1:.1f}"/>' if tick else "")
-            + f'<text x="{tx:.1f}" y="{(y0 + y1) / 2:.1f}" text-anchor="{anchor}"'
-            f' dominant-baseline="middle">{E(t)}</text></g>')
+            + "</g>")
+        self._vtext.append((side, (y0 + y1) / 2, t, x))
 
     def dim_chain(self, stops, side, level, labels=None):
         """Consecutive runs on one line — the way a layout is actually marked out."""
         for i, (a, b) in enumerate(zip(stops, stops[1:])):
+            if abs(b - a) < 1e-6:            # two stops on the same line: no run
+                continue
             lab = labels[i] if labels else None
             (self.dim_h if side in ("top", "bottom") else self.dim_v)(a, b, side, level, lab)
 
@@ -211,7 +226,42 @@ class Canvas:
         self.text(h, v, s, cls, anchor, dy=dy)
 
     # --------------------------------------------------------------- svg
+    def _place_vtext(self):
+        """Vertical dim labels, in one column clear of every run on that side.
+
+        Built fresh on each call and never appended to self.dims, so a sheet may
+        call svg() twice — compose() does, then the sheet adds its own runs and
+        calls it again — and the labels are placed once, against the final gutter
+        width."""
+        out = []
+        for side in ("left", "right"):
+            rows = [(y, t, xl) for s, y, t, xl in self._vtext if s == side]
+            if not rows:
+                continue
+            off = GUT_BASE + max(0, self._gut[side] - 1) * GUT_PITCH
+            x = (-off - 6) if side == "left" else (self.BW + off + 6)
+            anchor = "end" if side == "left" else "start"
+            self._wide[side] = max(self._wide[side],
+                                   off + 6 + max(len(t) for _y, t, _x in rows) * CHAR + 4)
+            # two runs with close midpoints would stack their labels on top of
+            # each other, so push them apart in the column and let the leader
+            # slope back to where the run actually is
+            placed, last = [], None
+            for y, t, xl in sorted(rows):
+                ty = y if last is None else max(y, last + MIN_LABEL_GAP)
+                placed.append((y, ty, t, xl))
+                last = ty
+            for y, ty, t, xl in placed:
+                if abs(xl - x) > 1:
+                    tip = x + (3 if side == "left" else -3)
+                    out.append(f'<polyline class="dimlead" points="{xl:.1f},{y:.1f} '
+                               f'{tip:.1f},{ty:.1f}"/>')
+                out.append(f'<text x="{x:.1f}" y="{ty:.1f}" text-anchor="{anchor}"'
+                           f' dominant-baseline="middle">{E(t)}</text>')
+        return out
+
     def svg(self, aria, extra_defs=""):
+        vtext = self._place_vtext()
         ml = max(GUT_BASE + max(0, self._gut["left"] - 1) * GUT_PITCH, self._wide["left"], 12) if self._gut["left"] else 12
         mr = max(GUT_BASE + max(0, self._gut["right"] - 1) * GUT_PITCH, self._wide["right"], 12) if self._gut["right"] else 12
         mt = (GUT_BASE + max(0, self._gut["top"] - 1) * GUT_PITCH + 14) if self._gut["top"] else 14
@@ -219,19 +269,20 @@ class Canvas:
         ml, mr = max(ml, self._res["left"]), max(mr, self._res["right"])
         mt, mb = max(mt, self._res["top"]), max(mb, self._res["bottom"])
         W, H = self.BW + ml + mr, self.BH + mt + mb
+        u = self.uid
         defs = ('<defs>'
-                '<marker id="da" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto">'
+                f'<marker id="da{u}" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto">'
                 '<path d="M7,0 L0,3.5 L7,7 z"/></marker>'
-                '<marker id="db" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">'
+                f'<marker id="db{u}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">'
                 '<path d="M0,0 L7,3.5 L0,7 z"/></marker>'
-                '<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" '
+                f'<pattern id="hatch{u}" width="6" height="6" patternUnits="userSpaceOnUse" '
                 'patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatchline"/></pattern>'
-                f'<clipPath id="box"><rect x="0" y="0" width="{self.BW:.0f}" height="{self.BH:.0f}"/></clipPath>'
+                f'<clipPath id="box{u}"><rect x="0" y="0" width="{self.BW:.0f}" height="{self.BH:.0f}"/></clipPath>'
                 f'{extra_defs}</defs>')
         g = (f'<g transform="translate({ml:.1f},{mt:.1f})">'
-             f'<g clip-path="url(#box)">{"".join(self.geom)}</g>'
+             f'<g clip-path="url(#box{u})">{"".join(self.geom)}</g>'
              f'<g class="lay-labels">{"".join(self.labels)}</g>'
-             f'<g class="lay-dims">{"".join(self.dims)}</g>'
+             f'<g class="lay-dims">{"".join(self.dims)}{"".join(vtext)}</g>'
              f'{"".join(self.over)}</g>')
         return (f'<svg viewBox="0 0 {W:.0f} {H:.0f}" role="img" '
                 f'aria-label="{E(aria)}" preserveAspectRatio="xMidYMid meet">'

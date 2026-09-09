@@ -711,6 +711,164 @@ def check_stair_and_nook(rep, d, members, stair):
 
 
 # ----------------------------------------------------------------- main
+# ----------------------------------------------------------------- electrical
+# A device is a point on a member's face plus the box behind it. That is enough to
+# check the three things that actually go wrong: it is not on the surface it claims
+# to be, it is not where the design says it is, or its box lands in a member nobody
+# said it could be cut into.
+FACE = {"+x": ("x", 1), "-x": ("x", 0), "+y": ("y", 1), "-y": ("y", 0),
+        "+z": ("z", 1), "-z": ("z", 0)}
+
+
+def _inplane(axis):
+    return [a for a in "xyz" if a != axis]
+
+
+def electrical_devices(d, members):
+    """Every device in one shape, from both places the yaml keeps them.
+
+    `electrical.devices` is the model; the three lights in `loft_lighting` are
+    adapted here rather than copied there, because the Rev U drawings still read
+    that block and a position written twice is a position that drifts. Their z is
+    taken off the host's face, never typed."""
+    out = [dict(dev) for dev in (d.get("electrical") or {}).get("devices", [])]
+    ll = d.get("loft_lighting") or {}
+    for group in ("desk", "walkway"):
+        g = ll.get(group)
+        if not g:
+            continue
+        ys = g["y"] if isinstance(g["y"], list) else [g["y"]]
+        try:
+            size = float(str(g["fixture"]).split("-inch")[0])
+        except ValueError:
+            size = 6.0
+        for i, y in enumerate(ys):
+            sfx = f"[{i}]" if len(ys) > 1 else ""
+            out.append({
+                "id": f"loft_{group}_light{sfx}", "kind": "light",
+                "label": "ceiling light",
+                "circuit": "under_loft", "fixture": g["fixture"],
+                "host": "loft_ceiling", "face": "-z",
+                "at": [float(g["x"]), float(y), None],
+                "box": [size + 0.5, size + 0.5, 1.0], "lets_into": [],
+                "canless": "canless" in str(g["fixture"]).lower(),
+                "from": "loft_lighting", "note": str(g.get("note", "")),
+            })
+    for dev in out:
+        axis, end = FACE[dev["face"]]
+        i = "xyz".index(axis)
+        if dev["at"][i] is None:                     # fill from the host's own face
+            dev["at"][i] = members[dev["host"]].ext(axis)[end]
+        dev["at"] = [float(v) for v in dev["at"]]
+    return out
+
+
+def device_box(dev):
+    """The device's box as {axis: (lo, hi)} — depth runs INTO the wall behind the
+    face, which is the opposite direction to the one the device looks."""
+    axis, end = FACE[dev["face"]]
+    w, h, depth = (float(v) for v in dev["box"])
+    at = dict(zip("xyz", dev["at"]))
+    ext = {}
+    for a, half in zip(_inplane(axis), (w / 2, h / 2)):
+        ext[a] = (at[a] - half, at[a] + half)
+    ext[axis] = (at[axis] - depth, at[axis]) if end else (at[axis], at[axis] + depth)
+    return ext
+
+
+def true_extents(m, box, stair, nook):
+    """The member's extents AGAINST THIS BOX — for a raked member, its real z
+    envelope over the box's own y span rather than its bounding box.
+
+    This is the difference between "the switch is on the face board" and "the
+    switch is in the nook opening, under the raked head, with nothing behind it":
+    hw_sheath_loft_head's bbox says z 15½–53¾ everywhere, and its true bottom edge
+    runs from 41½ down to 15½ across the wall."""
+    ext = {a: tuple(map(float, m.ext(a))) for a in "xyz"}
+    if m.kind == "raked" and m.rake:
+        lo, hi = rake_range(m, box["y"][0], box["y"][1], stair, nook)
+        ext["z"] = (lo, hi) if hi > lo else (0.0, 0.0)   # 0-width = not at this y
+    return ext
+
+
+def check_electrical(rep, d, members, stair):
+    devs = electrical_devices(d, members)
+    if not devs:
+        return
+    nook = d["nook"]
+    rep.section("ELECTRICAL — is each device on its host, where it is claimed, and clear?")
+    switched = set()
+    for dev in devs:
+        if dev.get("switches"):
+            switched.update(dev["switches"])
+    for dev in devs:
+        did, host = dev["id"], dev["host"]
+        if host not in members:
+            rep.fail(f"{did}: host {host!r} is not a member")
+            continue
+        m = members[host]
+        axis, end = FACE[dev["face"]]
+        at = dict(zip("xyz", dev["at"]))
+        box = device_box(dev)
+        ext = true_extents(m, box, stair, nook)
+        plane = ext[axis][end]
+        if abs(at[axis] - plane) > 1e-6:
+            rep.fail(f"{did}: {axis} {fr(at[axis])} is not on {host}'s {dev['face']} face "
+                     f"({fr(plane)}) — off by {fr(at[axis] - plane)}")
+            continue
+        # the plate/fixture footprint has to land on the host, not half off it
+        off = [a for a in _inplane(axis)
+               if box[a][0] < ext[a][0] - 1e-6 or box[a][1] > ext[a][1] + 1e-6]
+        if off:
+            rep.fail(f"{did}: box overhangs {host} in {'/'.join(off)} — "
+                     + ", ".join(f"{a} {fr(box[a][0])}→{fr(box[a][1])} vs host "
+                                 f"{fr(ext[a][0])}→{fr(ext[a][1])}" for a in off))
+        else:
+            rep.ok(f"{did}: on {host}'s {dev['face']} face at "
+                   + " ".join(f"{a} {fr(at[a])}" for a in "xyz"))
+        if dev.get("centred"):
+            bad = [a for a in _inplane(axis)
+                   if abs(at[a] - sum(ext[a]) / 2) > 0.0625]
+            if bad:
+                rep.fail(f"{did}: claims `centred` but is off {host}'s centre in "
+                         + ", ".join(f"{a} by {fr(at[a] - sum(ext[a]) / 2)}" for a in bad))
+            else:
+                rep.ok(f"{did}: centred on {host} within 1/16")
+        # The box may only be cut into what it declares — with one exception that is
+        # a design decision, not a loophole. A CANLESS fixture has no housing: it is a
+        # wafer on a driver, and Rev AP chose true geometric centres for the loft
+        # lights knowing they can straddle a joist, which a can never could. So for
+        # those, an intersection is reported with the member and the depth rather than
+        # failed — the builder still has to see it, and the yaml note still calls for a
+        # field check that the fixture actually chosen can straddle one.
+        allowed = {host} | set(dev.get("lets_into") or [])
+        for mid, other in members.items():
+            if mid in allowed or other.part_of in allowed:
+                continue
+            oext = true_extents(other, box, stair, nook)
+            gaps = [overlap(box[a], oext[a]) for a in "xyz"]
+            if min(gaps) <= 0.01:
+                continue
+            hit = f"{did}: box crosses {mid} ({' × '.join(fr(g) for g in gaps)})"
+            if dev.get("canless"):
+                rep.info(hit + " — canless wafer, straddles it; check the chosen "
+                               "fixture can before cutting the hole")
+            else:
+                rep.fail(hit + " — declare it in lets_into or move the device")
+        for mid in dev.get("lets_into") or []:
+            if mid not in members:
+                rep.fail(f"{did}: lets_into names {mid!r}, which is not a member")
+                continue
+            cut = overlap(box[axis], members[mid].ext(axis))
+            if cut <= 0.01:
+                rep.warn(f"{did}: lets_into {mid} but the box never reaches it")
+            else:
+                rep.ok(f"{did}: let {fr(cut)} into {mid} "
+                       f"(leaves {fr(members[mid].size(axis) - cut)} of {fr(members[mid].size(axis))})")
+        if dev["kind"] == "light" and dev.get("circuit") not in switched:
+            rep.warn(f"{did}: on circuit {dev.get('circuit')!r}, which no switch switches")
+
+
 def main():
     quiet = "--quiet" in sys.argv
     paths = [a for a in sys.argv[1:] if not a.startswith("--")]
@@ -727,6 +885,7 @@ def main():
     check_bounds(rep, members, d["room"])
     check_derived(rep, d, members, stair, d["room"])
     check_stair_and_nook(rep, d, members, stair)
+    check_electrical(rep, d, members, stair)
 
     rep.section("CONNECTIONS — does each claimed connection exist in all three axes?")
     for c in d["connections"]:

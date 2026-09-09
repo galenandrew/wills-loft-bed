@@ -1,7 +1,7 @@
 """Sheet 5 — Stair, landing and nook framing plan, seen from above."""
 from drawings.model import ST, Y_FIN, NOOK_Y, RX, fr, m
 from .canvas import Canvas
-from .geometry import ViewSpec, view
+from .geometry import ViewSpec, projector, view
 from .sheet import compose
 
 NUMBER, TITLE, PAGE = "5", "Stair · landing · nook — framing plan", "stairs"
@@ -13,16 +13,18 @@ MODES = {"fan": "off", "dresser": "off", "desk": "off", "mattress": "off"}
 
 def framing():
     recs = view(SPEC)
-    cv = Canvas("x", "y", 98, RX + 6, -5, 78, 9.0, vdown=True)
+    cv = Canvas("x", "y", 98, RX + 6, -5, 78, 9.0, vdown=True, proj=projector(SPEC))
     cv.shell()
     fig = compose(cv, recs, MODES, "stair_frame",
                   "Stair and landing framing seen from above, bed wall at the top",
                   title="Stair · landing · nook framing plan",
-                  start_off=("off-l-finish",))
+                  start_off=("off-l-finish",), spec=SPEC,
+                  electrical=["nk_light"])
     # --- dims
     cv.dim_h(float(m("hw_sheath_loft_a").x[0]), float(m("hw_sheath_stair").x[1]),
              "top", 0, f"{fr(float(m('hw_sheath_stair').x[1]) - float(m('hw_sheath_loft_a').x[0]))} wall")
-    cv.dim_h(float(m("hw_sheath_stair").x[1]), RX, "top", 0, "24 stair")
+    cv.dim_h(float(m("hw_sheath_stair").x[1]), RX, "top", 0,
+             f"{fr(RX - float(m('hw_sheath_stair').x[1]))} stair")
     cv.dim_v(0, float(m("lnd_rim").y[1]), "left", 0, f"{fr(float(m('lnd_rim').y[1]))} landing box")
     cv.dim_v(float(m("lnd_rim").y[1]), ST.y_bottom, "left", 0, f"{fr(ST.y_bottom - float(m('lnd_rim').y[1]))} stringers")
     cv.dim_v(0, Y_FIN, "right", 0, f"{fr(Y_FIN)} finished")

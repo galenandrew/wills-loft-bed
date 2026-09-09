@@ -9,21 +9,58 @@ import datetime
 import html
 import json
 import os
+import re
 
 from drawings.model import REV, RX, RY, CEILING, DECK, fr, E
+# The reference pages render through the Rev U card builders rather than a second
+# copy of them: content/ is the source for both sets, so an edit to open-items.yaml
+# or revisions.json shows up in v1 and v2 without either being kept in step by hand.
+from drawings.site import (card_fasteners, card_locked, card_revisions,
+                           card_schedule, card_sequencing, card_structure,
+                           cards_open)
 from . import taxonomy as tx
-from .style import BG, CARD, INK, INK2, INK3, LINE, svg_css
+from .style import BG, CARD, DIM, INK, INK2, INK3, LINE, svg_css
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "site-v2")
 
+# A page is either drawings (a list of sheet modules) or reference (REF).
+REF = "reference"
+
 PAGES = [
-    ("index",    "Overview",        ["s1_isometric", "s2_front_elevation", "s3_floor_plan"]),
-    ("stairs",   "Stairs & nook",   ["s4_stair_section", "s5_stair_framing", "s6_tread_detail"]),
-    ("halfwall", "Half wall",       ["s7_half_wall", "s12_panel_layout"]),
-    ("loft",     "Loft & screen",   ["s8_loft_section", "s9_loft_framing",
-                                     "s10_beam_end", "s11_ledge_detail"]),
+    ("index",     "Overview",      ["s1_isometric", "s2_front_elevation", "s3_floor_plan"]),
+    ("stairs",    "Stairs & nook", ["s4_stair_section", "s5_stair_framing", "s6_tread_detail"]),
+    ("halfwall",  "Half wall",     ["s7_half_wall", "s12_panel_layout"]),
+    ("loft",      "Loft & screen", ["s8_loft_section", "s9_loft_framing",
+                                    "s10_beam_end", "s11_ledge_detail"]),
+    ("open",      "Open items",    REF),
+    ("schedule",  "Schedule",      REF),
+    ("fasteners", "Fasteners",     REF),
+    ("appendix",  "Appendix",      REF),
+    ("revisions", "Revisions",     REF),
 ]
+
+
+def card_summary():
+    """"The design in one line" — the summary from open-items.yaml. It sits at the
+    foot of the Overview rather than on the Open Items page: it is what the build
+    IS, not something outstanding about it."""
+    return next(h for a, _l, h in cards_open() if a == "open-summary")
+
+
+def reference_cards(slug):
+    """The pages that are prose and tables rather than drawings."""
+    if slug == "open":
+        return [h for a, _l, h in cards_open() if a != "open-summary"]
+    if slug == "schedule":
+        return [card_locked(), card_schedule()]
+    if slug == "fasteners":
+        return [card_fasteners()]
+    if slug == "appendix":
+        return [card_sequencing(), card_structure()]
+    if slug == "revisions":
+        return [card_revisions()]
+    raise KeyError(slug)
 
 CSS = f"""
 *{{box-sizing:border-box}}
@@ -37,6 +74,16 @@ nav.tabs{{position:sticky;top:0;z-index:20;background:{BG};display:flex;gap:6px;
 nav.tabs a{{color:{INK2};text-decoration:none;padding:7px 13px;border-radius:6px;font-size:13.5px;font-weight:600}}
 nav.tabs a:hover{{background:#f1efe9;color:{INK}}}
 nav.tabs a.here{{background:{INK};color:#fff}}
+nav.tabs a:focus-visible{{outline:2px solid {DIM};outline-offset:1px}}
+nav.tabs a.arrow{{font-size:18px;padding:5px 12px;border:1px solid {LINE};background:{CARD};color:{INK};line-height:1.1}}
+nav.tabs a.arrow:hover{{background:#f1efe9}}
+nav.tabs a.arrow.off{{opacity:.3;pointer-events:none}}
+nav.tabs .sp{{flex:1}}
+.pn{{display:flex;justify-content:space-between;align-items:baseline;gap:16px;font-size:13px;margin-top:4px}}
+.pn a{{color:{DIM};text-decoration:none;padding:8px 0}}
+.pn a:hover{{text-decoration:underline}}
+.pn .hint{{color:{INK3};font-size:12px}}
+kbd{{font:11px ui-monospace,Menlo,monospace;border:1px solid {LINE};border-radius:3px;padding:0 4px;background:{CARD}}}
 .dwg{{background:{CARD};border:1px solid {LINE};border-radius:10px;padding:16px 18px 14px;margin-bottom:22px}}
 .dwg h2{{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:{INK2};margin:0 0 10px;font-weight:700}}
 .dwg h2 b{{color:{INK};font-size:14px;text-transform:none;letter-spacing:0}}
@@ -51,11 +98,51 @@ nav.tabs a.here{{background:{INK};color:#fff}}
 .chip[aria-pressed="true"]{{background:{INK};border-color:{INK};color:#fff}}
 .chip.rst{{border-style:dashed}}
 figure{{margin:0;overflow-x:auto}}
+nav.tabs{{flex-wrap:wrap}}
+
+/* --- reference pages: open items, schedule, fasteners, appendix, revisions.
+   The HTML comes from the Rev U card builders (drawings/site.py); these are the
+   same classes in this set's palette, so content/ stays the single source. --- */
+.card{{background:{CARD};border:1px solid {LINE};border-radius:10px;padding:18px 20px;margin-bottom:20px}}
+.card h2{{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:{INK2};margin:0 0 12px;font-weight:700}}
+.card h2.section{{font-size:15px;text-transform:none;letter-spacing:0;color:{INK};border-bottom:2px solid {INK};padding-bottom:6px;margin:30px 0 16px}}
+.specs{{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;background:{LINE};border:1px solid {LINE};border-radius:8px;overflow:hidden;margin:0}}
+.spec{{background:{CARD};padding:11px 13px}}
+.spec dt{{font-size:11px;color:{INK3};text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}}
+.spec dd{{margin:0;font-size:16px;font-weight:650;font-variant-numeric:tabular-nums}}
+.spec dd span{{font-size:11.5px;font-weight:400;color:{INK2};display:block;margin-top:1px}}
+table{{width:100%;border-collapse:collapse;font-size:13px}}
+th,td{{text-align:left;padding:7px 10px;border-bottom:1px solid {LINE};vertical-align:top;overflow-wrap:break-word}}
+th{{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:{INK3};font-weight:700}}
+td.n{{font-variant-numeric:tabular-nums;white-space:nowrap}}
+tr:last-child td{{border-bottom:none}}
+td .cap{{display:inline;margin:0;font-size:12px}}
+.miss{{color:#a3241c}}
+code{{font-size:12.5px;background:#f1efe9;padding:1px 4px;border-radius:3px}}
+.note{{border-left:3px solid #c0392b;background:#fdf4f2;padding:11px 14px;border-radius:0 6px 6px 0;font-size:13px;margin-top:14px}}
+.note b{{color:#c0392b}}
+.card ul{{margin:0;padding-left:19px}}
+.card li{{margin-bottom:7px}}
+ul.todo{{list-style:none;padding-left:2px;font-size:13.5px}}
+ul.todo li{{margin-bottom:6px;padding-left:24px;position:relative;line-height:1.45}}
+ul.todo li::before{{content:"";position:absolute;left:0;top:2px;width:12px;height:12px;border:1.5px solid {INK3};border-radius:3px;background:{BG}}}
+ul.todo li b{{font-weight:600}}
+.why{{color:{INK2};font-weight:400;font-size:12.5px;display:block;margin-top:1px}}
+.tag{{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:1.5px 7px;border-radius:4px;vertical-align:1px}}
+.t-open{{background:#fdf1e3;color:#b07d1a}}.t-lock{{background:#e8f0e9;color:#4a7c4e}}.t-chk{{background:#fbe9e7;color:#c0392b}}
+details.done summary{{cursor:pointer;font-size:12.5px;color:{INK2};display:flex;gap:9px;align-items:baseline;list-style:none}}
+details.done summary::-webkit-details-marker{{display:none}}
+details.done summary::before{{content:"▸";color:{INK3};font-size:11px;line-height:1.4}}
+details.done[open] summary::before{{content:"▾"}}
+details.done ul{{margin-top:11px;font-size:12.5px;color:{INK2}}}
+.sum{{margin:-2px 0 0;font-size:12.5px;color:{INK2};max-width:none}}
 {svg_css()}
 @media print{{
-  nav.tabs,.tools,header .meta{{display:none}}
+  nav.tabs,.tools,header .meta,.pn{{display:none}}
   body{{background:#fff}}
   .dwg{{border:none;padding:0;break-inside:avoid;page-break-after:always;margin:0 0 8px}}
+  .card{{border:none;padding:0;break-inside:avoid}}
+  details.done{{display:none}}
   .wrap{{max-width:none;padding:0}}
 }}
 """
@@ -93,6 +180,20 @@ JS = """
       state = JSON.parse(fig.dataset.off || '[]'); sync();
     });
     sync();
+  });
+})();
+
+// ← / → switch pages, the same keys the Rev U set uses. The destinations come
+// off the <nav>, so the keys and the arrow buttons cannot drift apart.
+(function(){
+  var n = document.querySelector('nav.tabs');
+  if (!n) return;
+  document.addEventListener('keydown', function(e){
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (e.target.closest('input,textarea,select,[contenteditable]')) return;
+    var t = e.key === 'ArrowLeft' ? n.dataset.prev
+          : e.key === 'ArrowRight' ? n.dataset.next : '';
+    if (t) { e.preventDefault(); location.href = t + '.html'; }
   });
 })();
 """
@@ -140,10 +241,46 @@ def figure_card(sheet, fig):
             f'<p class="cap">{sheet.CAPTION}</p></div>')
 
 
-def page(slug, title, cards, today):
+def _neighbours(slug):
+    names = [s for s, _t, _s in PAGES]
+    i = names.index(slug)
+    return (names[i - 1] if i > 0 else None,
+            names[i + 1] if i + 1 < len(names) else None)
+
+
+def nav(slug):
+    """Sticky page tabs with ← / → on the ends, the way the Rev U set reads.
+
+    The arrows carry the destination on the <nav> as data-prev/data-next, so the
+    keyboard handler and the buttons cannot disagree about where they go."""
+    labels = {s: t for s, t, _s in PAGES}
+    prv, nxt = _neighbours(slug)
+
+    def arrow(target, cls, sym):
+        if not target:
+            return f'<a class="arrow {cls} off" aria-disabled="true">{sym}</a>'
+        return (f'<a class="arrow {cls}" href="{target}.html" '
+                f'aria-label="{cls.capitalize()} page: {E(labels[target])}" '
+                f'title="{E(labels[target])}">{sym}</a>')
+
     tabs = "".join(
-        f'<a href="{s}.html"{" class=\"here\"" if s == slug else ""}>{E(t)}</a>'
-        for s, t, _ in PAGES)
+        f'<a href="{s}.html"{" class=\"here\" aria-current=\"page\"" if s == slug else ""}>'
+        f'{E(t)}</a>' for s, t, _s in PAGES)
+    return (f'<nav class="tabs" aria-label="pages" data-prev="{prv or ""}" '
+            f'data-next="{nxt or ""}">{arrow(prv, "prev", "←")}{tabs}'
+            f'<span class="sp"></span>{arrow(nxt, "next", "→")}</nav>')
+
+
+def prev_next(slug):
+    labels = {s: t for s, t, _s in PAGES}
+    prv, nxt = _neighbours(slug)
+    a = f'<a href="{prv}.html">← {E(labels[prv])}</a>' if prv else "<span></span>"
+    b = f'<a href="{nxt}.html">{E(labels[nxt])} →</a>' if nxt else "<span></span>"
+    return (f'<div class="pn">{a}<span class="hint"><kbd>←</kbd> <kbd>→</kbd> '
+            f'switch pages</span>{b}</div>')
+
+
+def page(slug, title, cards, today):
     return (f'<!doctype html><html lang="en"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{E(title)} · Rev {E(REV)}</title>'
@@ -152,8 +289,24 @@ def page(slug, title, cards, today):
             f'<span class="rev">REV {E(REV)}</span>'
             f'<span>{fr(RX)} × {fr(RY)} room · {fr(CEILING)} ceiling · deck {fr(DECK)} AFF</span>'
             f'<span>generated {today} from dimensions.yaml</span></div></header>'
-            f'<nav class="tabs">{tabs}</nav>{"".join(cards)}</div>'
+            f'{nav(slug)}{"".join(cards)}{prev_next(slug)}</div>'
             f'<script>{JS}</script></body></html>')
+
+
+def check_ids(slug, html):
+    """No two elements on a page may share an id.
+
+    Every figure is a separate <svg> in one document, so their <defs> share an id
+    namespace and `url(#name)` resolves to the FIRST match in the document — not
+    the one inside the same svg. That silently clipped seven figures to another
+    figure's frame before anyone noticed the drawings were losing their right-hand
+    side. Cheap invariant, so it is asserted on every build."""
+    ids = re.findall(r'\sid="([^"]+)"', html)
+    dupes = sorted({i for i in ids if ids.count(i) > 1})
+    if dupes:
+        raise AssertionError(
+            f"site-v2/{slug}.html: duplicate element ids {dupes} — an svg def is "
+            f"shadowing another figure's; give it a per-canvas id")
 
 
 def build(verbose=True):
@@ -161,14 +314,21 @@ def build(verbose=True):
     os.makedirs(OUT, exist_ok=True)
     today = datetime.date.today().isoformat()
     figs = {}
-    for slug, title, mods in PAGES:
+    for slug, title, spec in PAGES:
         cards = []
-        for name in mods:
-            mod = importlib.import_module(f"sheets.{name}")
-            for key, fn in mod.FIGURES:
-                fig = fn()
-                figs[key] = fig
-                cards.append(figure_card(mod, fig))
-        open(os.path.join(OUT, f"{slug}.html"), "w").write(page(slug, title, cards, today))
+        if spec is REF:
+            cards = reference_cards(slug)
+        else:
+            for name in spec:
+                mod = importlib.import_module(f"sheets.{name}")
+                for key, fn in mod.FIGURES:
+                    fig = fn()
+                    figs[key] = fig
+                    cards.append(figure_card(mod, fig))
+            if slug == "index":
+                cards.append(card_summary())
+        html = page(slug, title, cards, today)
+        check_ids(slug, html)
+        open(os.path.join(OUT, f"{slug}.html"), "w").write(html)
     open(os.path.join(OUT, "style.css"), "w").write(CSS + "\n" + hide_rules() + "\n")
     return figs

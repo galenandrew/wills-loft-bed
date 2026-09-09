@@ -1,5 +1,5 @@
 """Sheet 6 — Tread and riser joint, at large scale."""
-from drawings.model import RISER_T, ST, T, fr, riser_y, tread_y_board
+from drawings.model import NOSE, RISER_T, ST, T, fr, riser_y, tread_y_board
 from .canvas import Canvas
 from .geometry import ViewSpec, view
 from .sheet import compose
@@ -23,7 +23,7 @@ def detail():
     cv.reserve(right=150, top=26)
     fig = compose(cv, recs, MODES, "tread_detail",
                   f"Tread and riser joint at step {STEP}, drawn large",
-                  title=f"Tread & riser joint — step {STEP} of {ST.n_treads}")
+                  title=f"Tread & riser joint — step {STEP} of {ST.n_treads}", electrical=False)
     # --- dims
     cv.dim_h(*tread_y_board(STEP), "bottom", 0, f"{fr(y1 - y0)} board")
     cv.dim_h(*ST.tread_y(STEP), "bottom", 1, f"{fr(ST.run)} going")
@@ -35,7 +35,7 @@ def detail():
     cv.text(y1 + 1.2, z - ST.R / 2, "riser, in front of the plumb cut", "sm",
             anchor="start")
     cv.text(y0 - 1.4, z - ST.R + 1.4, "stringer", "sm", anchor="start")
-    cv.text(y1 + 1.2, z - T - 1.2, "1/8 nose past the riser face", "sm", anchor="start")
+    cv.text(y1 + 1.2, z - T - 1.2, f"{fr(NOSE)} nose past the riser face", "sm", anchor="start")
     fig.svg = cv.svg(f"Tread and riser joint at step {STEP}")
     return fig
 

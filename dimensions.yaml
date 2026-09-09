@@ -43,7 +43,7 @@
 #     cad-out/loft.txt carries both areas.
 # Anything marked ASSUMED is not in the drawings and must be confirmed.
 
-rev: BB.1
+rev: BC
 units: inches
 room:
   x: 131
@@ -194,6 +194,113 @@ loft_lighting:
     can actually straddle a joist before cutting the hole. ASSUMED — confirm fixture
     choice, exact position and switch location with the user before wiring; see
     open-items.'
+electrical:
+  note: 'Rev BC. The devices the room needs, placed on the members they mount to.
+    loft_lighting (above) stays where it is because Drawing 1 of the Rev U set reads
+    it; everything else lives here, and the drawings read both through one adapter
+    (verify.electrical_devices) so no position is written down twice. `face` is the
+    direction the device LOOKS; `box` is [width, height, depth] with depth going
+    into the wall behind that face, and `lets_into` names every member the box is
+    cut into. verify.py checks each device sits on its host, that a `centred` one
+    really is centred, and that its box hits nothing it has not declared.'
+  devices:
+  - id: nk_light
+    label: nook light
+    kind: light
+    circuit: nook
+    fixture: 6-inch canless LED wafer
+    host: nk_soffit_flat
+    face: -z
+    at:
+    - 116.875
+    - 11.25
+    - 41.0
+    centred: true
+    box:
+    - 6.5
+    - 6.5
+    - 1.0
+    lets_into: []
+    note: 'CONFIRMED by the builder (2026-09-08): the centre of the flat nook ceiling.
+      The chase above the panel is nook_light_chase 3 3/4, from the panel top at 41 1/2
+      to the landing joists at 45 1/4, so the wafer (~5/8) and its driver both sit
+      clear of lnd_joist[0], whose x 114 3/4-116 1/4 otherwise runs straight over
+      this point. Canless, not a can: nothing 4 inches deep fits here. Power must be
+      run before the soffit panel goes up.'
+  - id: ledge_outlet_window
+    label: outlet
+    kind: outlet
+    circuit: ledge_outlets
+    fixture: flush duplex receptacle in the lid
+    host: ledge_lid
+    face: +z
+    at:
+    - 8.0
+    - 4.0
+    - 69.0
+    box:
+    - 2.0
+    - 3.0
+    - 2.5
+    lets_into: []
+    note: 'Window end. Centred across the lid''s 8 width, so the box hangs into the
+      ledge well clear of ledge_cleat (y 0-1 1/2) and ledge_cleat_rail (y 5 3/4-7 1/4),
+      and clear of every ledge_strut in x. Faces up because there is nowhere else:
+      the front rail''s face is behind the mattress below 66 and only 2 1/4 tall above it.'
+  - id: ledge_outlet_stair
+    label: outlet
+    kind: outlet
+    circuit: ledge_outlets
+    fixture: flush duplex receptacle in the lid
+    host: ledge_lid
+    face: +z
+    at:
+    - 99.0
+    - 4.0
+    - 69.0
+    box:
+    - 2.0
+    - 3.0
+    - 2.5
+    lets_into: []
+    note: Stair end. Same detail as the window end.
+  - id: sw_half_wall
+    label: 2 switches
+    kind: switch
+    circuit: null
+    switches:
+    - nook
+    - under_loft
+    fixture: single-gang shallow box, two-circuit stacked rocker
+    host: hw_sheath_loft_head
+    face: -x
+    at:
+    - 102.25
+    - 44.0
+    - 36.0
+    box:
+    - 2.0
+    - 3.0
+    - 1.5
+    lets_into: []
+    note: 'TWO SWITCHES, ONE BOX, in the cavity — no framing is cut. At reach height
+      the half wall is a portal frame, so the first reading of it was that the only
+      solid face was the 4-wide board over the far jamb pack, which would have meant
+      letting the box into the trimmer, the flitch and the king. That was wrong: the
+      nook opening''s head RAKES, following the stringers down from 41 at y 18 1/4 to
+      15 1/2 at y 46, and hw_sheath_loft_head is the panel above that line. At z 39 1/2
+      the face is therefore continuous board from about y 20 all the way to the wall''s
+      end, and behind it — above the rake nailer, below the header — is open cavity.
+      The box sits at y 44: 2 wide, so y 43-45, with 1 1/2 clear of hw_trimmer_b at
+      46 1/2 and the nailer''s 1 1/2 band 18-20 1/4, nowhere near it. Shallow single-gang
+      old-work box clamped to the 1/2 face; a scrap 2x4 backing block behind it is the
+      builder''s option, and has to go in before the face is sheathed either way.
+      A 2-gang plate is 4 5/8 wide and the two switches are still a stacked rocker in
+      one gang, which is what suits a single-gang box. 36 AFF, so the top of the box is
+      37 1/2 and the header bottom at 41 1/2 is 4 clear above it — room for the cable to
+      come in and be clamped, which 39 1/2 did not really leave. The cavity behind runs
+      from the rake nailer at about 20 up to the header, so the height is a choice, not
+      a constraint: 36 is low for an adult and a standard child-accessible height.'
 screen:
   slat_count: 23
   slat_size: 1.5

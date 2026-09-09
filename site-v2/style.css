@@ -10,6 +10,16 @@ nav.tabs{position:sticky;top:0;z-index:20;background:#fbfaf7;display:flex;gap:6p
 nav.tabs a{color:#5f5d56;text-decoration:none;padding:7px 13px;border-radius:6px;font-size:13.5px;font-weight:600}
 nav.tabs a:hover{background:#f1efe9;color:#23231f}
 nav.tabs a.here{background:#23231f;color:#fff}
+nav.tabs a:focus-visible{outline:2px solid #1f4e9c;outline-offset:1px}
+nav.tabs a.arrow{font-size:18px;padding:5px 12px;border:1px solid #e0ddd4;background:#ffffff;color:#23231f;line-height:1.1}
+nav.tabs a.arrow:hover{background:#f1efe9}
+nav.tabs a.arrow.off{opacity:.3;pointer-events:none}
+nav.tabs .sp{flex:1}
+.pn{display:flex;justify-content:space-between;align-items:baseline;gap:16px;font-size:13px;margin-top:4px}
+.pn a{color:#1f4e9c;text-decoration:none;padding:8px 0}
+.pn a:hover{text-decoration:underline}
+.pn .hint{color:#8a877e;font-size:12px}
+kbd{font:11px ui-monospace,Menlo,monospace;border:1px solid #e0ddd4;border-radius:3px;padding:0 4px;background:#ffffff}
 .dwg{background:#ffffff;border:1px solid #e0ddd4;border-radius:10px;padding:16px 18px 14px;margin-bottom:22px}
 .dwg h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#5f5d56;margin:0 0 10px;font-weight:700}
 .dwg h2 b{color:#23231f;font-size:14px;text-transform:none;letter-spacing:0}
@@ -24,6 +34,44 @@ nav.tabs a.here{background:#23231f;color:#fff}
 .chip[aria-pressed="true"]{background:#23231f;border-color:#23231f;color:#fff}
 .chip.rst{border-style:dashed}
 figure{margin:0;overflow-x:auto}
+nav.tabs{flex-wrap:wrap}
+
+/* --- reference pages: open items, schedule, fasteners, appendix, revisions.
+   The HTML comes from the Rev U card builders (drawings/site.py); these are the
+   same classes in this set's palette, so content/ stays the single source. --- */
+.card{background:#ffffff;border:1px solid #e0ddd4;border-radius:10px;padding:18px 20px;margin-bottom:20px}
+.card h2{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:#5f5d56;margin:0 0 12px;font-weight:700}
+.card h2.section{font-size:15px;text-transform:none;letter-spacing:0;color:#23231f;border-bottom:2px solid #23231f;padding-bottom:6px;margin:30px 0 16px}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;background:#e0ddd4;border:1px solid #e0ddd4;border-radius:8px;overflow:hidden;margin:0}
+.spec{background:#ffffff;padding:11px 13px}
+.spec dt{font-size:11px;color:#8a877e;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.spec dd{margin:0;font-size:16px;font-weight:650;font-variant-numeric:tabular-nums}
+.spec dd span{font-size:11.5px;font-weight:400;color:#5f5d56;display:block;margin-top:1px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid #e0ddd4;vertical-align:top;overflow-wrap:break-word}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#8a877e;font-weight:700}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td .cap{display:inline;margin:0;font-size:12px}
+.miss{color:#a3241c}
+code{font-size:12.5px;background:#f1efe9;padding:1px 4px;border-radius:3px}
+.note{border-left:3px solid #c0392b;background:#fdf4f2;padding:11px 14px;border-radius:0 6px 6px 0;font-size:13px;margin-top:14px}
+.note b{color:#c0392b}
+.card ul{margin:0;padding-left:19px}
+.card li{margin-bottom:7px}
+ul.todo{list-style:none;padding-left:2px;font-size:13.5px}
+ul.todo li{margin-bottom:6px;padding-left:24px;position:relative;line-height:1.45}
+ul.todo li::before{content:"";position:absolute;left:0;top:2px;width:12px;height:12px;border:1.5px solid #8a877e;border-radius:3px;background:#fbfaf7}
+ul.todo li b{font-weight:600}
+.why{color:#5f5d56;font-weight:400;font-size:12.5px;display:block;margin-top:1px}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:1.5px 7px;border-radius:4px;vertical-align:1px}
+.t-open{background:#fdf1e3;color:#b07d1a}.t-lock{background:#e8f0e9;color:#4a7c4e}.t-chk{background:#fbe9e7;color:#c0392b}
+details.done summary{cursor:pointer;font-size:12.5px;color:#5f5d56;display:flex;gap:9px;align-items:baseline;list-style:none}
+details.done summary::-webkit-details-marker{display:none}
+details.done summary::before{content:"▸";color:#8a877e;font-size:11px;line-height:1.4}
+details.done[open] summary::before{content:"▾"}
+details.done ul{margin-top:11px;font-size:12.5px;color:#5f5d56}
+.sum{margin:-2px 0 0;font-size:12.5px;color:#5f5d56;max-width:none}
 
 .dwg svg{display:block;width:100%;height:auto;font-family:ui-sans-serif,system-ui,sans-serif}
 .pc{stroke-linejoin:round}
@@ -35,7 +83,7 @@ figure{margin:0;overflow-x:auto}
 [data-l="context"] .sil{stroke:#9d988e;stroke-width:.9;stroke-dasharray:4 3}
 .pc .cut{stroke:#23231f;stroke-width:1.6;fill:#e7d8b8}
 [data-l="finish"] .cut{fill:#ccd8de}[data-l="context"] .cut{fill:#efedea}
-.pc .hatch{fill:url(#hatch);stroke:none;pointer-events:none}
+.pc .hatch{stroke:none;pointer-events:none}   /* fill is per-canvas, set on the element */
 .pc .ghost{fill:none;stroke:#b06a3b;stroke-width:.9;stroke-dasharray:5 3}
 .mode-ghost .fill,.mode-ghost .sil,.mode-ghost .hatch{display:none}
 .mode-outline .fill,.mode-outline .hatch{display:none}
@@ -48,7 +96,10 @@ figure{margin:0;overflow-x:auto}
 .gridline{stroke:#e0ddd4;stroke-width:.7;fill:none}
 .elec{fill:none;stroke:#c0392b;stroke-width:1.6}
 .elecf{fill:#fdeceb;stroke:#c0392b;stroke-width:1.4}
+.elecs{font-size:10px;font-weight:700;fill:#c0392b;stroke:none}
+.lay-labels .elect{fill:#c0392b}
 .lay-dims line{stroke:#1f4e9c;stroke-width:.9}
+.lay-dims .dimlead{stroke:#1f4e9c;stroke-width:.5;opacity:.55;fill:none}
 .lay-dims text{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;fill:#1f4e9c}
 .lay-dims marker path{fill:#1f4e9c}
 .lay-labels text{font-size:11px;fill:#23231f}
@@ -58,9 +109,11 @@ figure{margin:0;overflow-x:auto}
 .hatchline{stroke:#6f5930;stroke-width:.55}
 
 @media print{
-  nav.tabs,.tools,header .meta{display:none}
+  nav.tabs,.tools,header .meta,.pn{display:none}
   body{background:#fff}
   .dwg{border:none;padding:0;break-inside:avoid;page-break-after:always;margin:0 0 8px}
+  .card{border:none;padding:0;break-inside:avoid}
+  details.done{display:none}
   .wrap{max-width:none;padding:0}
 }
 

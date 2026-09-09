@@ -2,7 +2,7 @@
 from drawings.model import (BAY, BEAM_FIN_TOP, BEAMSTOCK, CEILING, DECK, DER, MAT,
                             MAT_Y0, MAT_Y1, SCR, fr, m)
 from .canvas import Canvas
-from .geometry import ViewSpec, view
+from .geometry import ViewSpec, projector, view
 from .sheet import compose
 
 NUMBER, TITLE, PAGE = "8", "Loft — cross section", "loft"
@@ -19,11 +19,12 @@ MODES = {"stair": "off", "half_wall": "off", "nook": "off", "dresser": "off",
 
 def section():
     recs = view(SPEC)
-    cv = Canvas("y", "z", -5, 62, -4, CEILING + 4, 7.4)
+    cv = Canvas("y", "z", -5, 62, -4, CEILING + 4, 7.4, proj=projector(SPEC))
     cv.shell()
     fig = compose(cv, recs, MODES, "loft_sec",
                   "Loft cross section cut between joists, bed wall on the left",
-                  title=f"Cross section at x {fr(CUT_X)}, between joists")
+                  title=f"Cross section at x {fr(CUT_X)}, between joists", spec=SPEC,
+                  electrical=["ledge_outlet_window", "loft_walkway_light"])
     lid, rail = m("ledge_lid"), m("ledge_front_rail")
     # --- dims
     cv.dim_v(0, DECK, "left", 0, f"{fr(DECK)} deck")
@@ -37,7 +38,7 @@ def section():
     cv.dim_h(0, float(m("beam_wrap_face").y[1]), "bottom", 1,
              f"{fr(float(m('beam_wrap_face').y[1]))} platform")
     # --- labels
-    cv.text(26, DECK - 2.6, f"2×4 joists @ 12 o.c. · {fr(DER['deck_joist_span'])} span", "sm")
+    cv.text(30, DECK - 5.4, f"2×4 joists @ 12 o.c. · {fr(DER['deck_joist_span'])} span", "sm")
     cv.text(26, float(m("loft_ceiling").z[0]) - 3.4, "½ finished ceiling under", "sm")
     cv.text(44, BEAM_FIN_TOP + 3, f"{BEAMSTOCK} + wrap", "sm", anchor="end")
     cv.text(44, 84, f"{SCR['slat_count']} slats, all on this plane", "sm", anchor="end")
